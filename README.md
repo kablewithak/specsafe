@@ -48,11 +48,15 @@ python -m venv .venv
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 python -m pytest
+python -m ruff check .
 ```
 
 ## Current maturity
 
-**Prototype repository foundation.** No scheduler, model experiment, performance result, or production-readiness claim exists yet.
+**Phase 1 — typed causal-information boundary.** The project now has strict runtime contracts
+for visible-prefix decisions and a deterministic gate that rejects retrospective contexts carrying
+future sampled-token or verification-outcome information. No scheduler, model experiment,
+performance result, or production-readiness claim exists yet.
 
 ## License
 
