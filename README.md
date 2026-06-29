@@ -33,6 +33,7 @@ It is inspired by scheduling and non-anticipation concerns in speculative-decodi
 - [Synthetic trace fixture contract](docs/architecture/synthetic-trace-fixture-contract.md)
 - [Synthetic policy baselines](docs/architecture/synthetic-policy-baselines.md)
 - [Deterministic synthetic policy replay](docs/architecture/deterministic-synthetic-policy-replay.md)
+- [Baseline replay evidence ledger](docs/architecture/baseline-replay-evidence-ledger.md)
 
 The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
 
@@ -46,14 +47,15 @@ The PRD is the governing product and experiment contract. When sources conflict,
 | Synthetic trace fixture foundation | Complete | Versioned runtime inputs, separate expected outcomes, manifests, and deterministic fixture validation are committed. |
 | Synthetic policy baselines | Complete | Fixed-length and static-threshold baselines plus an isolated unsafe retrospective control are committed. |
 | Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
-| Calibration and confidence fitness | Blocked | Requires completed Phase 2 evidence ledger and calibration split assets. |
+| Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
+| Calibration and confidence fitness | Blocked | Requires calibration split assets and a held-out fitness protocol. |
 | Causal load-aware scheduling | Blocked | Requires held-out calibration and fitness evidence. |
 | Replay evaluation and reports | Blocked | Requires the valid adaptive policy and declared scoring contract. |
 | Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
 
 ## Current maturity
 
-**Contracts enforced; deterministic synthetic replay implemented and tested.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, and an explicitly invalid retrospective control.
+**Contracts enforced; descriptive synthetic baseline ledger implemented and tested.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, and a machine-readable development/adversarial ledger that preserves no-winner posture.
 
 No calibrated policy, adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
 
