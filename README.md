@@ -1,8 +1,8 @@
 # SpecSafe
 
-**SpecSafe** is a research-grade lab for evaluating whether confidence-calibrated, load-aware LLM verification policies can reduce low-value verification work without violating explicit causal correctness constraints.
+**SpecSafe: Causal Confidence-Scheduled Verification Policy Lab** is a research-grade policy-evaluation lab for testing whether confidence-calibrated, load-aware LLM verification policies can reduce low-value verification work without violating explicit causal correctness constraints.
 
-It is inspired by the scheduling and non-anticipation concerns in speculative decoding research. It is **not** a reproduction of DSpark, a production LLM serving engine, or a claim of live-traffic throughput improvement.
+It is inspired by scheduling and non-anticipation concerns in speculative-decoding research. It is **not** a DSpark reproduction, a production LLM serving engine, or evidence of live-traffic throughput improvement.
 
 ## North star
 
@@ -25,18 +25,35 @@ It is inspired by the scheduling and non-anticipation concerns in speculative de
 - live-traffic or production-throughput claims;
 - private prompts, client data, secrets, or raw model payloads in public artifacts.
 
-## Project phases
+## Governing documents
 
-1. Repository and project constitution
-2. Contracts and causal boundary
-3. Synthetic traces and policy baselines
-4. Calibration and confidence fitness
-5. Causal load-aware scheduling
-6. Evaluation and negative controls
-7. Kaggle small-model evidence
-8. Public proof release and PRD reconciliation
+- [Product Requirements Document](docs/PRD.md)
+- [Project constitution](docs/PROJECT_CONSTITUTION.md)
+- [Architecture decisions](docs/adr/)
+- [Synthetic trace fixture contract](docs/architecture/synthetic-trace-fixture-contract.md)
+- [Synthetic policy baselines](docs/architecture/synthetic-policy-baselines.md)
 
-The core proof boundary is complete after the policy harness, calibration, causal-safety suite, and fixed trace-replay evaluation are complete. Kaggle and Hugging Face amplify evidence; they do not replace the core proof.
+The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
+
+## Delivery status
+
+| Milestone | Status | Evidence boundary |
+|---|---|---|
+| Repository and project constitution | Complete | Repository identity, package scaffold, and project scope exist. |
+| Causal-information boundary | Complete | Strict runtime contract and deterministic rejection of retrospective contexts. |
+| PRD adoption | Complete | Governing research and experiment contract is committed. |
+| Synthetic trace fixture foundation | Complete | Versioned runtime inputs, separate expected outcomes, manifests, and deterministic fixture validation are committed. |
+| Synthetic policy baselines | In progress | Fixed-length, static-threshold, and unsafe retrospective controls are being added behind the causal boundary. |
+| Calibration and confidence fitness | Blocked | Requires completed Phase 2 baseline evidence. |
+| Causal load-aware scheduling | Blocked | Requires held-out calibration and fitness evidence. |
+| Replay evaluation and reports | Blocked | Requires the valid adaptive policy and declared scoring contract. |
+| Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
+
+## Current maturity
+
+**Contracts enforced; Phase 2 synthetic evidence foundation in progress.** The repository contains strict runtime contracts, a deterministic causal-safety gate, versioned synthetic fixture assets, and their associated integrity checks. The branch currently under review adds the blunt policy controls needed for Phase 2.
+
+No calibrated policy, adaptive policy, policy-utility result, replay comparison, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
 
 ## Local development
 
@@ -48,15 +65,8 @@ python -m venv .venv
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 python -m pytest
-python -m ruff check .
+python -m ruff check src tests
 ```
-
-## Current maturity
-
-**Phase 1 — typed causal-information boundary.** The project now has strict runtime contracts
-for visible-prefix decisions and a deterministic gate that rejects retrospective contexts carrying
-future sampled-token or verification-outcome information. No scheduler, model experiment,
-performance result, or production-readiness claim exists yet.
 
 ## License
 
