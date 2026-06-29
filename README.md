@@ -36,6 +36,7 @@ It is inspired by scheduling and non-anticipation concerns in speculative-decodi
 - [Baseline replay evidence ledger](docs/architecture/baseline-replay-evidence-ledger.md)
 - [Calibration split and raw-confidence fitness](docs/architecture/calibration-split-and-confidence-fitness.md)
 - [Frozen calibrator contract](docs/architecture/frozen-calibrator-contract.md)
+- [Held-out calibration fitness and promotion gate](docs/architecture/heldout-calibration-fitness.md)
 
 The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
 
@@ -51,17 +52,17 @@ The PRD is the governing product and experiment contract. When sources conflict,
 | Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
 | Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
 | Calibration split and raw-confidence fitness | Complete | Two calibration-only fixtures and a predeclared diagnostic protocol are versioned and tested. |
-| Frozen calibrator contract | Complete | A deterministic histogram artifact is fitted from calibration fixtures only and remains blocked from runtime control. |
-| Held-out calibration fitness | Blocked | Requires a separate final-evaluation assessment boundary for the frozen artifact. |
-| Causal load-aware scheduling | Blocked | Requires held-out calibration and fitness evidence. |
-| Replay evaluation and reports | Blocked | Requires the valid adaptive policy and declared scoring contract. |
+| Frozen calibrator contract | Complete | A calibration-only histogram artifact is typed, deterministic, and blocked from runtime control pending held-out assessment. |
+| Held-out calibration fitness and promotion gate | Complete — negative result | Final evaluation retains raw-versus-calibrated metrics; the current frozen calibrator regresses and is not promoted. |
+| Causal load-aware scheduling | Blocked | Requires a new governed calibration approach that clears held-out fitness without final-evaluation tuning. |
+| Replay evaluation and reports | Blocked | Requires a valid adaptive policy and declared scoring contract. |
 | Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
 
 ## Current maturity
 
-**Contracts enforced; synthetic replay, descriptive baseline ledger, raw-confidence diagnostics, and a frozen calibration artifact implemented.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, a machine-readable development/adversarial ledger with no-winner posture, a calibration-only raw-confidence diagnostic, and a deterministic histogram calibrator fitted only from calibration fixtures.
+**Contracts enforced; calibration evidence closed on a reproducible negative result.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, a descriptive baseline ledger with no-winner posture, calibration-only diagnostics, a frozen histogram calibrator, and a final-evaluation report that blocks promotion after the current calibrator regresses on held-out fitness.
 
-No held-out calibration result, calibrated runtime policy, adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+No adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
 
 ## Local development
 
