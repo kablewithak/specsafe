@@ -1,0 +1,104 @@
+{
+  "schema_version": "synthetic-trace-manifest-v1",
+  "fixture_set_id": "synthetic-trace-baselines-v1",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "generation_note": "Self-authored token-ID-only fixtures for deterministic local replay boundary validation.",
+  "case_count": 4,
+  "split_counts": [
+    {
+      "split": "adversarial_regression",
+      "case_count": 1
+    },
+    {
+      "split": "development",
+      "case_count": 2
+    },
+    {
+      "split": "final_evaluation",
+      "case_count": 1
+    }
+  ],
+  "entries": [
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-001-high-confidence-light.json",
+      "case_id": "STF-001",
+      "split": "development",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "c1ffe914014871485b279b201f4aeb5cb42999a65a1304dc835b97288aa5ff3c",
+      "byte_count": 2406
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-001-high-confidence-light.json",
+      "case_id": "STF-001",
+      "split": "development",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "dbe3c96b930846fbb8e35601da07b77eb10d2bcf9d51b9d41b563333448c60e4",
+      "byte_count": 1133
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-002-low-confidence-saturated.json",
+      "case_id": "STF-002",
+      "split": "development",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "a199a8b9ea4504ab008de7be08dbd6682cc908e49a15737048f902efec929720",
+      "byte_count": 1879
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-002-low-confidence-saturated.json",
+      "case_id": "STF-002",
+      "split": "development",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "accda740328252344f7a1204d65fdceacb2d7ca73f08b9e8589bbe5e99088c62",
+      "byte_count": 922
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-003-lookahead-adversarial-control.json",
+      "case_id": "STF-003",
+      "split": "adversarial_regression",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "c352f70e29531f65d42f49b5192c7922160071043167ff39ad10ed76437612eb",
+      "byte_count": 2459
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-003-lookahead-adversarial-control.json",
+      "case_id": "STF-003",
+      "split": "adversarial_regression",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "5086218c458b849225c8d8284a98cfc55e9afa6ebd1266efaeb8d70dc1c6bc27",
+      "byte_count": 1156
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-004-heldout-fixed-long-competitive.json",
+      "case_id": "STF-004",
+      "split": "final_evaluation",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "cbd181855dd8186d66e3dfadd6119df26366a8a274f7379be88f36252cade7c6",
+      "byte_count": 2441
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-004-heldout-fixed-long-competitive.json",
+      "case_id": "STF-004",
+      "split": "final_evaluation",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "a8ec85e13836ead15b04e7436b278cddc68dab051033d0f03aa2a46af9b6f997",
+      "byte_count": 1145
+    }
+  ]
+}
