@@ -148,10 +148,11 @@ class CausalSchedulerContext(StrictContract):
 
 
 class VerificationDecision(StrictContract):
-    """Typed output contract for a future scheduling policy."""
+    """Typed output contract for one candidate-position scheduling decision."""
 
     policy_id: str = Field(min_length=1, max_length=128)
     trace_id: str = Field(min_length=1, max_length=128)
+    decode_round: int = Field(ge=0)
     block_position_index: int = Field(ge=1)
     action: VerificationAction
     reason_code: str = Field(min_length=1, max_length=128)
