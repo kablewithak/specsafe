@@ -22,9 +22,10 @@ def test_loader_returns_hash_verified_structurally_separated_fixture_set() -> No
     fixture_set = load_synthetic_trace_fixture_set(FIXTURE_ROOT)
 
     assert fixture_set.manifest.fixture_set_id == "synthetic-trace-baselines-v1"
-    assert fixture_set.manifest.case_count == 4
+    assert fixture_set.manifest.case_count == 6
     assert {case.runtime_input.split for case in fixture_set.cases} == {
         TraceSplit.DEVELOPMENT,
+        TraceSplit.CALIBRATION,
         TraceSplit.ADVERSARIAL_REGRESSION,
         TraceSplit.FINAL_EVALUATION,
     }
