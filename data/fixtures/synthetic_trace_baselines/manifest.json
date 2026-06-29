@@ -1,14 +1,18 @@
 {
   "schema_version": "synthetic-trace-manifest-v1",
   "fixture_set_id": "synthetic-trace-baselines-v1",
-  "fixture_set_version": "1.0.0",
+  "fixture_set_version": "1.1.0",
   "source_type": "synthetic",
-  "generation_note": "Self-authored token-ID-only fixtures for deterministic local replay boundary validation.",
-  "case_count": 4,
+  "generation_note": "Self-authored token-ID-only fixtures for deterministic local replay and raw-confidence diagnostic validation.",
+  "case_count": 6,
   "split_counts": [
     {
       "split": "adversarial_regression",
       "case_count": 1
+    },
+    {
+      "split": "calibration",
+      "case_count": 2
     },
     {
       "split": "development",
@@ -99,6 +103,46 @@
       "source_type": "synthetic",
       "sha256": "a8ec85e13836ead15b04e7436b278cddc68dab051033d0f03aa2a46af9b6f997",
       "byte_count": 1145
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-005-calibration-overconfident.json",
+      "case_id": "STF-005",
+      "split": "calibration",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "bed8a8ab86a01ce471c75b3820e44d73474736f7bd2f508249d58751d3912fd2",
+      "byte_count": 2500
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-005-calibration-overconfident.json",
+      "case_id": "STF-005",
+      "split": "calibration",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "06d7b0adb5249503f38deb77043419a1c9f26abb6cfef060e1dc34aecec55910",
+      "byte_count": 1140
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/STF-006-calibration-underconfident.json",
+      "case_id": "STF-006",
+      "split": "calibration",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "cfbe31b3b5b53163007e4d7b4147fc6c534c72a605f423040e42589e7569baf3",
+      "byte_count": 2470
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/STF-006-calibration-underconfident.json",
+      "case_id": "STF-006",
+      "split": "calibration",
+      "data_role": "synthetic_fixture",
+      "source_type": "synthetic",
+      "sha256": "4079fe068ad6c1f7cb5428b0369609634959938f6120d092d6fabde13f4db15d",
+      "byte_count": 1139
     }
   ]
 }
