@@ -32,6 +32,7 @@ It is inspired by scheduling and non-anticipation concerns in speculative-decodi
 - [Architecture decisions](docs/adr/)
 - [Synthetic trace fixture contract](docs/architecture/synthetic-trace-fixture-contract.md)
 - [Synthetic policy baselines](docs/architecture/synthetic-policy-baselines.md)
+- [Deterministic synthetic policy replay](docs/architecture/deterministic-synthetic-policy-replay.md)
 
 The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
 
@@ -43,17 +44,18 @@ The PRD is the governing product and experiment contract. When sources conflict,
 | Causal-information boundary | Complete | Strict runtime contract and deterministic rejection of retrospective contexts. |
 | PRD adoption | Complete | Governing research and experiment contract is committed. |
 | Synthetic trace fixture foundation | Complete | Versioned runtime inputs, separate expected outcomes, manifests, and deterministic fixture validation are committed. |
-| Synthetic policy baselines | In progress | Fixed-length, static-threshold, and unsafe retrospective controls are being added behind the causal boundary. |
-| Calibration and confidence fitness | Blocked | Requires completed Phase 2 baseline evidence. |
+| Synthetic policy baselines | Complete | Fixed-length and static-threshold baselines plus an isolated unsafe retrospective control are committed. |
+| Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
+| Calibration and confidence fitness | Blocked | Requires completed Phase 2 evidence ledger and calibration split assets. |
 | Causal load-aware scheduling | Blocked | Requires held-out calibration and fitness evidence. |
 | Replay evaluation and reports | Blocked | Requires the valid adaptive policy and declared scoring contract. |
 | Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
 
 ## Current maturity
 
-**Contracts enforced; Phase 2 synthetic evidence foundation in progress.** The repository contains strict runtime contracts, a deterministic causal-safety gate, versioned synthetic fixture assets, and their associated integrity checks. The branch currently under review adds the blunt policy controls needed for Phase 2.
+**Contracts enforced; deterministic synthetic replay implemented and tested.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, and an explicitly invalid retrospective control.
 
-No calibrated policy, adaptive policy, policy-utility result, replay comparison, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+No calibrated policy, adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
 
 ## Local development
 

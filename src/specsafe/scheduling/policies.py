@@ -177,6 +177,7 @@ def _valid_decision(
     return VerificationDecision(
         policy_id=policy_id,
         trace_id=context.trace_id,
+        decode_round=context.decode_round,
         block_position_index=context.block_position_index,
         action=action,
         reason_code=reason_code,
@@ -196,6 +197,7 @@ def _unsafe_decision(
     return VerificationDecision(
         policy_id=policy_id,
         trace_id=context.trace_id,
+        decode_round=context.decode_round,
         block_position_index=context.block_position_index,
         action=action,
         reason_code=reason_code,
