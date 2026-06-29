@@ -1,0 +1,43 @@
+{
+  "schema_version": "synthetic-trace-v1",
+  "fixture_id": "STF-004-heldout-fixed-long-competitive",
+  "case_id": "STF-004",
+  "trace_id": "synthetic-trace-004",
+  "split": "final_evaluation",
+  "data_role": "synthetic_fixture",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "synthetic-trace-004",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 401,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "synthetic-trace-004",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 402,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "synthetic-trace-004",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 403,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "synthetic-trace-004",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 404,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "synthetic-trace-v1",
+  "fixture_id": "STF-002-low-confidence-saturated",
+  "case_id": "STF-002",
+  "trace_id": "synthetic-trace-002",
+  "request_id": "synthetic-request-002",
+  "split": "development",
+  "data_role": "synthetic_fixture",
+  "source_type": "synthetic",
+  "generation_note": "Self-authored low-confidence synthetic fixture under saturated modeled capacity.",
+  "contexts": [
+    {
+      "trace_id": "synthetic-trace-002",
+      "request_id": "synthetic-request-002",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "visible_prefix_token_ids": [],
+      "conditional_survival_confidence": 0.48,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "active_request_count": 24,
+        "verification_batch_tokens": 128
+      }
+    },
+    {
+      "trace_id": "synthetic-trace-002",
+      "request_id": "synthetic-request-002",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "visible_prefix_token_ids": [
+        211
+      ],
+      "conditional_survival_confidence": 0.3,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "active_request_count": 24,
+        "verification_batch_tokens": 129
+      }
+    },
+    {
+      "trace_id": "synthetic-trace-002",
+      "request_id": "synthetic-request-002",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "visible_prefix_token_ids": [
+        211,
+        212
+      ],
+      "conditional_survival_confidence": 0.12,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "active_request_count": 24,
+        "verification_batch_tokens": 130
+      }
+    }
+  ]
+}
