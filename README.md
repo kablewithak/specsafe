@@ -35,6 +35,7 @@ It is inspired by scheduling and non-anticipation concerns in speculative-decodi
 - [Deterministic synthetic policy replay](docs/architecture/deterministic-synthetic-policy-replay.md)
 - [Baseline replay evidence ledger](docs/architecture/baseline-replay-evidence-ledger.md)
 - [Calibration split and raw-confidence fitness](docs/architecture/calibration-split-and-confidence-fitness.md)
+- [Frozen calibrator contract](docs/architecture/frozen-calibrator-contract.md)
 
 The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
 
@@ -50,16 +51,17 @@ The PRD is the governing product and experiment contract. When sources conflict,
 | Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
 | Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
 | Calibration split and raw-confidence fitness | Complete | Two calibration-only fixtures and a predeclared diagnostic protocol are versioned and tested. |
-| Post-hoc calibration and held-out fitness | Blocked | Requires a calibrator and a separately governed held-out assessment boundary. |
+| Frozen calibrator contract | Complete | A deterministic histogram artifact is fitted from calibration fixtures only and remains blocked from runtime control. |
+| Held-out calibration fitness | Blocked | Requires a separate final-evaluation assessment boundary for the frozen artifact. |
 | Causal load-aware scheduling | Blocked | Requires held-out calibration and fitness evidence. |
 | Replay evaluation and reports | Blocked | Requires the valid adaptive policy and declared scoring contract. |
 | Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
 
 ## Current maturity
 
-**Contracts enforced; synthetic replay, descriptive baseline ledger, and raw-confidence diagnostics implemented.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, a machine-readable development/adversarial ledger with no-winner posture, and a calibration-only raw-confidence diagnostic that cannot authorize runtime control.
+**Contracts enforced; synthetic replay, descriptive baseline ledger, raw-confidence diagnostics, and a frozen calibration artifact implemented.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, a machine-readable development/adversarial ledger with no-winner posture, a calibration-only raw-confidence diagnostic, and a deterministic histogram calibrator fitted only from calibration fixtures.
 
-No calibrated policy, held-out calibration result, adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+No held-out calibration result, calibrated runtime policy, adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
 
 ## Local development
 
