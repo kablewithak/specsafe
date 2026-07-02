@@ -1,4 +1,4 @@
-"""Regression tests for the V2 proposal-only registry and fixture-asset boundary."""
+"""Regression tests for finalized V2 registry provenance and no-fixture controls."""
 
 from __future__ import annotations
 
@@ -12,49 +12,57 @@ from specsafe.contracts.models import TraceDataRole, TraceSplit
 from specsafe.traces.calibration_redesign_v2 import (
     CalibrationRedesignV2ProposalLoadError,
     CalibrationRedesignV2ProposalViolationCode,
+    CalibrationRedesignV2RegistryLoadError,
+    CalibrationRedesignV2RegistryViolationCode,
     assert_calibration_redesign_v2_proposal_only_fixture_root,
-    load_calibration_redesign_v2_scenario_family_registry_proposal,
+    assert_calibration_redesign_v2_registry_finalization_fixture_root,
+    build_calibration_redesign_v2_scenario_family_registry,
+    load_calibration_redesign_v2_scenario_family_registry,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-V2_FIXTURE_ROOT = (
-    PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redesign_v2"
-)
-PROPOSAL_PATH = V2_FIXTURE_ROOT / "scenario_family_registry_proposal.json"
+V2_FIXTURE_ROOT = PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redesign_v2"
 
 
-def _proposal_payload() -> dict[str, object]:
-    return json.loads(PROPOSAL_PATH.read_text(encoding="utf-8"))
-
-
-def _write_proposal(root: Path, payload: dict[str, object]) -> Path:
-    root.mkdir(parents=True, exist_ok=True)
-    proposal_path = root / "scenario_family_registry_proposal.json"
-    proposal_path.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    return proposal_path
-
-
-def _proposal_root_copy(tmp_path: Path) -> Path:
+def _root_copy(tmp_path: Path) -> Path:
     root = tmp_path / "synthetic_calibration_redesign_v2"
     shutil.copytree(V2_FIXTURE_ROOT, root)
+    generated_registry = root / "scenario_family_registry.json"
+    generated_registry.unlink(missing_ok=True)
     return root
 
 
-def test_v2_registry_proposal_loads_with_declared_floors_and_quarantine() -> None:
-    proposal = load_calibration_redesign_v2_scenario_family_registry_proposal(
-        PROPOSAL_PATH
+def _finalized_root_copy(tmp_path: Path) -> Path:
+    root = _root_copy(tmp_path)
+    build_calibration_redesign_v2_scenario_family_registry(root)
+    return root
+
+
+def _registry_payload(root: Path) -> dict[str, object]:
+    return json.loads((root / "scenario_family_registry.json").read_text(encoding="utf-8"))
+
+
+def _write_registry(root: Path, payload: dict[str, object]) -> Path:
+    path = root / "scenario_family_registry.json"
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return path
+
+
+def test_finalized_registry_loads_with_reviewed_case_ranges_and_quarantine(
+    tmp_path: Path,
+) -> None:
+    root = _finalized_root_copy(tmp_path)
+    registry = load_calibration_redesign_v2_scenario_family_registry(
+        root / "scenario_family_registry.json"
     )
     families_by_split = {
-        split: tuple(family for family in proposal.families if family.split is split)
+        split: tuple(family for family in registry.families if family.split is split)
         for split in TraceSplit
     }
 
-    assert proposal.fixture_set_id == "synthetic-calibration-redesign-v2"
-    assert proposal.v1_data_bearing_evidence_used is False
-    assert proposal.v2_runtime_or_outcome_assets_authored is False
+    assert registry.registry_status == "finalized_for_case_contract_authoring"
+    assert registry.v2_runtime_or_outcome_assets_authored is False
+    assert registry.v2_manifests_authored is False
     assert len(families_by_split[TraceSplit.CALIBRATION]) == 3
     assert len(families_by_split[TraceSplit.FINAL_EVALUATION]) == 3
     assert all(
@@ -62,36 +70,23 @@ def test_v2_registry_proposal_loads_with_declared_floors_and_quarantine() -> Non
         for family in families_by_split[TraceSplit.CALIBRATION]
     )
     assert all(
-        family.is_final_evaluation_quarantined is True
+        family.is_final_evaluation_quarantined
         for family in families_by_split[TraceSplit.FINAL_EVALUATION]
     )
+    assert sum(len(family.case_ids) for family in families_by_split[TraceSplit.CALIBRATION]) == 12
     assert (
-        sum(
-            len(family.reserved_case_ids)
-            for family in families_by_split[TraceSplit.CALIBRATION]
-        )
-        == 12
-    )
-    assert (
-        sum(
-            len(family.reserved_case_ids)
-            for family in families_by_split[TraceSplit.FINAL_EVALUATION]
-        )
-        == 9
+        sum(len(family.case_ids) for family in families_by_split[TraceSplit.FINAL_EVALUATION]) == 9
     )
 
 
-def test_v2_proposal_root_allows_only_planning_assets() -> None:
-    assert_calibration_redesign_v2_proposal_only_fixture_root(V2_FIXTURE_ROOT)
+def test_finalization_root_permits_only_governance_json(tmp_path: Path) -> None:
+    root = _finalized_root_copy(tmp_path)
+
+    assert_calibration_redesign_v2_registry_finalization_fixture_root(root)
 
 
-def test_v2_proposal_root_rejects_runtime_or_outcome_asset_paths(
-    tmp_path: Path,
-) -> None:
-    root = _proposal_root_copy(tmp_path)
-    forbidden_runtime_asset = root / "inputs" / "cases" / "CRV2-101.json"
-    forbidden_runtime_asset.parent.mkdir(parents=True)
-    forbidden_runtime_asset.write_text("{}\n", encoding="utf-8")
+def test_proposal_only_guard_rejects_finalized_registry_root(tmp_path: Path) -> None:
+    root = _finalized_root_copy(tmp_path)
 
     with pytest.raises(CalibrationRedesignV2ProposalLoadError) as error_info:
         assert_calibration_redesign_v2_proposal_only_fixture_root(root)
@@ -102,81 +97,74 @@ def test_v2_proposal_root_rejects_runtime_or_outcome_asset_paths(
     )
 
 
-def test_v2_proposal_loader_rejects_v1_case_reference(tmp_path: Path) -> None:
-    payload = _proposal_payload()
+def test_finalization_root_rejects_runtime_asset_before_authoring_boundary(
+    tmp_path: Path,
+) -> None:
+    root = _finalized_root_copy(tmp_path)
+    runtime_path = root / "inputs" / "cases" / "CRV2-101.json"
+    runtime_path.parent.mkdir(parents=True)
+    runtime_path.write_text("{}\n", encoding="utf-8")
+
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        assert_calibration_redesign_v2_registry_finalization_fixture_root(root)
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV2RegistryViolationCode.FINALIZATION_BOUNDARY_VIOLATION
+    )
+
+
+def test_finalized_registry_rejects_changed_proposal_hash(tmp_path: Path) -> None:
+    root = _finalized_root_copy(tmp_path)
+    payload = _registry_payload(root)
+    payload["proposal_sha256"] = "0" * 64
+    registry_path = _write_registry(root, payload)
+
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        load_calibration_redesign_v2_scenario_family_registry(registry_path)
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH
+    )
+
+
+def test_finalized_registry_rejects_v1_case_reference(tmp_path: Path) -> None:
+    root = _finalized_root_copy(tmp_path)
+    payload = _registry_payload(root)
     families = payload["families"]
     assert isinstance(families, list)
     first_family = families[0]
     assert isinstance(first_family, dict)
-    reserved_case_ids = first_family["reserved_case_ids"]
-    assert isinstance(reserved_case_ids, list)
-    reserved_case_ids[0] = "CRV1-001"
-    proposal_path = _write_proposal(tmp_path, payload)
+    case_ids = first_family["case_ids"]
+    assert isinstance(case_ids, list)
+    case_ids[0] = "CRV1-001"
+    registry_path = _write_registry(root, payload)
 
-    with pytest.raises(CalibrationRedesignV2ProposalLoadError) as error_info:
-        load_calibration_redesign_v2_scenario_family_registry_proposal(proposal_path)
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        load_calibration_redesign_v2_scenario_family_registry(registry_path)
 
-    assert (
-        error_info.value.code
-        is CalibrationRedesignV2ProposalViolationCode.V1_EVIDENCE_REFERENCE
-    )
+    assert error_info.value.code is CalibrationRedesignV2RegistryViolationCode.V1_EVIDENCE_REFERENCE
 
 
-def test_v2_proposal_loader_rejects_reused_calibration_final_fingerprint(
+def test_finalized_registry_rejects_case_range_change_after_review(
     tmp_path: Path,
 ) -> None:
-    payload = _proposal_payload()
+    root = _finalized_root_copy(tmp_path)
+    payload = _registry_payload(root)
     families = payload["families"]
     assert isinstance(families, list)
-    calibration_family = families[1]
-    final_family = families[4]
-    assert isinstance(calibration_family, dict)
-    assert isinstance(final_family, dict)
-    final_family["source_template_fingerprint"] = calibration_family[
-        "source_template_fingerprint"
-    ]
-    proposal_path = _write_proposal(tmp_path, payload)
+    first_family = families[0]
+    assert isinstance(first_family, dict)
+    case_ids = first_family["case_ids"]
+    assert isinstance(case_ids, list)
+    case_ids[0] = "CRV2-999"
+    registry_path = _write_registry(root, payload)
 
-    with pytest.raises(CalibrationRedesignV2ProposalLoadError) as error_info:
-        load_calibration_redesign_v2_scenario_family_registry_proposal(proposal_path)
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        load_calibration_redesign_v2_scenario_family_registry(registry_path)
 
     assert (
         error_info.value.code
-        is CalibrationRedesignV2ProposalViolationCode.PROPOSAL_SCHEMA_ERROR
-    )
-
-
-def test_v2_proposal_loader_rejects_unquarantined_final_family(tmp_path: Path) -> None:
-    payload = _proposal_payload()
-    families = payload["families"]
-    assert isinstance(families, list)
-    final_family = families[4]
-    assert isinstance(final_family, dict)
-    final_family["is_final_evaluation_quarantined"] = False
-    proposal_path = _write_proposal(tmp_path, payload)
-
-    with pytest.raises(CalibrationRedesignV2ProposalLoadError) as error_info:
-        load_calibration_redesign_v2_scenario_family_registry_proposal(proposal_path)
-
-    assert (
-        error_info.value.code
-        is CalibrationRedesignV2ProposalViolationCode.PROPOSAL_SCHEMA_ERROR
-    )
-
-
-def test_v2_proposal_loader_rejects_insufficient_observation_budget(
-    tmp_path: Path,
-) -> None:
-    payload = _proposal_payload()
-    observation_budget = payload["observation_budget"]
-    assert isinstance(observation_budget, dict)
-    observation_budget["minimum_calibration_observation_count"] = 49
-    proposal_path = _write_proposal(tmp_path, payload)
-
-    with pytest.raises(CalibrationRedesignV2ProposalLoadError) as error_info:
-        load_calibration_redesign_v2_scenario_family_registry_proposal(proposal_path)
-
-    assert (
-        error_info.value.code
-        is CalibrationRedesignV2ProposalViolationCode.PROPOSAL_SCHEMA_ERROR
+        is CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH
     )

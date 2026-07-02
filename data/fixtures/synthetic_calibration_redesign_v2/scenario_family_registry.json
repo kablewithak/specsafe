@@ -1,0 +1,182 @@
+{
+  "schema_version": "calibration-redesign-v2-scenario-family-registry-v1",
+  "registry_status": "finalized_for_case_contract_authoring",
+  "fixture_set_id": "synthetic-calibration-redesign-v2",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-v2-entry-protocol-v1",
+  "candidate_artifact_id": "bounded-platt-scaling-v1",
+  "proposal_relative_path": "scenario_family_registry_proposal.json",
+  "proposal_sha256": "1d576c0e47810334e641c6d1cc0eee3b0c1a5a393658fbf2d58d3f0b9896505b",
+  "v1_data_bearing_evidence_used": false,
+  "v2_runtime_or_outcome_assets_authored": false,
+  "v2_manifests_authored": false,
+  "observation_budget": {
+    "minimum_observations_per_reserved_calibration_case": 4,
+    "minimum_observations_per_reserved_final_evaluation_case": 4,
+    "minimum_calibration_observation_count": 48,
+    "minimum_final_evaluation_observation_count": 36
+  },
+  "families": [
+    {
+      "scenario_family_id": "CRV2-DEV-CONTRACT-BOUNDARIES",
+      "split": "development",
+      "primary_data_role": "synthetic_fixture",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "c39705342161b603a2a490a3a0adba13e5b40bd47ab9ba870c8c3d434c26a800",
+      "case_ids": [
+        "CRV2-001",
+        "CRV2-002"
+      ],
+      "rationale": "Valid boundary-value and provenance-contract coverage for V2 loader plumbing only.",
+      "target_failure_modes": [
+        "schema_or_provenance_contract_drift",
+        "invalid_split_or_role_assignment"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "5e82e6eebd0e9306f9cdcb3586579b4a9b682252e9ab5290b8bbfc8d32903b43",
+      "case_ids": [
+        "CRV2-101",
+        "CRV2-102",
+        "CRV2-103",
+        "CRV2-104"
+      ],
+      "rationale": "Diagnoses globally shared ordinal confidence calibration without subgroup features.",
+      "target_failure_modes": [
+        "global_logit_slope_misfit",
+        "monotonic_transform_contract_failure"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "d52bd0571ffd0333cad4cd7bd578a65019eaba5c71e59cac756a4f965f926dbd",
+      "case_ids": [
+        "CRV2-105",
+        "CRV2-106",
+        "CRV2-107",
+        "CRV2-108"
+      ],
+      "rationale": "Tests whether one global calibration mapping remains coherent across permitted workload contexts without introducing context-specific parameters.",
+      "target_failure_modes": [
+        "global_intercept_misfit",
+        "implicit_context_specific_parameterization"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "7340a4336b1fbb96ff1d5d6956d2b511ee77afb9b023aa8bad3e76c91220c7b8",
+      "case_ids": [
+        "CRV2-109",
+        "CRV2-110",
+        "CRV2-111",
+        "CRV2-112"
+      ],
+      "rationale": "Exercises lawful open-interval confidence-domain handling and clipping provenance without prescribing any outcome values.",
+      "target_failure_modes": [
+        "confidence_domain_or_clipping_failure",
+        "non_finite_or_non_monotonic_transform_behavior"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "bf7681a6684180045f085d0588be6b57afb39a4bbf522f42eba99289f70f08d4",
+      "case_ids": [
+        "CRV2-201",
+        "CRV2-202",
+        "CRV2-203"
+      ],
+      "rationale": "Independent held-out assessment family for globally shifted reliability conditions.",
+      "target_failure_modes": [
+        "held_out_global_reliability_shift",
+        "calibrator_regression_on_unseen_family"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "71d7e4c58376cb022c4e8e3d0fe8637d400c70fd0daa7bc903060d8282f76f92",
+      "case_ids": [
+        "CRV2-204",
+        "CRV2-205",
+        "CRV2-206"
+      ],
+      "rationale": "Independent held-out assessment family for local reliability disagreement that cannot be configured from calibration labels.",
+      "target_failure_modes": [
+        "held_out_local_calibration_disagreement",
+        "overconfident_or_underconfident_generalization"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "4705acb692ebfe0666794d202e3f7b21102737ac247e19b656c53b2a57e63c54",
+      "case_ids": [
+        "CRV2-207",
+        "CRV2-208",
+        "CRV2-209"
+      ],
+      "rationale": "Independent held-out assessment family for order-sensitive reliability perturbations while preserving a global-only candidate method.",
+      "target_failure_modes": [
+        "held_out_order_sensitivity",
+        "global_transform_generalization_failure"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    },
+    {
+      "scenario_family_id": "CRV2-ADV-SPLIT-LINEAGE",
+      "split": "adversarial_regression",
+      "primary_data_role": "synthetic_fixture",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "e804f8b91bbc6205d29dc4382c7a53bb93a1d7c1cb1e0b784cd22b048fa7d95b",
+      "case_ids": [
+        "CRV2-301"
+      ],
+      "rationale": "Regression-only family for prohibited cross-split lineage, fingerprint reuse, and quarantine-bypass attempts.",
+      "target_failure_modes": [
+        "cross_split_template_reuse",
+        "final_evaluation_quarantine_bypass"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "authoring_status": "reserved_for_case_contract_authoring"
+    }
+  ],
+  "explicit_exclusions": [
+    "No runtime-input fixture bytes are present.",
+    "No expected-outcome assets or labels are present.",
+    "No confidence values, token IDs, prompt text, trace sequences, or outcome values are present.",
+    "No V1 data-bearing asset, numeric result, case, trace, token sequence, confidence value, label, fingerprint, or balancing rationale was used.",
+    "No calibration artifact, manifest, fitter, assessor, policy, capacity profile, utility scorer, or runtime-control behavior is created."
+  ],
+  "next_authorized_artifact": "v2-runtime-and-outcome-fixture-authoring"
+}
