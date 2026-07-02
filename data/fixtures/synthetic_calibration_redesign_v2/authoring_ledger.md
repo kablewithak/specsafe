@@ -6,7 +6,8 @@
 fixture_set_id=synthetic-calibration-redesign-v2
 fixture_set_version=1.0.0
 candidate_artifact=bounded-platt-scaling-v1
-registry_proposal_status=proposed_pending_review
+registry_proposal_status=accepted_for_contract_enforcement
+v2_contract_boundary_status=enforced
 v2_runtime_or_outcome_assets_authored=false
 v2_manifest_status=not_authorized
 v2_fitting_status=not_authorized
@@ -17,56 +18,45 @@ v2_runtime_control_status=not_eligible
 
 ## Scope boundary
 
-This ledger accompanies an identifier-and-lineage proposal only. It reserves V2 case identifiers,
-scenario-family identities, split assignments, and source-template fingerprints before any fixture
-byte is authored.
+This ledger now accompanies a strict proposal-only contract boundary. The V2 registry reserves
+identifiers, split assignments, lineage fingerprints, and observation floors. It still contains no
+runtime-input case, expected outcome, label, confidence value, token ID, prompt, or trace byte.
 
-The proposal is deliberately separate from V1. V1 is retained only as the categorical fact that it
-closed without promotion. No V1 data-bearing material was used as an authoring input.
-
-## Proposed family inventory
-
-| Family | Split | Reserved cases | Quarantined | Purpose |
-|---|---|---:|---:|---|
-| `CRV2-DEV-CONTRACT-BOUNDARIES` | development | 2 | No | Contract and provenance plumbing only. |
-| `CRV2-CAL-GLOBAL-ORDINAL` | calibration | 4 | No | Global monotonic calibration coverage. |
-| `CRV2-CAL-CROSS-CONTEXT` | calibration | 4 | No | Global calibration across permitted contexts without subgroup parameters. |
-| `CRV2-CAL-DOMAIN-BOUNDARIES` | calibration | 4 | No | Confidence-domain and clipping-provenance coverage. |
-| `CRV2-FINAL-DISTRIBUTION-SHIFT` | final evaluation | 3 | Yes | Independent held-out global-reliability assessment. |
-| `CRV2-FINAL-LOCAL-DISAGREEMENT` | final evaluation | 3 | Yes | Independent held-out local-reliability assessment. |
-| `CRV2-FINAL-ORDER-PERTURBATION` | final evaluation | 3 | Yes | Independent held-out order-perturbation assessment. |
-| `CRV2-ADV-SPLIT-LINEAGE` | adversarial regression | 1 | No | Cross-split and quarantine-bypass regression coverage. |
-
-## Evidence-floor accounting
-
-The proposal reserves 12 calibration cases and 9 final-evaluation cases. Future authored cases must
-supply at least four lawful observation contexts each. That minimum would satisfy the predeclared
-floors of at least 48 calibration observations and at least 36 final-evaluation observations.
-
-This is an observation budget, not authored trace content. It contains no confidence values,
-candidate IDs, labels, token sequences, prompts, or outcome patterns.
+The V2 loader reads only the V2 proposal JSON. It fails closed when it sees V1-style case references,
+V2 runtime or outcome assets, V2 manifests, duplicate reserved identifiers, reused fingerprints,
+invalid split/role assignment, missing final quarantine, or insufficient reserved observation budget.
 
 ## Accepted design decisions
 
 | Decision | Reason | Boundary preserved |
 |---|---|---|
-| Reserve all V2 family and case IDs before fixture authoring. | Prevents case selection after labels, fits, or assessments exist. | Authoring remains auditable. |
-| Use three calibration and three final-evaluation families. | Meets V2 floor with distinct diagnostic roles. | Final evidence stays independent of fitting. |
-| Quarantine every final-evaluation family immediately. | Final cases must be unavailable to fitting before any bytes exist. | Prevents evaluation-to-fit leakage. |
-| Keep the candidate global-only. | `bounded-platt-scaling-v1` has no family-specific parameters. | Prevents hidden subgroup calibration. |
-| Reserve an adversarial split-lineage family. | Split, fingerprint, and quarantine failures need dedicated regression coverage. | Makes leakage detection testable later. |
+| Freeze the proposal under a strict Pydantic contract before case authoring. | Reserved IDs and lineage become testable rather than narrative-only. | Fixture selection remains inspectable. |
+| Reject every non-proposal JSON asset inside the V2 fixture root. | A future runtime or outcome asset must enter through a later controlled boundary. | Prevents silent fixture leakage. |
+| Keep the V2 module isolated from V1 data-bearing paths. | V1 may be cited only categorically in governance documents. | Blocks V1 outcome-led redesign. |
+| Retain three calibration and three final families with their reserved case ranges. | The budget meets the predeclared V2 evidence floors before labels exist. | Prevents post-label family reshaping. |
+| Preserve the global-only bounded-Platt candidate. | Families diagnose evidence coverage, not subgroup parameters. | Prevents hidden workload or position calibration. |
+
+## Evidence-floor accounting
+
+The accepted proposal reserves 12 calibration cases and 9 final-evaluation cases. Each future
+calibration and final case must contain at least four lawful observation contexts. That retains the
+predeclared floors of at least 48 calibration observations and at least 36 final-evaluation
+observations.
+
+This accounting is not authored trace content and it is not an outcome target.
 
 ## Explicit exclusions
 
-- No runtime-input case file exists in this proposal.
-- No expected-outcome file or label exists in this proposal.
-- No confidence value, token ID, prompt text, trace sequence, or fixture byte exists in this proposal.
-- No manifest, fitting code, assessment code, policy code, capacity profile, utility scorer, or
-  runtime-control behavior is created.
-- No V1 data-bearing asset may be used to turn this proposal into a V2 fixture or test expectation.
+- No V2 runtime-input case file exists.
+- No V2 expected-outcome file or label exists.
+- No V2 confidence value, token ID, prompt text, trace sequence, or fixture byte exists.
+- No V2 manifest, fitter, assessment, policy, capacity profile, utility scorer, or runtime-control
+  behavior exists.
+- No V1 data-bearing asset may be read by V2 proposal loading, fixture authoring, fitting,
+  assessment, or test expectations.
 
 ## Next authoring gate
 
-The next permitted slice is a V2 typed registry and fixture-contract implementation boundary. It must
-make the proposal schema enforceable without authoring valid runtime or expected-outcome fixture
-assets. Only after that contract boundary is merged may separate V2 runtime/outcome authoring begin.
+The next permitted slice is controlled V2 registry finalization and case-contract implementation. It
+must define strict V2 runtime and expected-outcome models plus registry provenance checks before any
+committed V2 case file is accepted. It must not fit or assess `bounded-platt-scaling-v1`.

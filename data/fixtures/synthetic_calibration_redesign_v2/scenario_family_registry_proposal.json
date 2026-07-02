@@ -1,6 +1,6 @@
 {
   "schema_version": "v2-scenario-family-registry-proposal-v1",
-  "proposal_status": "proposed_pending_review",
+  "proposal_status": "accepted_for_contract_enforcement",
   "fixture_set_id": "synthetic-calibration-redesign-v2",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -175,5 +175,5 @@
     "No V1 data-bearing asset, numeric result, case, trace, token sequence, confidence value, label, fingerprint, or balancing rationale was used.",
     "No calibration artifact, manifest, fitter, assessor, policy, capacity profile, utility scorer, or runtime-control behavior is created."
   ],
-  "next_authorized_artifact": "V2 typed registry and fixture-contract implementation boundary"
+  "next_authorized_artifact": "v2-controlled-registry-finalization-and-case-contracts"
 }
