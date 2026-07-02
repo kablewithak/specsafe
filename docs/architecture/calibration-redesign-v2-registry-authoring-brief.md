@@ -2,11 +2,24 @@
 
 ## Purpose
 
-Define the only permitted next artifact after the V2 candidate-method selection gate:
-a reviewed scenario-family registry proposal for `synthetic-calibration-redesign-v2`.
+Define the only permitted registry-planning artifact after the V2 candidate-method selection gate:
+a reviewed scenario-family registry proposal for
+`synthetic-calibration-redesign-v2`.
 
 This brief authorizes identifier and lineage planning only. It does not authorize runtime inputs,
 expected outcomes, labels, manifests, source code, fitting, or held-out evaluation.
+
+## Current proposal state
+
+```text
+candidate_artifact=bounded-platt-scaling-v1
+registry_proposal_path=data/fixtures/synthetic_calibration_redesign_v2/scenario_family_registry_proposal.json
+registry_proposal_status=proposed_pending_review
+v2_runtime_or_outcome_assets_authored=false
+```
+
+The proposal reserves V2 scenario-family and case IDs before any fixture content exists. It remains
+a proposal until reviewed and merged.
 
 ## Required proposal inventory
 
@@ -27,8 +40,8 @@ final_evaluation_observations>=36
 adversarial_regression_families>=1
 ```
 
-The proposal must reserve sufficient cases to meet the observation floor without creating
-duplicate or non-diagnostic trace templates.
+The proposal must reserve sufficient cases to meet the observation floor without creating duplicate
+or non-diagnostic source templates.
 
 ## Required registry fields
 
@@ -70,23 +83,23 @@ adversarial_regression:
   final_quarantined=false
 ```
 
-Calibration and final-evaluation source-template fingerprints must be disjoint. No V1
-fingerprint, trace shape, token sequence, confidence band, label pattern, case identifier, or
-case-count balancing rationale may be reused.
+Calibration and final-evaluation source-template fingerprints must be disjoint. No V1 fingerprint,
+trace shape, token sequence, confidence band, label pattern, case identifier, or case-count
+balancing rationale may be reused.
 
 ## Candidate-method compatibility
 
-The proposal must identify how its calibration-family coverage can diagnose a global bounded
-Platt transform without adding candidate-method features. The registry must not create:
+The proposal must identify how its calibration-family coverage can diagnose a global bounded Platt
+transform without adding candidate-method features. The registry must not create:
 
 ```text
-workload-specific calibration parameter
-position-specific calibration parameter
-subgroup calibration parameter
-capacity-conditioned calibration parameter
-policy action
-threshold label
-utility label
+workload_specific_calibration_parameter
+position_specific_calibration_parameter
+subgroup_calibration_parameter
+capacity_conditioned_calibration_parameter
+policy_action
+threshold_label
+utility_label
 ```
 
 ## Rejected-case ledger
@@ -110,4 +123,10 @@ A registry proposal is acceptable only when:
 5. the proposal contains no fixture bytes or outcome labels;
 6. the proposal demonstrates coverage of the predeclared evidence floor;
 7. the proposal does not use V1 data-bearing evidence;
-8. the next step after acceptance is separate runtime/outcome authoring, not fitting.
+8. the next step after acceptance is a V2 typed registry and fixture-contract implementation
+   boundary, not valid V2 fixture authoring or fitting.
+
+## Non-claims
+
+This brief and its proposal do not claim that V2 fixtures exist, bounded Platt scaling will pass,
+or confidence is fit for automated scheduling.
