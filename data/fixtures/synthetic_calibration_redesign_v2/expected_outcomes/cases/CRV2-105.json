@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-redesign-v2-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v2",
+  "fixture_set_version": "1.0.0",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "fixture_id": "CRV2-105-cross-context-structured-v1",
+  "case_id": "CRV2-105",
+  "trace_id": "crv2-cal-cross-context-trace-105",
+  "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+  "outcomes": [
+    {
+      "trace_id": "crv2-cal-cross-context-trace-105",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 9101,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv2-cal-cross-context-trace-105",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 9102,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv2-cal-cross-context-trace-105",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 9103,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv2-cal-cross-context-trace-105",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 9104,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    }
+  ]
+}

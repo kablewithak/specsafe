@@ -11,10 +11,10 @@ registry_status=finalized_for_case_contract_authoring
 v2_case_contracts_status=implemented
 v2_case_asset_authoring_layout_status=implemented
 v2_runtime_or_outcome_assets_authored=true
-v2_authored_family_count=1_of_8
-v2_authored_calibration_family_count=1_of_3
-v2_authored_calibration_case_count=4_of_12
-v2_authored_calibration_observation_count=16_of_minimum_48
+v2_authored_family_count=2_of_8
+v2_authored_calibration_family_count=2_of_3
+v2_authored_calibration_case_count=8_of_12
+v2_authored_calibration_observation_count=32_of_minimum_48
 v2_manifest_status=not_authorized
 v2_fitting_status=not_authorized
 v2_final_evaluation_status=not_authorized
@@ -24,8 +24,8 @@ v2_runtime_control_status=not_eligible
 
 ## Authored family: `CRV2-CAL-GLOBAL-ORDINAL`
 
-This ledger records the first V2 fixture-authoring tranche. It adds the four calibration cases
-reserved by the finalized registry:
+The first V2 fixture-authoring tranche added the four calibration cases reserved by the finalized
+registry:
 
 ```text
 CRV2-101
@@ -45,6 +45,29 @@ profile so the evidence exercises a globally shared ordinal confidence relations
 subgroup feature or context-specific parameter. This is a fixture-design property, not an assertion
 that a future bounded-Platt artifact will pass calibration or promotion.
 
+## Authored family: `CRV2-CAL-CROSS-CONTEXT`
+
+The second V2 fixture-authoring tranche adds the four calibration cases reserved by the finalized
+registry:
+
+```text
+CRV2-105
+CRV2-106
+CRV2-107
+CRV2-108
+```
+
+The cases retain separate runtime and expected-outcome assets, exactly four aligned observations
+per case, and finalized-registry membership. They vary permitted workload and synthetic capacity
+contexts across structured text, code, and open-ended chat without adding a workload-specific,
+position-specific, subgroup, or capacity-conditioned calibration parameter. The selected candidate
+remains a single global bounded-Platt transform that may consume only aligned confidence and
+acceptance observations after a future calibration manifest is verified.
+
+This cross-context fixture design is diagnostic evidence, not an acceptance result. It does not
+claim that a global transform will fit the authored observations or pass later held-out evaluation.
+No V2 final-evaluation case is authored in this tranche.
+
 ## Registry provenance note
 
 `scenario_family_registry.json` remains an immutable record of the finalization boundary and retains
@@ -63,7 +86,7 @@ current inventory record for authored V2 assets.
 
 ## Next authoring gate
 
-The next permitted fixture slice is `CRV2-CAL-CROSS-CONTEXT`, cases `CRV2-105` through `CRV2-108`.
-It must preserve separate runtime/outcome assets, finalized-registry membership, the four-observation
-floor, and V2 final-evaluation quarantine. It must not create a manifest, fit, assess, tune, or
-promote bounded Platt scaling.
+The next permitted fixture slice is `CRV2-CAL-DOMAIN-BOUNDARIES`, cases `CRV2-109` through
+`CRV2-112`. It must preserve separate runtime/outcome assets, finalized-registry membership, the
+four-observation floor, and V2 final-evaluation quarantine. It must not create a manifest, fit,
+assess, tune, or promote bounded Platt scaling.
