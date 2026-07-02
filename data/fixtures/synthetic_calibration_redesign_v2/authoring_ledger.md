@@ -8,9 +8,13 @@ fixture_set_version=1.0.0
 candidate_artifact=bounded-platt-scaling-v1
 registry_proposal_status=retained_as_reviewed_provenance
 registry_status=finalized_for_case_contract_authoring
-v2_case_contracts_status=implemented_no_fixture_assets
-v2_case_asset_authoring_layout_status=implemented_no_fixture_assets
-v2_runtime_or_outcome_assets_authored=false
+v2_case_contracts_status=implemented
+v2_case_asset_authoring_layout_status=implemented
+v2_runtime_or_outcome_assets_authored=true
+v2_authored_family_count=1_of_8
+v2_authored_calibration_family_count=1_of_3
+v2_authored_calibration_case_count=4_of_12
+v2_authored_calibration_observation_count=16_of_minimum_48
 v2_manifest_status=not_authorized
 v2_fitting_status=not_authorized
 v2_final_evaluation_status=not_authorized
@@ -18,43 +22,48 @@ v2_adaptive_policy_status=blocked
 v2_runtime_control_status=not_eligible
 ```
 
-## Finalization decision
+## Authored family: `CRV2-CAL-GLOBAL-ORDINAL`
 
-The reviewed V2 proposal is now hash-linked to `scenario_family_registry.json`. Finalization preserves
-all reviewed family IDs, case ranges, split assignments, source-template fingerprints, quarantine flags,
-rationales, and target failure modes. It changes no case count, trace design, confidence value, token ID,
-or outcome label because none exists at this boundary.
-
-The finalized registry is authoritative for future V2 case membership. The retained proposal remains
-provenance evidence and cannot be silently rewritten without causing a proposal-hash mismatch.
-
-## Typed case-contract boundary
-
-The V2 codebase now contains strict runtime-input and expected-outcome contracts plus a narrow case-asset
-authoring layout. The only permitted future JSON paths are:
+This ledger records the first V2 fixture-authoring tranche. It adds the four calibration cases
+reserved by the finalized registry:
 
 ```text
-inputs/cases/CRV2-###.json
-expected_outcomes/cases/CRV2-###.json
+CRV2-101
+CRV2-102
+CRV2-103
+CRV2-104
 ```
 
-The loader reads one separate pair, validates the finalized registry provenance, validates each typed
-contract, proves replay alignment, and verifies membership against the exact finalized registry. The
-authoring layout still blocks manifests, fitting, assessment, policy, capacity, utility, and runtime
-control. Runtime contracts reject evaluation-only fields through schema strictness.
+Each case has exactly four separately stored runtime contexts and four expected outcomes. The
+runtime assets contain scheduler-visible, pre-sample confidence and capacity information only. The
+outcome assets contain candidate token IDs, observed acceptance, and cumulative prefix-survival
+labels only. The loader joins them only after independent validation and checks finalized-registry
+membership.
+
+The family is intentionally narrow: all cases use the same permitted workload context and capacity
+profile so the evidence exercises a globally shared ordinal confidence relationship without a
+subgroup feature or context-specific parameter. This is a fixture-design property, not an assertion
+that a future bounded-Platt artifact will pass calibration or promotion.
+
+## Registry provenance note
+
+`scenario_family_registry.json` remains an immutable record of the finalization boundary and retains
+`v2_runtime_or_outcome_assets_authored=false`. That field describes the state when the reviewed
+reservation registry was finalized; it is not rewritten after case authoring. This ledger is the
+current inventory record for authored V2 assets.
 
 ## Scope controls retained
 
-- No V2 runtime-input case file exists.
-- No V2 expected-outcome file or label exists.
-- No V2 calibration or final-evaluation manifest exists.
-- No V2 fitting, assessment, scheduler, capacity, utility, or runtime-control behavior exists.
-- No V1 data-bearing asset may be used to create a V2 fixture or test expectation.
-- V2 final-evaluation families remain quarantined before any V2 fitting path exists.
+- No V2 calibration manifest exists.
+- No V2 final-evaluation manifest or final-evaluation case asset exists.
+- No V2 fitting, artifact, assessment, scheduler, capacity utility, or runtime-control behavior exists.
+- No V1 data-bearing case, label, confidence, token sequence, metric, fingerprint, or result informed
+  these fixtures or their regression assertions.
+- The V2 final-evaluation families remain quarantined.
 
 ## Next authoring gate
 
-The next permitted engineering activity is a V2 runtime-and-outcome fixture-authoring slice. It must
-create separate assets under the governed paths, use only finalized V2 case IDs, preserve the four-context
-observation minimum, and prove loader/registry membership. It must not create a manifest, fit, assess,
-tune, or promote bounded Platt scaling.
+The next permitted fixture slice is `CRV2-CAL-CROSS-CONTEXT`, cases `CRV2-105` through `CRV2-108`.
+It must preserve separate runtime/outcome assets, finalized-registry membership, the four-observation
+floor, and V2 final-evaluation quarantine. It must not create a manifest, fit, assess, tune, or
+promote bounded Platt scaling.

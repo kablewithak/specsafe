@@ -84,7 +84,11 @@ def _outcomes() -> tuple[SyntheticTraceExpectedOutcome, ...]:
 
 def _finalized_registry(tmp_path: Path):
     root = tmp_path / "synthetic_calibration_redesign_v2"
-    shutil.copytree(V2_FIXTURE_ROOT, root)
+    shutil.copytree(
+        V2_FIXTURE_ROOT,
+        root,
+        ignore=shutil.ignore_patterns("inputs", "expected_outcomes"),
+    )
     generated_registry = root / "scenario_family_registry.json"
     generated_registry.unlink(missing_ok=True)
     registry_path = build_calibration_redesign_v2_scenario_family_registry(root)
@@ -132,14 +136,12 @@ def _replay_case() -> CalibrationRedesignV2ReplayCase:
     )
 
 
-
-
 def _write_case_assets(root: Path) -> None:
     replay_case = _replay_case()
     runtime_path = root / "inputs" / "cases" / "CRV2-101.json"
     outcomes_path = root / "expected_outcomes" / "cases" / "CRV2-101.json"
-    runtime_path.parent.mkdir(parents=True)
-    outcomes_path.parent.mkdir(parents=True)
+    runtime_path.parent.mkdir(parents=True, exist_ok=True)
+    outcomes_path.parent.mkdir(parents=True, exist_ok=True)
     runtime_path.write_text(
         json.dumps(replay_case.runtime_input.model_dump(mode="json"), indent=2) + "\n",
         encoding="utf-8",
@@ -149,6 +151,7 @@ def _write_case_assets(root: Path) -> None:
         encoding="utf-8",
     )
 
+
 def test_v2_case_contracts_join_only_after_runtime_and_outcome_alignment() -> None:
     replay_case = _replay_case()
 
@@ -157,18 +160,32 @@ def test_v2_case_contracts_join_only_after_runtime_and_outcome_alignment() -> No
     assert len(replay_case.expected_outcomes.outcomes) == 4
 
 
+def test_v2_case_loader_reads_authored_global_ordinal_assets() -> None:
+    case_ids = ("CRV2-101", "CRV2-102", "CRV2-103", "CRV2-104")
+    observations: list[tuple[float, bool]] = []
 
-def test_v2_case_loader_reads_separate_assets_and_validates_registry_membership(
-    tmp_path: Path,
-) -> None:
-    root = tmp_path / "synthetic_calibration_redesign_v2"
-    shutil.copytree(V2_FIXTURE_ROOT, root)
-    _write_case_assets(root)
+    for case_id in case_ids:
+        replay_case = load_calibration_redesign_v2_replay_case(V2_FIXTURE_ROOT, case_id)
+        runtime = replay_case.runtime_input
+        outcomes = replay_case.expected_outcomes
+        confidences = tuple(context.conditional_survival_confidence for context in runtime.contexts)
+        accepted = tuple(outcome.observed_acceptance for outcome in outcomes.outcomes)
 
-    replay_case = load_calibration_redesign_v2_replay_case(root, "CRV2-101")
+        assert runtime.scenario_family_id == "CRV2-CAL-GLOBAL-ORDINAL"
+        assert runtime.split is TraceSplit.CALIBRATION
+        assert runtime.data_role is TraceDataRole.CALIBRATION
+        assert len(runtime.contexts) == 4
+        assert len(outcomes.outcomes) == 4
+        assert confidences == tuple(sorted(confidences))
+        observations.extend(zip(confidences, accepted, strict=True))
 
-    assert replay_case.runtime_input.case_id == "CRV2-101"
-    assert replay_case.expected_outcomes.case_id == "CRV2-101"
+    low_band = [accepted for confidence, accepted in observations if confidence <= 0.25]
+    high_band = [accepted for confidence, accepted in observations if confidence >= 0.58]
+
+    assert all(not accepted for accepted in low_band)
+    assert all(high_band)
+    assert not (V2_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert not (V2_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
 
 
 def test_v2_case_loader_rejects_missing_expected_outcome_asset(tmp_path: Path) -> None:
