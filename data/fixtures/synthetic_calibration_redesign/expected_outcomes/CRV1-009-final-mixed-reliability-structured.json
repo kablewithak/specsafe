@@ -1,0 +1,47 @@
+{
+  "schema_version": "calibration-redesign-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV1-009-final-mixed-reliability-structured",
+  "case_id": "CRV1-009",
+  "trace_id": "crv1-final-trace-009",
+  "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+  "split": "final_evaluation",
+  "data_role": "held_out_evaluation",
+  "source_type": "synthetic",
+  "provenance_note": "Quarantined post-hoc outcomes for the independently templated final mixed-reliability structured-text case.",
+  "outcomes": [
+    {
+      "trace_id": "crv1-final-trace-009",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 1901,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv1-final-trace-009",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 1902,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv1-final-trace-009",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 1903,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv1-final-trace-009",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 1904,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    }
+  ]
+}
