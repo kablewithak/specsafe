@@ -1,0 +1,162 @@
+{
+  "schema_version": "calibration-redesign-manifest-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-protocol-v1",
+  "scenario_family_registry_path": "scenario_family_registry.json",
+  "scenario_family_registry_sha256": "53afc06ba52aeadb3d725017f04638b6bdf4cd72bfc4566789eec9ab20b694f5",
+  "scenario_family_registry_byte_count": 3420,
+  "case_count": 6,
+  "split_counts": [
+    {
+      "split": "calibration",
+      "case_count": 6
+    }
+  ],
+  "scenario_family_counts": [
+    {
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "case_count": 3
+    },
+    {
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "case_count": 3
+    }
+  ],
+  "entries": [
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-001-calibration-broad-range-low.json",
+      "case_id": "CRV1-001",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "10ff6d6347fb4567f4ebc43845d0bab9c137d22a425b8c3f13eb25d312d16673",
+      "byte_count": 1377
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-001-calibration-broad-range-low.json",
+      "case_id": "CRV1-001",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "f4d224dda30c4310cdc7fb67b85c0ed75449e9ed118fedc9df0a8ad15d1ef2d5",
+      "byte_count": 2463
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-002-calibration-broad-range-medium.json",
+      "case_id": "CRV1-002",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "98d527617bec44f9a7355556ff09adddbab8209c9811fd7e8672e59ca7841d80",
+      "byte_count": 1381
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-002-calibration-broad-range-medium.json",
+      "case_id": "CRV1-002",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "73e0f83ef9bfe3bece69411f44c05cfa472800707037d28061f142f22bf2f1f2",
+      "byte_count": 2425
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-003-calibration-broad-range-high.json",
+      "case_id": "CRV1-003",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "8f13b93750a4a86d1736e52663ddf2ed439a3b2985e41071ebb323f6d3d584bc",
+      "byte_count": 1372
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-003-calibration-broad-range-high.json",
+      "case_id": "CRV1-003",
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "a6ce40b3b4436e783380c1e5d77de00e3243a499f9066c4d246854dc1e5666c5",
+      "byte_count": 2465
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-004-calibration-positional-decay-structured.json",
+      "case_id": "CRV1-004",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "a59cba2bfd9a8783d88739aea75937f3e18a1923e319622dde59867f7fb98f8f",
+      "byte_count": 1392
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-004-calibration-positional-decay-structured.json",
+      "case_id": "CRV1-004",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "968c11e3c074019a5698de5c1fca7fc1e7c3d03a2fb64813a26ce202c2f0e30c",
+      "byte_count": 2578
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-005-calibration-positional-decay-code.json",
+      "case_id": "CRV1-005",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "97d64116f020c1e9452bad21db81a4467bc235b8fe59c8c4010e71df7840d897",
+      "byte_count": 1381
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-005-calibration-positional-decay-code.json",
+      "case_id": "CRV1-005",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "e1858c6ba2a5671ea61f69b1424dde47e2780e2f57a149e75b990c6e50fd548f",
+      "byte_count": 2518
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-006-calibration-positional-decay-open-ended-chat.json",
+      "case_id": "CRV1-006",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "bb67a68ce001062e82eace8cd32b78e72e6f36d39b6b44cc879ba02221d6f423",
+      "byte_count": 1405
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-006-calibration-positional-decay-open-ended-chat.json",
+      "case_id": "CRV1-006",
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "5c8d8d5f9dbf027674490e3f8273cd345469cfccca4e7ca045d1d39e28334b9c",
+      "byte_count": 2587
+    }
+  ],
+  "aggregate_sha256": "1de80a7e1556fff17e6032ab794177175ac250b2fa23598cdc8248f8aff00136"
+}
