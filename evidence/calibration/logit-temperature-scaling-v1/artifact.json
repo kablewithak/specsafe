@@ -1,0 +1,32 @@
+{
+  "artifact_id": "logit-temperature-scaling-v1",
+  "artifact_version": "1.0.0",
+  "calibrated_negative_log_likelihood": 0.5721015261275919,
+  "final_evaluation_accessed": false,
+  "fit_data_role": "calibration",
+  "fit_split": "calibration",
+  "fitted_case_ids": [
+    "CRV1-001",
+    "CRV1-002",
+    "CRV1-003",
+    "CRV1-004",
+    "CRV1-005",
+    "CRV1-006"
+  ],
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "log_temperature": 0.06604876875027335,
+  "manifest_aggregate_sha256": "1de80a7e1556fff17e6032ab794177175ac250b2fa23598cdc8248f8aff00136",
+  "negative_label_count": 12,
+  "positive_label_count": 12,
+  "raw_negative_log_likelihood": 0.5725102964961502,
+  "runtime_control_eligible": false,
+  "sample_count": 24,
+  "scenario_family_ids": [
+    "CRV1-CAL-BROAD-RANGE",
+    "CRV1-CAL-POSITIONAL-DECAY"
+  ],
+  "schema_version": "logit-temperature-scaling-artifact-v1",
+  "source_type": "synthetic",
+  "temperature": 1.0682788145183493
+}

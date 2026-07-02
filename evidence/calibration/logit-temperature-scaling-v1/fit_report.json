@@ -1,0 +1,21 @@
+{
+  "artifact_id": "logit-temperature-scaling-v1",
+  "artifact_version": "1.0.0",
+  "calibrated_negative_log_likelihood": 0.5721015261275919,
+  "final_evaluation_accessed": false,
+  "fit_scope": "calibration_split_only",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "manifest_aggregate_sha256": "1de80a7e1556fff17e6032ab794177175ac250b2fa23598cdc8248f8aff00136",
+  "negative_label_count": 12,
+  "objective": "mean_negative_log_likelihood",
+  "positive_label_count": 12,
+  "promotion_status": "not_assessed",
+  "raw_negative_log_likelihood": 0.5725102964961502,
+  "runtime_control_eligible": false,
+  "sample_count": 24,
+  "schema_version": "logit-temperature-scaling-fit-report-v1",
+  "search_iterations": 96,
+  "search_log_temperature_lower": -3.0,
+  "search_log_temperature_upper": 3.0
+}
