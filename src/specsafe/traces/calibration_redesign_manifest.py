@@ -179,8 +179,8 @@ def build_calibration_redesign_manifest(fixture_root: Path) -> Path:
     root = fixture_root.resolve()
     registry_path = root / "scenario_family_registry.json"
     registry = load_calibration_redesign_scenario_family_registry(registry_path)
-    runtime_paths = _discover_case_assets(root / "inputs" / "cases")
-    outcome_paths = _discover_case_assets(root / "expected_outcomes")
+    runtime_paths = _discover_calibration_case_assets(root / "inputs" / "cases")
+    outcome_paths = _discover_calibration_case_assets(root / "expected_outcomes")
     if set(runtime_paths) != set(outcome_paths):
         raise CalibrationRedesignManifestLoadError(
             CalibrationRedesignManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH,
@@ -333,33 +333,47 @@ def load_calibration_redesign_manifested_fixture_set(
         ) from error
 
 
-def _discover_case_assets(directory: Path) -> dict[str, Path]:
-    """Discover one JSON asset per case ID without accepting duplicate case files."""
+def _discover_calibration_case_assets(directory: Path) -> dict[str, Path]:
+    """Discover calibration-only assets without reading quarantined final-evaluation cases."""
 
     if not directory.is_dir():
         raise CalibrationRedesignManifestLoadError(
             CalibrationRedesignManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH,
             f"fixture asset directory is missing: {directory}",
         )
+
     assets: dict[str, Path] = {}
     for path in sorted(directory.glob("*.json")):
         payload = _read_json(path)
-        case_id = payload.get("case_id") if isinstance(payload, dict) else None
+        if not isinstance(payload, dict):
+            raise CalibrationRedesignManifestLoadError(
+                CalibrationRedesignManifestViolationCode.MANIFEST_SCHEMA_ERROR,
+                f"fixture asset must contain a JSON object: {path.name}",
+            )
+
+        if (
+            payload.get("split") != TraceSplit.CALIBRATION.value
+            or payload.get("data_role") != TraceDataRole.CALIBRATION.value
+        ):
+            continue
+
+        case_id = payload.get("case_id")
         if not isinstance(case_id, str) or not case_id:
             raise CalibrationRedesignManifestLoadError(
                 CalibrationRedesignManifestViolationCode.MANIFEST_SCHEMA_ERROR,
-                f"fixture asset lacks a valid case_id: {path.name}",
+                f"fixture asset lacks a valid calibration case_id: {path.name}",
             )
         if case_id in assets:
             raise CalibrationRedesignManifestLoadError(
                 CalibrationRedesignManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH,
-                f"duplicate fixture asset case ID in one directory: {case_id}",
+                f"duplicate calibration fixture asset case ID in one directory: {case_id}",
             )
         assets[case_id] = path
+
     if not assets:
         raise CalibrationRedesignManifestLoadError(
             CalibrationRedesignManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH,
-            f"fixture asset directory contains no JSON assets: {directory}",
+            f"fixture asset directory contains no calibration JSON assets: {directory}",
         )
     return assets
 

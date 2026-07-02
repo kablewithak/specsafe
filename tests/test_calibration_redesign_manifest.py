@@ -88,3 +88,25 @@ def test_manifest_builder_rejects_missing_runtime_outcome_pair(tmp_path: Path) -
         build_calibration_redesign_manifest(fixture_root)
 
     assert error.value.code is CalibrationRedesignManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH
+
+
+def test_manifest_builder_excludes_quarantined_final_evaluation_cases(tmp_path: Path) -> None:
+    fixture_root = _copied_fixture_root(tmp_path)
+
+    manifest_path = build_calibration_redesign_manifest(fixture_root)
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    assert payload["case_count"] == 6
+    assert {entry["case_id"] for entry in payload["entries"]} == {
+        "CRV1-001",
+        "CRV1-002",
+        "CRV1-003",
+        "CRV1-004",
+        "CRV1-005",
+        "CRV1-006",
+    }
+    assert {entry["split"] for entry in payload["entries"]} == {"calibration"}
+    assert {entry["data_role"] for entry in payload["entries"]} == {"calibration"}
+    assert {"CRV1-009", "CRV1-010"}.isdisjoint(
+        {entry["case_id"] for entry in payload["entries"]}
+    )
