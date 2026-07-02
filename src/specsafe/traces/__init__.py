@@ -15,6 +15,18 @@ from specsafe.traces.calibration_redesign_cases import (
     CalibrationRedesignRuntimeInput,
     load_calibration_redesign_replay_case,
 )
+from specsafe.traces.calibration_redesign_final_manifest import (
+    CalibrationRedesignFinalEvaluationFixtureManifest,
+    CalibrationRedesignFinalEvaluationSplitCount,
+    CalibrationRedesignFinalManifestArtifactKind,
+    CalibrationRedesignFinalManifestedFixtureSet,
+    CalibrationRedesignFinalManifestEntry,
+    CalibrationRedesignFinalManifestLoadError,
+    CalibrationRedesignFinalManifestViolationCode,
+    CalibrationRedesignFinalScenarioFamilyCount,
+    build_calibration_redesign_final_evaluation_manifest,
+    load_calibration_redesign_final_evaluation_manifested_fixture_set,
+)
 from specsafe.traces.calibration_redesign_manifest import (
     CalibrationRedesignFixtureManifest,
     CalibrationRedesignManifestArtifactKind,
@@ -25,7 +37,10 @@ from specsafe.traces.calibration_redesign_manifest import (
     build_calibration_redesign_manifest,
     load_calibration_redesign_manifested_fixture_set,
 )
-from specsafe.traces.loader import SyntheticTraceFixtureLoadError, load_synthetic_trace_fixture_set
+from specsafe.traces.loader import (
+    SyntheticTraceFixtureLoadError,
+    load_synthetic_trace_fixture_set,
+)
 from specsafe.traces.logit_temperature_scaling import (
     LogitTemperatureScalingArtifact,
     LogitTemperatureScalingFitError,
@@ -40,6 +55,14 @@ __all__ = [
     "CalibrationRedesignCaseLoadError",
     "CalibrationRedesignCaseViolationCode",
     "CalibrationRedesignExpectedOutcomes",
+    "CalibrationRedesignFinalEvaluationFixtureManifest",
+    "CalibrationRedesignFinalEvaluationSplitCount",
+    "CalibrationRedesignFinalManifestArtifactKind",
+    "CalibrationRedesignFinalManifestEntry",
+    "CalibrationRedesignFinalManifestLoadError",
+    "CalibrationRedesignFinalManifestViolationCode",
+    "CalibrationRedesignFinalManifestedFixtureSet",
+    "CalibrationRedesignFinalScenarioFamilyCount",
     "CalibrationRedesignFixtureLoadError",
     "CalibrationRedesignFixtureManifest",
     "CalibrationRedesignFixtureViolationCode",
@@ -58,8 +81,10 @@ __all__ = [
     "ScenarioFamilyRecord",
     "ScenarioFamilyRegistry",
     "SyntheticTraceFixtureLoadError",
+    "build_calibration_redesign_final_evaluation_manifest",
     "build_calibration_redesign_manifest",
     "fit_logit_temperature_scaling",
+    "load_calibration_redesign_final_evaluation_manifested_fixture_set",
     "load_calibration_redesign_manifested_fixture_set",
     "load_calibration_redesign_replay_case",
     "load_calibration_redesign_scenario_family_registry",

@@ -1,0 +1,126 @@
+{
+  "schema_version": "calibration-redesign-final-evaluation-manifest-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-protocol-v1",
+  "scenario_family_registry_path": "scenario_family_registry.json",
+  "scenario_family_registry_sha256": "53afc06ba52aeadb3d725017f04638b6bdf4cd72bfc4566789eec9ab20b694f5",
+  "scenario_family_registry_byte_count": 3420,
+  "case_count": 4,
+  "split_counts": [
+    {
+      "split": "final_evaluation",
+      "case_count": 4
+    }
+  ],
+  "scenario_family_counts": [
+    {
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "case_count": 2
+    },
+    {
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "case_count": 2
+    }
+  ],
+  "entries": [
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-009-final-mixed-reliability-structured.json",
+      "case_id": "CRV1-009",
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "562e1ce7466dca5086f067092d0547d06e0113be5134e4a8d41bb9ab74e072f2",
+      "byte_count": 1456
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-009-final-mixed-reliability-structured.json",
+      "case_id": "CRV1-009",
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "c48dd27bb21ca526f3b9963b1f93ffc4bbdec6bd5b9ff8569b330e7601764f55",
+      "byte_count": 2686
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-010-final-mixed-reliability-open-ended-chat.json",
+      "case_id": "CRV1-010",
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "775214cf93f690bcdebacc12a0f7469f4bd4d7016f31536c9a2bac97c2d1df39",
+      "byte_count": 1459
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-010-final-mixed-reliability-open-ended-chat.json",
+      "case_id": "CRV1-010",
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "b02ad753072ed8ca151e4496577ffdc08ad0e2a1342a5e617b5d5090c3123fb3",
+      "byte_count": 2690
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-011-final-abrupt-suffix-code.json",
+      "case_id": "CRV1-011",
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "fcdef49ea678c41d8850a54c63871747236327a3be580369fad1b0d12076632d",
+      "byte_count": 1644
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-011-final-abrupt-suffix-code.json",
+      "case_id": "CRV1-011",
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "771578a121cb26eaeea3ce25924ae9c861f2f282be66d5e6a9f621be031d3666",
+      "byte_count": 3169
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/CRV1-012-final-abrupt-suffix-open-ended-chat.json",
+      "case_id": "CRV1-012",
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "dcc9bf3e6c680e55491a51a47d0b0c91bacfac3da60a4d9452fc3063c769ca0f",
+      "byte_count": 1667
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV1-012-final-abrupt-suffix-open-ended-chat.json",
+      "case_id": "CRV1-012",
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "47e1a29138b671983d68072c45bdf3ac598ce74612d32260ae56cd34bad924b4",
+      "byte_count": 3246
+    }
+  ],
+  "aggregate_sha256": "be496cf719780e39b248b51d7d994ab8bafc3780d9abf5b094c86ba6d684831c"
+}
