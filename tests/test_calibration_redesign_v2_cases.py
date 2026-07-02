@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
@@ -27,6 +28,7 @@ from specsafe.traces.calibration_redesign_v2_cases import (
     CalibrationRedesignV2ExpectedOutcomes,
     CalibrationRedesignV2ReplayCase,
     CalibrationRedesignV2RuntimeInput,
+    load_calibration_redesign_v2_replay_case,
     validate_calibration_redesign_v2_replay_case_membership,
 )
 
@@ -130,12 +132,58 @@ def _replay_case() -> CalibrationRedesignV2ReplayCase:
     )
 
 
+
+
+def _write_case_assets(root: Path) -> None:
+    replay_case = _replay_case()
+    runtime_path = root / "inputs" / "cases" / "CRV2-101.json"
+    outcomes_path = root / "expected_outcomes" / "cases" / "CRV2-101.json"
+    runtime_path.parent.mkdir(parents=True)
+    outcomes_path.parent.mkdir(parents=True)
+    runtime_path.write_text(
+        json.dumps(replay_case.runtime_input.model_dump(mode="json"), indent=2) + "\n",
+        encoding="utf-8",
+    )
+    outcomes_path.write_text(
+        json.dumps(replay_case.expected_outcomes.model_dump(mode="json"), indent=2) + "\n",
+        encoding="utf-8",
+    )
+
 def test_v2_case_contracts_join_only_after_runtime_and_outcome_alignment() -> None:
     replay_case = _replay_case()
 
     assert replay_case.runtime_input.case_id == "CRV2-101"
     assert len(replay_case.runtime_input.contexts) == 4
     assert len(replay_case.expected_outcomes.outcomes) == 4
+
+
+
+def test_v2_case_loader_reads_separate_assets_and_validates_registry_membership(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "synthetic_calibration_redesign_v2"
+    shutil.copytree(V2_FIXTURE_ROOT, root)
+    _write_case_assets(root)
+
+    replay_case = load_calibration_redesign_v2_replay_case(root, "CRV2-101")
+
+    assert replay_case.runtime_input.case_id == "CRV2-101"
+    assert replay_case.expected_outcomes.case_id == "CRV2-101"
+
+
+def test_v2_case_loader_rejects_missing_expected_outcome_asset(tmp_path: Path) -> None:
+    root = tmp_path / "synthetic_calibration_redesign_v2"
+    shutil.copytree(V2_FIXTURE_ROOT, root)
+    _write_case_assets(root)
+    (root / "expected_outcomes" / "cases" / "CRV2-101.json").unlink()
+
+    with pytest.raises(CalibrationRedesignV2CaseContractError) as error_info:
+        load_calibration_redesign_v2_replay_case(root, "CRV2-101")
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV2CaseViolationCode.CASE_ASSET_PROVENANCE_MISMATCH
+    )
 
 
 def test_v2_runtime_contract_rejects_evaluation_only_label() -> None:

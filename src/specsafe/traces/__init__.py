@@ -47,6 +47,7 @@ from specsafe.traces.calibration_redesign_v2 import (
     CalibrationRedesignV2ScenarioFamilyRecord,
     CalibrationRedesignV2ScenarioFamilyRegistry,
     CalibrationRedesignV2ScenarioFamilyRegistryProposal,
+    assert_calibration_redesign_v2_case_authoring_fixture_root,
     assert_calibration_redesign_v2_proposal_only_fixture_root,
     assert_calibration_redesign_v2_registry_finalization_fixture_root,
     build_calibration_redesign_v2_scenario_family_registry,
@@ -59,6 +60,7 @@ from specsafe.traces.calibration_redesign_v2_cases import (
     CalibrationRedesignV2ExpectedOutcomes,
     CalibrationRedesignV2ReplayCase,
     CalibrationRedesignV2RuntimeInput,
+    load_calibration_redesign_v2_replay_case,
     validate_calibration_redesign_v2_replay_case_membership,
 )
 from specsafe.traces.heldout_temperature_scaling_assessment import (
@@ -144,6 +146,7 @@ __all__ = [
     "ScenarioFamilyRecord",
     "ScenarioFamilyRegistry",
     "SyntheticTraceFixtureLoadError",
+    "assert_calibration_redesign_v2_case_authoring_fixture_root",
     "assert_calibration_redesign_v2_proposal_only_fixture_root",
     "assert_calibration_redesign_v2_registry_finalization_fixture_root",
     "assess_logit_temperature_scaling_heldout",
@@ -155,6 +158,7 @@ __all__ = [
     "load_calibration_redesign_manifested_fixture_set",
     "load_calibration_redesign_replay_case",
     "load_calibration_redesign_scenario_family_registry",
+    "load_calibration_redesign_v2_replay_case",
     "load_calibration_redesign_v2_scenario_family_registry",
     "load_calibration_redesign_v2_scenario_family_registry_proposal",
     "load_logit_temperature_scaling_artifact",

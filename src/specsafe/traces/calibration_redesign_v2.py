@@ -1,9 +1,9 @@
 """V2 registry finalization controls for bounded-Platt calibration research.
 
-The module preserves the reviewed proposal as provenance, finalizes its reserved V2
-scenario-family inventory, and keeps the fixture root fail-closed until a later authoring
-slice writes typed runtime and expected-outcome assets. It never imports V1 data-bearing
-assets.
+The module preserves the reviewed proposal as provenance and finalizes its reserved V2
+scenario-family inventory. The fixture root stays fail-closed until an explicit
+case-asset authoring boundary permits typed runtime and expected-outcome assets.
+It never imports V1 data-bearing assets.
 """
 
 from __future__ import annotations
@@ -63,6 +63,9 @@ class CalibrationRedesignV2RegistryViolationCode(StrEnum):
     V1_EVIDENCE_REFERENCE = "calibration_redesign_v2_registry_v1_evidence_reference"
     FINALIZATION_BOUNDARY_VIOLATION = (
         "calibration_redesign_v2_registry_finalization_boundary_violation"
+    )
+    CASE_AUTHORING_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v2_case_authoring_boundary_violation"
     )
 
 
@@ -332,11 +335,16 @@ def build_calibration_redesign_v2_scenario_family_registry(root: Path) -> Path:
 
 def load_calibration_redesign_v2_scenario_family_registry(
     path: Path,
+    *,
+    allow_case_assets: bool = False,
 ) -> CalibrationRedesignV2ScenarioFamilyRegistry:
-    """Load finalized V2 registry after provenance and no-fixture finalization checks."""
+    """Load a finalized V2 registry under a finalization or case-authoring root boundary."""
 
     root = path.parent
-    assert_calibration_redesign_v2_registry_finalization_fixture_root(root)
+    if allow_case_assets:
+        assert_calibration_redesign_v2_case_authoring_fixture_root(root)
+    else:
+        assert_calibration_redesign_v2_registry_finalization_fixture_root(root)
     payload = _read_json(
         path,
         error_type=CalibrationRedesignV2RegistryLoadError,
@@ -434,6 +442,40 @@ def assert_calibration_redesign_v2_registry_finalization_fixture_root(
         code=(CalibrationRedesignV2RegistryViolationCode.FINALIZATION_BOUNDARY_VIOLATION),
         message="only V2 proposal and finalized registry JSON are allowed at finalization",
     )
+
+
+
+def assert_calibration_redesign_v2_case_authoring_fixture_root(root: Path) -> None:
+    """Permit only governed V2 case paths while keeping manifests and extra JSON blocked.
+
+    The finalized registry remains immutable provenance for the reviewed reservation state. This
+    authoring boundary permits separate runtime and expected-outcome JSON assets only at their
+    exact future locations; it does not authorize manifest construction, fitting, or assessment.
+    """
+
+    resolved_root = root.resolve()
+    _require_directory(resolved_root, CalibrationRedesignV2RegistryLoadError)
+    proposal_path = resolved_root / _V2_PROPOSAL_FILENAME
+    registry_path = resolved_root / _V2_REGISTRY_FILENAME
+    _require_file(
+        proposal_path,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+        asset_label="V2 registry proposal",
+    )
+    _require_file(
+        registry_path,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+        asset_label="V2 finalized registry",
+    )
+    _reject_v2_manifest_paths(
+        resolved_root,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=CalibrationRedesignV2RegistryViolationCode.CASE_AUTHORING_BOUNDARY_VIOLATION,
+        message="V2 manifests are prohibited during case-asset authoring",
+    )
+    _assert_only_allowed_v2_case_authoring_json_paths(resolved_root)
 
 
 def _validate_v2_case_ids(case_ids: tuple[str, ...]) -> None:
@@ -607,7 +649,8 @@ def _validate_registry_matches_proposal(
             )
 
 
-def _reject_v2_fixture_asset_paths(
+
+def _reject_v2_manifest_paths(
     root: Path,
     *,
     error_type: type[CalibrationRedesignV2ProposalLoadError]
@@ -621,6 +664,50 @@ def _reject_v2_fixture_asset_paths(
     )
     if any(path.exists() for path in prohibited_paths):
         raise error_type(code, message)
+
+
+def _assert_only_allowed_v2_case_authoring_json_paths(root: Path) -> None:
+    allowed_governance_paths = {
+        (root / _V2_PROPOSAL_FILENAME).resolve(),
+        (root / _V2_REGISTRY_FILENAME).resolve(),
+    }
+    runtime_directory = root / "inputs" / "cases"
+    outcomes_directory = root / "expected_outcomes" / "cases"
+    for path in root.rglob("*.json"):
+        resolved_path = path.resolve()
+        if resolved_path in allowed_governance_paths:
+            continue
+        if path.parent in {runtime_directory, outcomes_directory} and _is_v2_case_asset_name(path):
+            continue
+        raise CalibrationRedesignV2RegistryLoadError(
+            CalibrationRedesignV2RegistryViolationCode.CASE_AUTHORING_BOUNDARY_VIOLATION,
+            "V2 case authoring permits JSON only in governed runtime and outcome case directories",
+        )
+
+
+def _is_v2_case_asset_name(path: Path) -> bool:
+    case_id = path.stem
+    return (
+        case_id.startswith("CRV2-")
+        and len(case_id) == 8
+        and case_id.removeprefix("CRV2-").isdigit()
+    )
+
+
+def _reject_v2_fixture_asset_paths(
+    root: Path,
+    *,
+    error_type: type[CalibrationRedesignV2ProposalLoadError]
+    | type[CalibrationRedesignV2RegistryLoadError],
+    code: CalibrationRedesignV2ProposalViolationCode | CalibrationRedesignV2RegistryViolationCode,
+    message: str,
+) -> None:
+    _reject_v2_manifest_paths(
+        root,
+        error_type=error_type,
+        code=code,
+        message=message,
+    )
     for directory in (root / "inputs", root / "expected_outcomes"):
         if directory.is_dir() and any(path.is_file() for path in directory.rglob("*")):
             raise error_type(code, message)

@@ -1,16 +1,20 @@
-"""Typed V2 case contracts without a V2 disk-loader or authored fixture assets.
+"""Typed V2 case contracts and governed local case-pair loading.
 
-These contracts establish the only shape that a later V2 runtime-input and expected-outcome
-asset may take. They do not read files, create fixtures, build manifests, fit calibration, or
-assess held-out evidence.
+The loader may read only separately stored runtime and expected-outcome assets from the V2
+case-authoring layout. It validates the finalized registry, typed assets, causal replay
+alignment, and registry membership without building manifests, fitting calibration, or
+assessing held-out evidence.
 """
 
 from __future__ import annotations
 
+import json
+from collections.abc import Mapping
 from enum import StrEnum
-from typing import Literal
+from pathlib import Path
+from typing import Any, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, ValidationError, model_validator
 
 from specsafe.contracts.models import (
     CausalSchedulerContext,
@@ -21,7 +25,9 @@ from specsafe.contracts.models import (
     TraceSplit,
 )
 from specsafe.traces.calibration_redesign_v2 import (
+    CalibrationRedesignV2RegistryLoadError,
     CalibrationRedesignV2ScenarioFamilyRegistry,
+    load_calibration_redesign_v2_scenario_family_registry,
 )
 
 
@@ -33,6 +39,10 @@ class CalibrationRedesignV2CaseViolationCode(StrEnum):
     CASE_ALIGNMENT_ERROR = "calibration_redesign_v2_case_alignment_error"
     REGISTRY_MEMBERSHIP_ERROR = "calibration_redesign_v2_registry_membership_error"
     UNTRUSTED_REGISTRY = "calibration_redesign_v2_untrusted_registry"
+    CASE_ASSET_LAYOUT_ERROR = "calibration_redesign_v2_case_asset_layout_error"
+    CASE_ASSET_PROVENANCE_MISMATCH = (
+        "calibration_redesign_v2_case_asset_provenance_mismatch"
+    )
 
 
 class CalibrationRedesignV2CaseContractError(ValueError):
@@ -200,6 +210,95 @@ def validate_calibration_redesign_v2_replay_case_membership(
             CalibrationRedesignV2CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
             "V2 runtime split or data role does not match its scenario-family registry",
         )
+
+
+
+def load_calibration_redesign_v2_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationRedesignV2ReplayCase:
+    """Load one governed V2 case pair and verify its finalized registry membership."""
+
+    if not _is_v2_case_id(case_id):
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            "V2 case asset loading requires a CRV2-### case identifier",
+        )
+
+    resolved_root = root.resolve()
+    try:
+        registry = load_calibration_redesign_v2_scenario_family_registry(
+            resolved_root / "scenario_family_registry.json",
+            allow_case_assets=True,
+        )
+    except CalibrationRedesignV2RegistryLoadError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            f"V2 case asset root is not authorized for loading: {error}",
+        ) from error
+
+    runtime_payload = _read_json_asset(resolved_root / "inputs" / "cases" / f"{case_id}.json")
+    outcomes_payload = _read_json_asset(
+        resolved_root / "expected_outcomes" / "cases" / f"{case_id}.json"
+    )
+    try:
+        runtime_input = CalibrationRedesignV2RuntimeInput.model_validate(runtime_payload)
+    except ValidationError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.RUNTIME_SCHEMA_ERROR,
+            f"V2 runtime case asset schema validation failed: {error}",
+        ) from error
+    try:
+        expected_outcomes = CalibrationRedesignV2ExpectedOutcomes.model_validate(outcomes_payload)
+    except ValidationError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.OUTCOME_SCHEMA_ERROR,
+            f"V2 expected-outcome case asset schema validation failed: {error}",
+        ) from error
+    try:
+        replay_case = CalibrationRedesignV2ReplayCase(
+            runtime_input=runtime_input,
+            expected_outcomes=expected_outcomes,
+        )
+    except ValidationError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ALIGNMENT_ERROR,
+            f"V2 runtime and expected-outcome case assets do not align: {error}",
+        ) from error
+
+    validate_calibration_redesign_v2_replay_case_membership(replay_case, registry)
+    return replay_case
+
+
+def _read_json_asset(path: Path) -> Mapping[str, Any]:
+    """Read one local V2 case asset with explicit schema and provenance failures."""
+
+    try:
+        payload: Any = json.loads(path.read_bytes())
+    except OSError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ASSET_PROVENANCE_MISMATCH,
+            f"unable to read V2 case asset: {path}",
+        ) from error
+    except json.JSONDecodeError as error:
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            f"invalid JSON in V2 case asset {path.name}: {error.msg}",
+        ) from error
+    if not isinstance(payload, dict):
+        raise CalibrationRedesignV2CaseContractError(
+            CalibrationRedesignV2CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            f"V2 case asset must be a JSON object: {path.name}",
+        )
+    return payload
+
+
+def _is_v2_case_id(case_id: str) -> bool:
+    return (
+        case_id.startswith("CRV2-")
+        and len(case_id) == 8
+        and case_id.removeprefix("CRV2-").isdigit()
+    )
 
 
 def _expected_role(split: TraceSplit) -> TraceDataRole:

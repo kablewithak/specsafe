@@ -14,6 +14,7 @@ from specsafe.traces.calibration_redesign_v2 import (
     CalibrationRedesignV2ProposalViolationCode,
     CalibrationRedesignV2RegistryLoadError,
     CalibrationRedesignV2RegistryViolationCode,
+    assert_calibration_redesign_v2_case_authoring_fixture_root,
     assert_calibration_redesign_v2_proposal_only_fixture_root,
     assert_calibration_redesign_v2_registry_finalization_fixture_root,
     build_calibration_redesign_v2_scenario_family_registry,
@@ -111,6 +112,49 @@ def test_finalization_root_rejects_runtime_asset_before_authoring_boundary(
     assert (
         error_info.value.code
         is CalibrationRedesignV2RegistryViolationCode.FINALIZATION_BOUNDARY_VIOLATION
+    )
+
+
+
+def test_case_authoring_root_permits_only_governed_runtime_and_outcome_paths(
+    tmp_path: Path,
+) -> None:
+    root = _finalized_root_copy(tmp_path)
+    runtime_path = root / "inputs" / "cases" / "CRV2-101.json"
+    outcomes_path = root / "expected_outcomes" / "cases" / "CRV2-101.json"
+    runtime_path.parent.mkdir(parents=True)
+    outcomes_path.parent.mkdir(parents=True)
+    runtime_path.write_text("{}\n", encoding="utf-8")
+    outcomes_path.write_text("{}\n", encoding="utf-8")
+
+    assert_calibration_redesign_v2_case_authoring_fixture_root(root)
+
+
+def test_case_authoring_root_rejects_unapproved_json_or_manifest(
+    tmp_path: Path,
+) -> None:
+    root = _finalized_root_copy(tmp_path)
+    invalid_path = root / "inputs" / "cases" / "not-a-v2-case.json"
+    invalid_path.parent.mkdir(parents=True)
+    invalid_path.write_text("{}\n", encoding="utf-8")
+
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        assert_calibration_redesign_v2_case_authoring_fixture_root(root)
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV2RegistryViolationCode.CASE_AUTHORING_BOUNDARY_VIOLATION
+    )
+
+    invalid_path.unlink()
+    (root / "calibration_manifest.json").write_text("{}\n", encoding="utf-8")
+
+    with pytest.raises(CalibrationRedesignV2RegistryLoadError) as error_info:
+        assert_calibration_redesign_v2_case_authoring_fixture_root(root)
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV2RegistryViolationCode.CASE_AUTHORING_BOUNDARY_VIOLATION
     )
 
 
