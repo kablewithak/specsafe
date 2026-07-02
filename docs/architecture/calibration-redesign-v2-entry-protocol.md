@@ -3,11 +3,13 @@
 ## Status
 
 ```text
-protocol_status=entry-boundary-approved
+protocol_status=method-selected
 fixture_set_id=synthetic-calibration-redesign-v2
-candidate_method_status=not_selected
-fixture_authoring_status=not_authorized
-fitting_status=not_authorized
+candidate_method_status=selected
+candidate_artifact_id=bounded-platt-scaling-v1
+candidate_artifact_version=1.0.0
+fixture_authoring_status=not_authorized_pending_registry_authoring
+fitting_status=not_authorized_pending_manifest_verified_calibration_evidence
 final_evaluation_status=not_authorized
 adaptive_policy_status=blocked
 runtime_control_status=not_eligible
@@ -18,8 +20,8 @@ runtime_control_status=not_eligible
 Define the fixed evidence and sequencing rules for a successor calibration experiment after
 the closure of `synthetic-calibration-redesign-v1`.
 
-This is not an implementation plan for a new artifact. It does not authorize method search,
-new fixtures, fitting, held-out scoring, or adaptive-policy work.
+This document is not an implementation plan for a new artifact. It does not authorize new
+fixtures, fitting, held-out scoring, or adaptive-policy work.
 
 ## V2 physical and type boundaries
 
@@ -38,6 +40,20 @@ source_namespace=specsafe.traces.calibration_redesign_v2
 
 V2 must not reuse V1 manifest classes as an unmodified type alias. Shared low-level contracts
 may be reused only where they remain split-neutral and do not accept V1 data by default.
+
+## Candidate method
+
+The only selected V2 candidate is:
+
+```text
+artifact_id=bounded-platt-scaling-v1
+artifact_version=1.0.0
+method_family=global_regularized_logistic_calibration
+fit_behavior=ADR-0007_and_v2_bounded_platt_scaling_spec
+```
+
+No method search, parameter search, optimizer substitution, or fallback selection is authorized.
+The selected method must remain fixed until the V2 final-evaluation promotion gate is complete.
 
 ## Non-negotiable evidence isolation
 
@@ -150,12 +166,6 @@ confidence_not_fit_for_automated_scheduling
 
 ## Next gate
 
-The next permitted artifact is:
-
-```text
-docs/architecture/calibration-redesign-v2-method-selection-gate.md
-```
-
-It must select one candidate method, define its fixed fit behavior, and record why the
-selection does not depend on V1 outcome values. Until that gate is accepted, V2 fixture
-authoring is prohibited.
+The next permitted artifact is a V2 scenario-family registry proposal. It must reserve
+scenario-family IDs, split assignments, source-template fingerprints, case-ID ranges, and
+rejected-case rationales before any V2 runtime or expected-outcome byte is authored.
