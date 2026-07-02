@@ -1,0 +1,47 @@
+{
+  "schema_version": "calibration-redesign-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV1-002-calibration-broad-range-medium",
+  "case_id": "CRV1-002",
+  "trace_id": "crv1-trace-002",
+  "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "provenance_note": "Self-authored post-hoc outcomes for the medium-confidence broad-range calibration case.",
+  "outcomes": [
+    {
+      "trace_id": "crv1-trace-002",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 1201,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv1-trace-002",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 1202,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv1-trace-002",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 1203,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv1-trace-002",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 1204,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    }
+  ]
+}
