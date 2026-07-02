@@ -1,0 +1,264 @@
+{
+  "schema_version": "heldout-temperature-scaling-assessment-result-v1",
+  "protocol": {
+    "schema_version": "heldout-temperature-scaling-assessment-protocol-v1",
+    "protocol_id": "logit-temperature-scaling-heldout-fitness-v1",
+    "minimum_observation_count": 16,
+    "equal_width_bin_count": 10,
+    "minimum_brier_improvement": 0.0,
+    "minimum_expected_calibration_error_improvement": 0.0
+  },
+  "artifact": {
+    "schema_version": "logit-temperature-scaling-artifact-v1",
+    "artifact_id": "logit-temperature-scaling-v1",
+    "artifact_version": "1.0.0",
+    "fixture_set_id": "synthetic-calibration-redesign-v1",
+    "fixture_set_version": "1.0.0",
+    "manifest_aggregate_sha256": "1de80a7e1556fff17e6032ab794177175ac250b2fa23598cdc8248f8aff00136",
+    "source_type": "synthetic",
+    "fit_split": "calibration",
+    "fit_data_role": "calibration",
+    "scenario_family_ids": [
+      "CRV1-CAL-BROAD-RANGE",
+      "CRV1-CAL-POSITIONAL-DECAY"
+    ],
+    "fitted_case_ids": [
+      "CRV1-001",
+      "CRV1-002",
+      "CRV1-003",
+      "CRV1-004",
+      "CRV1-005",
+      "CRV1-006"
+    ],
+    "sample_count": 24,
+    "positive_label_count": 12,
+    "negative_label_count": 12,
+    "temperature": 1.0682788145183493,
+    "log_temperature": 0.06604876875027335,
+    "raw_negative_log_likelihood": 0.5725102964961502,
+    "calibrated_negative_log_likelihood": 0.5721015261275919,
+    "final_evaluation_accessed": false,
+    "runtime_control_eligible": false
+  },
+  "final_evaluation_manifest_aggregate_sha256": "be496cf719780e39b248b51d7d994ab8bafc3780d9abf5b094c86ba6d684831c",
+  "final_evaluation_fixture_set_id": "synthetic-calibration-redesign-v1",
+  "final_evaluation_fixture_set_version": "1.0.0",
+  "assessed_case_ids": [
+    "CRV1-009",
+    "CRV1-010",
+    "CRV1-011",
+    "CRV1-012"
+  ],
+  "assessed_trace_ids": [
+    "crv1-final-trace-009",
+    "crv1-final-trace-010",
+    "crv1-final-trace-011",
+    "crv1-final-trace-012"
+  ],
+  "assessed_scenario_family_ids": [
+    "CRV1-FINAL-ABRUPT-SUFFIX",
+    "CRV1-FINAL-MIXED-RELIABILITY"
+  ],
+  "observation_count": 18,
+  "raw_metrics": {
+    "brier_score": 0.1420388888888889,
+    "expected_calibration_error": 0.2483333333333333,
+    "bins": [
+      {
+        "lower_bound": 0.0,
+        "upper_bound": 0.1,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.09,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.91,
+        "weighted_calibration_gap": 0.050555555555555555
+      },
+      {
+        "lower_bound": 0.1,
+        "upper_bound": 0.2,
+        "observation_count": 3,
+        "mean_predicted_probability": 0.14666666666666667,
+        "observed_acceptance_rate": 0.0,
+        "absolute_calibration_gap": 0.14666666666666667,
+        "weighted_calibration_gap": 0.024444444444444442
+      },
+      {
+        "lower_bound": 0.2,
+        "upper_bound": 0.3,
+        "observation_count": 2,
+        "mean_predicted_probability": 0.22999999999999998,
+        "observed_acceptance_rate": 0.0,
+        "absolute_calibration_gap": 0.22999999999999998,
+        "weighted_calibration_gap": 0.025555555555555554
+      },
+      {
+        "lower_bound": 0.3,
+        "upper_bound": 0.4,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.36,
+        "observed_acceptance_rate": 0.0,
+        "absolute_calibration_gap": 0.36,
+        "weighted_calibration_gap": 0.019999999999999997
+      },
+      {
+        "lower_bound": 0.4,
+        "upper_bound": 0.5,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.41,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.5900000000000001,
+        "weighted_calibration_gap": 0.03277777777777778
+      },
+      {
+        "lower_bound": 0.5,
+        "upper_bound": 0.6,
+        "observation_count": 0,
+        "mean_predicted_probability": null,
+        "observed_acceptance_rate": null,
+        "absolute_calibration_gap": 0.0,
+        "weighted_calibration_gap": 0.0
+      },
+      {
+        "lower_bound": 0.6,
+        "upper_bound": 0.7,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.61,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.39,
+        "weighted_calibration_gap": 0.021666666666666667
+      },
+      {
+        "lower_bound": 0.7,
+        "upper_bound": 0.8,
+        "observation_count": 3,
+        "mean_predicted_probability": 0.7533333333333333,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.2466666666666667,
+        "weighted_calibration_gap": 0.04111111111111111
+      },
+      {
+        "lower_bound": 0.8,
+        "upper_bound": 0.9,
+        "observation_count": 4,
+        "mean_predicted_probability": 0.855,
+        "observed_acceptance_rate": 0.75,
+        "absolute_calibration_gap": 0.10499999999999998,
+        "weighted_calibration_gap": 0.023333333333333327
+      },
+      {
+        "lower_bound": 0.9,
+        "upper_bound": 1.0,
+        "observation_count": 2,
+        "mean_predicted_probability": 0.9199999999999999,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.08000000000000007,
+        "weighted_calibration_gap": 0.008888888888888896
+      }
+    ]
+  },
+  "calibrated_metrics": {
+    "brier_score": 0.14320093951851715,
+    "expected_calibration_error": 0.20896181673124276,
+    "bins": [
+      {
+        "lower_bound": 0.0,
+        "upper_bound": 0.1,
+        "observation_count": 0,
+        "mean_predicted_probability": null,
+        "observed_acceptance_rate": null,
+        "absolute_calibration_gap": 0.0,
+        "weighted_calibration_gap": 0.0
+      },
+      {
+        "lower_bound": 0.1,
+        "upper_bound": 0.2,
+        "observation_count": 3,
+        "mean_predicted_probability": 0.12706960518627197,
+        "observed_acceptance_rate": 0.3333333333333333,
+        "absolute_calibration_gap": 0.20626372814706134,
+        "weighted_calibration_gap": 0.03437728802451022
+      },
+      {
+        "lower_bound": 0.2,
+        "upper_bound": 0.3,
+        "observation_count": 3,
+        "mean_predicted_probability": 0.230854516532031,
+        "observed_acceptance_rate": 0.0,
+        "absolute_calibration_gap": 0.230854516532031,
+        "weighted_calibration_gap": 0.0384757527553385
+      },
+      {
+        "lower_bound": 0.3,
+        "upper_bound": 0.4,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.36851567600900714,
+        "observed_acceptance_rate": 0.0,
+        "absolute_calibration_gap": 0.36851567600900714,
+        "weighted_calibration_gap": 0.020473093111611506
+      },
+      {
+        "lower_bound": 0.4,
+        "upper_bound": 0.5,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.41563881550521836,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.5843611844947816,
+        "weighted_calibration_gap": 0.03246451024971009
+      },
+      {
+        "lower_bound": 0.5,
+        "upper_bound": 0.6,
+        "observation_count": 0,
+        "mean_predicted_probability": null,
+        "observed_acceptance_rate": null,
+        "absolute_calibration_gap": 0.0,
+        "weighted_calibration_gap": 0.0
+      },
+      {
+        "lower_bound": 0.6,
+        "upper_bound": 0.7,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.6031774795870808,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.3968225204129192,
+        "weighted_calibration_gap": 0.02204569557849551
+      },
+      {
+        "lower_bound": 0.7,
+        "upper_bound": 0.8,
+        "observation_count": 3,
+        "mean_predicted_probability": 0.7398900308382331,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.2601099691617669,
+        "weighted_calibration_gap": 0.04335166152696114
+      },
+      {
+        "lower_bound": 0.8,
+        "upper_bound": 0.9,
+        "observation_count": 5,
+        "mean_predicted_probability": 0.849841602216239,
+        "observed_acceptance_rate": 0.8,
+        "absolute_calibration_gap": 0.0498416022162389,
+        "weighted_calibration_gap": 0.013844889504510806
+      },
+      {
+        "lower_bound": 0.9,
+        "upper_bound": 1.0,
+        "observation_count": 1,
+        "mean_predicted_probability": 0.9292793323581097,
+        "observed_acceptance_rate": 1.0,
+        "absolute_calibration_gap": 0.07072066764189033,
+        "weighted_calibration_gap": 0.003928925980105019
+      }
+    ]
+  },
+  "brier_improvement": -0.0011620506296282362,
+  "expected_calibration_error_improvement": 0.03937151660209054,
+  "status": "calibrator_regression",
+  "promotion_decision": "not_promoted_calibrator_regression",
+  "adaptive_policy_research_eligibility": "blocked_held_out_calibration_regression",
+  "final_evaluation_accessed": true,
+  "artifact_refit": false,
+  "artifact_mutated": false,
+  "runtime_control_eligibility": "not_eligible_pending_adaptive_policy_evaluation"
+}

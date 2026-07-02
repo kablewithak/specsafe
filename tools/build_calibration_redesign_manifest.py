@@ -6,7 +6,6 @@ from pathlib import Path
 
 from specsafe.traces import build_calibration_redesign_manifest
 
-
 FIXTURE_ROOT = Path("data/fixtures/synthetic_calibration_redesign")
 
 
