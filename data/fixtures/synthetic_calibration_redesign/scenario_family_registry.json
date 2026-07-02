@@ -1,0 +1,90 @@
+{
+  "schema_version": "scenario-family-registry-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v1",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-protocol-v1",
+  "excluded_historical_case_ids": [
+    "STF-004"
+  ],
+  "families": [
+    {
+      "scenario_family_id": "CRV1-CAL-BROAD-RANGE",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "f31f9d922b5402d1a508d654385839316d96d2a549db28e724fa0bb0869715c4",
+      "case_ids": [
+        "CRV1-001",
+        "CRV1-002",
+        "CRV1-003"
+      ],
+      "rationale": "Fresh low, medium, and high confidence fit evidence for the predeclared global temperature method.",
+      "is_final_evaluation_quarantined": false
+    },
+    {
+      "scenario_family_id": "CRV1-CAL-POSITIONAL-DECAY",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "59f09d36d44036909bccd9966999b816f084503bc3d125be1f65678ba347abe7",
+      "case_ids": [
+        "CRV1-004",
+        "CRV1-005",
+        "CRV1-006"
+      ],
+      "rationale": "Fresh calibration evidence with lawful confidence decay by candidate position.",
+      "is_final_evaluation_quarantined": false
+    },
+    {
+      "scenario_family_id": "CRV1-DEV-CONTRACT-EDGE",
+      "split": "development",
+      "primary_data_role": "synthetic_fixture",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "4393fceb350b0d953cfbd2a56b4256a1f6d89ded0745513c89d4a2b3c1977832",
+      "case_ids": [
+        "CRV1-007"
+      ],
+      "rationale": "Valid boundary-value fixture family for loader and contract plumbing only.",
+      "is_final_evaluation_quarantined": false
+    },
+    {
+      "scenario_family_id": "CRV1-ADV-SPLIT-LEAKAGE",
+      "split": "adversarial_regression",
+      "primary_data_role": "synthetic_fixture",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "3c749c87688a20f705780c8f8ad15fc983e639035a8068e0c0263ce485c73922",
+      "case_ids": [
+        "CRV1-008"
+      ],
+      "rationale": "Regression family reserved for prohibited cross-split lineage and template reuse attempts.",
+      "is_final_evaluation_quarantined": false
+    },
+    {
+      "scenario_family_id": "CRV1-FINAL-MIXED-RELIABILITY",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "6f8ce52d60ab24b471361f717052b7cea9c8ca92e22289ab67256cc72dc43a2a",
+      "case_ids": [
+        "CRV1-009",
+        "CRV1-010"
+      ],
+      "rationale": "Fresh held-out mixed-reliability assessment family with independent authoring lineage.",
+      "is_final_evaluation_quarantined": true
+    },
+    {
+      "scenario_family_id": "CRV1-FINAL-ABRUPT-SUFFIX",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "parent_scenario_family_id": null,
+      "source_template_fingerprint": "cc5dcd95cabc4cd8c5425fd65faa133cdf46c8a95d7f6e93b399875cd1ce7b3e",
+      "case_ids": [
+        "CRV1-011",
+        "CRV1-012"
+      ],
+      "rationale": "Fresh held-out abrupt-suffix assessment family with no calibration-template reuse.",
+      "is_final_evaluation_quarantined": true
+    }
+  ]
+}
