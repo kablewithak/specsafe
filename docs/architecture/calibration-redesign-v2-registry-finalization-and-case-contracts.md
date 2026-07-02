@@ -14,12 +14,13 @@ v2_heldout_assessment_authorized=false
 
 ## Purpose
 
-Convert the reviewed V2 scenario-family proposal into an immutable, hash-linked registry and define the
-strict runtime-input and expected-outcome contracts that a later V2 authoring slice must use.
+Convert the reviewed V2 scenario-family proposal into an immutable, hash-linked registry, define strict
+runtime-input and expected-outcome contracts, and provide the narrow root layout that a later V2 fixture
+authoring slice must use.
 
 This boundary solves a narrow problem: a future fixture may not silently change family membership, split,
-quarantine status, source-template fingerprint, or case identifier after the evidence plan was reviewed.
-It does not create any V2 fixture bytes or outcome labels.
+quarantine status, source-template fingerprint, case identifier, or root layout after the evidence plan
+was reviewed. It does not create any V2 fixture bytes or outcome labels.
 
 ## Registry finalization
 
@@ -72,8 +73,15 @@ candidate-token prefix from the post-hoc outcome asset.
 ## Registry membership boundary
 
 A replay case may be validated against only the exact finalized V2 registry type. Its case ID, family ID,
-split, and data role must match a reserved registry record. This membership check has no file loader and no
-manifest discovery path at this stage.
+split, and data role must match a reserved registry record. The local loader reads only one exact pair:
+
+```text
+inputs/cases/CRV2-###.json
+expected_outcomes/cases/CRV2-###.json
+```
+
+The authoring root rejects all other JSON locations and both manifest filenames. It does not discover a
+fixture set, build a manifest, fit a calibrator, or assess a result.
 
 ## V1 and lifecycle isolation
 

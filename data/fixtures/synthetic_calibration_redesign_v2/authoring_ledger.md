@@ -9,6 +9,7 @@ candidate_artifact=bounded-platt-scaling-v1
 registry_proposal_status=retained_as_reviewed_provenance
 registry_status=finalized_for_case_contract_authoring
 v2_case_contracts_status=implemented_no_fixture_assets
+v2_case_asset_authoring_layout_status=implemented_no_fixture_assets
 v2_runtime_or_outcome_assets_authored=false
 v2_manifest_status=not_authorized
 v2_fitting_status=not_authorized
@@ -29,14 +30,18 @@ provenance evidence and cannot be silently rewritten without causing a proposal-
 
 ## Typed case-contract boundary
 
-The V2 codebase now contains strict in-memory contracts for future runtime inputs and expected outcomes.
-Those contracts establish schema, split, role, provenance, minimum context count, replay alignment, and
-visible-prefix requirements. They do not load files, write files, generate manifests, fit calibration, or
-assess evidence.
+The V2 codebase now contains strict runtime-input and expected-outcome contracts plus a narrow case-asset
+authoring layout. The only permitted future JSON paths are:
 
-Runtime contracts reject evaluation-only fields through schema strictness. Expected outcomes retain labels
-only after the runtime contract exists. A replay case may be checked against the finalized registry only
-when a later authoring slice supplies both typed objects.
+```text
+inputs/cases/CRV2-###.json
+expected_outcomes/cases/CRV2-###.json
+```
+
+The loader reads one separate pair, validates the finalized registry provenance, validates each typed
+contract, proves replay alignment, and verifies membership against the exact finalized registry. The
+authoring layout still blocks manifests, fitting, assessment, policy, capacity, utility, and runtime
+control. Runtime contracts reject evaluation-only fields through schema strictness.
 
 ## Scope controls retained
 
@@ -49,7 +54,7 @@ when a later authoring slice supplies both typed objects.
 
 ## Next authoring gate
 
-The next permitted engineering activity is a separate V2 runtime-and-outcome fixture-authoring slice.
-It must create runtime and expected-outcome assets separately, use only finalized V2 case IDs, preserve
-the four-context observation minimum, and add loader/registry membership tests. It must not fit or assess
-bounded Platt scaling.
+The next permitted engineering activity is a V2 runtime-and-outcome fixture-authoring slice. It must
+create separate assets under the governed paths, use only finalized V2 case IDs, preserve the four-context
+observation minimum, and prove loader/registry membership. It must not create a manifest, fit, assess,
+tune, or promote bounded Platt scaling.
