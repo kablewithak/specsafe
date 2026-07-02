@@ -1,4 +1,4 @@
-"""Regression tests for finalized V2 registry provenance and no-fixture controls."""
+"""Regression tests for V2 registry provenance and governed case-asset boundaries."""
 
 from __future__ import annotations
 
@@ -27,7 +27,11 @@ V2_FIXTURE_ROOT = PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_re
 
 def _root_copy(tmp_path: Path) -> Path:
     root = tmp_path / "synthetic_calibration_redesign_v2"
-    shutil.copytree(V2_FIXTURE_ROOT, root)
+    shutil.copytree(
+        V2_FIXTURE_ROOT,
+        root,
+        ignore=shutil.ignore_patterns("inputs", "expected_outcomes"),
+    )
     generated_registry = root / "scenario_family_registry.json"
     generated_registry.unlink(missing_ok=True)
     return root
@@ -113,7 +117,6 @@ def test_finalization_root_rejects_runtime_asset_before_authoring_boundary(
         error_info.value.code
         is CalibrationRedesignV2RegistryViolationCode.FINALIZATION_BOUNDARY_VIOLATION
     )
-
 
 
 def test_case_authoring_root_permits_only_governed_runtime_and_outcome_paths(
