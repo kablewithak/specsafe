@@ -6,7 +6,6 @@ from pathlib import Path
 
 from specsafe.traces import write_logit_temperature_scaling_fit
 
-
 FIXTURE_ROOT = Path("data/fixtures/synthetic_calibration_redesign")
 OUTPUT_DIRECTORY = Path("evidence/calibration/logit-temperature-scaling-v1")
 
