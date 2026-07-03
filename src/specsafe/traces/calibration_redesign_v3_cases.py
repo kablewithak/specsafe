@@ -1,6 +1,6 @@
-"""Typed V3 calibration curve-coverage case contracts and loaders.
+"""Typed V3 calibration case contracts and loaders.
 
-Only CRV3-101 through CRV3-112 may be loaded at this stage. Runtime inputs and
+Only CRV3-101 through CRV3-124 may be loaded at this stage. Runtime inputs and
 post-hoc outcomes remain separate, final-evaluation and adversarial data remain absent,
 and no calibration fitting or scheduler behaviour is introduced here.
 """
@@ -60,7 +60,10 @@ class CalibrationRedesignV3RuntimeInput(StrictContract):
     case_id: str = Field(pattern=r"^CRV3-[0-9]{3}$")
     trace_id: str = Field(min_length=1, max_length=128)
     request_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CRV3-CAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CRV3-CAL-CURVE-COVERAGE",
+        "CRV3-CAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -97,7 +100,10 @@ class CalibrationRedesignV3ExpectedOutcomes(StrictContract):
     fixture_id: str = Field(min_length=1, max_length=128)
     case_id: str = Field(pattern=r"^CRV3-[0-9]{3}$")
     trace_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CRV3-CAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CRV3-CAL-CURVE-COVERAGE",
+        "CRV3-CAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -113,7 +119,7 @@ class CalibrationRedesignV3ExpectedOutcomes(StrictContract):
             if outcome.trace_id != self.trace_id:
                 raise ValueError("all V3 outcomes must use the enclosing trace_id")
             if outcome.decode_round != 0:
-                raise ValueError("V3 curve-coverage cases must use decode round zero")
+                raise ValueError("V3 calibration cases must use decode round zero")
             if outcome.block_position_index != expected_position:
                 raise ValueError("V3 outcomes must be contiguous from position one")
             prefix_survives = prefix_survives and outcome.observed_acceptance
@@ -168,7 +174,7 @@ def validate_calibration_redesign_v3_replay_case_membership(
     replay_case: CalibrationRedesignV3ReplayCase,
     registry: CalibrationRedesignV3ScenarioFamilyRegistry,
 ) -> None:
-    """Verify the case belongs to the only currently authorised V3 family."""
+    """Verify the case belongs to an authorised V3 calibration family."""
 
     if not isinstance(registry, CalibrationRedesignV3ScenarioFamilyRegistry):
         raise CalibrationRedesignV3CaseContractError(
@@ -184,7 +190,15 @@ def validate_calibration_redesign_v3_replay_case_membership(
         ),
         None,
     )
-    if family is None or family.authoring_status != "calibration_curve_coverage_authored":
+    authorised_statuses = {
+        "calibration_curve_coverage_authored",
+        "calibration_position_spread_authored",
+    }
+    if (
+        family is None
+        or family.split is not TraceSplit.CALIBRATION
+        or family.authoring_status not in authorised_statuses
+    ):
         raise CalibrationRedesignV3CaseContractError(
             CalibrationRedesignV3CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
             "V3 runtime case references a family not authorised for current case loading",
@@ -200,7 +214,7 @@ def load_calibration_redesign_v3_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV3ReplayCase:
-    """Load one authorised V3 calibration curve-coverage case pair."""
+    """Load one authorised V3 calibration case pair."""
 
     if not _is_v3_case_id(case_id):
         raise CalibrationRedesignV3CaseContractError(
@@ -211,7 +225,7 @@ def load_calibration_redesign_v3_replay_case(
     try:
         registry = load_calibration_redesign_v3_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
         )
     except CalibrationRedesignV3RegistryLoadError as error:
         raise CalibrationRedesignV3CaseContractError(

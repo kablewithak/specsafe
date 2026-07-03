@@ -1,6 +1,6 @@
 {
   "schema_version": "calibration-redesign-v3-scenario-family-registry-v1",
-  "registry_status": "calibration_curve_coverage_authored",
+  "registry_status": "calibration_position_spread_authored",
   "fixture_set_id": "synthetic-calibration-redesign-v3",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -67,14 +67,14 @@
         "CRV3-123",
         "CRV3-124"
       ],
-      "rationale": "Reserve fresh position-spread cases for the fixed four-position V3 contract.",
+      "rationale": "Author fresh position-spread calibration cases across the fixed four-position V3 contract without authoring final-evaluation evidence.",
       "target_failure_modes": [
         "position_dependent_confidence",
         "prefix_survival_mismatch"
       ],
       "is_final_evaluation_quarantined": false,
       "workload_allocation": null,
-      "authoring_status": "reserved_for_v3_case_authoring"
+      "authoring_status": "calibration_position_spread_authored"
     },
     {
       "scenario_family_id": "CRV3-CAL-WORKLOAD-MIX",
@@ -238,5 +238,5 @@
     "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
     "No V3 performance or promotion claim is made."
   ],
-  "next_authorized_artifact": "v3-calibration-position-spread-fixture-authoring"
+  "next_authorized_artifact": "v3-calibration-workload-mix-fixture-authoring"
 }

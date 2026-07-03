@@ -10,6 +10,7 @@ from specsafe.traces.calibration_redesign_v3 import (
     CalibrationRedesignV3RegistryLoadError,
     CalibrationRedesignV3RegistryViolationCode,
     assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root,
+    assert_calibration_redesign_v3_calibration_position_spread_fixture_root,
     assert_calibration_redesign_v3_schema_only_fixture_root,
     load_calibration_redesign_v3_scenario_family_registry,
 )
@@ -19,20 +20,24 @@ FIXTURE_ROOT = (
 )
 
 
-def _copy_curve_coverage_root(tmp_path: Path) -> Path:
+def _copy_position_spread_root(tmp_path: Path) -> Path:
     destination = tmp_path / "synthetic_calibration_redesign_v3"
     shutil.copytree(FIXTURE_ROOT, destination)
     return destination
 
 
-def test_v3_registry_loads_at_curve_coverage_boundary() -> None:
-    registry = load_calibration_redesign_v3_scenario_family_registry(
+def _load_registry():
+    return load_calibration_redesign_v3_scenario_family_registry(
         FIXTURE_ROOT / "scenario_family_registry.json",
-        allow_calibration_curve_coverage_assets=True,
+        allow_calibration_position_spread_assets=True,
     )
 
+
+def test_v3_registry_loads_at_position_spread_boundary() -> None:
+    registry = _load_registry()
+
     assert registry.fixture_set_id == "synthetic-calibration-redesign-v3"
-    assert registry.registry_status == "calibration_curve_coverage_authored"
+    assert registry.registry_status == "calibration_position_spread_authored"
     assert registry.v1_or_v2_data_bearing_evidence_used is False
     assert registry.v3_runtime_or_outcome_assets_authored is True
     assert registry.v3_manifests_authored is False
@@ -41,23 +46,26 @@ def test_v3_registry_loads_at_curve_coverage_boundary() -> None:
     assert registry.observation_budget.adversarial_regression_observation_count == 32
 
 
-def test_v3_curve_coverage_root_is_exact_and_schema_only_guard_rejects_it() -> None:
-    assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(FIXTURE_ROOT)
+def test_v3_position_spread_root_is_exact_and_earlier_guards_reject_it() -> None:
+    assert_calibration_redesign_v3_calibration_position_spread_fixture_root(FIXTURE_ROOT)
 
-    with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
-        assert_calibration_redesign_v3_schema_only_fixture_root(FIXTURE_ROOT)
-
+    with pytest.raises(CalibrationRedesignV3RegistryLoadError) as curve_error_info:
+        assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(FIXTURE_ROOT)
     assert (
-        error_info.value.code
+        curve_error_info.value.code
+        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
+    )
+
+    with pytest.raises(CalibrationRedesignV3RegistryLoadError) as schema_error_info:
+        assert_calibration_redesign_v3_schema_only_fixture_root(FIXTURE_ROOT)
+    assert (
+        schema_error_info.value.code
         is CalibrationRedesignV3RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION
     )
 
 
-def test_v3_registry_reserves_exact_split_and_capacity_family_shape() -> None:
-    registry = load_calibration_redesign_v3_scenario_family_registry(
-        FIXTURE_ROOT / "scenario_family_registry.json",
-        allow_calibration_curve_coverage_assets=True,
-    )
+def test_v3_registry_reserves_exact_split_capacity_and_authored_calibration_shape() -> None:
+    registry = _load_registry()
 
     case_count_by_split = {
         split.value: sum(
@@ -75,6 +83,11 @@ def test_v3_registry_reserves_exact_split_and_capacity_family_shape() -> None:
         for family in registry.families
         if family.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE"
     )
+    position_family = next(
+        family
+        for family in registry.families
+        if family.scenario_family_id == "CRV3-CAL-POSITION-SPREAD"
+    )
 
     assert case_count_by_split == {
         "calibration": 36,
@@ -84,6 +97,10 @@ def test_v3_registry_reserves_exact_split_and_capacity_family_shape() -> None:
     assert curve_family.authoring_status == "calibration_curve_coverage_authored"
     assert curve_family.reserved_case_ids == tuple(
         f"CRV3-{number:03d}" for number in range(101, 113)
+    )
+    assert position_family.authoring_status == "calibration_position_spread_authored"
+    assert position_family.reserved_case_ids == tuple(
+        f"CRV3-{number:03d}" for number in range(113, 125)
     )
     assert {family.scenario_family_id for family in final_families} == {
         "CRV3-FINAL-LIGHT-CAPACITY",
@@ -95,35 +112,35 @@ def test_v3_registry_reserves_exact_split_and_capacity_family_shape() -> None:
     assert all(family.workload_allocation is not None for family in final_families)
 
 
-def test_v3_curve_coverage_root_rejects_final_case_bytes(tmp_path: Path) -> None:
-    fixture_root = _copy_curve_coverage_root(tmp_path)
-    source = fixture_root / "inputs" / "cases" / "CRV3-101.json"
+def test_v3_position_spread_root_rejects_final_case_bytes(tmp_path: Path) -> None:
+    fixture_root = _copy_position_spread_root(tmp_path)
+    source = fixture_root / "inputs" / "cases" / "CRV3-113.json"
     (fixture_root / "inputs" / "cases" / "CRV3-201.json").write_bytes(source.read_bytes())
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
-        assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(fixture_root)
+        assert_calibration_redesign_v3_calibration_position_spread_fixture_root(fixture_root)
 
     assert (
         error_info.value.code
-        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
+        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
     )
 
 
-def test_v3_curve_coverage_root_rejects_manifest(tmp_path: Path) -> None:
-    fixture_root = _copy_curve_coverage_root(tmp_path)
+def test_v3_position_spread_root_rejects_manifest(tmp_path: Path) -> None:
+    fixture_root = _copy_position_spread_root(tmp_path)
     (fixture_root / "calibration_manifest.json").write_text("{}\n", encoding="utf-8")
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
-        assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(fixture_root)
+        assert_calibration_redesign_v3_calibration_position_spread_fixture_root(fixture_root)
 
     assert (
         error_info.value.code
-        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
+        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
     )
 
 
 def test_v3_registry_rejects_closed_v2_reference(tmp_path: Path) -> None:
-    fixture_root = _copy_curve_coverage_root(tmp_path)
+    fixture_root = _copy_position_spread_root(tmp_path)
     registry_path = fixture_root / "scenario_family_registry.json"
     payload = json.loads(registry_path.read_text(encoding="utf-8"))
     payload["explicit_exclusions"].append("CRV2-201 must not be read")
@@ -132,7 +149,7 @@ def test_v3_registry_rejects_closed_v2_reference(tmp_path: Path) -> None:
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
         load_calibration_redesign_v3_scenario_family_registry(
             registry_path,
-            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
         )
 
     assert (
@@ -141,17 +158,36 @@ def test_v3_registry_rejects_closed_v2_reference(tmp_path: Path) -> None:
     )
 
 
-def test_v3_registry_rejects_changed_reserved_case_budget(tmp_path: Path) -> None:
-    fixture_root = _copy_curve_coverage_root(tmp_path)
+def test_v3_registry_rejects_changed_position_spread_case_budget(tmp_path: Path) -> None:
+    fixture_root = _copy_position_spread_root(tmp_path)
     registry_path = fixture_root / "scenario_family_registry.json"
     payload = json.loads(registry_path.read_text(encoding="utf-8"))
-    payload["families"][0]["reserved_case_ids"] = payload["families"][0]["reserved_case_ids"][:-1]
+    position_family = next(
+        family
+        for family in payload["families"]
+        if family["scenario_family_id"] == "CRV3-CAL-POSITION-SPREAD"
+    )
+    position_family["reserved_case_ids"] = position_family["reserved_case_ids"][:-1]
     registry_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
         load_calibration_redesign_v3_scenario_family_registry(
             registry_path,
-            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
         )
 
     assert error_info.value.code is CalibrationRedesignV3RegistryViolationCode.REGISTRY_SCHEMA_ERROR
+
+
+def test_v3_registry_rejects_multiple_selected_authoring_boundaries() -> None:
+    with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
+        load_calibration_redesign_v3_scenario_family_registry(
+            FIXTURE_ROOT / "scenario_family_registry.json",
+            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
+        )
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH
+    )
