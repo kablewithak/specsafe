@@ -40,6 +40,7 @@ def _root_copy(tmp_path: Path) -> Path:
             "inputs",
             "expected_outcomes",
             "calibration_manifest.json",
+            "final_evaluation_manifest.json",
         ),
     )
     generated_registry = root / "scenario_family_registry.json"
@@ -306,14 +307,16 @@ def test_v2_calibration_manifest_builder_rejects_missing_case_pair(tmp_path: Pat
     )
 
 
-def test_v2_calibration_manifest_rejects_final_evaluation_manifest(tmp_path: Path) -> None:
+def test_v2_calibration_manifest_keeps_calibration_inventory_isolated_after_final_manifest(
+    tmp_path: Path,
+) -> None:
     fixture_root = _calibration_manifest_root_copy(tmp_path)
-    (fixture_root / "final_evaluation_manifest.json").write_text("{}\n", encoding="utf-8")
+    final_manifest = fixture_root / "final_evaluation_manifest.json"
+    final_manifest.write_text("{\n  \"placeholder\": true\n}\n", encoding="utf-8")
 
-    with pytest.raises(CalibrationRedesignV2CalibrationManifestLoadError) as error_info:
-        build_calibration_redesign_v2_calibration_manifest(fixture_root)
+    fixture_set = load_calibration_redesign_v2_calibration_manifested_fixture_set(fixture_root)
 
-    assert (
-        error_info.value.code
-        is CalibrationRedesignV2CalibrationManifestViolationCode.CALIBRATION_BOUNDARY_VIOLATION
+    assert {case.runtime_input.case_id for case in fixture_set.cases} == (
+        EXPECTED_CALIBRATION_CASE_IDS
     )
+    assert all(entry.case_id.startswith("CRV2-1") for entry in fixture_set.manifest.entries)

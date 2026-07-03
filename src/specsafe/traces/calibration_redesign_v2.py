@@ -68,6 +68,9 @@ class CalibrationRedesignV2RegistryViolationCode(StrEnum):
     CALIBRATION_MANIFEST_BOUNDARY_VIOLATION = (
         "calibration_redesign_v2_calibration_manifest_boundary_violation"
     )
+    FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v2_final_evaluation_manifest_boundary_violation"
+    )
 
 
 class CalibrationRedesignV2RegistryLoadError(ValueError):
@@ -339,14 +342,24 @@ def load_calibration_redesign_v2_scenario_family_registry(
     *,
     allow_case_assets: bool = False,
     allow_calibration_manifest: bool = False,
+    allow_final_evaluation_manifest: bool = False,
 ) -> CalibrationRedesignV2ScenarioFamilyRegistry:
     """Load a finalized V2 registry under its active governed fixture-root boundary."""
 
-    if allow_case_assets and allow_calibration_manifest:
+    active_modes = sum(
+        (
+            allow_case_assets,
+            allow_calibration_manifest,
+            allow_final_evaluation_manifest,
+        )
+    )
+    if active_modes > 1:
         raise ValueError("only one V2 fixture-root mode may be selected")
 
     root = path.parent
-    if allow_calibration_manifest:
+    if allow_final_evaluation_manifest:
+        assert_calibration_redesign_v2_final_evaluation_manifest_fixture_root(root)
+    elif allow_calibration_manifest:
         assert_calibration_redesign_v2_calibration_manifest_fixture_root(root)
     elif allow_case_assets:
         assert_calibration_redesign_v2_case_authoring_fixture_root(root)
@@ -511,13 +524,43 @@ def assert_calibration_redesign_v2_calibration_manifest_fixture_root(root: Path)
         code=CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
         asset_label="V2 finalized registry",
     )
-    final_manifest = resolved_root / "final_evaluation_manifest.json"
-    if final_manifest.exists():
-        raise CalibrationRedesignV2RegistryLoadError(
-            CalibrationRedesignV2RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION,
-            "V2 calibration-manifest boundary prohibits final-evaluation manifests",
-        )
     _assert_only_allowed_v2_calibration_manifest_json_paths(resolved_root)
+
+
+def assert_calibration_redesign_v2_final_evaluation_manifest_fixture_root(root: Path) -> None:
+    """Permit both frozen manifests and governed case pairs before the read-only assessment.
+
+    The calibration manifest and bounded-Platt artifact were frozen before held-out case
+    authoring. This later boundary permits a separate final-evaluation manifest that locks
+    the quarantined corpus, but it neither loads the artifact nor evaluates it.
+    """
+
+    resolved_root = root.resolve()
+    _require_directory(resolved_root, CalibrationRedesignV2RegistryLoadError)
+    proposal_path = resolved_root / _V2_PROPOSAL_FILENAME
+    registry_path = resolved_root / _V2_REGISTRY_FILENAME
+    calibration_manifest = resolved_root / "calibration_manifest.json"
+    _require_file(
+        proposal_path,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+        asset_label="V2 registry proposal",
+    )
+    _require_file(
+        registry_path,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=CalibrationRedesignV2RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+        asset_label="V2 finalized registry",
+    )
+    _require_file(
+        calibration_manifest,
+        error_type=CalibrationRedesignV2RegistryLoadError,
+        code=(
+            CalibrationRedesignV2RegistryViolationCode.FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION
+        ),
+        asset_label="V2 calibration manifest",
+    )
+    _assert_only_allowed_v2_final_evaluation_manifest_json_paths(resolved_root)
 
 
 def _validate_v2_case_ids(case_ids: tuple[str, ...]) -> None:
@@ -696,14 +739,15 @@ def _assert_only_allowed_v2_calibration_manifest_json_paths(root: Path) -> None:
 
     A frozen calibration manifest must stay reproducible after final-case authoring. This
     root guard therefore permits only governed calibration or final-evaluation case JSON
-    pairs, plus the retained proposal, registry, and calibration manifest. It still blocks
-    a final-evaluation manifest and every arbitrary JSON path.
+    pairs, plus the retained proposal, registry, calibration manifest, and optional final
+    manifest. It still blocks every arbitrary JSON path.
     """
 
     allowed_governance_paths = {
         (root / _V2_PROPOSAL_FILENAME).resolve(),
         (root / _V2_REGISTRY_FILENAME).resolve(),
         (root / "calibration_manifest.json").resolve(),
+        (root / "final_evaluation_manifest.json").resolve(),
     }
     runtime_directory = root / "inputs" / "cases"
     outcomes_directory = root / "expected_outcomes" / "cases"
@@ -721,7 +765,37 @@ def _assert_only_allowed_v2_calibration_manifest_json_paths(root: Path) -> None:
             CalibrationRedesignV2RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION,
             (
                 "V2 calibration-manifest boundary permits only governed calibration or "
-                "quarantined final-evaluation case pairs and calibration_manifest.json"
+                "quarantined final-evaluation case pairs and approved manifest JSON"
+            ),
+        )
+
+
+def _assert_only_allowed_v2_final_evaluation_manifest_json_paths(root: Path) -> None:
+    """Permit only governed V2 evidence assets plus the two explicit manifests."""
+
+    allowed_governance_paths = {
+        (root / _V2_PROPOSAL_FILENAME).resolve(),
+        (root / _V2_REGISTRY_FILENAME).resolve(),
+        (root / "calibration_manifest.json").resolve(),
+        (root / "final_evaluation_manifest.json").resolve(),
+    }
+    runtime_directory = root / "inputs" / "cases"
+    outcomes_directory = root / "expected_outcomes" / "cases"
+    for path in root.rglob("*.json"):
+        resolved_path = path.resolve()
+        if resolved_path in allowed_governance_paths:
+            continue
+        is_case_asset = path.parent in {runtime_directory, outcomes_directory}
+        if is_case_asset and (
+            _is_v2_calibration_case_asset_name(path)
+            or _is_v2_final_evaluation_case_asset_name(path)
+        ):
+            continue
+        raise CalibrationRedesignV2RegistryLoadError(
+            CalibrationRedesignV2RegistryViolationCode.FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION,
+            (
+                "V2 final-manifest boundary permits only governed case pairs and approved "
+                "manifest JSON"
             ),
         )
 
