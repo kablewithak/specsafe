@@ -1,8 +1,8 @@
-"""V3 schema-only registry controls for the full north-star programme.
+"""Governed V3 evidence registry controls for the full north-star programme.
 
-This module creates the first V3 engineering boundary: a typed registry and a
-fail-closed fixture-root guard. It deliberately contains no V3 case payloads,
-outcomes, manifests, calibration fitting, or scheduler behaviour.
+The V3 registry started as a schema-only boundary. This revision authorizes exactly
+one fresh calibration-only family: CRV3-CAL-CURVE-COVERAGE. Final-evaluation and
+adversarial bytes remain absent, quarantined, and fail closed.
 """
 
 from __future__ import annotations
@@ -17,16 +17,17 @@ from pydantic import Field, ValidationError, field_validator, model_validator
 from specsafe.contracts.models import StrictContract, TraceDataRole, TraceSourceType, TraceSplit
 
 _V3_REGISTRY_FILENAME = "scenario_family_registry.json"
-_ALLOWED_SCHEMA_ONLY_FILENAMES = {
+_ALLOWED_ROOT_FILENAMES = {
     "PROPOSAL_MANIFEST.md",
     "authoring_ledger.md",
     _V3_REGISTRY_FILENAME,
 }
-_FORBIDDEN_SCHEMA_ONLY_PATH_NAMES = {
-    "inputs",
-    "expected_outcomes",
+_ALLOWED_CALIBRATION_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
+_ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
+_FORBIDDEN_ROOT_PATH_NAMES = {
     "calibration_manifest.json",
     "final_evaluation_manifest.json",
+    "adversarial_regression_manifest.json",
     "artifact.json",
     "fit_report.json",
     "heldout_assessment.json",
@@ -36,15 +37,25 @@ _EXPECTED_DATA_ROLE_BY_SPLIT = {
     TraceSplit.FINAL_EVALUATION: TraceDataRole.HELD_OUT_EVALUATION,
     TraceSplit.ADVERSARIAL_REGRESSION: TraceDataRole.SYNTHETIC_FIXTURE,
 }
+_CLOSED_EVIDENCE_MARKERS = (
+    b"crv1-",
+    b"crv2-",
+    b"bounded-platt-scaling-v1",
+    b"logit-temperature-scaling-v1",
+    b"heldout_assessment",
+)
 
 
 class CalibrationRedesignV3RegistryViolationCode(StrEnum):
-    """Machine-readable reasons the V3 schema-only boundary cannot be trusted."""
+    """Machine-readable reasons the V3 authoring boundary cannot be trusted."""
 
     REGISTRY_SCHEMA_ERROR = "calibration_redesign_v3_registry_schema_error"
     REGISTRY_PROVENANCE_MISMATCH = "calibration_redesign_v3_registry_provenance_mismatch"
     V1_OR_V2_EVIDENCE_REFERENCE = "calibration_redesign_v3_v1_or_v2_evidence_reference"
     SCHEMA_ONLY_BOUNDARY_VIOLATION = "calibration_redesign_v3_schema_only_boundary_violation"
+    CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v3_calibration_curve_coverage_boundary_violation"
+    )
 
 
 class CalibrationRedesignV3RegistryLoadError(ValueError):
@@ -60,7 +71,7 @@ class CalibrationRedesignV3RegistryLoadError(ValueError):
 
 
 class CalibrationRedesignV3ObservationBudget(StrictContract):
-    """The predeclared V3 observation plan before any case bytes are authored."""
+    """The predeclared V3 observation plan before final evidence is authored."""
 
     calibration_case_count: Literal[36]
     final_evaluation_case_count: Literal[24]
@@ -81,7 +92,7 @@ class CalibrationRedesignV3WorkloadAllocation(StrictContract):
 
 
 class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
-    """One reserved V3 family with IDs but without authored runtime or outcome bytes."""
+    """One V3 family; only the authorised calibration family has case bytes."""
 
     scenario_family_id: str = Field(min_length=1, max_length=128)
     split: TraceSplit
@@ -91,7 +102,10 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
     target_failure_modes: tuple[str, ...] = Field(min_length=1)
     is_final_evaluation_quarantined: bool
     workload_allocation: CalibrationRedesignV3WorkloadAllocation | None = None
-    authoring_status: Literal["reserved_for_v3_case_authoring"]
+    authoring_status: Literal[
+        "calibration_curve_coverage_authored",
+        "reserved_for_v3_case_authoring",
+    ]
 
     @field_validator("reserved_case_ids")
     @classmethod
@@ -120,7 +134,7 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
 
     @model_validator(mode="after")
     def validate_family_governance(self) -> CalibrationRedesignV3ScenarioFamilyRecord:
-        """Bind split, role, quarantine status, and workload allocation together."""
+        """Bind split, role, quarantine status, and authoring stage together."""
 
         if not self.scenario_family_id.startswith("CRV3-"):
             raise ValueError("V3 scenario-family IDs must use the CRV3- namespace")
@@ -134,14 +148,19 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
             raise ValueError(
                 "only final-evaluation V3 families may declare the required workload allocation"
             )
+        if self.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE":
+            if self.authoring_status != "calibration_curve_coverage_authored":
+                raise ValueError("curve-coverage calibration family must be marked authored")
+        elif self.authoring_status != "reserved_for_v3_case_authoring":
+            raise ValueError("only the curve-coverage family may contain V3 case bytes now")
         return self
 
 
 class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
-    """The frozen V3 schema-only registry before data authoring begins."""
+    """The current V3 registry with one calibration-only family authorised."""
 
     schema_version: Literal["calibration-redesign-v3-scenario-family-registry-v1"]
-    registry_status: Literal["schema_only_frozen"]
+    registry_status: Literal["calibration_curve_coverage_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -150,23 +169,25 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     adaptive_policy_id: Literal["causal-marginal-prefix-v1"]
     maximum_candidate_positions: Literal[4]
     v1_or_v2_data_bearing_evidence_used: Literal[False]
-    v3_runtime_or_outcome_assets_authored: Literal[False]
+    v3_runtime_or_outcome_assets_authored: Literal[True]
     v3_manifests_authored: Literal[False]
     observation_budget: CalibrationRedesignV3ObservationBudget
     families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(min_length=1)
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-calibration-runtime-and-outcome-fixture-authoring"]
+    next_authorized_artifact: Literal["v3-calibration-position-spread-fixture-authoring"]
 
     @model_validator(mode="after")
     def validate_registry_governance(self) -> CalibrationRedesignV3ScenarioFamilyRegistry:
-        """Enforce the predeclared V3 corpus shape without accepting evidence bytes."""
+        """Enforce the fixed V3 corpus shape and narrow calibration authoring scope."""
 
         if self.v1_or_v2_data_bearing_evidence_used:
             raise ValueError("V1 and V2 data-bearing evidence is prohibited in V3")
-        if self.v3_runtime_or_outcome_assets_authored:
-            raise ValueError("V3 runtime or outcome assets are not allowed at schema-only stage")
+        if not self.v3_runtime_or_outcome_assets_authored:
+            raise ValueError("curve-coverage case assets must be recorded as authored")
         if self.v3_manifests_authored:
-            raise ValueError("V3 manifests are not allowed at schema-only stage")
+            raise ValueError(
+                "V3 manifests are not allowed before the full calibration corpus exists"
+            )
 
         family_ids = [family.scenario_family_id for family in self.families]
         if len(set(family_ids)) != len(family_ids):
@@ -212,26 +233,40 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
         if any(len(family.reserved_case_ids) != 6 for family in final_families):
             raise ValueError("each V3 final capacity family must reserve exactly six cases")
 
+        curve_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE"
+        )
+        if curve_family.reserved_case_ids != _ALLOWED_CALIBRATION_CASE_IDS:
+            raise ValueError("curve-coverage family must reserve exactly CRV3-101 through CRV3-112")
+
         required_exclusions = {
-            "No V3 runtime-input fixture bytes are present.",
-            "No V3 expected-outcome assets or labels are present.",
+            "No V3 final-evaluation runtime-input fixture bytes are present.",
+            "No V3 final-evaluation expected-outcome assets or labels are present.",
+            "No V3 adversarial-regression runtime-input or expected-outcome assets are present.",
             "No V3 calibration or final-evaluation manifest is present.",
             "No V3 calibration fitting or scheduler code is authorized by this registry.",
             "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
             "No V3 performance or promotion claim is made.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V3 registry must retain every required schema-only exclusion")
+            raise ValueError("V3 registry must retain every required calibration-only exclusion")
         return self
 
 
 def load_calibration_redesign_v3_scenario_family_registry(
     path: Path,
+    *,
+    allow_calibration_curve_coverage_assets: bool = False,
 ) -> CalibrationRedesignV3ScenarioFamilyRegistry:
-    """Load the V3 registry only while its root remains free of data-bearing assets."""
+    """Load V3 registry only through the explicitly selected authoring boundary."""
 
     root = path.parent.resolve()
-    assert_calibration_redesign_v3_schema_only_fixture_root(root)
+    if allow_calibration_curve_coverage_assets:
+        assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root)
+    else:
+        assert_calibration_redesign_v3_schema_only_fixture_root(root)
     if path.resolve() != root / _V3_REGISTRY_FILENAME:
         raise CalibrationRedesignV3RegistryLoadError(
             CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
@@ -263,8 +298,67 @@ def load_calibration_redesign_v3_scenario_family_registry(
 
 
 def assert_calibration_redesign_v3_schema_only_fixture_root(root: Path) -> None:
-    """Fail closed when V3 case bytes or manifests appear before their authorised phase."""
+    """Fail closed when case bytes appear before the schema-only stage is selected."""
 
+    resolved_root = _require_fixture_root(root)
+    unexpected_paths = []
+    for child in resolved_root.iterdir():
+        if child.name in _FORBIDDEN_ROOT_PATH_NAMES or child.is_dir():
+            unexpected_paths.append(child.name)
+        elif child.name not in _ALLOWED_ROOT_FILENAMES:
+            unexpected_paths.append(child.name)
+    if unexpected_paths:
+        rendered = ", ".join(sorted(unexpected_paths))
+        raise CalibrationRedesignV3RegistryLoadError(
+            CalibrationRedesignV3RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION,
+            "V3 schema-only fixture root contains unauthorised assets: " + rendered,
+        )
+
+
+def assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root: Path) -> None:
+    """Validate exactly the first authorised V3 calibration case-pair family."""
+
+    resolved_root = _require_fixture_root(root)
+    unexpected_root_paths = []
+    for child in resolved_root.iterdir():
+        if child.name in _FORBIDDEN_ROOT_PATH_NAMES:
+            unexpected_root_paths.append(child.name)
+        elif child.is_dir() and child.name not in _ALLOWED_CALIBRATION_DIRECTORIES:
+            unexpected_root_paths.append(child.name)
+        elif not child.is_dir() and child.name not in _ALLOWED_ROOT_FILENAMES:
+            unexpected_root_paths.append(child.name)
+    if unexpected_root_paths:
+        rendered = ", ".join(sorted(unexpected_root_paths))
+        raise CalibrationRedesignV3RegistryLoadError(
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            "V3 curve-coverage fixture root contains unauthorised assets: " + rendered,
+        )
+
+    for artifact_kind in ("inputs", "expected_outcomes"):
+        cases_path = resolved_root / artifact_kind / "cases"
+        if not cases_path.is_dir():
+            raise CalibrationRedesignV3RegistryLoadError(
+                CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                f"V3 curve-coverage fixture root requires {artifact_kind}/cases",
+            )
+        direct_names = {path.name for path in cases_path.iterdir()}
+        expected_names = {f"{case_id}.json" for case_id in _ALLOWED_CALIBRATION_CASE_IDS}
+        if direct_names != expected_names:
+            raise CalibrationRedesignV3RegistryLoadError(
+                CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                f"V3 {artifact_kind}/cases must contain exactly CRV3-101 through CRV3-112",
+            )
+        for path in cases_path.iterdir():
+            if not path.is_file() or path.suffix != ".json":
+                raise CalibrationRedesignV3RegistryLoadError(
+                    CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                    f"V3 {artifact_kind}/cases may contain only JSON files",
+                )
+            _reject_closed_evidence_reference(path.read_bytes())
+        _reject_nested_or_sibling_assets(resolved_root / artifact_kind, allowed_child_name="cases")
+
+
+def _require_fixture_root(root: Path) -> Path:
     resolved_root = root.resolve()
     if not resolved_root.is_dir():
         raise CalibrationRedesignV3RegistryLoadError(
@@ -275,38 +369,26 @@ def assert_calibration_redesign_v3_schema_only_fixture_root(root: Path) -> None:
     if not registry_path.is_file():
         raise CalibrationRedesignV3RegistryLoadError(
             CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
-            "V3 schema-only fixture root requires scenario_family_registry.json",
+            "V3 fixture root requires scenario_family_registry.json",
         )
+    return resolved_root
 
-    unexpected_paths = []
-    for child in resolved_root.iterdir():
-        if child.name in _FORBIDDEN_SCHEMA_ONLY_PATH_NAMES:
-            unexpected_paths.append(child.name)
-        elif child.is_dir():
-            unexpected_paths.append(child.name)
-        elif child.name not in _ALLOWED_SCHEMA_ONLY_FILENAMES:
-            unexpected_paths.append(child.name)
-    if unexpected_paths:
-        rendered = ", ".join(sorted(unexpected_paths))
+
+def _reject_nested_or_sibling_assets(parent: Path, *, allowed_child_name: str) -> None:
+    direct_children = {child.name for child in parent.iterdir()}
+    if direct_children != {allowed_child_name}:
         raise CalibrationRedesignV3RegistryLoadError(
-            CalibrationRedesignV3RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION,
-            "V3 schema-only fixture root contains unauthorised assets: " + rendered,
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            f"V3 {parent.name} directory may contain only {allowed_child_name}",
         )
 
 
 def _reject_closed_evidence_reference(raw_bytes: bytes) -> None:
     lowered = raw_bytes.lower()
-    forbidden_markers = (
-        b"crv1-",
-        b"crv2-",
-        b"bounded-platt-scaling-v1",
-        b"logit-temperature-scaling-v1",
-        b"heldout_assessment",
-    )
-    if any(marker in lowered for marker in forbidden_markers):
+    if any(marker in lowered for marker in _CLOSED_EVIDENCE_MARKERS):
         raise CalibrationRedesignV3RegistryLoadError(
             CalibrationRedesignV3RegistryViolationCode.V1_OR_V2_EVIDENCE_REFERENCE,
-            "V3 registry must not reference closed V1 or V2 data-bearing evidence",
+            "V3 assets must not reference closed V1 or V2 data-bearing evidence",
         )
 
 

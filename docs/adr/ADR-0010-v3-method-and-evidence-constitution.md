@@ -145,7 +145,7 @@ After the locked final comparison, the report may use only these result labels:
 V3 will use a separate root:
 
 ```text
-data/fixtures/synthetic_verification_policy_v3/
+data/fixtures/synthetic_calibration_redesign_v3/
 ```
 
 Planned evidence sizes are fixed before authoring:

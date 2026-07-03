@@ -1,6 +1,6 @@
 {
   "schema_version": "calibration-redesign-v3-scenario-family-registry-v1",
-  "registry_status": "schema_only_frozen",
+  "registry_status": "calibration_curve_coverage_authored",
   "fixture_set_id": "synthetic-calibration-redesign-v3",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -9,7 +9,7 @@
   "adaptive_policy_id": "causal-marginal-prefix-v1",
   "maximum_candidate_positions": 4,
   "v1_or_v2_data_bearing_evidence_used": false,
-  "v3_runtime_or_outcome_assets_authored": false,
+  "v3_runtime_or_outcome_assets_authored": true,
   "v3_manifests_authored": false,
   "observation_budget": {
     "calibration_case_count": 36,
@@ -47,7 +47,7 @@
       ],
       "is_final_evaluation_quarantined": false,
       "workload_allocation": null,
-      "authoring_status": "reserved_for_v3_case_authoring"
+      "authoring_status": "calibration_curve_coverage_authored"
     },
     {
       "scenario_family_id": "CRV3-CAL-POSITION-SPREAD",
@@ -230,12 +230,13 @@
     }
   ],
   "explicit_exclusions": [
-    "No V3 runtime-input fixture bytes are present.",
-    "No V3 expected-outcome assets or labels are present.",
+    "No V3 final-evaluation runtime-input fixture bytes are present.",
+    "No V3 final-evaluation expected-outcome assets or labels are present.",
+    "No V3 adversarial-regression runtime-input or expected-outcome assets are present.",
     "No V3 calibration or final-evaluation manifest is present.",
     "No V3 calibration fitting or scheduler code is authorized by this registry.",
     "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
     "No V3 performance or promotion claim is made."
   ],
-  "next_authorized_artifact": "v3-calibration-runtime-and-outcome-fixture-authoring"
+  "next_authorized_artifact": "v3-calibration-position-spread-fixture-authoring"
 }
