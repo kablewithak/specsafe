@@ -1,0 +1,253 @@
+{
+  "schema_version": "calibration-redesign-v2-final-evaluation-manifest-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v2",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-v2-entry-protocol-v1",
+  "candidate_artifact_id": "bounded-platt-scaling-v1",
+  "scenario_family_registry_path": "scenario_family_registry.json",
+  "scenario_family_registry_sha256": "012f35395c2bed92d8a2093916fd4b6d9d91e10802deee5106df0ea9b6f628c6",
+  "scenario_family_registry_byte_count": 7675,
+  "case_count": 9,
+  "observation_count": 36,
+  "minimum_required_observation_count": 36,
+  "split_counts": [
+    {
+      "split": "final_evaluation",
+      "case_count": 9
+    }
+  ],
+  "scenario_family_counts": [
+    {
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "case_count": 3
+    },
+    {
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "case_count": 3
+    },
+    {
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "case_count": 3
+    }
+  ],
+  "entries": [
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-201.json",
+      "case_id": "CRV2-201",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "cee306098b6c0663a8726049ad8f848cc9ed0d715b510b9700a6014d67e7be60",
+      "byte_count": 1359
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-201.json",
+      "case_id": "CRV2-201",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "bf230bfe481f3322f259f04eeab52ca721ec3b13467e7251647634205184a524",
+      "byte_count": 2832
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-202.json",
+      "case_id": "CRV2-202",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "94226fcd2e0d4c8c6ae03a73c9d09150284d8ca21ac966997363e48d6fb301b7",
+      "byte_count": 1359
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-202.json",
+      "case_id": "CRV2-202",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "2a04703614a2b0d587d91a02ab16fd3df0707980840070ba7eb6e31bea37be8e",
+      "byte_count": 2831
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-203.json",
+      "case_id": "CRV2-203",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "a7d20884b568613a078faaf333a20b77a2b9597864b6bfa1cf7beb6213c46963",
+      "byte_count": 1358
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-203.json",
+      "case_id": "CRV2-203",
+      "scenario_family_id": "CRV2-FINAL-DISTRIBUTION-SHIFT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "c3437fbd392d05e90e120fbb7c512bd2c20566eaba652215751a6394777aaa8c",
+      "byte_count": 2832
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-204.json",
+      "case_id": "CRV2-204",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "9e52f13a3e303b6cc09acbef099665a0a9f2aecfbd62b2c379ec4033e2630213",
+      "byte_count": 1421
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-204.json",
+      "case_id": "CRV2-204",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "83750b03b3fb3ea87a5e5cb26fb5cd8575a34542984f5582b157036c76c868a9",
+      "byte_count": 2918
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-205.json",
+      "case_id": "CRV2-205",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "7a607e5a0c24e7556964d424167fd4e9cff00bb8ea766bbdf369c996134b177d",
+      "byte_count": 1423
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-205.json",
+      "case_id": "CRV2-205",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "b42f1eaec34e05f8723663bcd3a27e9b72c792fae80af1334daaebee64c2edf7",
+      "byte_count": 2918
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-206.json",
+      "case_id": "CRV2-206",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "7704e025b1a698fb235c8af357791e30c0643075eb51362a4486f2a63153e4fc",
+      "byte_count": 1421
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-206.json",
+      "case_id": "CRV2-206",
+      "scenario_family_id": "CRV2-FINAL-LOCAL-DISAGREEMENT",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "0486240ff20fb3326e211e0360e95195ec5ec83d314579c3d5d1b17c52816de3",
+      "byte_count": 2918
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-207.json",
+      "case_id": "CRV2-207",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "921262940642d80302fd10f51cd788067707e9788b6e0ede6480ef27af6e035f",
+      "byte_count": 1420
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-207.json",
+      "case_id": "CRV2-207",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "1a39546a38f8dbca9f1b6dd22cbd5b0bb8048407bd7faced23ead37079d9f490",
+      "byte_count": 2960
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-208.json",
+      "case_id": "CRV2-208",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "ba815e6ac965befbf7c6ed58671f6e9ad973fb40aeee6805855a49f398079cea",
+      "byte_count": 1421
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-208.json",
+      "case_id": "CRV2-208",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "7aa9bc8741e0e3ae73cca74142032679bd204a0d0f3179310d37ab0e36f41972",
+      "byte_count": 2960
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-209.json",
+      "case_id": "CRV2-209",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "ed76bfb77e923a7bd90eb3ce86157d0b61e174c6fb5410f68c160e0ab5cc67c2",
+      "byte_count": 1420
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-209.json",
+      "case_id": "CRV2-209",
+      "scenario_family_id": "CRV2-FINAL-ORDER-PERTURBATION",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "source_type": "synthetic",
+      "is_final_evaluation_quarantined": true,
+      "sha256": "e655696e41a246df15610e5f4a6724ff5c6fc633505b7f9c351e59688f2dbe05",
+      "byte_count": 2960
+    }
+  ],
+  "aggregate_sha256": "c56a423eb0d2294e12e4d8c2510f7328c0d0aab5decaed53bfc7e2b42b2dd9cb"
+}

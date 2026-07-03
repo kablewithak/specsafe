@@ -36,7 +36,7 @@ def test_final_local_disagreement_family_is_quarantined_and_preserves_fit_inputs
     """Keep held-out cases typed, isolated, and absent from the frozen fit corpus."""
 
     assert_calibration_redesign_v2_calibration_manifest_fixture_root(V2_FIXTURE_ROOT)
-    assert not FINAL_MANIFEST_PATH.exists()
+    assert FINAL_MANIFEST_PATH.is_file()
 
     calibration_fixture_set = load_calibration_redesign_v2_calibration_manifested_fixture_set(
         V2_FIXTURE_ROOT

@@ -91,6 +91,7 @@ def _finalized_registry(tmp_path: Path):
             "inputs",
             "expected_outcomes",
             "calibration_manifest.json",
+            "final_evaluation_manifest.json",
         ),
     )
     generated_registry = root / "scenario_family_registry.json"
@@ -189,7 +190,7 @@ def test_v2_case_loader_reads_authored_global_ordinal_assets() -> None:
     assert all(not accepted for accepted in low_band)
     assert all(high_band)
     assert (V2_FIXTURE_ROOT / "calibration_manifest.json").is_file()
-    assert not (V2_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (V2_FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
 
 
 def test_v2_case_loader_rejects_missing_expected_outcome_asset(tmp_path: Path) -> None:

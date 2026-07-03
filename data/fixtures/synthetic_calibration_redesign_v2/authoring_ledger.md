@@ -263,3 +263,27 @@ The next slice may create and verify a distinct V2 final-evaluation manifest ove
 36-observation floor without refitting or altering the frozen artifact. It must not score held-out
 outcomes or make a promotion decision; those remain reserved for a later single read-only
 assessment boundary.
+
+## Final-evaluation manifest freeze — 2026-07-03
+
+- Added `final_evaluation_manifest.json` for exactly the nine reserved V2 held-out cases:
+  `CRV2-201` through `CRV2-209`.
+- The manifest inventories 18 separately stored runtime/outcome assets across the three
+  quarantined final-evaluation families, retaining 36 held-out observations.
+- Each entry records its exact repository-relative path, SHA-256 digest, byte count, held-out
+  split, data role, source type, and final-evaluation quarantine status.
+- The manifest is linked to the exact finalized `scenario_family_registry.json` bytes, and its
+  aggregate hash covers the complete held-out inventory.
+- The calibration manifest continues to enumerate only `CRV2-101` through `CRV2-112` and remains
+  reproducible after the final manifest exists.
+- The bounded-Platt artifact and fit report are not loaded, changed, refit, tuned, scored, or
+  promoted by this slice.
+- This is a final-evidence integrity boundary only. It does not calculate held-out metrics,
+  decide whether calibration passed, authorize adaptive scheduling, or make a runtime-control
+  claim.
+
+## Next authorized boundary
+
+The next slice may perform one read-only V2 held-out assessment against the frozen
+`bounded-platt-scaling-v1` artifact and this final manifest. It must retain the result as measured,
+without refitting, threshold tuning, fixture edits, or a second assessment pass.

@@ -51,4 +51,3 @@ def test_v2_case_loader_reads_authored_cross_context_assets() -> None:
     assert len(capacity_profile_ids) == 4
     assert observed_outcome_count == 16
     assert (V2_FIXTURE_ROOT / "calibration_manifest.json").is_file()
-    assert not (V2_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
