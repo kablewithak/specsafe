@@ -11,13 +11,13 @@ registry_status=finalized_for_case_contract_authoring
 v2_case_contracts_status=implemented
 v2_case_asset_authoring_layout_status=implemented
 v2_runtime_or_outcome_assets_authored=true
-v2_authored_family_count=4_of_8
+v2_authored_family_count=5_of_8
 v2_authored_calibration_family_count=3_of_3
 v2_authored_calibration_case_count=12_of_12
 v2_authored_calibration_observation_count=48_of_minimum_48
-v2_authored_final_evaluation_family_count=1_of_3
-v2_authored_final_evaluation_case_count=3_of_9
-v2_authored_final_evaluation_observation_count=12_of_minimum_36
+v2_authored_final_evaluation_family_count=2_of_3
+v2_authored_final_evaluation_case_count=6_of_9
+v2_authored_final_evaluation_observation_count=24_of_minimum_36
 v2_manifest_status=calibration_manifest_frozen; final_evaluation_manifest_not_created
 v2_fitting_status=frozen_calibration_only_artifact_retained
 v2_final_evaluation_status=case_authoring_in_progress; assessment_not_authorized
@@ -191,3 +191,38 @@ The next slice may author `CRV2-FINAL-LOCAL-DISAGREEMENT` cases `CRV2-204` throu
 `CRV2-206`. It must preserve the frozen calibration manifest and artifact, must not create a
 final-evaluation manifest, and must not score or use held-out outcomes to change any fit or
 policy behavior.
+
+
+## Authored held-out family: `CRV2-FINAL-LOCAL-DISAGREEMENT`
+
+The second quarantined V2 final-evaluation tranche adds the three cases reserved by the
+finalized registry:
+
+```text
+CRV2-204
+CRV2-205
+CRV2-206
+```
+
+Each case retains four separately stored runtime contexts and four post-hoc expected outcomes,
+for 12 additional held-out observations and 24 held-out observations across the authored final
+families. This family keeps one permitted workload context and one synthetic capacity snapshot
+while encoding local confidence-order disagreement: within each case, at least one lower-confidence
+position is observed as accepted while a higher-confidence position is observed as rejected. The
+fixture property is diagnostic, not an assessment result.
+
+The held-out runtime JSON retains only pre-sample scheduler-visible context. Candidate token IDs,
+observed acceptance, and prefix-survival labels remain physically separate in expected-outcome JSON.
+The calibration-only manifest continues to enumerate exactly `CRV2-101` through `CRV2-112`; the
+frozen bounded-Platt artifact and fit report are neither modified, refit, retuned, selected, nor
+scored in this slice.
+
+No V2 final-evaluation manifest exists yet. No V2 held-out assessment, promotion decision,
+scheduler behavior, capacity utility result, or runtime-control claim is authorized.
+
+## Next authorized boundary
+
+The next slice may author `CRV2-FINAL-ORDER-PERTURBATION` cases `CRV2-207` through
+`CRV2-209`. It must preserve the frozen calibration manifest and artifact, must not create a
+final-evaluation manifest, and must not score or use held-out outcomes to change any fit or policy
+behavior.
