@@ -226,3 +226,40 @@ The next slice may author `CRV2-FINAL-ORDER-PERTURBATION` cases `CRV2-207` throu
 `CRV2-209`. It must preserve the frozen calibration manifest and artifact, must not create a
 final-evaluation manifest, and must not score or use held-out outcomes to change any fit or policy
 behavior.
+
+
+## Authored held-out family: `CRV2-FINAL-ORDER-PERTURBATION`
+
+The final quarantined V2 final-evaluation tranche adds the three cases reserved by the
+finalized registry:
+
+```text
+CRV2-207
+CRV2-208
+CRV2-209
+```
+
+Each case retains four separately stored runtime contexts and four post-hoc expected outcomes,
+completing the predeclared V2 held-out floor of 36 observations across nine final-evaluation
+cases. The family keeps one permitted workload context and one synthetic capacity snapshot while
+perturbing decode order. The three cases contain the same global set of confidence/acceptance
+pairs in distinct position orders, so they alter sequential prefix behavior without introducing
+a position-specific, workload-specific, capacity-conditioned, or subgroup-specific calibration
+parameter. The fixture property is diagnostic, not an assessment result.
+
+The held-out runtime JSON retains only pre-sample scheduler-visible context. Candidate token IDs,
+observed acceptance, and prefix-survival labels remain physically separate in expected-outcome JSON.
+The calibration-only manifest continues to enumerate exactly `CRV2-101` through `CRV2-112`; the
+frozen bounded-Platt artifact and fit report are neither modified, refit, retuned, selected, nor
+scored in this slice.
+
+No V2 final-evaluation manifest exists yet. No V2 held-out assessment, promotion decision,
+scheduler behavior, capacity utility result, or runtime-control claim is authorized.
+
+## Next authorized boundary
+
+The next slice may create and verify a distinct V2 final-evaluation manifest over exactly
+`CRV2-201` through `CRV2-209`. It must verify hashes, split isolation, registry membership, and the
+36-observation floor without refitting or altering the frozen artifact. It must not score held-out
+outcomes or make a promotion decision; those remain reserved for a later single read-only
+assessment boundary.
