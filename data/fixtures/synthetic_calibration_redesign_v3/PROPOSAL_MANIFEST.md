@@ -1,28 +1,22 @@
-# V3 Calibration Curve-Coverage Authoring Manifest
+# V3 Calibration Authoring Manifest
 
-This directory contains exactly the first authorised V3 calibration family.
+This directory contains exactly the first two authorised V3 calibration families.
 
 ## Present at this boundary
 
 - `scenario_family_registry.json`
 - `PROPOSAL_MANIFEST.md`
 - `authoring_ledger.md`
-- `inputs/cases/CRV3-101.json` through `CRV3-112.json`
-- `expected_outcomes/cases/CRV3-101.json` through `CRV3-112.json`
+- runtime-input case pairs `CRV3-101` through `CRV3-124` under `inputs/cases/`
+- separate post-hoc outcome case pairs `CRV3-101` through `CRV3-124` under `expected_outcomes/cases/`
 
-## What these files are for
+## Absent at this boundary
 
-The twelve case pairs provide 48 fresh calibration observations across a broad raw-confidence range. They are self-authored synthetic diagnostics for learning the calibration curve only.
+- `CRV3-125` through `CRV3-136` calibration case pairs
+- all `CRV3-201` through `CRV3-224` final-evaluation case pairs
+- all `CRV3-301` through `CRV3-308` adversarial-regression case pairs
+- every V3 manifest
+- every V3 fitted calibration artifact or report
+- every V3 scheduler, capacity-profile, policy-comparison, or promotion artifact
 
-Runtime inputs contain only decision-time fields. Candidate token IDs, observed acceptance labels, and prefix-survival labels live only in the separate outcome files.
-
-## Still prohibited
-
-- calibration, final-evaluation, or adversarial manifests;
-- any V3 fitted calibration artifact;
-- any V3 scheduler or policy code;
-- final-evaluation runtime inputs or labels;
-- adversarial-regression runtime inputs or labels;
-- V1 or V2 data-bearing evidence references.
-
-The next authorised slice may create `CRV3-113` through `CRV3-124` for calibration position-spread coverage only.
+The files are local, self-authored synthetic controlled evidence. Runtime input files do not contain candidate token IDs, observed acceptance labels, prefix-survival labels, or final-evaluation data.

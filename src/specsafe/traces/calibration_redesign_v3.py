@@ -1,8 +1,9 @@
 """Governed V3 evidence registry controls for the full north-star programme.
 
 The V3 registry started as a schema-only boundary. This revision authorizes exactly
-one fresh calibration-only family: CRV3-CAL-CURVE-COVERAGE. Final-evaluation and
-adversarial bytes remain absent, quarantined, and fail closed.
+two fresh calibration-only families: CRV3-CAL-CURVE-COVERAGE and
+CRV3-CAL-POSITION-SPREAD. Final-evaluation and adversarial bytes remain absent,
+quarantined, and fail closed.
 """
 
 from __future__ import annotations
@@ -22,7 +23,12 @@ _ALLOWED_ROOT_FILENAMES = {
     "authoring_ledger.md",
     _V3_REGISTRY_FILENAME,
 }
-_ALLOWED_CALIBRATION_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
+_CURVE_COVERAGE_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
+_POSITION_SPREAD_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(113, 125))
+_AUTHORISED_CALIBRATION_CASE_IDS = (
+    *_CURVE_COVERAGE_CASE_IDS,
+    *_POSITION_SPREAD_CASE_IDS,
+)
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FORBIDDEN_ROOT_PATH_NAMES = {
     "calibration_manifest.json",
@@ -55,6 +61,9 @@ class CalibrationRedesignV3RegistryViolationCode(StrEnum):
     SCHEMA_ONLY_BOUNDARY_VIOLATION = "calibration_redesign_v3_schema_only_boundary_violation"
     CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
         "calibration_redesign_v3_calibration_curve_coverage_boundary_violation"
+    )
+    CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v3_calibration_position_spread_boundary_violation"
     )
 
 
@@ -104,6 +113,7 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
     workload_allocation: CalibrationRedesignV3WorkloadAllocation | None = None
     authoring_status: Literal[
         "calibration_curve_coverage_authored",
+        "calibration_position_spread_authored",
         "reserved_for_v3_case_authoring",
     ]
 
@@ -148,19 +158,26 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
             raise ValueError(
                 "only final-evaluation V3 families may declare the required workload allocation"
             )
-        if self.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE":
-            if self.authoring_status != "calibration_curve_coverage_authored":
-                raise ValueError("curve-coverage calibration family must be marked authored")
-        elif self.authoring_status != "reserved_for_v3_case_authoring":
-            raise ValueError("only the curve-coverage family may contain V3 case bytes now")
+        expected_authoring_status_by_family = {
+            "CRV3-CAL-CURVE-COVERAGE": "calibration_curve_coverage_authored",
+            "CRV3-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
+        }
+        expected_authoring_status = expected_authoring_status_by_family.get(
+            self.scenario_family_id,
+            "reserved_for_v3_case_authoring",
+        )
+        if self.authoring_status != expected_authoring_status:
+            raise ValueError(
+                "V3 family authoring status does not match the authorised calibration boundary"
+            )
         return self
 
 
 class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
-    """The current V3 registry with one calibration-only family authorised."""
+    """The current V3 registry with two calibration-only families authorised."""
 
     schema_version: Literal["calibration-redesign-v3-scenario-family-registry-v1"]
-    registry_status: Literal["calibration_curve_coverage_authored"]
+    registry_status: Literal["calibration_position_spread_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -174,7 +191,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     observation_budget: CalibrationRedesignV3ObservationBudget
     families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(min_length=1)
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-calibration-position-spread-fixture-authoring"]
+    next_authorized_artifact: Literal["v3-calibration-workload-mix-fixture-authoring"]
 
     @model_validator(mode="after")
     def validate_registry_governance(self) -> CalibrationRedesignV3ScenarioFamilyRegistry:
@@ -183,7 +200,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
         if self.v1_or_v2_data_bearing_evidence_used:
             raise ValueError("V1 and V2 data-bearing evidence is prohibited in V3")
         if not self.v3_runtime_or_outcome_assets_authored:
-            raise ValueError("curve-coverage case assets must be recorded as authored")
+            raise ValueError("authorised V3 calibration case assets must be recorded as authored")
         if self.v3_manifests_authored:
             raise ValueError(
                 "V3 manifests are not allowed before the full calibration corpus exists"
@@ -238,8 +255,22 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             for family in self.families
             if family.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE"
         )
-        if curve_family.reserved_case_ids != _ALLOWED_CALIBRATION_CASE_IDS:
+        if curve_family.reserved_case_ids != _CURVE_COVERAGE_CASE_IDS:
             raise ValueError("curve-coverage family must reserve exactly CRV3-101 through CRV3-112")
+        if curve_family.authoring_status != "calibration_curve_coverage_authored":
+            raise ValueError("curve-coverage family must remain marked authored")
+
+        position_spread_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CRV3-CAL-POSITION-SPREAD"
+        )
+        if position_spread_family.reserved_case_ids != _POSITION_SPREAD_CASE_IDS:
+            raise ValueError(
+                "position-spread family must reserve exactly CRV3-113 through CRV3-124"
+            )
+        if position_spread_family.authoring_status != "calibration_position_spread_authored":
+            raise ValueError("position-spread family must be marked authored")
 
         required_exclusions = {
             "No V3 final-evaluation runtime-input fixture bytes are present.",
@@ -259,11 +290,20 @@ def load_calibration_redesign_v3_scenario_family_registry(
     path: Path,
     *,
     allow_calibration_curve_coverage_assets: bool = False,
+    allow_calibration_position_spread_assets: bool = False,
 ) -> CalibrationRedesignV3ScenarioFamilyRegistry:
     """Load V3 registry only through the explicitly selected authoring boundary."""
 
+    if allow_calibration_curve_coverage_assets and allow_calibration_position_spread_assets:
+        raise CalibrationRedesignV3RegistryLoadError(
+            CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+            "V3 registry loading must select exactly one authored calibration boundary",
+        )
+
     root = path.parent.resolve()
-    if allow_calibration_curve_coverage_assets:
+    if allow_calibration_position_spread_assets:
+        assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root)
+    elif allow_calibration_curve_coverage_assets:
         assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root)
     else:
         assert_calibration_redesign_v3_schema_only_fixture_root(root)
@@ -316,8 +356,38 @@ def assert_calibration_redesign_v3_schema_only_fixture_root(root: Path) -> None:
 
 
 def assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root: Path) -> None:
-    """Validate exactly the first authorised V3 calibration case-pair family."""
+    """Validate exactly the original first V3 calibration case-pair family."""
 
+    _assert_v3_calibration_fixture_root(
+        root,
+        expected_case_ids=_CURVE_COVERAGE_CASE_IDS,
+        violation_code=(
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
+        ),
+        boundary_name="curve-coverage",
+    )
+
+
+def assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root: Path) -> None:
+    """Validate exactly the first two authorised V3 calibration case-pair families."""
+
+    _assert_v3_calibration_fixture_root(
+        root,
+        expected_case_ids=_AUTHORISED_CALIBRATION_CASE_IDS,
+        violation_code=(
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+        ),
+        boundary_name="position-spread",
+    )
+
+
+def _assert_v3_calibration_fixture_root(
+    root: Path,
+    *,
+    expected_case_ids: tuple[str, ...],
+    violation_code: CalibrationRedesignV3RegistryViolationCode,
+    boundary_name: str,
+) -> None:
     resolved_root = _require_fixture_root(root)
     unexpected_root_paths = []
     for child in resolved_root.iterdir():
@@ -330,32 +400,37 @@ def assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root:
     if unexpected_root_paths:
         rendered = ", ".join(sorted(unexpected_root_paths))
         raise CalibrationRedesignV3RegistryLoadError(
-            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
-            "V3 curve-coverage fixture root contains unauthorised assets: " + rendered,
+            violation_code,
+            f"V3 {boundary_name} fixture root contains unauthorised assets: {rendered}",
         )
 
     for artifact_kind in ("inputs", "expected_outcomes"):
         cases_path = resolved_root / artifact_kind / "cases"
         if not cases_path.is_dir():
             raise CalibrationRedesignV3RegistryLoadError(
-                CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
-                f"V3 curve-coverage fixture root requires {artifact_kind}/cases",
+                violation_code,
+                f"V3 {boundary_name} fixture root requires {artifact_kind}/cases",
             )
         direct_names = {path.name for path in cases_path.iterdir()}
-        expected_names = {f"{case_id}.json" for case_id in _ALLOWED_CALIBRATION_CASE_IDS}
+        expected_names = {f"{case_id}.json" for case_id in expected_case_ids}
         if direct_names != expected_names:
+            case_range = f"{expected_case_ids[0]} through {expected_case_ids[-1]}"
             raise CalibrationRedesignV3RegistryLoadError(
-                CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
-                f"V3 {artifact_kind}/cases must contain exactly CRV3-101 through CRV3-112",
+                violation_code,
+                f"V3 {artifact_kind}/cases must contain exactly {case_range}",
             )
-        for path in cases_path.iterdir():
-            if not path.is_file() or path.suffix != ".json":
+        for asset_path in cases_path.iterdir():
+            if not asset_path.is_file() or asset_path.suffix != ".json":
                 raise CalibrationRedesignV3RegistryLoadError(
-                    CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                    violation_code,
                     f"V3 {artifact_kind}/cases may contain only JSON files",
                 )
-            _reject_closed_evidence_reference(path.read_bytes())
-        _reject_nested_or_sibling_assets(resolved_root / artifact_kind, allowed_child_name="cases")
+            _reject_closed_evidence_reference(asset_path.read_bytes())
+        _reject_nested_or_sibling_assets(
+            resolved_root / artifact_kind,
+            allowed_child_name="cases",
+            violation_code=violation_code,
+        )
 
 
 def _require_fixture_root(root: Path) -> Path:
@@ -374,11 +449,16 @@ def _require_fixture_root(root: Path) -> Path:
     return resolved_root
 
 
-def _reject_nested_or_sibling_assets(parent: Path, *, allowed_child_name: str) -> None:
+def _reject_nested_or_sibling_assets(
+    parent: Path,
+    *,
+    allowed_child_name: str,
+    violation_code: CalibrationRedesignV3RegistryViolationCode,
+) -> None:
     direct_children = {child.name for child in parent.iterdir()}
     if direct_children != {allowed_child_name}:
         raise CalibrationRedesignV3RegistryLoadError(
-            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            violation_code,
             f"V3 {parent.name} directory may contain only {allowed_child_name}",
         )
 

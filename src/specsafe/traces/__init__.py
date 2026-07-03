@@ -124,6 +124,7 @@ from specsafe.traces.calibration_redesign_v3 import (
     CalibrationRedesignV3ScenarioFamilyRegistry,
     CalibrationRedesignV3WorkloadAllocation,
     assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root,
+    assert_calibration_redesign_v3_calibration_position_spread_fixture_root,
     assert_calibration_redesign_v3_schema_only_fixture_root,
     load_calibration_redesign_v3_scenario_family_registry,
 )
@@ -217,6 +218,7 @@ __all__ = [
     "CalibrationRedesignV3ScenarioFamilyRegistry",
     "CalibrationRedesignV3WorkloadAllocation",
     "assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root",
+    "assert_calibration_redesign_v3_calibration_position_spread_fixture_root",
     "assert_calibration_redesign_v3_schema_only_fixture_root",
     "load_calibration_redesign_v3_replay_case",
     "load_calibration_redesign_v3_scenario_family_registry",
