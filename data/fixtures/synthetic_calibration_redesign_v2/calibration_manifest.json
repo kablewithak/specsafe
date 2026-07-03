@@ -1,0 +1,301 @@
+{
+  "schema_version": "calibration-redesign-v2-calibration-manifest-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v2",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "authoring_protocol_version": "calibration-redesign-v2-entry-protocol-v1",
+  "candidate_artifact_id": "bounded-platt-scaling-v1",
+  "scenario_family_registry_path": "scenario_family_registry.json",
+  "scenario_family_registry_sha256": "012f35395c2bed92d8a2093916fd4b6d9d91e10802deee5106df0ea9b6f628c6",
+  "scenario_family_registry_byte_count": 7675,
+  "case_count": 12,
+  "observation_count": 48,
+  "minimum_required_observation_count": 48,
+  "split_counts": [
+    {
+      "split": "calibration",
+      "case_count": 12
+    }
+  ],
+  "scenario_family_counts": [
+    {
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "case_count": 4
+    },
+    {
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "case_count": 4
+    },
+    {
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "case_count": 4
+    }
+  ],
+  "entries": [
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-101.json",
+      "case_id": "CRV2-101",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "83a90e138cf6612af452b92b456a2f92b6d703daaa27b1bfccb1a439d2085b7d",
+      "byte_count": 1358
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-101.json",
+      "case_id": "CRV2-101",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "26bfa1e156b3de5d9b416227df103388d9a88c6618fe19523790bc92fc4c8778",
+      "byte_count": 2757
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-102.json",
+      "case_id": "CRV2-102",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "31f045097e56a8e46ddbf090caa1dca864eaaf8cd6873a1bb16cd8c2cea20209",
+      "byte_count": 1357
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-102.json",
+      "case_id": "CRV2-102",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "496051fa1db1c958a471e467d1d9b44dc5321890ac7f227a761725a0e7952222",
+      "byte_count": 2757
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-103.json",
+      "case_id": "CRV2-103",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "4cd84dfdbade87c0eaf2a83ae33874fa8c932b83b0f178b9669cf6d70675c67b",
+      "byte_count": 1358
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-103.json",
+      "case_id": "CRV2-103",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "aabfd74f54742c87fa900e6bf3597a389eb727f339a2aa01ebf2d2ac45baef1c",
+      "byte_count": 2757
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-104.json",
+      "case_id": "CRV2-104",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "6ddd1cb132bf4028de957a7d1412e791ba33b2e4d4241d22aaf4726715caccde",
+      "byte_count": 1358
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-104.json",
+      "case_id": "CRV2-104",
+      "scenario_family_id": "CRV2-CAL-GLOBAL-ORDINAL",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "88291cea0a1bc844c1864ec61c557f923841e1fb817ca6ce527cf9da2691c62b",
+      "byte_count": 2757
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-105.json",
+      "case_id": "CRV2-105",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "9bcb80b79cdd5bc47531e638b4716e2a37735ed8a51ec0f27b2848d49917f8ba",
+      "byte_count": 1362
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-105.json",
+      "case_id": "CRV2-105",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "79c5c17bfa35f30da00a4c3f55641fe98b536349696c936891cbef3d6f13b27d",
+      "byte_count": 2803
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-106.json",
+      "case_id": "CRV2-106",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "a7a8e66f075dbc08942f434483a29bd33e4a90c774433860d37f45bdcc7e4567",
+      "byte_count": 1355
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-106.json",
+      "case_id": "CRV2-106",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "1cba1c936c5350dac171b67fb5592c0e9e7568f287dba080d4c2012ccb35f349",
+      "byte_count": 2754
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-107.json",
+      "case_id": "CRV2-107",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "27ef01b510dd7abd3abbc39445500eb8065b7f7e63ee20f1deff94989dde4b5d",
+      "byte_count": 1357
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-107.json",
+      "case_id": "CRV2-107",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "fa231cf1ed73c214b721e777f30b76ff6ecd2cf7b911cd9cb911a63eaa9d3b91",
+      "byte_count": 2813
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-108.json",
+      "case_id": "CRV2-108",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "dafbe8b35c0f4b49df45964a4dc639322811d6e4d226343c5b00a11c215a3310",
+      "byte_count": 1361
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-108.json",
+      "case_id": "CRV2-108",
+      "scenario_family_id": "CRV2-CAL-CROSS-CONTEXT",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "03a066c4389c0e566b2a943a54d5279f83d70a8cfb3e4f2de2d4b808045e8a2d",
+      "byte_count": 2790
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-109.json",
+      "case_id": "CRV2-109",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "0a5559b3d580be38be20f954058b94a623553cf2104d12b1d8e71b9acee70300",
+      "byte_count": 1385
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-109.json",
+      "case_id": "CRV2-109",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "10cba5673e93c875ba4e738626c7124abaccc21108e446ae8bd3cfbb4f5e5d26",
+      "byte_count": 2931
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-110.json",
+      "case_id": "CRV2-110",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "a1e2e28223a3215eec6751a82eac2c7a8e1898c48005f8b7576b2a9d1f87d438",
+      "byte_count": 1377
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-110.json",
+      "case_id": "CRV2-110",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "64bee99b9b692da67a08bf1ad72f10f59e482d2fc6508317e3da41c9e49d3f6c",
+      "byte_count": 2941
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-111.json",
+      "case_id": "CRV2-111",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "af3101815a18f247fe257104997d480134b25630c16ab019e8cfa527885e892b",
+      "byte_count": 1383
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-111.json",
+      "case_id": "CRV2-111",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "ff67bbdf542094b1e2cbb6ec9fe1eb6b3936f39a3d85c6e5f04bcbd9f52aa7d6",
+      "byte_count": 2932
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "relative_path": "expected_outcomes/cases/CRV2-112.json",
+      "case_id": "CRV2-112",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "6e9e797f041bf1389ddd79fa0805fd610b133527b6dbf5d9f172faa69ec0545d",
+      "byte_count": 1385
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "relative_path": "inputs/cases/CRV2-112.json",
+      "case_id": "CRV2-112",
+      "scenario_family_id": "CRV2-CAL-DOMAIN-BOUNDARIES",
+      "split": "calibration",
+      "data_role": "calibration",
+      "source_type": "synthetic",
+      "sha256": "4c477645f543b7d86a5461770e0b091719a7ddae01b85460fa283bafdfbd088d",
+      "byte_count": 2947
+    }
+  ],
+  "aggregate_sha256": "b85b2848c0ee8afdadc1b5120c5ebcf4dc03670bb8d312e2f82b2b444c5776e1"
+}
