@@ -129,3 +129,30 @@ behavior.
   assessment, scheduler behavior, capacity utility, and runtime control remain prohibited.
 - This is a fixture-integrity boundary only. It neither fits nor evaluates
   `bounded-platt-scaling-v1`.
+
+## Calibration-only bounded-Platt fit freeze — 2026-07-03
+
+- Added deterministic calibration-only fitting for the preselected
+  `bounded-platt-scaling-v1` candidate.
+- The fitter consumed only the verified `calibration_manifest.json` and the 12 committed V2
+  calibration case pairs. It did not access V2 final-evaluation material.
+- Retained immutable evidence under `evidence/calibration/bounded-platt-scaling-v1/`:
+  - `artifact.json`
+  - `fit_report.json`
+- The frozen artifact records the V2 calibration-manifest aggregate SHA-256, all 12 fit case IDs,
+  the three calibration scenario-family IDs, sample and label counts, fixed optimizer settings,
+  bounds, convergence state, fitted global slope and intercept, and calibration-only loss values.
+- The fit report remains explicitly non-promotional:
+  `final_evaluation_accessed=false`, `promotion_status=not_assessed`, and
+  `runtime_control_eligible=false`.
+- This in-sample calibration fit is not a held-out result. It does not establish V2 calibration
+  success, adaptive-policy eligibility, scheduler value, capacity benefit, or runtime-control
+  eligibility.
+
+## Next authorized boundary
+
+The next slice may author the three V2 final-evaluation scenario families reserved by the
+finalized registry, retaining their held-out quarantine from calibration fitting. It must not
+refit, tune, alter, or select the frozen bounded-Platt artifact after final-evaluation outcomes
+exist. It must create separate runtime and expected-outcome assets, then later a distinct
+final-evaluation manifest, before one read-only held-out assessment can occur.

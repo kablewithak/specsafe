@@ -1,5 +1,17 @@
 """Versioned synthetic trace fixture loading for deterministic local replay."""
 
+from specsafe.traces.bounded_platt_scaling import (
+    DEFAULT_BOUNDED_PLATT_SCALING_FIT_PROTOCOL,
+    BoundedPlattScalingArtifact,
+    BoundedPlattScalingFitError,
+    BoundedPlattScalingFitProtocol,
+    BoundedPlattScalingFitReport,
+    BoundedPlattScalingFitResult,
+    BoundedPlattScalingViolationCode,
+    fit_bounded_platt_scaling,
+    project_bounded_platt_parameters,
+    write_bounded_platt_scaling_fit,
+)
 from specsafe.traces.calibration_redesign import (
     CalibrationRedesignFixtureLoadError,
     CalibrationRedesignFixtureViolationCode,
@@ -63,6 +75,18 @@ from specsafe.traces.calibration_redesign_v2_cases import (
     load_calibration_redesign_v2_replay_case,
     validate_calibration_redesign_v2_replay_case_membership,
 )
+from specsafe.traces.calibration_redesign_v2_manifest import (
+    CalibrationRedesignV2CalibrationFixtureManifest,
+    CalibrationRedesignV2CalibrationManifestArtifactKind,
+    CalibrationRedesignV2CalibrationManifestedFixtureSet,
+    CalibrationRedesignV2CalibrationManifestEntry,
+    CalibrationRedesignV2CalibrationManifestLoadError,
+    CalibrationRedesignV2CalibrationManifestViolationCode,
+    CalibrationRedesignV2CalibrationScenarioFamilyCount,
+    CalibrationRedesignV2CalibrationSplitCount,
+    build_calibration_redesign_v2_calibration_manifest,
+    load_calibration_redesign_v2_calibration_manifested_fixture_set,
+)
 from specsafe.traces.heldout_temperature_scaling_assessment import (
     DEFAULT_HELD_OUT_TEMPERATURE_SCALING_ASSESSMENT_PROTOCOL,
     HeldOutTemperatureScalingAdaptivePolicyResearchEligibility,
@@ -93,6 +117,13 @@ from specsafe.traces.logit_temperature_scaling import (
 )
 
 __all__ = [
+    "DEFAULT_BOUNDED_PLATT_SCALING_FIT_PROTOCOL",
+    "BoundedPlattScalingArtifact",
+    "BoundedPlattScalingFitError",
+    "BoundedPlattScalingFitProtocol",
+    "BoundedPlattScalingFitReport",
+    "BoundedPlattScalingFitResult",
+    "BoundedPlattScalingViolationCode",
     "CalibrationRedesignCaseLoadError",
     "CalibrationRedesignCaseViolationCode",
     "CalibrationRedesignExpectedOutcomes",
@@ -114,6 +145,14 @@ __all__ = [
     "CalibrationRedesignManifestedFixtureSet",
     "CalibrationRedesignReplayCase",
     "CalibrationRedesignRuntimeInput",
+    "CalibrationRedesignV2CalibrationFixtureManifest",
+    "CalibrationRedesignV2CalibrationManifestArtifactKind",
+    "CalibrationRedesignV2CalibrationManifestEntry",
+    "CalibrationRedesignV2CalibrationManifestLoadError",
+    "CalibrationRedesignV2CalibrationManifestViolationCode",
+    "CalibrationRedesignV2CalibrationManifestedFixtureSet",
+    "CalibrationRedesignV2CalibrationScenarioFamilyCount",
+    "CalibrationRedesignV2CalibrationSplitCount",
     "CalibrationRedesignV2CaseContractError",
     "CalibrationRedesignV2CaseViolationCode",
     "CalibrationRedesignV2ExpectedOutcomes",
@@ -150,7 +189,9 @@ __all__ = [
     "assert_calibration_redesign_v2_proposal_only_fixture_root",
     "assert_calibration_redesign_v2_registry_finalization_fixture_root",
     "assess_logit_temperature_scaling_heldout",
+    "build_calibration_redesign_v2_calibration_manifest",
     "build_calibration_redesign_v2_scenario_family_registry",
+    "fit_bounded_platt_scaling",
     "build_calibration_redesign_final_evaluation_manifest",
     "build_calibration_redesign_manifest",
     "fit_logit_temperature_scaling",
@@ -158,12 +199,15 @@ __all__ = [
     "load_calibration_redesign_manifested_fixture_set",
     "load_calibration_redesign_replay_case",
     "load_calibration_redesign_scenario_family_registry",
+    "load_calibration_redesign_v2_calibration_manifested_fixture_set",
     "load_calibration_redesign_v2_replay_case",
     "load_calibration_redesign_v2_scenario_family_registry",
     "load_calibration_redesign_v2_scenario_family_registry_proposal",
+    "project_bounded_platt_parameters",
     "load_logit_temperature_scaling_artifact",
     "load_synthetic_trace_fixture_set",
     "validate_calibration_redesign_v2_replay_case_membership",
+    "write_bounded_platt_scaling_fit",
     "write_logit_temperature_scaling_fit",
     "write_logit_temperature_scaling_heldout_assessment",
 ]
