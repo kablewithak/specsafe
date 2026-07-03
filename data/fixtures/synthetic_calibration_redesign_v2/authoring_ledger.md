@@ -11,13 +11,16 @@ registry_status=finalized_for_case_contract_authoring
 v2_case_contracts_status=implemented
 v2_case_asset_authoring_layout_status=implemented
 v2_runtime_or_outcome_assets_authored=true
-v2_authored_family_count=3_of_8
+v2_authored_family_count=4_of_8
 v2_authored_calibration_family_count=3_of_3
 v2_authored_calibration_case_count=12_of_12
 v2_authored_calibration_observation_count=48_of_minimum_48
-v2_manifest_status=next_authorized_boundary
-v2_fitting_status=blocked_pending_verified_calibration_manifest
-v2_final_evaluation_status=not_authorized
+v2_authored_final_evaluation_family_count=1_of_3
+v2_authored_final_evaluation_case_count=3_of_9
+v2_authored_final_evaluation_observation_count=12_of_minimum_36
+v2_manifest_status=calibration_manifest_frozen; final_evaluation_manifest_not_created
+v2_fitting_status=frozen_calibration_only_artifact_retained
+v2_final_evaluation_status=case_authoring_in_progress; assessment_not_authorized
 v2_adaptive_policy_status=blocked
 v2_runtime_control_status=not_eligible
 ```
@@ -156,3 +159,35 @@ finalized registry, retaining their held-out quarantine from calibration fitting
 refit, tune, alter, or select the frozen bounded-Platt artifact after final-evaluation outcomes
 exist. It must create separate runtime and expected-outcome assets, then later a distinct
 final-evaluation manifest, before one read-only held-out assessment can occur.
+
+## Authored held-out family: `CRV2-FINAL-DISTRIBUTION-SHIFT`
+
+The first quarantined V2 final-evaluation tranche adds the three cases reserved by the
+finalized registry:
+
+```text
+CRV2-201
+CRV2-202
+CRV2-203
+```
+
+Each case retains four separately stored runtime contexts and four post-hoc expected outcomes,
+for 12 held-out observations in total. The family is deliberately kept within one permitted
+workload context and one synthetic capacity snapshot so that it exercises an independent global
+reliability-shift condition rather than adding a workload, capacity, or policy parameter.
+
+The frozen calibration manifest remains calibration-only and continues to enumerate exactly
+`CRV2-101` through `CRV2-112`. The frozen bounded-Platt artifact and fit report are not
+modified, refit, retuned, selected, or scored in this slice. The held-out runtime JSON contains
+only pre-sample context; candidate token IDs, observed acceptance, and prefix-survival labels
+remain physically separate in expected-outcome JSON.
+
+No V2 final-evaluation manifest exists yet. No V2 held-out assessment, promotion decision,
+scheduler behavior, capacity utility result, or runtime-control claim is authorized.
+
+## Next authorized boundary
+
+The next slice may author `CRV2-FINAL-LOCAL-DISAGREEMENT` cases `CRV2-204` through
+`CRV2-206`. It must preserve the frozen calibration manifest and artifact, must not create a
+final-evaluation manifest, and must not score or use held-out outcomes to change any fit or
+policy behavior.

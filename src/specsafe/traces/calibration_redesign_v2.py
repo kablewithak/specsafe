@@ -485,12 +485,14 @@ def assert_calibration_redesign_v2_case_authoring_fixture_root(root: Path) -> No
 
 
 def assert_calibration_redesign_v2_calibration_manifest_fixture_root(root: Path) -> None:
-    """Permit only committed calibration assets and the calibration-only manifest.
+    """Permit frozen calibration evidence and quarantined final case pairs before assessment.
 
-    This transition follows case authoring. It permits the exact V2 calibration-case
-    directories and an optional ``calibration_manifest.json`` while continuing to reject
-    final-evaluation manifests, final-evaluation case IDs, and arbitrary JSON paths.
-    It does not authorize fitting, held-out assessment, or runtime scheduling.
+    The calibration manifest remains calibration-only, but later held-out case authoring must
+    coexist in the same governed fixture root so that the frozen calibration artifact remains
+    reproducible. This boundary permits only exact V2 calibration or final-evaluation case
+    directories plus an optional ``calibration_manifest.json``. A final-evaluation manifest
+    remains prohibited until every held-out family is authored and the assessment boundary is
+    explicitly implemented.
     """
 
     resolved_root = root.resolve()
@@ -690,7 +692,13 @@ def _validate_registry_matches_proposal(
 
 
 def _assert_only_allowed_v2_calibration_manifest_json_paths(root: Path) -> None:
-    """Restrict the manifest phase to calibration-case JSON and provenance metadata."""
+    """Permit calibration assets and quarantined held-out pairs before final assessment.
+
+    A frozen calibration manifest must stay reproducible after final-case authoring. This
+    root guard therefore permits only governed calibration or final-evaluation case JSON
+    pairs, plus the retained proposal, registry, and calibration manifest. It still blocks
+    a final-evaluation manifest and every arbitrary JSON path.
+    """
 
     allowed_governance_paths = {
         (root / _V2_PROPOSAL_FILENAME).resolve(),
@@ -704,13 +712,16 @@ def _assert_only_allowed_v2_calibration_manifest_json_paths(root: Path) -> None:
         if resolved_path in allowed_governance_paths:
             continue
         is_case_asset = path.parent in {runtime_directory, outcomes_directory}
-        if is_case_asset and _is_v2_calibration_case_asset_name(path):
+        if is_case_asset and (
+            _is_v2_calibration_case_asset_name(path)
+            or _is_v2_final_evaluation_case_asset_name(path)
+        ):
             continue
         raise CalibrationRedesignV2RegistryLoadError(
             CalibrationRedesignV2RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION,
             (
-                "V2 calibration-manifest boundary permits JSON only for committed "
-                "calibration case pairs and calibration_manifest.json"
+                "V2 calibration-manifest boundary permits only governed calibration or "
+                "quarantined final-evaluation case pairs and calibration_manifest.json"
             ),
         )
 
@@ -720,6 +731,13 @@ def _is_v2_calibration_case_asset_name(path: Path) -> bool:
         return False
     case_number = int(path.stem.removeprefix("CRV2-"))
     return 100 <= case_number < 200
+
+
+def _is_v2_final_evaluation_case_asset_name(path: Path) -> bool:
+    if path.suffix != ".json" or not _is_v2_case_asset_name(path):
+        return False
+    case_number = int(path.stem.removeprefix("CRV2-"))
+    return 200 <= case_number < 300
 
 
 def _reject_v2_manifest_paths(

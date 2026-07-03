@@ -122,6 +122,26 @@ def test_retained_evidence_contains_no_runtime_action_or_promotion_field(tmp_pat
     assert report_payload["promotion_status"] == "not_assessed"
 
 
+def test_writer_uses_binary_lf_serialization_on_every_platform(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Prevent platform text-mode newline conversion from changing retained evidence bytes."""
+
+    def reject_text_writes(*args: object, **kwargs: object) -> int:
+        raise AssertionError("evidence writer must not use platform text-mode writes")
+
+    monkeypatch.setattr(Path, "write_text", reject_text_writes)
+    output_directory = tmp_path / "evidence"
+
+    write_bounded_platt_scaling_fit(_copied_fixture_root(tmp_path), output_directory)
+
+    for filename in ("artifact.json", "fit_report.json"):
+        evidence_bytes = (output_directory / filename).read_bytes()
+        assert evidence_bytes.endswith(b"\n")
+        assert b"\r\n" not in evidence_bytes
+
+
 def test_committed_evidence_matches_deterministic_rebuild(tmp_path: Path) -> None:
     rebuilt_directory = tmp_path / "rebuilt"
     write_bounded_platt_scaling_fit(_copied_fixture_root(tmp_path), rebuilt_directory)
