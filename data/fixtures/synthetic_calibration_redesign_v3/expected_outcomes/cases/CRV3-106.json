@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-redesign-v3-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV3-106-calibration-curve-coverage-v1",
+  "case_id": "CRV3-106",
+  "trace_id": "crv3-cal-curve-coverage-trace-106",
+  "scenario_family_id": "CRV3-CAL-CURVE-COVERAGE",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "crv3-cal-curve-coverage-trace-106",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 10061,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv3-cal-curve-coverage-trace-106",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 10062,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv3-cal-curve-coverage-trace-106",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 10063,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv3-cal-curve-coverage-trace-106",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 10064,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    }
+  ]
+}

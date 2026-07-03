@@ -13,7 +13,7 @@ This document turns the V3 constitution into the contracts that later code must 
 All V3 evidence must live below this fresh root:
 
 ```text
-data/fixtures/synthetic_verification_policy_v3/
+data/fixtures/synthetic_calibration_redesign_v3/
 ```
 
 Required layout:
@@ -25,14 +25,10 @@ final_evaluation_manifest.json
 adversarial_regression_manifest.json
 
 inputs/
-  calibration/cases/V3CAL-###.json
-  final_evaluation/cases/V3FINAL-###.json
-  adversarial_regression/cases/V3ADV-###.json
+  cases/CRV3-###.json
 
 expected_outcomes/
-  calibration/cases/V3CAL-###.json
-  final_evaluation/cases/V3FINAL-###.json
-  adversarial_regression/cases/V3ADV-###.json
+  cases/CRV3-###.json
 ```
 
 Runtime inputs and outcomes must remain physically separate.
@@ -41,9 +37,9 @@ Runtime inputs and outcomes must remain physically separate.
 
 | Split | IDs | Cases | Candidate positions | Observations |
 |---|---|---:|---:|---:|
-| Calibration | `V3CAL-001` to `V3CAL-036` | 36 | 4 | 144 |
-| Final evaluation | `V3FINAL-001` to `V3FINAL-024` | 24 | 4 | 96 |
-| Adversarial regression | `V3ADV-001` to `V3ADV-008` | 8 | 4 | 32 |
+| Calibration | `CRV3-101` to `CRV3-136` | 36 | 4 | 144 |
+| Final evaluation | `CRV3-201` to `CRV3-224` | 24 | 4 | 96 |
+| Adversarial regression | `CRV3-301` to `CRV3-308` | 8 | 4 | 32 |
 
 No V3 case ID may reuse a V1 or V2 case ID.
 
