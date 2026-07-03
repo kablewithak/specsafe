@@ -1,0 +1,241 @@
+{
+  "schema_version": "calibration-redesign-v3-scenario-family-registry-v1",
+  "registry_status": "schema_only_frozen",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "method_constitution_version": "v3-method-and-evidence-constitution-v1",
+  "calibration_method_id": "quantile-isotonic-calibration-v1",
+  "adaptive_policy_id": "causal-marginal-prefix-v1",
+  "maximum_candidate_positions": 4,
+  "v1_or_v2_data_bearing_evidence_used": false,
+  "v3_runtime_or_outcome_assets_authored": false,
+  "v3_manifests_authored": false,
+  "observation_budget": {
+    "calibration_case_count": 36,
+    "final_evaluation_case_count": 24,
+    "adversarial_regression_case_count": 8,
+    "candidate_positions_per_case": 4,
+    "calibration_observation_count": 144,
+    "final_evaluation_observation_count": 96,
+    "adversarial_regression_observation_count": 32,
+    "calibration_quantile_group_count": 8
+  },
+  "families": [
+    {
+      "scenario_family_id": "CRV3-CAL-CURVE-COVERAGE",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "reserved_case_ids": [
+        "CRV3-101",
+        "CRV3-102",
+        "CRV3-103",
+        "CRV3-104",
+        "CRV3-105",
+        "CRV3-106",
+        "CRV3-107",
+        "CRV3-108",
+        "CRV3-109",
+        "CRV3-110",
+        "CRV3-111",
+        "CRV3-112"
+      ],
+      "rationale": "Reserve fresh confidence-curve coverage without authoring confidence values or labels.",
+      "target_failure_modes": [
+        "nonlinear_raw_confidence",
+        "sparse_quantile_group"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "workload_allocation": null,
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-CAL-POSITION-SPREAD",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "reserved_case_ids": [
+        "CRV3-113",
+        "CRV3-114",
+        "CRV3-115",
+        "CRV3-116",
+        "CRV3-117",
+        "CRV3-118",
+        "CRV3-119",
+        "CRV3-120",
+        "CRV3-121",
+        "CRV3-122",
+        "CRV3-123",
+        "CRV3-124"
+      ],
+      "rationale": "Reserve fresh position-spread cases for the fixed four-position V3 contract.",
+      "target_failure_modes": [
+        "position_dependent_confidence",
+        "prefix_survival_mismatch"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "workload_allocation": null,
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-CAL-WORKLOAD-MIX",
+      "split": "calibration",
+      "primary_data_role": "calibration",
+      "reserved_case_ids": [
+        "CRV3-125",
+        "CRV3-126",
+        "CRV3-127",
+        "CRV3-128",
+        "CRV3-129",
+        "CRV3-130",
+        "CRV3-131",
+        "CRV3-132",
+        "CRV3-133",
+        "CRV3-134",
+        "CRV3-135",
+        "CRV3-136"
+      ],
+      "rationale": "Reserve fresh workload-mix calibration coverage without using V1 or V2 tasks.",
+      "target_failure_modes": [
+        "workload_confidence_shift",
+        "calibration_group_imbalance"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "workload_allocation": null,
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-LIGHT-CAPACITY",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-201",
+        "CRV3-202",
+        "CRV3-203",
+        "CRV3-204",
+        "CRV3-205",
+        "CRV3-206"
+      ],
+      "rationale": "Reserve quarantined light-capacity cases where longer checking may remain competitive.",
+      "target_failure_modes": [
+        "fixed_long_competitive",
+        "low_capacity_cost"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-MODERATE-CAPACITY",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-207",
+        "CRV3-208",
+        "CRV3-209",
+        "CRV3-210",
+        "CRV3-211",
+        "CRV3-212"
+      ],
+      "rationale": "Reserve quarantined moderate-capacity cases with meaningful but mixed marginal cost.",
+      "target_failure_modes": [
+        "mixed_policy_outcome",
+        "capacity_sensitive_prefix_value"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-SATURATED-CAPACITY",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-213",
+        "CRV3-214",
+        "CRV3-215",
+        "CRV3-216",
+        "CRV3-217",
+        "CRV3-218"
+      ],
+      "rationale": "Reserve quarantined saturated-capacity cases where low-value checking must be controlled.",
+      "target_failure_modes": [
+        "verification_waste",
+        "capacity_saturation"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-JAGGED-CAPACITY",
+      "split": "final_evaluation",
+      "primary_data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-219",
+        "CRV3-220",
+        "CRV3-221",
+        "CRV3-222",
+        "CRV3-223",
+        "CRV3-224"
+      ],
+      "rationale": "Reserve quarantined jagged-capacity cases that stress brittle step-by-step choices.",
+      "target_failure_modes": [
+        "policy_instability",
+        "jagged_capacity"
+      ],
+      "is_final_evaluation_quarantined": true,
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-ADV-SAFETY-REGRESSION",
+      "split": "adversarial_regression",
+      "primary_data_role": "synthetic_fixture",
+      "reserved_case_ids": [
+        "CRV3-301",
+        "CRV3-302",
+        "CRV3-303",
+        "CRV3-304",
+        "CRV3-305",
+        "CRV3-306",
+        "CRV3-307",
+        "CRV3-308"
+      ],
+      "rationale": "Reserve regression cases for causal look-ahead, unfit confidence, and invalid fixture boundaries.",
+      "target_failure_modes": [
+        "forbidden_future_information_access",
+        "confidence_not_fit_for_automated_scheduling",
+        "trace_schema_error",
+        "evaluation_split_leakage"
+      ],
+      "is_final_evaluation_quarantined": false,
+      "workload_allocation": null,
+      "authoring_status": "reserved_for_v3_case_authoring"
+    }
+  ],
+  "explicit_exclusions": [
+    "No V3 runtime-input fixture bytes are present.",
+    "No V3 expected-outcome assets or labels are present.",
+    "No V3 calibration or final-evaluation manifest is present.",
+    "No V3 calibration fitting or scheduler code is authorized by this registry.",
+    "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
+    "No V3 performance or promotion claim is made."
+  ],
+  "next_authorized_artifact": "v3-calibration-runtime-and-outcome-fixture-authoring"
+}

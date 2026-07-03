@@ -116,6 +116,16 @@ from specsafe.traces.calibration_redesign_v2_manifest import (
     build_calibration_redesign_v2_calibration_manifest,
     load_calibration_redesign_v2_calibration_manifested_fixture_set,
 )
+from specsafe.traces.calibration_redesign_v3 import (
+    CalibrationRedesignV3ObservationBudget,
+    CalibrationRedesignV3RegistryLoadError,
+    CalibrationRedesignV3RegistryViolationCode,
+    CalibrationRedesignV3ScenarioFamilyRecord,
+    CalibrationRedesignV3ScenarioFamilyRegistry,
+    CalibrationRedesignV3WorkloadAllocation,
+    assert_calibration_redesign_v3_schema_only_fixture_root,
+    load_calibration_redesign_v3_scenario_family_registry,
+)
 from specsafe.traces.heldout_temperature_scaling_assessment import (
     DEFAULT_HELD_OUT_TEMPERATURE_SCALING_ASSESSMENT_PROTOCOL,
     HeldOutTemperatureScalingAdaptivePolicyResearchEligibility,
@@ -185,6 +195,14 @@ __all__ = [
     "CalibrationRedesignManifestedFixtureSet",
     "CalibrationRedesignReplayCase",
     "CalibrationRedesignRuntimeInput",
+    "CalibrationRedesignV3ObservationBudget",
+    "CalibrationRedesignV3RegistryLoadError",
+    "CalibrationRedesignV3RegistryViolationCode",
+    "CalibrationRedesignV3ScenarioFamilyRecord",
+    "CalibrationRedesignV3ScenarioFamilyRegistry",
+    "CalibrationRedesignV3WorkloadAllocation",
+    "assert_calibration_redesign_v3_schema_only_fixture_root",
+    "load_calibration_redesign_v3_scenario_family_registry",
     "CalibrationRedesignV2FinalEvaluationFixtureManifest",
     "CalibrationRedesignV2FinalManifestArtifactKind",
     "CalibrationRedesignV2FinalManifestEntry",
