@@ -661,6 +661,7 @@ def _binary_negative_log_likelihood(probability: float, label: int) -> float:
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    """Write deterministic reviewable evidence without embedding raw fixture payloads."""
+    """Write deterministic UTF-8/LF evidence bytes on every supported platform."""
 
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    serialized_payload = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    path.write_bytes(serialized_payload.encode("utf-8"))

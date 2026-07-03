@@ -416,7 +416,10 @@ def _discover_calibration_case_assets(directory: Path) -> dict[str, Path]:
             f"V2 calibration asset directory is missing: {directory}",
         )
     assets: dict[str, Path] = {}
-    for path in sorted(directory.glob("CRV2-*.json")):
+    # Discover only calibration namespace paths before parsing JSON. Final-evaluation case
+    # bytes may coexist in this root after quarantine authoring, but they remain unread by
+    # calibration-manifest construction and frozen-fit reproduction.
+    for path in sorted(directory.glob("CRV2-1*.json")):
         payload = _read_json(path)
         if not isinstance(payload, dict):
             raise CalibrationRedesignV2CalibrationManifestLoadError(
