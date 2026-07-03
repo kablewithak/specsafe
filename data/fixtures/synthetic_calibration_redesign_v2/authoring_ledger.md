@@ -11,16 +11,16 @@ registry_status=finalized_for_case_contract_authoring
 v2_case_contracts_status=implemented
 v2_case_asset_authoring_layout_status=implemented
 v2_runtime_or_outcome_assets_authored=true
-v2_authored_family_count=5_of_8
+v2_authored_family_count=6_of_8
 v2_authored_calibration_family_count=3_of_3
 v2_authored_calibration_case_count=12_of_12
 v2_authored_calibration_observation_count=48_of_minimum_48
-v2_authored_final_evaluation_family_count=2_of_3
-v2_authored_final_evaluation_case_count=6_of_9
-v2_authored_final_evaluation_observation_count=24_of_minimum_36
-v2_manifest_status=calibration_manifest_frozen; final_evaluation_manifest_not_created
+v2_authored_final_evaluation_family_count=3_of_3
+v2_authored_final_evaluation_case_count=9_of_9
+v2_authored_final_evaluation_observation_count=36_of_minimum_36
+v2_manifest_status=calibration_manifest_frozen; final_evaluation_manifest_frozen
 v2_fitting_status=frozen_calibration_only_artifact_retained
-v2_final_evaluation_status=case_authoring_in_progress; assessment_not_authorized
+v2_final_evaluation_status=heldout_assessment_retained_negative_result
 v2_adaptive_policy_status=blocked
 v2_runtime_control_status=not_eligible
 ```
@@ -287,3 +287,32 @@ assessment boundary.
 The next slice may perform one read-only V2 held-out assessment against the frozen
 `bounded-platt-scaling-v1` artifact and this final manifest. It must retain the result as measured,
 without refitting, threshold tuning, fixture edits, or a second assessment pass.
+
+## Read-only V2 held-out assessment — 2026-07-03
+
+The frozen `bounded-platt-scaling-v1` artifact was assessed exactly once against the separately
+frozen V2 final-evaluation manifest. The assessment retained a negative result without refitting,
+retuning, changing held-out fixture bytes, or modifying the frozen artifact.
+
+```text
+observation_count=36
+raw_brier_score=0.28777777777777774
+calibrated_brier_score=0.33919030111111326
+brier_improvement=-0.051412523333335514
+raw_expected_calibration_error=0.29222222222222227
+calibrated_expected_calibration_error=0.3584753301794393
+expected_calibration_error_improvement=-0.066253107957217
+confidence_ordering_status=preserved
+status=calibrator_regression
+promotion_decision=not_promoted_calibrator_regression
+adaptive_policy_research_eligibility=blocked_held_out_calibration_regression
+final_evaluation_accessed=true
+artifact_refit=false
+artifact_mutated=false
+runtime_control_eligibility=not_eligible_pending_adaptive_policy_evaluation
+```
+
+The V2 bounded-Platt artifact is therefore not promoted. Adaptive-policy research, scheduler
+implementation, capacity-utility claims, and runtime control remain blocked. The final-evaluation
+corpus is now consumed as retained assessment evidence and must not be used for in-place repair.
+
