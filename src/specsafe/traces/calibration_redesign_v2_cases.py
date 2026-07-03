@@ -40,9 +40,7 @@ class CalibrationRedesignV2CaseViolationCode(StrEnum):
     REGISTRY_MEMBERSHIP_ERROR = "calibration_redesign_v2_registry_membership_error"
     UNTRUSTED_REGISTRY = "calibration_redesign_v2_untrusted_registry"
     CASE_ASSET_LAYOUT_ERROR = "calibration_redesign_v2_case_asset_layout_error"
-    CASE_ASSET_PROVENANCE_MISMATCH = (
-        "calibration_redesign_v2_case_asset_provenance_mismatch"
-    )
+    CASE_ASSET_PROVENANCE_MISMATCH = "calibration_redesign_v2_case_asset_provenance_mismatch"
 
 
 class CalibrationRedesignV2CaseContractError(ValueError):
@@ -212,7 +210,6 @@ def validate_calibration_redesign_v2_replay_case_membership(
         )
 
 
-
 def load_calibration_redesign_v2_replay_case(
     root: Path,
     case_id: str,
@@ -229,7 +226,7 @@ def load_calibration_redesign_v2_replay_case(
     try:
         registry = load_calibration_redesign_v2_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_case_assets=True,
+            allow_calibration_manifest=True,
         )
     except CalibrationRedesignV2RegistryLoadError as error:
         raise CalibrationRedesignV2CaseContractError(

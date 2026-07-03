@@ -87,7 +87,11 @@ def _finalized_registry(tmp_path: Path):
     shutil.copytree(
         V2_FIXTURE_ROOT,
         root,
-        ignore=shutil.ignore_patterns("inputs", "expected_outcomes"),
+        ignore=shutil.ignore_patterns(
+            "inputs",
+            "expected_outcomes",
+            "calibration_manifest.json",
+        ),
     )
     generated_registry = root / "scenario_family_registry.json"
     generated_registry.unlink(missing_ok=True)
@@ -184,7 +188,7 @@ def test_v2_case_loader_reads_authored_global_ordinal_assets() -> None:
 
     assert all(not accepted for accepted in low_band)
     assert all(high_band)
-    assert not (V2_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (V2_FIXTURE_ROOT / "calibration_manifest.json").is_file()
     assert not (V2_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
 
 

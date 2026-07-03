@@ -115,3 +115,17 @@ The next slice may create and verify a calibration-only V2 manifest over the 12 
 case pairs. It must not author V2 final-evaluation case bytes, fit or tune bounded Platt scaling,
 inspect final-evaluation outcomes, or introduce scheduler, capacity-utility, or runtime-control
 behavior.
+
+
+## Calibration manifest freeze — 2026-07-03
+
+- Added `calibration_manifest.json` for the complete committed V2 calibration corpus only.
+- The manifest inventories `CRV2-101` through `CRV2-112` as 12 paired runtime/outcome cases,
+  retaining 48 authored observations across the three reserved calibration families.
+- Each manifest entry records the exact repository-relative path, SHA-256 digest, and byte count.
+- The manifest is linked to the exact finalized `scenario_family_registry.json` bytes and its
+  aggregate hash covers the complete inventory.
+- Final-evaluation case IDs (`CRV2-201` through `CRV2-209`), final-evaluation manifests, fitting,
+  assessment, scheduler behavior, capacity utility, and runtime control remain prohibited.
+- This is a fixture-integrity boundary only. It neither fits nor evaluates
+  `bounded-platt-scaling-v1`.
