@@ -1,5 +1,21 @@
 """Versioned synthetic trace fixture loading for deterministic local replay."""
 
+from specsafe.traces.bounded_platt_heldout_assessment import (
+    DEFAULT_BOUNDED_PLATT_HELD_OUT_ASSESSMENT_PROTOCOL,
+    BoundedPlattAdaptivePolicyResearchEligibility,
+    BoundedPlattConfidenceOrderingStatus,
+    BoundedPlattHeldOutAssessmentError,
+    BoundedPlattHeldOutAssessmentProtocol,
+    BoundedPlattHeldOutAssessmentResult,
+    BoundedPlattHeldOutAssessmentStatus,
+    BoundedPlattHeldOutAssessmentViolationCode,
+    BoundedPlattHeldOutCalibrationBin,
+    BoundedPlattHeldOutMetricSummary,
+    BoundedPlattHeldOutPromotionDecision,
+    assess_bounded_platt_scaling_heldout,
+    load_bounded_platt_scaling_artifact,
+    write_bounded_platt_scaling_heldout_assessment,
+)
 from specsafe.traces.bounded_platt_scaling import (
     DEFAULT_BOUNDED_PLATT_SCALING_FIT_PROTOCOL,
     BoundedPlattScalingArtifact,
@@ -130,6 +146,17 @@ from specsafe.traces.logit_temperature_scaling import (
 )
 
 __all__ = [
+    "DEFAULT_BOUNDED_PLATT_HELD_OUT_ASSESSMENT_PROTOCOL",
+    "BoundedPlattAdaptivePolicyResearchEligibility",
+    "BoundedPlattConfidenceOrderingStatus",
+    "BoundedPlattHeldOutAssessmentError",
+    "BoundedPlattHeldOutAssessmentProtocol",
+    "BoundedPlattHeldOutAssessmentResult",
+    "BoundedPlattHeldOutAssessmentStatus",
+    "BoundedPlattHeldOutAssessmentViolationCode",
+    "BoundedPlattHeldOutCalibrationBin",
+    "BoundedPlattHeldOutMetricSummary",
+    "BoundedPlattHeldOutPromotionDecision",
     "DEFAULT_BOUNDED_PLATT_SCALING_FIT_PROTOCOL",
     "BoundedPlattScalingArtifact",
     "BoundedPlattScalingFitError",
@@ -232,6 +259,9 @@ __all__ = [
     "load_synthetic_trace_fixture_set",
     "validate_calibration_redesign_v2_replay_case_membership",
     "write_bounded_platt_scaling_fit",
+    "assess_bounded_platt_scaling_heldout",
+    "load_bounded_platt_scaling_artifact",
+    "write_bounded_platt_scaling_heldout_assessment",
     "write_logit_temperature_scaling_fit",
     "write_logit_temperature_scaling_heldout_assessment",
 ]
