@@ -1,6 +1,6 @@
 """Typed V3 calibration case contracts and loaders.
 
-Only CRV3-101 through CRV3-124 may be loaded at this stage. Runtime inputs and
+Only CRV3-101 through CRV3-136 may be loaded at this stage. Runtime inputs and
 post-hoc outcomes remain separate, final-evaluation and adversarial data remain absent,
 and no calibration fitting or scheduler behaviour is introduced here.
 """
@@ -63,6 +63,7 @@ class CalibrationRedesignV3RuntimeInput(StrictContract):
     scenario_family_id: Literal[
         "CRV3-CAL-CURVE-COVERAGE",
         "CRV3-CAL-POSITION-SPREAD",
+        "CRV3-CAL-WORKLOAD-MIX",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
@@ -103,6 +104,7 @@ class CalibrationRedesignV3ExpectedOutcomes(StrictContract):
     scenario_family_id: Literal[
         "CRV3-CAL-CURVE-COVERAGE",
         "CRV3-CAL-POSITION-SPREAD",
+        "CRV3-CAL-WORKLOAD-MIX",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
@@ -193,6 +195,7 @@ def validate_calibration_redesign_v3_replay_case_membership(
     authorised_statuses = {
         "calibration_curve_coverage_authored",
         "calibration_position_spread_authored",
+        "calibration_workload_mix_authored",
     }
     if (
         family is None
@@ -225,7 +228,7 @@ def load_calibration_redesign_v3_replay_case(
     try:
         registry = load_calibration_redesign_v3_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_position_spread_assets=True,
+            allow_calibration_workload_mix_assets=True,
         )
     except CalibrationRedesignV3RegistryLoadError as error:
         raise CalibrationRedesignV3CaseContractError(

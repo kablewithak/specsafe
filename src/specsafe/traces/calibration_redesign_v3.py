@@ -1,9 +1,9 @@
 """Governed V3 evidence registry controls for the full north-star programme.
 
 The V3 registry started as a schema-only boundary. This revision authorizes exactly
-two fresh calibration-only families: CRV3-CAL-CURVE-COVERAGE and
-CRV3-CAL-POSITION-SPREAD. Final-evaluation and adversarial bytes remain absent,
-quarantined, and fail closed.
+three fresh calibration-only families: CRV3-CAL-CURVE-COVERAGE,
+CRV3-CAL-POSITION-SPREAD, and CRV3-CAL-WORKLOAD-MIX. Final-evaluation and
+adversarial bytes remain absent, quarantined, and fail closed.
 """
 
 from __future__ import annotations
@@ -25,9 +25,11 @@ _ALLOWED_ROOT_FILENAMES = {
 }
 _CURVE_COVERAGE_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
 _POSITION_SPREAD_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(113, 125))
+_WORKLOAD_MIX_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(125, 137))
 _AUTHORISED_CALIBRATION_CASE_IDS = (
     *_CURVE_COVERAGE_CASE_IDS,
     *_POSITION_SPREAD_CASE_IDS,
+    *_WORKLOAD_MIX_CASE_IDS,
 )
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FORBIDDEN_ROOT_PATH_NAMES = {
@@ -64,6 +66,9 @@ class CalibrationRedesignV3RegistryViolationCode(StrEnum):
     )
     CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION = (
         "calibration_redesign_v3_calibration_position_spread_boundary_violation"
+    )
+    CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v3_calibration_workload_mix_boundary_violation"
     )
 
 
@@ -114,6 +119,7 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
     authoring_status: Literal[
         "calibration_curve_coverage_authored",
         "calibration_position_spread_authored",
+        "calibration_workload_mix_authored",
         "reserved_for_v3_case_authoring",
     ]
 
@@ -161,6 +167,7 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
         expected_authoring_status_by_family = {
             "CRV3-CAL-CURVE-COVERAGE": "calibration_curve_coverage_authored",
             "CRV3-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
+            "CRV3-CAL-WORKLOAD-MIX": "calibration_workload_mix_authored",
         }
         expected_authoring_status = expected_authoring_status_by_family.get(
             self.scenario_family_id,
@@ -174,10 +181,10 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
 
 
 class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
-    """The current V3 registry with two calibration-only families authorised."""
+    """The current V3 registry with all three calibration-only families authorised."""
 
     schema_version: Literal["calibration-redesign-v3-scenario-family-registry-v1"]
-    registry_status: Literal["calibration_position_spread_authored"]
+    registry_status: Literal["calibration_workload_mix_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -191,7 +198,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     observation_budget: CalibrationRedesignV3ObservationBudget
     families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(min_length=1)
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-calibration-workload-mix-fixture-authoring"]
+    next_authorized_artifact: Literal["v3-calibration-manifest-authoring"]
 
     @model_validator(mode="after")
     def validate_registry_governance(self) -> CalibrationRedesignV3ScenarioFamilyRegistry:
@@ -272,6 +279,16 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
         if position_spread_family.authoring_status != "calibration_position_spread_authored":
             raise ValueError("position-spread family must be marked authored")
 
+        workload_mix_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CRV3-CAL-WORKLOAD-MIX"
+        )
+        if workload_mix_family.reserved_case_ids != _WORKLOAD_MIX_CASE_IDS:
+            raise ValueError("workload-mix family must reserve exactly CRV3-125 through CRV3-136")
+        if workload_mix_family.authoring_status != "calibration_workload_mix_authored":
+            raise ValueError("workload-mix family must be marked authored")
+
         required_exclusions = {
             "No V3 final-evaluation runtime-input fixture bytes are present.",
             "No V3 final-evaluation expected-outcome assets or labels are present.",
@@ -291,17 +308,27 @@ def load_calibration_redesign_v3_scenario_family_registry(
     *,
     allow_calibration_curve_coverage_assets: bool = False,
     allow_calibration_position_spread_assets: bool = False,
+    allow_calibration_workload_mix_assets: bool = False,
 ) -> CalibrationRedesignV3ScenarioFamilyRegistry:
     """Load V3 registry only through the explicitly selected authoring boundary."""
 
-    if allow_calibration_curve_coverage_assets and allow_calibration_position_spread_assets:
+    selected_authoring_boundary_count = sum(
+        (
+            allow_calibration_curve_coverage_assets,
+            allow_calibration_position_spread_assets,
+            allow_calibration_workload_mix_assets,
+        )
+    )
+    if selected_authoring_boundary_count > 1:
         raise CalibrationRedesignV3RegistryLoadError(
             CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
             "V3 registry loading must select exactly one authored calibration boundary",
         )
 
     root = path.parent.resolve()
-    if allow_calibration_position_spread_assets:
+    if allow_calibration_workload_mix_assets:
+        assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(root)
+    elif allow_calibration_position_spread_assets:
         assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root)
     elif allow_calibration_curve_coverage_assets:
         assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root)
@@ -373,11 +400,24 @@ def assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root
 
     _assert_v3_calibration_fixture_root(
         root,
-        expected_case_ids=_AUTHORISED_CALIBRATION_CASE_IDS,
+        expected_case_ids=(*_CURVE_COVERAGE_CASE_IDS, *_POSITION_SPREAD_CASE_IDS),
         violation_code=(
             CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
         ),
         boundary_name="position-spread",
+    )
+
+
+def assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(root: Path) -> None:
+    """Validate all three authorised V3 calibration case-pair families."""
+
+    _assert_v3_calibration_fixture_root(
+        root,
+        expected_case_ids=_AUTHORISED_CALIBRATION_CASE_IDS,
+        violation_code=(
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION
+        ),
+        boundary_name="workload-mix",
     )
 
 

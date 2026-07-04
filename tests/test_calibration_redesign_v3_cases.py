@@ -46,7 +46,7 @@ def _replay_case() -> CalibrationRedesignV3ReplayCase:
 def _registry():
     return load_calibration_redesign_v3_scenario_family_registry(
         FIXTURE_ROOT / "scenario_family_registry.json",
-        allow_calibration_position_spread_assets=True,
+        allow_calibration_workload_mix_assets=True,
     )
 
 
@@ -85,6 +85,12 @@ def test_v3_replay_case_membership_accepts_authorised_curve_case() -> None:
 
 def test_v3_replay_case_membership_accepts_authorised_position_spread_case() -> None:
     replay_case = load_calibration_redesign_v3_replay_case(FIXTURE_ROOT, "CRV3-113")
+
+    validate_calibration_redesign_v3_replay_case_membership(replay_case, _registry())
+
+
+def test_v3_replay_case_membership_accepts_authorised_workload_mix_case() -> None:
+    replay_case = load_calibration_redesign_v3_replay_case(FIXTURE_ROOT, "CRV3-125")
 
     validate_calibration_redesign_v3_replay_case_membership(replay_case, _registry())
 
