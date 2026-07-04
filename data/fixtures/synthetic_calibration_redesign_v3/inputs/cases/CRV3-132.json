@@ -1,0 +1,85 @@
+{
+  "schema_version": "calibration-redesign-v3-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV3-132-calibration-workload-mix-v1",
+  "case_id": "CRV3-132",
+  "trace_id": "crv3-cal-workload-mix-trace-132",
+  "scenario_family_id": "CRV3-CAL-WORKLOAD-MIX",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "request_id": "crv3-cal-workload-mix-request-132",
+  "generation_note": "Fresh self-authored V3 calibration-only workload-mix runtime input with pre-sample confidence values and no post-hoc labels.",
+  "contexts": [
+    {
+      "trace_id": "crv3-cal-workload-mix-trace-132",
+      "request_id": "crv3-cal-workload-mix-request-132",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "visible_prefix_token_ids": [],
+      "conditional_survival_confidence": 0.66,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-v3-calibration-workload-mix",
+        "source": "synthetic",
+        "active_request_count": 9,
+        "verification_batch_tokens": 0
+      }
+    },
+    {
+      "trace_id": "crv3-cal-workload-mix-trace-132",
+      "request_id": "crv3-cal-workload-mix-request-132",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "visible_prefix_token_ids": [
+        13201
+      ],
+      "conditional_survival_confidence": 0.6,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-v3-calibration-workload-mix",
+        "source": "synthetic",
+        "active_request_count": 9,
+        "verification_batch_tokens": 1
+      }
+    },
+    {
+      "trace_id": "crv3-cal-workload-mix-trace-132",
+      "request_id": "crv3-cal-workload-mix-request-132",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "visible_prefix_token_ids": [
+        13201,
+        13202
+      ],
+      "conditional_survival_confidence": 0.54,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-v3-calibration-workload-mix",
+        "source": "synthetic",
+        "active_request_count": 9,
+        "verification_batch_tokens": 2
+      }
+    },
+    {
+      "trace_id": "crv3-cal-workload-mix-trace-132",
+      "request_id": "crv3-cal-workload-mix-request-132",
+      "workload_type": "code",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "visible_prefix_token_ids": [
+        13201,
+        13202,
+        13203
+      ],
+      "conditional_survival_confidence": 0.48,
+      "capacity_snapshot": {
+        "profile_id": "synthetic-v3-calibration-workload-mix",
+        "source": "synthetic",
+        "active_request_count": 9,
+        "verification_batch_tokens": 3
+      }
+    }
+  ]
+}

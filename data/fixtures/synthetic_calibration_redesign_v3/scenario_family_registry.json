@@ -1,6 +1,6 @@
 {
   "schema_version": "calibration-redesign-v3-scenario-family-registry-v1",
-  "registry_status": "calibration_position_spread_authored",
+  "registry_status": "calibration_workload_mix_authored",
   "fixture_set_id": "synthetic-calibration-redesign-v3",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -94,14 +94,14 @@
         "CRV3-135",
         "CRV3-136"
       ],
-      "rationale": "Reserve fresh workload-mix calibration coverage without using V1 or V2 tasks.",
+      "rationale": "Author fresh workload-mix calibration cases across structured text, code, and open-ended chat without authoring final-evaluation evidence.",
       "target_failure_modes": [
         "workload_confidence_shift",
         "calibration_group_imbalance"
       ],
       "is_final_evaluation_quarantined": false,
       "workload_allocation": null,
-      "authoring_status": "reserved_for_v3_case_authoring"
+      "authoring_status": "calibration_workload_mix_authored"
     },
     {
       "scenario_family_id": "CRV3-FINAL-LIGHT-CAPACITY",
@@ -238,5 +238,5 @@
     "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
     "No V3 performance or promotion claim is made."
   ],
-  "next_authorized_artifact": "v3-calibration-workload-mix-fixture-authoring"
+  "next_authorized_artifact": "v3-calibration-manifest-authoring"
 }
