@@ -1,8 +1,8 @@
-"""Typed V3 calibration case contracts and loaders.
+"""Typed V3 case contracts.
 
-Only CRV3-101 through CRV3-136 may be loaded at this stage. Runtime inputs and
-post-hoc outcomes remain separate, final-evaluation and adversarial data remain absent,
-and no calibration fitting or scheduler behaviour is introduced here.
+Calibration and held-out case pairs share typed runtime/outcome contracts while their
+loaders remain split by evidence boundary. Runtime inputs and post-hoc outcomes are
+structurally separate.
 """
 
 from __future__ import annotations
@@ -64,9 +64,13 @@ class CalibrationRedesignV3RuntimeInput(StrictContract):
         "CRV3-CAL-CURVE-COVERAGE",
         "CRV3-CAL-POSITION-SPREAD",
         "CRV3-CAL-WORKLOAD-MIX",
+        "CRV3-FINAL-LIGHT-CAPACITY",
+        "CRV3-FINAL-MODERATE-CAPACITY",
+        "CRV3-FINAL-SATURATED-CAPACITY",
+        "CRV3-FINAL-JAGGED-CAPACITY",
     ]
-    split: Literal[TraceSplit.CALIBRATION]
-    data_role: Literal[TraceDataRole.CALIBRATION]
+    split: Literal[TraceSplit.CALIBRATION, TraceSplit.FINAL_EVALUATION]
+    data_role: Literal[TraceDataRole.CALIBRATION, TraceDataRole.HELD_OUT_EVALUATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
     generation_note: str = Field(min_length=1, max_length=500)
     contexts: tuple[CausalSchedulerContext, ...] = Field(min_length=4, max_length=4)
@@ -105,9 +109,13 @@ class CalibrationRedesignV3ExpectedOutcomes(StrictContract):
         "CRV3-CAL-CURVE-COVERAGE",
         "CRV3-CAL-POSITION-SPREAD",
         "CRV3-CAL-WORKLOAD-MIX",
+        "CRV3-FINAL-LIGHT-CAPACITY",
+        "CRV3-FINAL-MODERATE-CAPACITY",
+        "CRV3-FINAL-SATURATED-CAPACITY",
+        "CRV3-FINAL-JAGGED-CAPACITY",
     ]
-    split: Literal[TraceSplit.CALIBRATION]
-    data_role: Literal[TraceDataRole.CALIBRATION]
+    split: Literal[TraceSplit.CALIBRATION, TraceSplit.FINAL_EVALUATION]
+    data_role: Literal[TraceDataRole.CALIBRATION, TraceDataRole.HELD_OUT_EVALUATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
     outcomes: tuple[SyntheticTraceExpectedOutcome, ...] = Field(min_length=4, max_length=4)
 
@@ -121,7 +129,7 @@ class CalibrationRedesignV3ExpectedOutcomes(StrictContract):
             if outcome.trace_id != self.trace_id:
                 raise ValueError("all V3 outcomes must use the enclosing trace_id")
             if outcome.decode_round != 0:
-                raise ValueError("V3 calibration cases must use decode round zero")
+                raise ValueError("V3 cases must use decode round zero")
             if outcome.block_position_index != expected_position:
                 raise ValueError("V3 outcomes must be contiguous from position one")
             prefix_survives = prefix_survives and outcome.observed_acceptance

@@ -59,3 +59,11 @@ The next authorised slice may freeze the completed V3 calibration corpus behind 
 `v3-calibration-readiness-and-final-evidence-authoring-gate`
 
 The next slice may define the pre-authoring gate for fresh V3 hidden final-evaluation evidence. It must keep the frozen calibration corpus and fitted artifact unchanged.
+
+
+## Final evidence index and light-capacity family
+
+- Added `final_evidence_index.json` as a separate held-out inventory so final authoring does not alter the frozen calibration registry.
+- Recorded hashes for the frozen calibration registry, calibration manifest, quantile-isotonic artifact, and fit report.
+- Authored `CRV3-201` through `CRV3-206` as separate held-out light-capacity runtime and outcome pairs under `final_evaluation/`.
+- Did not create a V3 final-evaluation manifest, run a held-out assessment, run the fitted calibrator on held-out data, add scheduler logic, or create adversarial evidence.

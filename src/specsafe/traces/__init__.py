@@ -139,6 +139,15 @@ from specsafe.traces.calibration_redesign_v3_cases import (
     load_calibration_redesign_v3_replay_case,
     validate_calibration_redesign_v3_replay_case_membership,
 )
+from specsafe.traces.calibration_redesign_v3_final_evidence import (
+    CalibrationRedesignV3FinalEvidenceFamily,
+    CalibrationRedesignV3FinalEvidenceIndex,
+    CalibrationRedesignV3FinalEvidenceLoadError,
+    CalibrationRedesignV3FinalEvidenceViolationCode,
+    CalibrationRedesignV3FinalEvidenceWorkloadAllocation,
+    load_calibration_redesign_v3_final_evaluation_replay_case,
+    load_calibration_redesign_v3_final_evidence_index,
+)
 from specsafe.traces.calibration_redesign_v3_manifest import (
     CalibrationRedesignV3CalibrationFixtureManifest,
     CalibrationRedesignV3CalibrationManifestArtifactKind,
@@ -240,6 +249,11 @@ __all__ = [
     "CalibrationRedesignV3CalibrationManifestedFixtureSet",
     "CalibrationRedesignV3CalibrationScenarioFamilyCount",
     "CalibrationRedesignV3CalibrationSplitCount",
+    "CalibrationRedesignV3FinalEvidenceFamily",
+    "CalibrationRedesignV3FinalEvidenceIndex",
+    "CalibrationRedesignV3FinalEvidenceLoadError",
+    "CalibrationRedesignV3FinalEvidenceViolationCode",
+    "CalibrationRedesignV3FinalEvidenceWorkloadAllocation",
     "CalibrationRedesignV3CaseContractError",
     "CalibrationRedesignV3CaseViolationCode",
     "CalibrationRedesignV3ExpectedOutcomes",
@@ -258,6 +272,8 @@ __all__ = [
     "assert_calibration_redesign_v3_schema_only_fixture_root",
     "build_calibration_redesign_v3_calibration_manifest",
     "load_calibration_redesign_v3_calibration_manifested_fixture_set",
+    "load_calibration_redesign_v3_final_evaluation_replay_case",
+    "load_calibration_redesign_v3_final_evidence_index",
     "load_calibration_redesign_v3_replay_case",
     "load_calibration_redesign_v3_scenario_family_registry",
     "validate_calibration_redesign_v3_replay_case_membership",
