@@ -363,7 +363,8 @@ def load_calibration_redesign_v3_calibration_manifested_fixture_set(
     for case_id in sorted(expected_case_ids):
         entries = entries_by_case[case_id]
         if (
-            entries.get(CalibrationRedesignV3CalibrationManifestArtifactKind.RUNTIME_INPUT) is None
+            entries.get(CalibrationRedesignV3CalibrationManifestArtifactKind.RUNTIME_INPUT)
+            is None
             or entries.get(CalibrationRedesignV3CalibrationManifestArtifactKind.EXPECTED_OUTCOMES)
             is None
         ):
@@ -373,12 +374,9 @@ def load_calibration_redesign_v3_calibration_manifested_fixture_set(
             )
         replay_case = _load_replay_case(root, case_id)
         _validate_calibration_case(replay_case, registry)
-        if (
-            replay_case.runtime_input.scenario_family_id
-            != entries[
-                CalibrationRedesignV3CalibrationManifestArtifactKind.RUNTIME_INPUT
-            ].scenario_family_id
-        ):
+        if replay_case.runtime_input.scenario_family_id != entries[
+            CalibrationRedesignV3CalibrationManifestArtifactKind.RUNTIME_INPUT
+        ].scenario_family_id:
             raise CalibrationRedesignV3CalibrationManifestLoadError(
                 CalibrationRedesignV3CalibrationManifestViolationCode.MANIFEST_PROVENANCE_MISMATCH,
                 f"V3 calibration manifest family does not match runtime case for {case_id}",
@@ -449,7 +447,8 @@ def _discover_calibration_case_assets(directory: Path) -> dict[str, Path]:
             or payload.get("data_role") != TraceDataRole.CALIBRATION.value
         ):
             raise CalibrationRedesignV3CalibrationManifestLoadError(
-                CalibrationRedesignV3CalibrationManifestViolationCode.CALIBRATION_BOUNDARY_VIOLATION,
+                CalibrationRedesignV3CalibrationManifestViolationCode
+                .CALIBRATION_BOUNDARY_VIOLATION,
                 f"non-calibration asset is prohibited in the V3 calibration manifest: {path.name}",
             )
         case_id = payload.get("case_id")

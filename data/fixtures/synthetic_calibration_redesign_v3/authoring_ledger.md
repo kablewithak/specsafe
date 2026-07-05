@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-- **Boundary:** V3 calibration workload-mix fixtures.
+- **Boundary:** V3 quantile-isotonic calibration fit.
 - **V3 calibration runtime inputs authored:** 36 of 36 cases.
 - **V3 calibration expected outcomes authored:** 36 of 36 cases.
 - **V3 calibration observations authored:** 144 of 144.
@@ -10,8 +10,8 @@
 - **V3 final-evaluation expected outcomes authored:** no.
 - **V3 adversarial-regression runtime inputs authored:** no.
 - **V3 adversarial-regression expected outcomes authored:** no.
-- **V3 manifests authored:** no.
-- **V3 calibration fit authored:** no.
+- **V3 manifests authored:** calibration manifest only.
+- **V3 calibration fit authored:** `quantile-isotonic-calibration-v1` only.
 - **V3 policy or scheduler code authored:** no.
 - **V1/V2 data-bearing evidence used:** no.
 
@@ -45,3 +45,17 @@ The next authorised slice may freeze the completed V3 calibration corpus behind 
 - Every runtime and expected-outcome case asset is hash-addressed with byte counts.
 - V3 final-evaluation and adversarial-regression bytes remain absent.
 - No calibration fitting, scheduler behaviour, policy comparison, or promotion decision is authorised by this freeze.
+
+## V3 quantile-isotonic calibration fit
+
+- The predeclared `quantile-isotonic-calibration-v1` method was fitted only against the frozen V3 calibration manifest.
+- Retained evidence: `evidence/calibration/quantile-isotonic-calibration-v1/artifact.json` and `fit_report.json`.
+- Calibration-split diagnostics were retained for traceability only; no V3 final-evaluation asset was read.
+- No held-out calibration gate, adaptive-policy eligibility, scheduler behaviour, capacity profile, policy comparison, or promotion decision is authorised by this fit.
+- V3 final-evaluation and adversarial evidence remains absent and quarantined.
+
+## Next authorisation
+
+`v3-calibration-readiness-and-final-evidence-authoring-gate`
+
+The next slice may define the pre-authoring gate for fresh V3 hidden final-evaluation evidence. It must keep the frozen calibration corpus and fitted artifact unchanged.
