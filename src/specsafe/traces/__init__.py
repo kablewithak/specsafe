@@ -179,6 +179,18 @@ from specsafe.traces.logit_temperature_scaling import (
     fit_logit_temperature_scaling,
     write_logit_temperature_scaling_fit,
 )
+from specsafe.traces.quantile_isotonic_calibration import (
+    DEFAULT_QUANTILE_ISOTONIC_CALIBRATION_FIT_PROTOCOL,
+    QuantileIsotonicCalibrationArtifact,
+    QuantileIsotonicCalibrationBin,
+    QuantileIsotonicCalibrationFitError,
+    QuantileIsotonicCalibrationFitProtocol,
+    QuantileIsotonicCalibrationFitReport,
+    QuantileIsotonicCalibrationFitResult,
+    QuantileIsotonicCalibrationViolationCode,
+    fit_quantile_isotonic_calibration,
+    write_quantile_isotonic_calibration_fit,
+)
 
 __all__ = [
     "DEFAULT_BOUNDED_PLATT_HELD_OUT_ASSESSMENT_PROTOCOL",
@@ -294,6 +306,14 @@ __all__ = [
     "LogitTemperatureScalingFitReport",
     "LogitTemperatureScalingFitResult",
     "LogitTemperatureScalingViolationCode",
+    "DEFAULT_QUANTILE_ISOTONIC_CALIBRATION_FIT_PROTOCOL",
+    "QuantileIsotonicCalibrationArtifact",
+    "QuantileIsotonicCalibrationBin",
+    "QuantileIsotonicCalibrationFitError",
+    "QuantileIsotonicCalibrationFitProtocol",
+    "QuantileIsotonicCalibrationFitReport",
+    "QuantileIsotonicCalibrationFitResult",
+    "QuantileIsotonicCalibrationViolationCode",
     "ScenarioFamilyRecord",
     "ScenarioFamilyRegistry",
     "SyntheticTraceFixtureLoadError",
@@ -309,6 +329,7 @@ __all__ = [
     "build_calibration_redesign_final_evaluation_manifest",
     "build_calibration_redesign_manifest",
     "fit_logit_temperature_scaling",
+    "fit_quantile_isotonic_calibration",
     "load_calibration_redesign_final_evaluation_manifested_fixture_set",
     "load_calibration_redesign_manifested_fixture_set",
     "load_calibration_redesign_replay_case",
@@ -327,5 +348,6 @@ __all__ = [
     "load_bounded_platt_scaling_artifact",
     "write_bounded_platt_scaling_heldout_assessment",
     "write_logit_temperature_scaling_fit",
+    "write_quantile_isotonic_calibration_fit",
     "write_logit_temperature_scaling_heldout_assessment",
 ]

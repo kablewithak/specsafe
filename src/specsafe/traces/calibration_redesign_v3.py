@@ -411,7 +411,8 @@ def assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root
         root,
         expected_case_ids=(*_CURVE_COVERAGE_CASE_IDS, *_POSITION_SPREAD_CASE_IDS),
         violation_code=(
-            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+            CalibrationRedesignV3RegistryViolationCode
+            .CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
         ),
         boundary_name="position-spread",
         allow_calibration_manifest=False,
