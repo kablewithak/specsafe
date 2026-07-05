@@ -57,7 +57,8 @@ def test_v3_curve_coverage_cases_are_separate_fresh_calibration_assets() -> None
     assert len(observations) == 48
     assert min(confidence for confidence, _ in observations) == 0.10
     assert max(confidence for confidence, _ in observations) == 0.87
-    assert not (V3_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (V3_FIXTURE_ROOT / "calibration_manifest.json").is_file()
+    assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 
