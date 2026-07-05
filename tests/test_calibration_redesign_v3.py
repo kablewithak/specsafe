@@ -154,3 +154,30 @@ def test_v3_registry_rejects_multiple_selected_authoring_boundaries() -> None:
         error_info.value.code
         is CalibrationRedesignV3RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH
     )
+
+
+def test_v3_manifest_root_rejects_unauthorised_next_final_case(tmp_path: Path) -> None:
+    fixture_root = _copy_manifest_root(tmp_path)
+    source = (
+        fixture_root
+        / "final_evaluation"
+        / "inputs"
+        / "cases"
+        / "CRV3-206.json"
+    )
+    destination = (
+        fixture_root
+        / "final_evaluation"
+        / "inputs"
+        / "cases"
+        / "CRV3-207.json"
+    )
+    destination.write_bytes(source.read_bytes())
+
+    with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
+        assert_calibration_redesign_v3_calibration_manifest_fixture_root(fixture_root)
+
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV3RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION
+    )

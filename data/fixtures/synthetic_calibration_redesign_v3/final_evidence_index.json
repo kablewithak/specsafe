@@ -1,0 +1,120 @@
+{
+  "schema_version": "calibration-redesign-v3-final-evidence-index-v1",
+  "index_status": "light_capacity_authored",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "source_type": "synthetic",
+  "calibration_registry_path": "scenario_family_registry.json",
+  "calibration_registry_sha256": "798dc9f595f7dff6bc8626474bcff4b7bd1fc6e8783b33d7c6f5b83df83f41b4",
+  "calibration_manifest_path": "calibration_manifest.json",
+  "calibration_manifest_sha256": "3df9090b4462a88f0ae81e6439742fafb90a47811fd19d0f14b2b14fa4762da6",
+  "calibration_artifact_path": "evidence/calibration/quantile-isotonic-calibration-v1/artifact.json",
+  "calibration_artifact_sha256": "f16b7ed670c15577037065ba388c0326846a063f72ececc889bd9ea13a7e3ab7",
+  "calibration_fit_report_path": "evidence/calibration/quantile-isotonic-calibration-v1/fit_report.json",
+  "calibration_fit_report_sha256": "1cd94b1a405627203b9ade82507df2472aba8fa4bdd2ef0ffd9841ee8161185e",
+  "final_evaluation_case_count": 24,
+  "final_evaluation_observation_count": 96,
+  "candidate_positions_per_case": 4,
+  "families": [
+    {
+      "scenario_family_id": "CRV3-FINAL-LIGHT-CAPACITY",
+      "capacity_profile_id": "synthetic-v3-final-light-capacity",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-201",
+        "CRV3-202",
+        "CRV3-203",
+        "CRV3-204",
+        "CRV3-205",
+        "CRV3-206"
+      ],
+      "authored_case_ids": [
+        "CRV3-201",
+        "CRV3-202",
+        "CRV3-203",
+        "CRV3-204",
+        "CRV3-205",
+        "CRV3-206"
+      ],
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "final_light_capacity_authored"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-MODERATE-CAPACITY",
+      "capacity_profile_id": "synthetic-v3-final-moderate-capacity",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-207",
+        "CRV3-208",
+        "CRV3-209",
+        "CRV3-210",
+        "CRV3-211",
+        "CRV3-212"
+      ],
+      "authored_case_ids": [],
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-SATURATED-CAPACITY",
+      "capacity_profile_id": "synthetic-v3-final-saturated-capacity",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-213",
+        "CRV3-214",
+        "CRV3-215",
+        "CRV3-216",
+        "CRV3-217",
+        "CRV3-218"
+      ],
+      "authored_case_ids": [],
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    },
+    {
+      "scenario_family_id": "CRV3-FINAL-JAGGED-CAPACITY",
+      "capacity_profile_id": "synthetic-v3-final-jagged-capacity",
+      "split": "final_evaluation",
+      "data_role": "held_out_evaluation",
+      "reserved_case_ids": [
+        "CRV3-219",
+        "CRV3-220",
+        "CRV3-221",
+        "CRV3-222",
+        "CRV3-223",
+        "CRV3-224"
+      ],
+      "authored_case_ids": [],
+      "workload_allocation": {
+        "structured_text_case_count": 2,
+        "code_case_count": 2,
+        "open_ended_chat_case_count": 2
+      },
+      "authoring_status": "reserved_for_v3_case_authoring"
+    }
+  ],
+  "explicit_exclusions": [
+    "No V3 final-evaluation manifest or score is present.",
+    "No V3 scheduler, capacity-policy implementation, promotion decision, or runtime-control claim is present.",
+    "No V3 calibration registry, manifest, artifact, or fit report is modified by final-evidence authoring.",
+    "No V1 or V2 data-bearing evidence influenced V3 final-case design.",
+    "No V3 adversarial-regression assets are present.",
+    "The fitted V3 calibrator must not be run against partial final evidence."
+  ],
+  "next_authorized_artifact": "v3-final-moderate-capacity-fixtures"
+}

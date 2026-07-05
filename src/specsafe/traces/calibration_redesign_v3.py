@@ -17,10 +17,12 @@ from pydantic import Field, ValidationError, field_validator, model_validator
 from specsafe.contracts.models import StrictContract, TraceDataRole, TraceSourceType, TraceSplit
 
 _V3_REGISTRY_FILENAME = "scenario_family_registry.json"
+_V3_FINAL_EVIDENCE_INDEX_FILENAME = "final_evidence_index.json"
 _ALLOWED_ROOT_FILENAMES = {
     "PROPOSAL_MANIFEST.md",
     "authoring_ledger.md",
     "calibration_manifest.json",
+    _V3_FINAL_EVIDENCE_INDEX_FILENAME,
     _V3_REGISTRY_FILENAME,
 }
 _CURVE_COVERAGE_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
@@ -32,6 +34,9 @@ _AUTHORISED_CALIBRATION_CASE_IDS = (
     *_WORKLOAD_MIX_CASE_IDS,
 )
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
+_FINAL_EVALUATION_DIRECTORY_NAME = "final_evaluation"
+_FINAL_EVALUATION_ALLOWED_DIRECTORIES = {"inputs", "expected_outcomes"}
+_FINAL_LIGHT_CAPACITY_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(201, 207))
 _FORBIDDEN_ROOT_PATH_NAMES = {
     "final_evaluation_manifest.json",
     "adversarial_regression_manifest.json",
@@ -71,6 +76,9 @@ class CalibrationRedesignV3RegistryViolationCode(StrEnum):
     )
     CALIBRATION_MANIFEST_BOUNDARY_VIOLATION = (
         "calibration_redesign_v3_calibration_manifest_boundary_violation"
+    )
+    FINAL_EVIDENCE_INDEX_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v3_final_evidence_index_boundary_violation"
     )
 
 
@@ -401,6 +409,7 @@ def assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root:
         ),
         boundary_name="curve-coverage",
         allow_calibration_manifest=False,
+        allow_final_light_capacity_assets=False,
     )
 
 
@@ -416,6 +425,7 @@ def assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root
         ),
         boundary_name="position-spread",
         allow_calibration_manifest=False,
+        allow_final_light_capacity_assets=False,
     )
 
 
@@ -430,6 +440,7 @@ def assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(root: P
         ),
         boundary_name="workload-mix",
         allow_calibration_manifest=False,
+        allow_final_light_capacity_assets=False,
     )
 
 
@@ -444,6 +455,7 @@ def assert_calibration_redesign_v3_calibration_manifest_fixture_root(root: Path)
         ),
         boundary_name="calibration-manifest",
         allow_calibration_manifest=True,
+        allow_final_light_capacity_assets=True,
     )
 
 
@@ -454,17 +466,29 @@ def _assert_v3_calibration_fixture_root(
     violation_code: CalibrationRedesignV3RegistryViolationCode,
     boundary_name: str,
     allow_calibration_manifest: bool,
+    allow_final_light_capacity_assets: bool,
 ) -> None:
     resolved_root = _require_fixture_root(root)
     unexpected_root_paths = []
     for child in resolved_root.iterdir():
         if child.name in _FORBIDDEN_ROOT_PATH_NAMES:
             unexpected_root_paths.append(child.name)
-        elif child.is_dir() and child.name not in _ALLOWED_CALIBRATION_DIRECTORIES:
+        elif child.is_dir() and child.name not in _ALLOWED_CALIBRATION_DIRECTORIES | {
+            _FINAL_EVALUATION_DIRECTORY_NAME
+        }:
+            unexpected_root_paths.append(child.name)
+        elif child.is_dir() and (
+            child.name == _FINAL_EVALUATION_DIRECTORY_NAME
+            and not allow_final_light_capacity_assets
+        ):
             unexpected_root_paths.append(child.name)
         elif not child.is_dir() and (
             child.name not in _ALLOWED_ROOT_FILENAMES
             or (child.name == "calibration_manifest.json" and not allow_calibration_manifest)
+            or (
+                child.name == _V3_FINAL_EVIDENCE_INDEX_FILENAME
+                and not allow_final_light_capacity_assets
+            )
         ):
             unexpected_root_paths.append(child.name)
     if unexpected_root_paths:
@@ -473,6 +497,9 @@ def _assert_v3_calibration_fixture_root(
             violation_code,
             f"V3 {boundary_name} fixture root contains unauthorised assets: {rendered}",
         )
+
+    if allow_final_light_capacity_assets:
+        _assert_final_light_capacity_asset_layout(resolved_root, violation_code)
 
     for artifact_kind in ("inputs", "expected_outcomes"):
         cases_path = resolved_root / artifact_kind / "cases"
@@ -517,6 +544,61 @@ def _require_fixture_root(root: Path) -> Path:
             "V3 fixture root requires scenario_family_registry.json",
         )
     return resolved_root
+
+
+def _assert_final_light_capacity_asset_layout(
+    root: Path,
+    violation_code: CalibrationRedesignV3RegistryViolationCode,
+) -> None:
+    index_path = root / _V3_FINAL_EVIDENCE_INDEX_FILENAME
+    if not index_path.is_file():
+        raise CalibrationRedesignV3RegistryLoadError(
+            violation_code,
+            "V3 final-light boundary requires final_evidence_index.json",
+        )
+    final_root = root / _FINAL_EVALUATION_DIRECTORY_NAME
+    if not final_root.is_dir():
+        raise CalibrationRedesignV3RegistryLoadError(
+            violation_code,
+            "V3 final-light boundary requires final_evaluation directories",
+        )
+    unexpected = [
+        path.name
+        for path in final_root.iterdir()
+        if not path.is_dir() or path.name not in _FINAL_EVALUATION_ALLOWED_DIRECTORIES
+    ]
+    if unexpected:
+        raise CalibrationRedesignV3RegistryLoadError(
+            violation_code,
+            "V3 final-light boundary has unauthorised final_evaluation paths: "
+            + ", ".join(sorted(unexpected)),
+        )
+    expected_names = {f"{case_id}.json" for case_id in _FINAL_LIGHT_CAPACITY_CASE_IDS}
+    for artifact_kind in sorted(_FINAL_EVALUATION_ALLOWED_DIRECTORIES):
+        cases_path = final_root / artifact_kind / "cases"
+        if not cases_path.is_dir():
+            raise CalibrationRedesignV3RegistryLoadError(
+                violation_code,
+                f"V3 final-light boundary requires final_evaluation/{artifact_kind}/cases",
+            )
+        direct_names = {path.name for path in cases_path.iterdir()}
+        if direct_names != expected_names:
+            raise CalibrationRedesignV3RegistryLoadError(
+                violation_code,
+                "V3 final-light boundary must contain exactly CRV3-201 through CRV3-206",
+            )
+        for path in cases_path.iterdir():
+            if not path.is_file() or path.suffix != ".json":
+                raise CalibrationRedesignV3RegistryLoadError(
+                    violation_code,
+                    f"V3 final-light {artifact_kind} assets must be JSON files",
+                )
+            _reject_closed_evidence_reference(path.read_bytes())
+        _reject_nested_or_sibling_assets(
+            final_root / artifact_kind,
+            allowed_child_name="cases",
+            violation_code=violation_code,
+        )
 
 
 def _reject_nested_or_sibling_assets(

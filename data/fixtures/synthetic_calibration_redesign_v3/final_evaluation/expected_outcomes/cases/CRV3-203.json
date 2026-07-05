@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-redesign-v3-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV3-203-final-light-capacity-v1",
+  "case_id": "CRV3-203",
+  "trace_id": "crv3-final-light-capacity-trace-203",
+  "scenario_family_id": "CRV3-FINAL-LIGHT-CAPACITY",
+  "split": "final_evaluation",
+  "data_role": "held_out_evaluation",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "crv3-final-light-capacity-trace-203",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 20301,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv3-final-light-capacity-trace-203",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 20302,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv3-final-light-capacity-trace-203",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 20303,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv3-final-light-capacity-trace-203",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 20304,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    }
+  ]
+}
