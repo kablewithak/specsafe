@@ -46,7 +46,7 @@ def _replay_case() -> CalibrationRedesignV3ReplayCase:
 def _registry():
     return load_calibration_redesign_v3_scenario_family_registry(
         FIXTURE_ROOT / "scenario_family_registry.json",
-        allow_calibration_workload_mix_assets=True,
+        allow_calibration_manifest_assets=True,
     )
 
 

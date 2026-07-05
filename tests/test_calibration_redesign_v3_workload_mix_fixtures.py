@@ -61,7 +61,8 @@ def test_v3_workload_mix_cases_are_separate_fresh_calibration_assets() -> None:
         WorkloadType.CODE: 9,
         WorkloadType.OPEN_ENDED_CHAT: 5,
     }
-    assert not (V3_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (V3_FIXTURE_ROOT / "calibration_manifest.json").is_file()
+    assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 

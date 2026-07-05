@@ -1,9 +1,8 @@
 """Governed V3 evidence registry controls for the full north-star programme.
 
-The V3 registry started as a schema-only boundary. This revision authorizes exactly
-three fresh calibration-only families: CRV3-CAL-CURVE-COVERAGE,
-CRV3-CAL-POSITION-SPREAD, and CRV3-CAL-WORKLOAD-MIX. Final-evaluation and
-adversarial bytes remain absent, quarantined, and fail closed.
+The V3 registry now records the frozen calibration manifest after all three fresh
+calibration-only families were authored. Final-evaluation and adversarial bytes remain
+absent, quarantined, and fail closed.
 """
 
 from __future__ import annotations
@@ -21,6 +20,7 @@ _V3_REGISTRY_FILENAME = "scenario_family_registry.json"
 _ALLOWED_ROOT_FILENAMES = {
     "PROPOSAL_MANIFEST.md",
     "authoring_ledger.md",
+    "calibration_manifest.json",
     _V3_REGISTRY_FILENAME,
 }
 _CURVE_COVERAGE_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
@@ -33,7 +33,6 @@ _AUTHORISED_CALIBRATION_CASE_IDS = (
 )
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FORBIDDEN_ROOT_PATH_NAMES = {
-    "calibration_manifest.json",
     "final_evaluation_manifest.json",
     "adversarial_regression_manifest.json",
     "artifact.json",
@@ -69,6 +68,9 @@ class CalibrationRedesignV3RegistryViolationCode(StrEnum):
     )
     CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION = (
         "calibration_redesign_v3_calibration_workload_mix_boundary_violation"
+    )
+    CALIBRATION_MANIFEST_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v3_calibration_manifest_boundary_violation"
     )
 
 
@@ -184,7 +186,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     """The current V3 registry with all three calibration-only families authorised."""
 
     schema_version: Literal["calibration-redesign-v3-scenario-family-registry-v1"]
-    registry_status: Literal["calibration_workload_mix_authored"]
+    registry_status: Literal["calibration_manifest_frozen"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -194,11 +196,11 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     maximum_candidate_positions: Literal[4]
     v1_or_v2_data_bearing_evidence_used: Literal[False]
     v3_runtime_or_outcome_assets_authored: Literal[True]
-    v3_manifests_authored: Literal[False]
+    v3_manifests_authored: Literal[True]
     observation_budget: CalibrationRedesignV3ObservationBudget
     families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(min_length=1)
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-calibration-manifest-authoring"]
+    next_authorized_artifact: Literal["v3-quantile-isotonic-calibration-fit"]
 
     @model_validator(mode="after")
     def validate_registry_governance(self) -> CalibrationRedesignV3ScenarioFamilyRegistry:
@@ -208,10 +210,8 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             raise ValueError("V1 and V2 data-bearing evidence is prohibited in V3")
         if not self.v3_runtime_or_outcome_assets_authored:
             raise ValueError("authorised V3 calibration case assets must be recorded as authored")
-        if self.v3_manifests_authored:
-            raise ValueError(
-                "V3 manifests are not allowed before the full calibration corpus exists"
-            )
+        if not self.v3_manifests_authored:
+            raise ValueError("V3 calibration manifest must be recorded as authored")
 
         family_ids = [family.scenario_family_id for family in self.families]
         if len(set(family_ids)) != len(family_ids):
@@ -293,13 +293,13 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             "No V3 final-evaluation runtime-input fixture bytes are present.",
             "No V3 final-evaluation expected-outcome assets or labels are present.",
             "No V3 adversarial-regression runtime-input or expected-outcome assets are present.",
-            "No V3 calibration or final-evaluation manifest is present.",
+            "No V3 final-evaluation or adversarial-regression manifest is present.",
             "No V3 calibration fitting or scheduler code is authorized by this registry.",
             "No V1 or V2 data-bearing evidence influenced V3 method, thresholds, or case design.",
             "No V3 performance or promotion claim is made.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V3 registry must retain every required calibration-only exclusion")
+            raise ValueError("V3 registry must retain every required manifest-stage exclusion")
         return self
 
 
@@ -309,6 +309,7 @@ def load_calibration_redesign_v3_scenario_family_registry(
     allow_calibration_curve_coverage_assets: bool = False,
     allow_calibration_position_spread_assets: bool = False,
     allow_calibration_workload_mix_assets: bool = False,
+    allow_calibration_manifest_assets: bool = False,
 ) -> CalibrationRedesignV3ScenarioFamilyRegistry:
     """Load V3 registry only through the explicitly selected authoring boundary."""
 
@@ -317,6 +318,7 @@ def load_calibration_redesign_v3_scenario_family_registry(
             allow_calibration_curve_coverage_assets,
             allow_calibration_position_spread_assets,
             allow_calibration_workload_mix_assets,
+            allow_calibration_manifest_assets,
         )
     )
     if selected_authoring_boundary_count > 1:
@@ -326,7 +328,9 @@ def load_calibration_redesign_v3_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_calibration_workload_mix_assets:
+    if allow_calibration_manifest_assets:
+        assert_calibration_redesign_v3_calibration_manifest_fixture_root(root)
+    elif allow_calibration_workload_mix_assets:
         assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(root)
     elif allow_calibration_position_spread_assets:
         assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root)
@@ -372,7 +376,11 @@ def assert_calibration_redesign_v3_schema_only_fixture_root(root: Path) -> None:
     for child in resolved_root.iterdir():
         if child.name in _FORBIDDEN_ROOT_PATH_NAMES or child.is_dir():
             unexpected_paths.append(child.name)
-        elif child.name not in _ALLOWED_ROOT_FILENAMES:
+        elif child.name not in {
+            _V3_REGISTRY_FILENAME,
+            "PROPOSAL_MANIFEST.md",
+            "authoring_ledger.md",
+        }:
             unexpected_paths.append(child.name)
     if unexpected_paths:
         rendered = ", ".join(sorted(unexpected_paths))
@@ -392,6 +400,7 @@ def assert_calibration_redesign_v3_calibration_curve_coverage_fixture_root(root:
             CalibrationRedesignV3RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
         ),
         boundary_name="curve-coverage",
+        allow_calibration_manifest=False,
     )
 
 
@@ -405,6 +414,7 @@ def assert_calibration_redesign_v3_calibration_position_spread_fixture_root(root
             CalibrationRedesignV3RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
         ),
         boundary_name="position-spread",
+        allow_calibration_manifest=False,
     )
 
 
@@ -418,6 +428,21 @@ def assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(root: P
             CalibrationRedesignV3RegistryViolationCode.CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION
         ),
         boundary_name="workload-mix",
+        allow_calibration_manifest=False,
+    )
+
+
+def assert_calibration_redesign_v3_calibration_manifest_fixture_root(root: Path) -> None:
+    """Validate the complete V3 calibration root at the manifest-freezing stage."""
+
+    _assert_v3_calibration_fixture_root(
+        root,
+        expected_case_ids=_AUTHORISED_CALIBRATION_CASE_IDS,
+        violation_code=(
+            CalibrationRedesignV3RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION
+        ),
+        boundary_name="calibration-manifest",
+        allow_calibration_manifest=True,
     )
 
 
@@ -427,6 +452,7 @@ def _assert_v3_calibration_fixture_root(
     expected_case_ids: tuple[str, ...],
     violation_code: CalibrationRedesignV3RegistryViolationCode,
     boundary_name: str,
+    allow_calibration_manifest: bool,
 ) -> None:
     resolved_root = _require_fixture_root(root)
     unexpected_root_paths = []
@@ -435,7 +461,10 @@ def _assert_v3_calibration_fixture_root(
             unexpected_root_paths.append(child.name)
         elif child.is_dir() and child.name not in _ALLOWED_CALIBRATION_DIRECTORIES:
             unexpected_root_paths.append(child.name)
-        elif not child.is_dir() and child.name not in _ALLOWED_ROOT_FILENAMES:
+        elif not child.is_dir() and (
+            child.name not in _ALLOWED_ROOT_FILENAMES
+            or (child.name == "calibration_manifest.json" and not allow_calibration_manifest)
+        ):
             unexpected_root_paths.append(child.name)
     if unexpected_root_paths:
         rendered = ", ".join(sorted(unexpected_root_paths))

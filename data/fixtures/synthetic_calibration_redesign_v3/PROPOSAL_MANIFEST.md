@@ -19,3 +19,8 @@ This directory contains exactly the three authorised V3 calibration families.
 - every V3 scheduler, capacity-profile, policy-comparison, or promotion artifact
 
 The files are local, self-authored synthetic controlled evidence. Runtime input files do not contain candidate token IDs, observed acceptance labels, prefix-survival labels, or final-evaluation data.
+
+
+## Frozen calibration inventory
+
+The complete V3 calibration corpus is now frozen in `calibration_manifest.json`. This manifest is deterministic, records file hashes and sizes, and covers only `CRV3-101` through `CRV3-136`. It does not include final-evaluation or adversarial-regression evidence.

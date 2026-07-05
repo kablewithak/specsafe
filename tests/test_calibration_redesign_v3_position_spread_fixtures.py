@@ -52,7 +52,8 @@ def test_v3_position_spread_cases_are_separate_fresh_calibration_assets() -> Non
     }
     assert dict(observation_count_by_position) == {1: 12, 2: 12, 3: 12, 4: 12}
     assert dict(accepted_count_by_position) == {1: 10, 2: 8, 3: 6, 4: 3}
-    assert not (V3_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (V3_FIXTURE_ROOT / "calibration_manifest.json").is_file()
+    assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert not (V3_FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 

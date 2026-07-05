@@ -228,7 +228,7 @@ def load_calibration_redesign_v3_replay_case(
     try:
         registry = load_calibration_redesign_v3_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_workload_mix_assets=True,
+            allow_calibration_manifest_assets=True,
         )
     except CalibrationRedesignV3RegistryLoadError as error:
         raise CalibrationRedesignV3CaseContractError(

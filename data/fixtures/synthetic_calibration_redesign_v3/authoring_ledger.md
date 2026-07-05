@@ -37,3 +37,11 @@ The complete calibration corpus now contains broad confidence coverage, delibera
 `v3-calibration-manifest-authoring`
 
 The next authorised slice may freeze the completed V3 calibration corpus behind a deterministic calibration manifest. Final-evaluation and adversarial bytes remain absent and quarantined.
+
+
+## V3 calibration manifest freeze
+
+- `calibration_manifest.json` freezes the complete 36-case / 144-observation V3 calibration corpus.
+- Every runtime and expected-outcome case asset is hash-addressed with byte counts.
+- V3 final-evaluation and adversarial-regression bytes remain absent.
+- No calibration fitting, scheduler behaviour, policy comparison, or promotion decision is authorised by this freeze.
