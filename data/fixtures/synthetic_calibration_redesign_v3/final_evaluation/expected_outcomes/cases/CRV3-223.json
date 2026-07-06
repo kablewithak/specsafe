@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-redesign-v3-case-v1",
+  "fixture_set_id": "synthetic-calibration-redesign-v3",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "CRV3-223-final-jagged-capacity-v1",
+  "case_id": "CRV3-223",
+  "trace_id": "crv3-final-jagged-capacity-trace-223",
+  "scenario_family_id": "CRV3-FINAL-JAGGED-CAPACITY",
+  "split": "final_evaluation",
+  "data_role": "held_out_evaluation",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "crv3-final-jagged-capacity-trace-223",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 22301,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "crv3-final-jagged-capacity-trace-223",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 22302,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv3-final-jagged-capacity-trace-223",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 22303,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "crv3-final-jagged-capacity-trace-223",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 22304,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    }
+  ]
+}

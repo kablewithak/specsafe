@@ -85,8 +85,17 @@ The next slice may define the pre-authoring gate for fresh V3 hidden final-evalu
 - Workload balance remains two `structured_text`, two `code`, and two `open_ended_chat` cases for the saturated-capacity family.
 - Did not create a V3 final-evaluation manifest, run a held-out assessment, run the fitted calibrator against held-out evidence, add scheduler logic, or author adversarial evidence.
 
+## Final evidence index and jagged-capacity family
+
+- Updated `final_evidence_index.json` without touching the frozen calibration registry, calibration manifest, quantile-isotonic artifact, or fit report.
+- Authored `CRV3-219` through `CRV3-224` as separate held-out jagged-capacity runtime and outcome pairs under `final_evaluation/`.
+- The held-out inventory now contains all 24 of 24 case pairs and all 96 of 96 observations.
+- Workload balance remains two `structured_text`, two `code`, and two `open_ended_chat` cases for the jagged-capacity family.
+- Jagged capacity is represented as a declared non-monotonic sequence of current request pressure and current verification-batch demand within each four-position trace.
+- Did not create a V3 final-evaluation manifest, run a held-out assessment, run the fitted calibrator against held-out evidence, add scheduler logic, or author adversarial evidence.
+
 ## Next authorisation
 
-`v3-final-jagged-capacity-fixtures`
+`v3-final-evaluation-manifest-freeze`
 
-The next authorised slice may add only `CRV3-219` through `CRV3-224` under the separate final-evaluation subtree. Frozen calibration assets remain unchanged.
+The next authorised slice may freeze a complete `final_evaluation_manifest.json` over all 24 runtime/outcome case pairs. It must verify frozen calibration assets remain unchanged and must not run the one-time held-out assessment. After that manifest is merged, stop for the formal handover before any held-out scoring.

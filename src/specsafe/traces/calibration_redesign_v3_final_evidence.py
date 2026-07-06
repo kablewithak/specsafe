@@ -1,9 +1,8 @@
 """Separate V3 final-evidence index and held-out case loader.
 
 This module records the full 24-case held-out inventory separately from the frozen
-calibration registry. Light, moderate, and saturated capacity families are authored in this
-slice; no final-evaluation manifest, score, policy, or scheduler behaviour is
-introduced.
+calibration registry. All four capacity families are authored in this slice; no
+final-evaluation manifest, score, policy, or scheduler behaviour is introduced.
 """
 
 from __future__ import annotations
@@ -49,8 +48,9 @@ _AUTHORED_FAMILY_IDS = (
     "CRV3-FINAL-LIGHT-CAPACITY",
     "CRV3-FINAL-MODERATE-CAPACITY",
     "CRV3-FINAL-SATURATED-CAPACITY",
+    "CRV3-FINAL-JAGGED-CAPACITY",
 )
-_AUTHORED_CASE_IDS = _LIGHT_CASE_IDS + _MODERATE_CASE_IDS + _SATURATED_CASE_IDS
+_AUTHORED_CASE_IDS = _LIGHT_CASE_IDS + _MODERATE_CASE_IDS + _SATURATED_CASE_IDS + _JAGGED_CASE_IDS
 _CLOSED_MARKERS = (
     b"crv1-",
     b"crv2-",
@@ -111,6 +111,7 @@ class CalibrationRedesignV3FinalEvidenceFamily(StrictContract):
         "final_light_capacity_authored",
         "final_moderate_capacity_authored",
         "final_saturated_capacity_authored",
+        "final_jagged_capacity_authored",
         "reserved_for_v3_case_authoring",
     ]
 
@@ -132,7 +133,7 @@ class CalibrationRedesignV3FinalEvidenceFamily(StrictContract):
             "CRV3-FINAL-LIGHT-CAPACITY": "final_light_capacity_authored",
             "CRV3-FINAL-MODERATE-CAPACITY": "final_moderate_capacity_authored",
             "CRV3-FINAL-SATURATED-CAPACITY": "final_saturated_capacity_authored",
-            "CRV3-FINAL-JAGGED-CAPACITY": "reserved_for_v3_case_authoring",
+            "CRV3-FINAL-JAGGED-CAPACITY": "final_jagged_capacity_authored",
         }
         if self.authoring_status != expected_status_by_family[self.scenario_family_id]:
             raise ValueError("final family authoring status does not match this evidence slice")
@@ -143,7 +144,7 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
     """Provenance-safe index for held-out V3 evidence, separate from calibration state."""
 
     schema_version: Literal["calibration-redesign-v3-final-evidence-index-v1"]
-    index_status: Literal["saturated_capacity_authored"]
+    index_status: Literal["jagged_capacity_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -167,7 +168,7 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
         max_length=4,
     )
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-final-jagged-capacity-fixtures"]
+    next_authorized_artifact: Literal["v3-final-evaluation-manifest-freeze"]
 
     @model_validator(mode="after")
     def validate_index_shape(self) -> CalibrationRedesignV3FinalEvidenceIndex:
@@ -176,10 +177,8 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
             raise ValueError("final evidence index must contain all four capacity families")
         if sum(len(family.reserved_case_ids) for family in self.families) != 24:
             raise ValueError("final evidence index must reserve exactly 24 cases")
-        if sum(len(family.authored_case_ids) for family in self.families) != 18:
-            raise ValueError(
-                "only light, moderate, and saturated capacity cases may be authored in this slice"
-            )
+        if sum(len(family.authored_case_ids) for family in self.families) != 24:
+            raise ValueError("all four final capacity families must be authored in this slice")
         required_exclusions = {
             "No V3 final-evaluation manifest or score is present.",
             (
@@ -229,7 +228,7 @@ def load_calibration_redesign_v3_final_evaluation_replay_case(
     if case_id not in _AUTHORED_CASE_IDS:
         raise CalibrationRedesignV3FinalEvidenceLoadError(
             CalibrationRedesignV3FinalEvidenceViolationCode.CASE_MEMBERSHIP_ERROR,
-            "only CRV3-201 through CRV3-218 are authorised for current held-out loading",
+            "only CRV3-201 through CRV3-224 are authorised for current held-out loading",
         )
     final_root = root.resolve() / _FINAL_ROOT
     runtime_payload = _read_json(final_root / "inputs" / "cases" / f"{case_id}.json")

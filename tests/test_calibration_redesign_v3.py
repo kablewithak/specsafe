@@ -158,8 +158,8 @@ def test_v3_registry_rejects_multiple_selected_authoring_boundaries() -> None:
 
 def test_v3_manifest_root_rejects_unauthorised_next_final_case(tmp_path: Path) -> None:
     fixture_root = _copy_manifest_root(tmp_path)
-    source = fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-218.json"
-    destination = fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-219.json"
+    source = fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-224.json"
+    destination = fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-225.json"
     destination.write_bytes(source.read_bytes())
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:

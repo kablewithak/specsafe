@@ -41,7 +41,7 @@ _AUTHORISED_CALIBRATION_CASE_IDS = (
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FINAL_EVALUATION_DIRECTORY_NAME = "final_evaluation"
 _FINAL_EVALUATION_ALLOWED_DIRECTORIES = {"inputs", "expected_outcomes"}
-_FINAL_AUTHORED_CAPACITY_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(201, 219))
+_FINAL_AUTHORED_CAPACITY_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(201, 225))
 _FORBIDDEN_ROOT_PATH_NAMES = {
     "final_evaluation_manifest.json",
     "adversarial_regression_manifest.json",
@@ -599,7 +599,7 @@ def _assert_final_authored_capacity_asset_layout(
         if direct_names != expected_names:
             raise CalibrationRedesignV3RegistryLoadError(
                 violation_code,
-                "V3 final-authored boundary must contain exactly CRV3-201 through CRV3-218",
+                "V3 final-authored boundary must contain exactly CRV3-201 through CRV3-224",
             )
         for path in cases_path.iterdir():
             if not path.is_file() or path.suffix != ".json":
