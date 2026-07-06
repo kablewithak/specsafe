@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-137",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-calibration-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.91,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-capacity-request-137",
+      "trace_id": "crv4-calibration-capacity-trace-137",
+      "visible_prefix_token_ids": [],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-calibration-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.83,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-capacity-request-137",
+      "trace_id": "crv4-calibration-capacity-trace-137",
+      "visible_prefix_token_ids": [
+        7370
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-calibration-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.75,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-capacity-request-137",
+      "trace_id": "crv4-calibration-capacity-trace-137",
+      "visible_prefix_token_ids": [
+        7370,
+        7371
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-calibration-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.68,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-capacity-request-137",
+      "trace_id": "crv4-calibration-capacity-trace-137",
+      "visible_prefix_token_ids": [
+        7370,
+        7371,
+        7372
+      ],
+      "workload_type": "structured_text"
+    }
+  ],
+  "data_role": "calibration",
+  "fixture_id": "crv4-calibration-capacity-contrast-137",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Synthetic capacity-context contrast for calibration fitting only; no outcome label is present in this runtime asset.",
+  "request_id": "crv4-calibration-capacity-request-137",
+  "scenario_family_id": "CRV4-CAL-CAPACITY-CONTRAST",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "calibration",
+  "trace_id": "crv4-calibration-capacity-trace-137"
+}
