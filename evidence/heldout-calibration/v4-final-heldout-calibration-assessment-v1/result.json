@@ -1,0 +1,210 @@
+{
+  "adaptive_policy_research_eligibility": "blocked",
+  "assessment_case_ids": [
+    "CRV4-201",
+    "CRV4-202",
+    "CRV4-203",
+    "CRV4-204",
+    "CRV4-205",
+    "CRV4-206",
+    "CRV4-207",
+    "CRV4-208",
+    "CRV4-209",
+    "CRV4-210",
+    "CRV4-211",
+    "CRV4-212",
+    "CRV4-213",
+    "CRV4-214",
+    "CRV4-215",
+    "CRV4-216",
+    "CRV4-217",
+    "CRV4-218",
+    "CRV4-219",
+    "CRV4-220",
+    "CRV4-221",
+    "CRV4-222",
+    "CRV4-223",
+    "CRV4-224",
+    "CRV4-225",
+    "CRV4-226",
+    "CRV4-227",
+    "CRV4-228",
+    "CRV4-229",
+    "CRV4-230",
+    "CRV4-231",
+    "CRV4-232",
+    "CRV4-233",
+    "CRV4-234",
+    "CRV4-235",
+    "CRV4-236"
+  ],
+  "assessment_trace_ids": [
+    "crv4-final-light-trace-201",
+    "crv4-final-light-trace-202",
+    "crv4-final-light-trace-203",
+    "crv4-final-light-trace-204",
+    "crv4-final-light-trace-205",
+    "crv4-final-light-trace-206",
+    "crv4-final-light-trace-207",
+    "crv4-final-light-trace-208",
+    "crv4-final-light-trace-209",
+    "crv4-final-moderate-trace-210",
+    "crv4-final-moderate-trace-211",
+    "crv4-final-moderate-trace-212",
+    "crv4-final-moderate-trace-213",
+    "crv4-final-moderate-trace-214",
+    "crv4-final-moderate-trace-215",
+    "crv4-final-moderate-trace-216",
+    "crv4-final-moderate-trace-217",
+    "crv4-final-moderate-trace-218",
+    "crv4-final-saturated-trace-219",
+    "crv4-final-saturated-trace-220",
+    "crv4-final-saturated-trace-221",
+    "crv4-final-saturated-trace-222",
+    "crv4-final-saturated-trace-223",
+    "crv4-final-saturated-trace-224",
+    "crv4-final-saturated-trace-225",
+    "crv4-final-saturated-trace-226",
+    "crv4-final-saturated-trace-227",
+    "crv4-final-jagged-trace-228",
+    "crv4-final-jagged-trace-229",
+    "crv4-final-jagged-trace-230",
+    "crv4-final-jagged-trace-231",
+    "crv4-final-jagged-trace-232",
+    "crv4-final-jagged-trace-233",
+    "crv4-final-jagged-trace-234",
+    "crv4-final-jagged-trace-235",
+    "crv4-final-jagged-trace-236"
+  ],
+  "auroc_delta": -0.012890625000000044,
+  "brier_score_improvement": 0.035430737397119355,
+  "calibrated_metrics": {
+    "auroc": 0.97109375,
+    "brier_score": 0.09767232510288065,
+    "ece_10_bin": 0.19290123456790123
+  },
+  "calibration_artifact_id": "regularized-isotonic-calibration-v4",
+  "calibration_artifact_sha256": "05cabab0fd744dadf92d50eac4dcc5093432f90f64203b3f09de10597c043b0d",
+  "calibration_artifact_version": "1.0.0",
+  "calibration_fit_report_sha256": "3d1388c3a1a4ed7640249b1b7080bd2c9ca282d2870a69e04c9145f05f53d8f3",
+  "calibration_manifest_aggregate_sha256": "59ab328ff17a5c90dc4032106ad24759ca42095aa57338c720833d270c63e4ae",
+  "calibration_manifest_sha256": "f8ee1f0798fa0e00c6c328d61d69f2e7e0e2b123584dbe89a92f66dab4a4544f",
+  "calibration_refit_performed": false,
+  "calibration_registry_sha256": "765042d8480efe129738352dc8237d12c43df768a2de845f1e63a1daf32d1c9c",
+  "case_count": 36,
+  "ece_10_bin_improvement": 0.0384251543209877,
+  "fallback": {
+    "action": "CONSERVATIVE_FALLBACK",
+    "fallback_policy_id": "fixed_short_1",
+    "reason": "complete_v4_calibration_gate_not_passed"
+  },
+  "final_evidence_index_sha256": "d3a0eecd818c99576cbbd71c2653b39d5cf3b3aea29e91f5e80cae3589e8ee7c",
+  "final_manifest_aggregate_sha256": "b39b371bd485b6f524d1c154437a4dad03174c58a0a591505cffb92b71219e37",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "gate_checks": {
+    "brier_improvement_passed": true,
+    "canonical_serialization_passed": true,
+    "ece_improvement_passed": true,
+    "manifest_integrity_passed": true,
+    "no_policy_execution_passed": true,
+    "no_refit_passed": true,
+    "observation_coverage_passed": true,
+    "per_position_coverage_passed": true,
+    "provenance_alignment_passed": true,
+    "ranking_safety_passed": false,
+    "write_once_precheck_passed": true
+  },
+  "observation_count": 144,
+  "position_metrics": [
+    {
+      "auroc_delta": -0.0625,
+      "block_position_index": 1,
+      "brier_score_improvement": -0.002923218792866944,
+      "calibrated_metrics": {
+        "auroc": 0.9375,
+        "brier_score": 0.09842249657064472,
+        "ece_10_bin": 0.15432098765432106
+      },
+      "ece_10_bin_improvement": 0.11462345679012337,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.09549927777777778,
+        "ece_10_bin": 0.26894444444444443
+      }
+    },
+    {
+      "auroc_delta": -0.02777777777777779,
+      "block_position_index": 2,
+      "brier_score_improvement": 0.028315863854595336,
+      "calibrated_metrics": {
+        "auroc": 0.9722222222222222,
+        "brier_score": 0.08984910836762688,
+        "ece_10_bin": 0.18518518518518515
+      },
+      "ece_10_bin_improvement": 0.04262037037037039,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.11816497222222222,
+        "ece_10_bin": 0.22780555555555554
+      }
+    },
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 3,
+      "brier_score_improvement": 0.05369842901234567,
+      "calibrated_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.09182098765432098,
+        "ece_10_bin": 0.27777777777777773
+      },
+      "ece_10_bin_improvement": 0.08758333333333335,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.14551941666666665,
+        "ece_10_bin": 0.3653611111111111
+      }
+    },
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 4,
+      "brier_score_improvement": 0.0626318755144033,
+      "calibrated_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.11059670781893002,
+        "ece_10_bin": 0.3148148148148148
+      },
+      "ece_10_bin_improvement": -0.029898148148148118,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 1.0,
+        "brier_score": 0.17322858333333332,
+        "ece_10_bin": 0.2849166666666667
+      }
+    }
+  ],
+  "protocol": {
+    "auroc_calculation_version": "tie_aware_mann_whitney_v1",
+    "expected_final_case_count": 36,
+    "expected_final_observation_count": 144,
+    "expected_observations_per_position": 36,
+    "fixed_ece_bin_count": 10,
+    "maximum_auroc_degradation": 0.002,
+    "minimum_brier_score_improvement": 0.01,
+    "minimum_ece_10_bin_improvement": 0.02,
+    "protocol_id": "v4_final_heldout_calibration_assessment_protocol_v1"
+  },
+  "raw_metrics": {
+    "auroc": 0.983984375,
+    "brier_score": 0.1331030625,
+    "ece_10_bin": 0.23132638888888893
+  },
+  "runtime_control_eligible": false,
+  "scheduler_or_policy_execution_performed": false,
+  "schema_version": "v4-final-heldout-calibration-assessment-v1",
+  "status": "RANKING_SAFETY_REGRESSION",
+  "write_mode": "write_once"
+}

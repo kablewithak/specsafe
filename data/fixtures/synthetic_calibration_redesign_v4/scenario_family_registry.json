@@ -7,12 +7,12 @@
     "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
     "No V4 scheduler, baseline, capacity, or replay implementation is authorized.",
     "No closed-programme data-bearing evidence influenced V4 case design.",
-    "No V4 held-out calibration, policy, or runtime claim is made.",
     "V4 calibration artifact and fit report remain calibration-only diagnostics.",
     "No V4 final-evaluation held-out assessment has been run.",
-    "No V4 final-evaluation held-out assessment or result is present.",
     "V4 final-evaluation manifest and final-evidence index are frozen provenance boundaries.",
-    "V4 final-evaluation manifest freeze does not author an assessment, baseline, or policy result."
+    "V4 held-out calibration assessment is write-once evidence.",
+    "V4 held-out calibration evidence does not establish production performance.",
+    "V4 policy, baseline, replay, and runtime-control work remain blocked pending remediation."
   ],
   "families": [
     {
@@ -289,6 +289,9 @@
     }
   ],
   "final_evidence_index_sha256": "d3a0eecd818c99576cbbd71c2653b39d5cf3b3aea29e91f5e80cae3589e8ee7c",
+  "final_heldout_calibration_assessment_relative_path": "evidence/heldout-calibration/v4-final-heldout-calibration-assessment-v1/result.json",
+  "final_heldout_calibration_assessment_sha256": "83ed589bc46499c90c8fff78a4b6c475a889e7eb02e7372ec5fad0af27f8c3d6",
+  "final_heldout_calibration_status": "RANKING_SAFETY_REGRESSION",
   "fixture_set_id": "synthetic-calibration-redesign-v4",
   "fixture_set_version": "1.0.0",
   "frozen_calibration_manifest_sha256": "f8ee1f0798fa0e00c6c328d61d69f2e7e0e2b123584dbe89a92f66dab4a4544f",
@@ -297,7 +300,7 @@
   "frozen_final_evaluation_registry_sha256": "8f31bea1ccf0727ef1683a70c86cfca77286361102ba14c84698a2e152fba76f",
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v4-method-and-evidence-constitution-v1",
-  "next_authorized_artifact": "v4-final-heldout-calibration-assessment",
+  "next_authorized_artifact": "v4-calibration-remediation-decision",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -308,7 +311,7 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "final_evaluation_manifest_frozen",
+  "registry_status": "final_heldout_calibration_assessed",
   "schema_version": "calibration-redesign-v4-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v1_v2_v3_data_bearing_evidence_used": false,
@@ -316,6 +319,7 @@
   "v4_final_assessment_contract_merged": true,
   "v4_final_evaluation_manifest_authored": true,
   "v4_final_evaluation_runtime_or_outcome_assets_authored": true,
+  "v4_final_heldout_calibration_assessment_authored": true,
   "v4_manifests_authored": true,
   "v4_runtime_or_outcome_assets_authored": true
 }

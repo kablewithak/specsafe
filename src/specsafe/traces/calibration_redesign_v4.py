@@ -29,9 +29,15 @@ _V4_CALIBRATION_MANIFEST_FILENAME = "calibration_manifest.json"
 _V4_FINAL_EVALUATION_MANIFEST_FILENAME = "final_evaluation_manifest.json"
 _V4_FINAL_EVIDENCE_INDEX_FILENAME = "final_evidence_index.json"
 
-_V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(101, 113))
-_V4_CALIBRATION_POSITION_SPREAD_CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(113, 125))
-_V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(125, 137))
+_V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS = tuple(
+    f"CRV4-{number:03d}" for number in range(101, 113)
+)
+_V4_CALIBRATION_POSITION_SPREAD_CASE_IDS = tuple(
+    f"CRV4-{number:03d}" for number in range(113, 125)
+)
+_V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS = tuple(
+    f"CRV4-{number:03d}" for number in range(125, 137)
+)
 _V4_CALIBRATION_CAPACITY_CONTRAST_CASE_IDS = tuple(
     f"CRV4-{number:03d}" for number in range(137, 149)
 )
@@ -49,12 +55,22 @@ _V4_EXPECTED_CASE_IDS_BY_FAMILY = {
     "CRV4-CAL-POSITION-SPREAD": _V4_CALIBRATION_POSITION_SPREAD_CASE_IDS,
     "CRV4-CAL-WORKLOAD-MIX": _V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS,
     "CRV4-CAL-CAPACITY-CONTRAST": _V4_CALIBRATION_CAPACITY_CONTRAST_CASE_IDS,
-    "CRV4-FINAL-LIGHT-CAPACITY": tuple(f"CRV4-{number:03d}" for number in range(201, 210)),
-    "CRV4-FINAL-MODERATE-CAPACITY": tuple(f"CRV4-{number:03d}" for number in range(210, 219)),
-    "CRV4-FINAL-SATURATED-CAPACITY": tuple(f"CRV4-{number:03d}" for number in range(219, 228)),
-    "CRV4-FINAL-JAGGED-CAPACITY": tuple(f"CRV4-{number:03d}" for number in range(228, 237)),
+    "CRV4-FINAL-LIGHT-CAPACITY": tuple(
+        f"CRV4-{number:03d}" for number in range(201, 210)
+    ),
+    "CRV4-FINAL-MODERATE-CAPACITY": tuple(
+        f"CRV4-{number:03d}" for number in range(210, 219)
+    ),
+    "CRV4-FINAL-SATURATED-CAPACITY": tuple(
+        f"CRV4-{number:03d}" for number in range(219, 228)
+    ),
+    "CRV4-FINAL-JAGGED-CAPACITY": tuple(
+        f"CRV4-{number:03d}" for number in range(228, 237)
+    ),
     "CRV4-ADV-CAUSAL-GUARD": tuple(f"CRV4-{number:03d}" for number in range(301, 307)),
-    "CRV4-ADV-PROVENANCE-GATE": tuple(f"CRV4-{number:03d}" for number in range(307, 313)),
+    "CRV4-ADV-PROVENANCE-GATE": tuple(
+        f"CRV4-{number:03d}" for number in range(307, 313)
+    ),
 }
 _V4_EXPECTED_FAMILY_IDS = frozenset(_V4_EXPECTED_CASE_IDS_BY_FAMILY)
 _V4_SCHEMA_ONLY_ROOT_FILENAMES = {
@@ -116,9 +132,13 @@ class CalibrationRedesignV4RegistryViolationCode(StrEnum):
     """Machine-readable failures for V4 authoring-boundary checks."""
 
     REGISTRY_SCHEMA_ERROR = "calibration_redesign_v4_registry_schema_error"
-    REGISTRY_PROVENANCE_MISMATCH = "calibration_redesign_v4_registry_provenance_mismatch"
+    REGISTRY_PROVENANCE_MISMATCH = (
+        "calibration_redesign_v4_registry_provenance_mismatch"
+    )
     CLOSED_EVIDENCE_REFERENCE = "calibration_redesign_v4_closed_evidence_reference"
-    SCHEMA_ONLY_BOUNDARY_VIOLATION = "calibration_redesign_v4_schema_only_boundary_violation"
+    SCHEMA_ONLY_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v4_schema_only_boundary_violation"
+    )
     CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
         "calibration_redesign_v4_calibration_curve_coverage_boundary_violation"
     )
@@ -231,13 +251,24 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
             raise ValueError("primary_data_role must match the governed V4 split role")
 
         final_quarantine_expected = self.split is TraceSplit.FINAL_EVALUATION
-        adversarial_quarantine_expected = self.split is TraceSplit.ADVERSARIAL_REGRESSION
+        adversarial_quarantine_expected = (
+            self.split is TraceSplit.ADVERSARIAL_REGRESSION
+        )
         if self.is_final_evaluation_quarantined is not final_quarantine_expected:
-            raise ValueError("final-evaluation quarantine must match the declared V4 split")
-        if self.is_adversarial_regression_quarantined is not adversarial_quarantine_expected:
-            raise ValueError("adversarial-regression quarantine must match the declared V4 split")
+            raise ValueError(
+                "final-evaluation quarantine must match the declared V4 split"
+            )
+        if (
+            self.is_adversarial_regression_quarantined
+            is not adversarial_quarantine_expected
+        ):
+            raise ValueError(
+                "adversarial-regression quarantine must match the declared V4 split"
+            )
         if final_quarantine_expected != (self.workload_allocation is not None):
-            raise ValueError("only V4 final-evaluation families may declare workload allocation")
+            raise ValueError(
+                "only V4 final-evaluation families may declare workload allocation"
+            )
 
         expected_status = _EXPECTED_AUTHORED_STATUS_BY_FAMILY.get(
             self.scenario_family_id,
@@ -251,10 +282,13 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
 
 
 class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
-    """V4 registry after the final-evaluation inventory has been frozen."""
+    """V4 registry after final provenance freeze or its one-time held-out assessment."""
 
     schema_version: Literal["calibration-redesign-v4-scenario-family-registry-v1"]
-    registry_status: Literal["final_evaluation_manifest_frozen"]
+    registry_status: Literal[
+        "final_evaluation_manifest_frozen",
+        "final_heldout_calibration_assessed",
+    ]
     fixture_set_id: Literal["synthetic-calibration-redesign-v4"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -269,6 +303,22 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
     v4_final_evaluation_runtime_or_outcome_assets_authored: Literal[True]
     v4_final_evaluation_manifest_authored: Literal[True]
     v4_final_assessment_contract_merged: Literal[True]
+    v4_final_heldout_calibration_assessment_authored: bool = False
+    final_heldout_calibration_assessment_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[a-f0-9]{64}$",
+    )
+    final_heldout_calibration_assessment_relative_path: Literal[
+        "evidence/heldout-calibration/v4-final-heldout-calibration-assessment-v1/result.json"
+    ] | None = None
+    final_heldout_calibration_status: Literal[
+        "PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE",
+        "CALIBRATOR_REGRESSION",
+        "INSUFFICIENT_HELD_OUT_COVERAGE",
+        "RANKING_SAFETY_REGRESSION",
+        "INCOMPLETE_GATE_EVIDENCE",
+        "INVALID_PROVENANCE",
+    ] | None = None
     frozen_calibration_manifest_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     frozen_calibration_registry_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     calibration_artifact_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
@@ -281,27 +331,29 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         min_length=10,
         max_length=10,
     )
-    explicit_exclusions: tuple[str, ...] = Field(min_length=9)
-    next_authorized_artifact: Literal["v4-final-heldout-calibration-assessment"]
+    explicit_exclusions: tuple[str, ...] = Field(min_length=8)
+    next_authorized_artifact: Literal[
+        "v4-final-heldout-calibration-assessment",
+        "v4-policy-and-baseline-comparison",
+        "v4-calibration-remediation-decision",
+    ]
 
     @model_validator(mode="after")
-    def validate_registry_governance(
-        self,
-    ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-        """Enforce the complete V4 reservation after final provenance freeze."""
+    def validate_registry_governance(self) -> CalibrationRedesignV4ScenarioFamilyRegistry:
+        """Enforce V4 reservation and the assessment-transition evidence boundary."""
 
         if self.v1_v2_v3_data_bearing_evidence_used:
             raise ValueError("closed-programme data-bearing evidence is prohibited in V4")
         if not self.v4_runtime_or_outcome_assets_authored:
-            raise ValueError("V4 final freeze requires frozen calibration assets")
+            raise ValueError("V4 assessment requires frozen calibration assets")
         if not self.v4_manifests_authored:
-            raise ValueError("V4 final freeze requires a frozen calibration manifest")
+            raise ValueError("V4 assessment requires a frozen calibration manifest")
         if not self.v4_calibration_fit_diagnostics_authored:
-            raise ValueError("V4 final freeze requires retained calibration-only diagnostics")
+            raise ValueError("V4 assessment requires retained calibration-only diagnostics")
         if not self.v4_final_evaluation_runtime_or_outcome_assets_authored:
-            raise ValueError("V4 final freeze requires authored final-evaluation assets")
+            raise ValueError("V4 assessment requires authored final-evaluation assets")
         if not self.v4_final_evaluation_manifest_authored:
-            raise ValueError("V4 final freeze requires a frozen final-evaluation manifest")
+            raise ValueError("V4 assessment requires a frozen final-evaluation manifest")
 
         family_ids = tuple(family.scenario_family_id for family in self.families)
         if len(set(family_ids)) != len(family_ids):
@@ -315,17 +367,17 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if len(set(all_case_ids)) != len(all_case_ids):
             raise ValueError("V4 case IDs must be unique across all families")
         for family in self.families:
-            if (
-                family.reserved_case_ids
-                != _V4_EXPECTED_CASE_IDS_BY_FAMILY[family.scenario_family_id]
-            ):
+            expected_case_ids = _V4_EXPECTED_CASE_IDS_BY_FAMILY[family.scenario_family_id]
+            if family.reserved_case_ids != expected_case_ids:
                 raise ValueError(
                     "V4 family case IDs must match the fixed reservation ranges exactly"
                 )
 
         split_case_counts = {
             split: sum(
-                len(family.reserved_case_ids) for family in self.families if family.split is split
+                len(family.reserved_case_ids)
+                for family in self.families
+                if family.split is split
             )
             for split in _EXPECTED_DATA_ROLE_BY_SPLIT
         }
@@ -342,7 +394,9 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
                 raise ValueError(f"V4 {family_id} must remain marked {expected_status}")
 
         final_families = tuple(
-            family for family in self.families if family.split is TraceSplit.FINAL_EVALUATION
+            family
+            for family in self.families
+            if family.split is TraceSplit.FINAL_EVALUATION
         )
         if len(final_families) != 4 or any(
             len(family.reserved_case_ids) != 9 for family in final_families
@@ -351,26 +405,80 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if any(family.workload_allocation is None for family in final_families):
             raise ValueError("each V4 final family requires the fixed workload allocation")
 
-        required_exclusions = {
+        shared_exclusions = {
             "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
-            "No V4 final-evaluation held-out assessment or result is present.",
             "No V4 scheduler, baseline, capacity, or replay implementation is authorized.",
             "No closed-programme data-bearing evidence influenced V4 case design.",
-            "No V4 held-out calibration, policy, or runtime claim is made.",
             "V4 calibration artifact and fit report remain calibration-only diagnostics.",
             (
                 "V4 final-evaluation manifest and final-evidence index are "
                 "frozen provenance boundaries."
             ),
-            (
-                "V4 final-evaluation manifest freeze does not author an "
-                "assessment, baseline, or policy result."
-            ),
         }
-        if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V4 registry must retain every final-manifest-stage exclusion")
-        return self
+        if not shared_exclusions.issubset(set(self.explicit_exclusions)):
+            raise ValueError("V4 registry must retain its shared final-evidence exclusions")
 
+        if self.registry_status == "final_evaluation_manifest_frozen":
+            if self.v4_final_heldout_calibration_assessment_authored:
+                raise ValueError("pre-assessment registry cannot mark assessment evidence authored")
+            if self.final_heldout_calibration_assessment_sha256 is not None:
+                raise ValueError("pre-assessment registry cannot retain an assessment hash")
+            if self.final_heldout_calibration_assessment_relative_path is not None:
+                raise ValueError("pre-assessment registry cannot retain an assessment path")
+            if self.final_heldout_calibration_status is not None:
+                raise ValueError("pre-assessment registry cannot retain an assessment status")
+            if self.next_authorized_artifact != "v4-final-heldout-calibration-assessment":
+                raise ValueError("pre-assessment registry must authorize only the final assessment")
+            pre_assessment_exclusions = {
+                "No V4 final-evaluation held-out assessment or result is present.",
+                "No V4 held-out calibration, policy, or runtime claim is made.",
+                (
+                    "V4 final-evaluation manifest freeze does not author an "
+                    "assessment, baseline, or policy result."
+                ),
+            }
+            if not pre_assessment_exclusions.issubset(set(self.explicit_exclusions)):
+                raise ValueError(
+                    "pre-assessment registry must retain assessment absence exclusions"
+                )
+            return self
+
+        if not self.v4_final_heldout_calibration_assessment_authored:
+            raise ValueError("post-assessment registry requires authored assessment evidence")
+        if self.final_heldout_calibration_assessment_sha256 is None:
+            raise ValueError("post-assessment registry requires the result SHA-256")
+        if self.final_heldout_calibration_assessment_relative_path is None:
+            raise ValueError("post-assessment registry requires the result path")
+        if self.final_heldout_calibration_status is None:
+            raise ValueError("post-assessment registry requires the retained gate status")
+
+        gate_passed = (
+            self.final_heldout_calibration_status
+            == "PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE"
+        )
+        expected_next = (
+            "v4-policy-and-baseline-comparison"
+            if gate_passed
+            else "v4-calibration-remediation-decision"
+        )
+        if self.next_authorized_artifact != expected_next:
+            raise ValueError("post-assessment next artifact must match the held-out status")
+        if gate_passed:
+            required_exclusions = {
+                "V4 held-out calibration assessment is write-once evidence.",
+                "V4 runtime control remains prohibited pending policy and baseline evidence.",
+            }
+        else:
+            required_exclusions = {
+                "V4 held-out calibration assessment is write-once evidence.",
+                (
+                    "V4 policy, baseline, replay, and runtime-control work remain "
+                    "blocked pending remediation."
+                ),
+            }
+        if not required_exclusions.issubset(set(self.explicit_exclusions)):
+            raise ValueError("post-assessment registry must retain its gate-status exclusions")
+        return self
 
 def load_calibration_redesign_v4_scenario_family_registry(
     path: Path,
@@ -454,7 +562,10 @@ def load_calibration_redesign_v4_scenario_family_registry(
         ) from error
     if not allow_final_evaluation_manifest_assets:
         raise CalibrationRedesignV4RegistryLoadError(
-            CalibrationRedesignV4RegistryViolationCode.FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION,
+            (
+                CalibrationRedesignV4RegistryViolationCode
+                .FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+            ),
             "V4 registry has advanced beyond the final-evaluation fixture-authoring boundary",
         )
     return registry
@@ -507,7 +618,8 @@ def assert_calibration_redesign_v4_calibration_position_spread_fixture_root(
             *_V4_CALIBRATION_POSITION_SPREAD_CASE_IDS,
         ),
         violation_code=(
-            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+            CalibrationRedesignV4RegistryViolationCode
+            .CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
         ),
         boundary_name="position-spread",
         allowed_root_filenames=_V4_SCHEMA_ONLY_ROOT_FILENAMES,
@@ -539,7 +651,8 @@ def assert_calibration_redesign_v4_calibration_capacity_contrast_fixture_root(
         root,
         expected_case_ids=_V4_AUTHORISED_CALIBRATION_CASE_IDS,
         violation_code=(
-            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CAPACITY_CONTRAST_BOUNDARY_VIOLATION
+            CalibrationRedesignV4RegistryViolationCode
+            .CALIBRATION_CAPACITY_CONTRAST_BOUNDARY_VIOLATION
         ),
         boundary_name="capacity-contrast",
         allowed_root_filenames=_V4_SCHEMA_ONLY_ROOT_FILENAMES,
@@ -572,7 +685,8 @@ def assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root(
         root,
         expected_case_ids=_V4_AUTHORISED_CALIBRATION_CASE_IDS,
         violation_code=(
-            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION
+            CalibrationRedesignV4RegistryViolationCode
+            .CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION
         ),
         boundary_name="calibration-fit-diagnostics",
         allowed_root_filenames=_V4_CALIBRATION_FIT_ROOT_FILENAMES,
@@ -583,7 +697,10 @@ def assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root(
 def assert_calibration_redesign_v4_final_evaluation_fixture_root(root: Path) -> None:
     """Validate all frozen calibration assets plus quarantined final case pairs."""
 
-    violation_code = CalibrationRedesignV4RegistryViolationCode.FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+    violation_code = (
+        CalibrationRedesignV4RegistryViolationCode
+        .FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+    )
     _assert_v4_calibration_fixture_root(
         root,
         expected_case_ids=_V4_AUTHORISED_CALIBRATION_CASE_IDS,
@@ -603,7 +720,8 @@ def assert_calibration_redesign_v4_final_evaluation_manifest_fixture_root(
     """Validate the frozen final-evaluation root before content is loaded separately."""
 
     violation_code = (
-        CalibrationRedesignV4RegistryViolationCode.FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION
+        CalibrationRedesignV4RegistryViolationCode
+        .FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION
     )
     _assert_v4_calibration_fixture_root(
         root,
@@ -627,7 +745,9 @@ def _assert_v4_final_evaluation_case_tree(
             violation_code,
             "V4 final-evaluation fixture root requires final_evaluation",
         )
-    if {child.name for child in final_root.iterdir()} != _V4_ALLOWED_FINAL_EVALUATION_DIRECTORIES:
+    if {
+        child.name for child in final_root.iterdir()
+    } != _V4_ALLOWED_FINAL_EVALUATION_DIRECTORIES:
         raise CalibrationRedesignV4RegistryLoadError(
             violation_code,
             "V4 final_evaluation directory must contain only inputs and expected_outcomes",
