@@ -2,23 +2,26 @@
 
 ## Current stage
 
-`schema_only`
+`calibration_curve_coverage_authored`
 
 ## Authoring record
 
 | Artifact class | Status | Evidence role |
 |---|---|---|
-| V4 scenario-family registry | Authored | Reservation metadata only |
-| Calibration runtime inputs | Not authored | Future fitting-only evidence |
-| Calibration expected outcomes | Not authored | Future fitting-only labels |
-| Final runtime inputs | Not authored | Quarantined final-evaluation evidence |
-| Final expected outcomes | Not authored | Quarantined final-evaluation labels |
-| Adversarial runtime inputs/outcomes | Not authored | Quarantined regression evidence |
+| V4 scenario-family registry | Updated | Reservation and active-boundary metadata |
+| Curve-coverage runtime inputs, CRV4-101 through CRV4-112 | Authored | Calibration-only decision-time inputs |
+| Curve-coverage expected outcomes, CRV4-101 through CRV4-112 | Authored | Calibration-only post-hoc labels |
+| Position-spread calibration case pairs | Not authored | Future fitting-only evidence |
+| Workload-mix calibration case pairs | Not authored | Future fitting-only evidence |
+| Capacity-contrast calibration case pairs | Not authored | Future fitting-only evidence |
+| Final runtime inputs and outcomes | Not authored | Quarantined final-evaluation evidence |
+| Adversarial runtime inputs and outcomes | Not authored | Quarantined regression evidence |
 | Calibration manifest | Not authored | Future immutable calibration provenance |
-| Final manifest and final-evidence index | Not authored | Future one-time final-assessment provenance |
 | Calibration artifact and fit report | Not authored | Future frozen calibration output |
-| Held-out assessment result | Not authored | Future write-once final evidence |
+| Final manifest, index, and held-out result | Not authored | Future one-time final evidence |
 
 ## Integrity statement
 
-No V4 runtime or outcome case byte exists in this fixture root. The registry is a reservation only. Any case-bearing directory or manifest is a schema-only boundary violation until a later authorized slice changes the governed stage.
+Exactly twelve calibration-only runtime/outcome case pairs exist. Their runtime inputs contain no
+acceptance label, prefix-survival label, or current candidate token. Their expected outcomes remain
+in separate files. No final-evaluation or adversarial case byte exists in this fixture root.
