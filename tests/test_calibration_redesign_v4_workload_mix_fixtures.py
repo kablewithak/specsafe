@@ -77,7 +77,9 @@ def test_workload_mix_runtime_assets_are_label_free_and_confidence_diverse() -> 
     assert len(confidence_sequences) == len(_CASE_IDS)
 
 
-def test_workload_mix_retains_both_outcome_classes_and_no_final_result_assets() -> None:
+def test_workload_mix_retains_both_outcome_classes_and_no_heldout_result_assets() -> (
+    None
+):
     replay_cases = tuple(
         load_calibration_redesign_v4_replay_case(_FIXTURE_ROOT, case_id)
         for case_id in _CASE_IDS
@@ -91,6 +93,4 @@ def test_workload_mix_retains_both_outcome_classes_and_no_final_result_assets() 
     assert any(observed_acceptance)
     assert not all(observed_acceptance)
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
-    assert not (_FIXTURE_ROOT / "final_evidence_index.json").exists()
     assert not (_FIXTURE_ROOT / "heldout_assessment.json").exists()

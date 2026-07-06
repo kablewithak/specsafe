@@ -52,7 +52,9 @@ class CalibrationRedesignV4FinalCaseViolationCode(StrEnum):
     RUNTIME_SCHEMA_ERROR = "calibration_redesign_v4_final_runtime_schema_error"
     OUTCOME_SCHEMA_ERROR = "calibration_redesign_v4_final_outcome_schema_error"
     CASE_ALIGNMENT_ERROR = "calibration_redesign_v4_final_case_alignment_error"
-    REGISTRY_MEMBERSHIP_ERROR = "calibration_redesign_v4_final_registry_membership_error"
+    REGISTRY_MEMBERSHIP_ERROR = (
+        "calibration_redesign_v4_final_registry_membership_error"
+    )
     UNTRUSTED_REGISTRY = "calibration_redesign_v4_final_untrusted_registry"
     CASE_ASSET_LAYOUT_ERROR = "calibration_redesign_v4_final_case_asset_layout_error"
     CASE_ASSET_PROVENANCE_MISMATCH = (
@@ -102,14 +104,20 @@ class CalibrationRedesignV4FinalRuntimeInput(StrictContract):
         seen_keys: set[tuple[int, int]] = set()
         for context in self.contexts:
             if context.trace_id != self.trace_id:
-                raise ValueError("all V4 final runtime contexts must use the enclosing trace_id")
+                raise ValueError(
+                    "all V4 final runtime contexts must use the enclosing trace_id"
+                )
             if context.request_id != self.request_id:
-                raise ValueError("all V4 final runtime contexts must use the enclosing request_id")
+                raise ValueError(
+                    "all V4 final runtime contexts must use the enclosing request_id"
+                )
             if context.decode_round != 0:
                 raise ValueError("V4 final-evaluation cases must use decode round zero")
             key = (context.decode_round, context.block_position_index)
             if key in seen_keys:
-                raise ValueError("V4 final runtime contexts must not repeat a position key")
+                raise ValueError(
+                    "V4 final runtime contexts must not repeat a position key"
+                )
             if context.block_position_index != expected_position:
                 raise ValueError(
                     "V4 final runtime contexts must have contiguous positions from one"
@@ -150,14 +158,22 @@ class CalibrationRedesignV4FinalExpectedOutcomes(StrictContract):
         prefix_survives = True
         for outcome in self.outcomes:
             if outcome.trace_id != self.trace_id:
-                raise ValueError("all V4 final outcomes must use the enclosing trace_id")
+                raise ValueError(
+                    "all V4 final outcomes must use the enclosing trace_id"
+                )
             if outcome.decode_round != 0:
-                raise ValueError("V4 final-evaluation outcomes must use decode round zero")
+                raise ValueError(
+                    "V4 final-evaluation outcomes must use decode round zero"
+                )
             if outcome.block_position_index != expected_position:
-                raise ValueError("V4 final outcomes must be contiguous from position one")
+                raise ValueError(
+                    "V4 final outcomes must be contiguous from position one"
+                )
             prefix_survives = prefix_survives and outcome.observed_acceptance
             if outcome.prefix_survival_label is not prefix_survives:
-                raise ValueError("V4 final prefix_survival_label must equal cumulative acceptance")
+                raise ValueError(
+                    "V4 final prefix_survival_label must equal cumulative acceptance"
+                )
             expected_position += 1
         return self
 
@@ -169,7 +185,9 @@ class CalibrationRedesignV4FinalReplayCase(StrictContract):
     expected_outcomes: CalibrationRedesignV4FinalExpectedOutcomes
 
     @model_validator(mode="after")
-    def validate_runtime_outcome_alignment(self) -> CalibrationRedesignV4FinalReplayCase:
+    def validate_runtime_outcome_alignment(
+        self,
+    ) -> CalibrationRedesignV4FinalReplayCase:
         """Join final evidence halves without treating outcomes as runtime state."""
 
         runtime = self.runtime_input
@@ -188,7 +206,9 @@ class CalibrationRedesignV4FinalReplayCase(StrictContract):
         )
         for field_name in aligned_fields:
             if getattr(runtime, field_name) != getattr(outcomes, field_name):
-                raise ValueError(f"V4 final runtime and outcomes disagree on {field_name}")
+                raise ValueError(
+                    f"V4 final runtime and outcomes disagree on {field_name}"
+                )
 
         contexts_by_key = {
             (context.decode_round, context.block_position_index): context
@@ -199,7 +219,9 @@ class CalibrationRedesignV4FinalReplayCase(StrictContract):
             for outcome in outcomes.outcomes
         }
         if set(contexts_by_key) != set(outcomes_by_key):
-            raise ValueError("V4 final runtime and outcomes must have identical position keys")
+            raise ValueError(
+                "V4 final runtime and outcomes must have identical position keys"
+            )
         _validate_visible_prefixes(contexts_by_key, outcomes.outcomes)
         return self
 
@@ -258,7 +280,7 @@ def load_calibration_redesign_v4_final_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_evaluation_fixture_assets=True,
+            allow_final_evaluation_manifest_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4FinalCaseContractError(
@@ -267,12 +289,16 @@ def load_calibration_redesign_v4_final_replay_case(
         ) from error
 
     final_root = resolved_root / "final_evaluation"
-    runtime_payload = _read_json_asset(final_root / "inputs" / "cases" / f"{case_id}.json")
+    runtime_payload = _read_json_asset(
+        final_root / "inputs" / "cases" / f"{case_id}.json"
+    )
     outcomes_payload = _read_json_asset(
         final_root / "expected_outcomes" / "cases" / f"{case_id}.json"
     )
     try:
-        runtime_input = CalibrationRedesignV4FinalRuntimeInput.model_validate(runtime_payload)
+        runtime_input = CalibrationRedesignV4FinalRuntimeInput.model_validate(
+            runtime_payload
+        )
     except ValidationError as error:
         raise CalibrationRedesignV4FinalCaseContractError(
             CalibrationRedesignV4FinalCaseViolationCode.RUNTIME_SCHEMA_ERROR,

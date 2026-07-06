@@ -266,7 +266,7 @@ def load_calibration_redesign_v4_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_evaluation_fixture_assets=True,
+            allow_final_evaluation_manifest_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4CaseContractError(

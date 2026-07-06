@@ -1,4 +1,4 @@
-"""Regression tests for V4 quarantined final-evaluation fixture authoring."""
+"""Regression tests for V4 frozen final-evaluation fixture access."""
 
 from __future__ import annotations
 
@@ -23,10 +23,7 @@ _FIXTURE_ROOT = (
 _FINAL_ROOT = _FIXTURE_ROOT / "final_evaluation"
 _CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(201, 237))
 _EXPECTED_FAMILY_BY_CASE_ID = {
-    **{
-        f"CRV4-{number:03d}": "CRV4-FINAL-LIGHT-CAPACITY"
-        for number in range(201, 210)
-    },
+    **{f"CRV4-{number:03d}": "CRV4-FINAL-LIGHT-CAPACITY" for number in range(201, 210)},
     **{
         f"CRV4-{number:03d}": "CRV4-FINAL-MODERATE-CAPACITY"
         for number in range(210, 219)
@@ -36,25 +33,22 @@ _EXPECTED_FAMILY_BY_CASE_ID = {
         for number in range(219, 228)
     },
     **{
-        f"CRV4-{number:03d}": "CRV4-FINAL-JAGGED-CAPACITY"
-        for number in range(228, 237)
+        f"CRV4-{number:03d}": "CRV4-FINAL-JAGGED-CAPACITY" for number in range(228, 237)
     },
 }
 
 
 def test_final_inventory_is_complete_and_separate_from_calibration_assets() -> None:
     expected_names = {f"{case_id}.json" for case_id in _CASE_IDS}
-    input_names = {
-        path.name for path in (_FINAL_ROOT / "inputs" / "cases").iterdir()
-    }
+    input_names = {path.name for path in (_FINAL_ROOT / "inputs" / "cases").iterdir()}
     outcome_names = {
         path.name for path in (_FINAL_ROOT / "expected_outcomes" / "cases").iterdir()
     }
 
     assert input_names == expected_names
     assert outcome_names == expected_names
-    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
-    assert not (_FIXTURE_ROOT / "final_evidence_index.json").exists()
+    assert (_FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert (_FIXTURE_ROOT / "final_evidence_index.json").is_file()
     assert not (_FIXTURE_ROOT / "heldout_assessment.json").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
 
@@ -94,9 +88,8 @@ def test_final_cases_cover_each_capacity_family_workload_and_position() -> None:
         }
     )
     assert all(
-        workload_counts == Counter(
-            {"structured_text": 3, "code": 3, "open_ended_chat": 3}
-        )
+        workload_counts
+        == Counter({"structured_text": 3, "code": 3, "open_ended_chat": 3})
         for workload_counts in workload_counts_by_family.values()
     )
     assert position_counts == Counter({1: 36, 2: 36, 3: 36, 4: 36})
@@ -126,7 +119,10 @@ def test_final_runtime_assets_are_label_free_and_outcomes_remain_separate() -> N
         rendered_runtime = json.dumps(runtime_payload, sort_keys=True)
 
         assert runtime_payload["case_id"] == case_id
-        assert runtime_payload["scenario_family_id"] == _EXPECTED_FAMILY_BY_CASE_ID[case_id]
+        assert (
+            runtime_payload["scenario_family_id"]
+            == _EXPECTED_FAMILY_BY_CASE_ID[case_id]
+        )
         assert runtime_payload["split"] == "final_evaluation"
         assert runtime_payload["data_role"] == "held_out_evaluation"
         assert "candidate_token_id" not in rendered_runtime
