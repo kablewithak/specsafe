@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-134",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 7,
+        "profile_id": "v4-calibration-workload-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 56
+      },
+      "conditional_survival_confidence": 0.68,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-workload-request-134",
+      "trace_id": "crv4-calibration-workload-trace-134",
+      "visible_prefix_token_ids": [],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 7,
+        "profile_id": "v4-calibration-workload-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 56
+      },
+      "conditional_survival_confidence": 0.59,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-workload-request-134",
+      "trace_id": "crv4-calibration-workload-trace-134",
+      "visible_prefix_token_ids": [
+        6341
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 7,
+        "profile_id": "v4-calibration-workload-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 56
+      },
+      "conditional_survival_confidence": 0.52,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-workload-request-134",
+      "trace_id": "crv4-calibration-workload-trace-134",
+      "visible_prefix_token_ids": [
+        6341,
+        6342
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 7,
+        "profile_id": "v4-calibration-workload-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 56
+      },
+      "conditional_survival_confidence": 0.44,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-workload-request-134",
+      "trace_id": "crv4-calibration-workload-trace-134",
+      "visible_prefix_token_ids": [
+        6341,
+        6342,
+        6343
+      ],
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "data_role": "calibration",
+  "fixture_id": "crv4-calibration-workload-mix-134",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Synthetic workload-diversity coverage for calibration fitting only; no outcome label is present in this runtime asset.",
+  "request_id": "crv4-calibration-workload-request-134",
+  "scenario_family_id": "CRV4-CAL-WORKLOAD-MIX",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "calibration",
+  "trace_id": "crv4-calibration-workload-trace-134"
+}

@@ -1,9 +1,9 @@
 """Typed V4 calibration case contracts and loaders.
 
-Only the authored CRV4-101 through CRV4-124 calibration-only case pairs may be
-loaded at this stage. Runtime inputs and post-hoc outcomes remain physically
-separate. Final-evaluation and adversarial evidence remain absent, and this
-module does not fit calibration or execute a scheduler.
+CRV4-101 through CRV4-136 are the only currently authorised calibration-only case
+pairs. Runtime inputs and post-hoc outcomes remain physically separate. Final and
+adversarial evidence remain absent; this module does not fit calibration or execute
+a scheduler.
 """
 
 from __future__ import annotations
@@ -30,18 +30,18 @@ from specsafe.traces.calibration_redesign_v4 import (
     load_calibration_redesign_v4_scenario_family_registry,
 )
 
-_V4_AUTHORED_CALIBRATION_FAMILY_IDS = frozenset(
+_V4_AUTHORISED_CALIBRATION_FAMILY_IDS = frozenset(
     {
         "CRV4-CAL-CURVE-COVERAGE",
         "CRV4-CAL-POSITION-SPREAD",
+        "CRV4-CAL-WORKLOAD-MIX",
     }
 )
-_V4_AUTHORED_CALIBRATION_FAMILY_STATUSES = frozenset(
-    {
-        "calibration_curve_coverage_authored",
-        "calibration_position_spread_authored",
-    }
-)
+_V4_EXPECTED_STATUS_BY_FAMILY = {
+    "CRV4-CAL-CURVE-COVERAGE": "calibration_curve_coverage_authored",
+    "CRV4-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
+    "CRV4-CAL-WORKLOAD-MIX": "calibration_workload_mix_authored",
+}
 
 
 class CalibrationRedesignV4CaseViolationCode(StrEnum):
@@ -62,7 +62,9 @@ class CalibrationRedesignV4CaseContractError(ValueError):
     """Raised when one V4 case pair is malformed or outside the active boundary."""
 
     def __init__(
-        self, code: CalibrationRedesignV4CaseViolationCode, message: str
+        self,
+        code: CalibrationRedesignV4CaseViolationCode,
+        message: str,
     ) -> None:
         super().__init__(message)
         self.code = code
@@ -81,6 +83,7 @@ class CalibrationRedesignV4RuntimeInput(StrictContract):
     scenario_family_id: Literal[
         "CRV4-CAL-CURVE-COVERAGE",
         "CRV4-CAL-POSITION-SPREAD",
+        "CRV4-CAL-WORKLOAD-MIX",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
@@ -90,7 +93,7 @@ class CalibrationRedesignV4RuntimeInput(StrictContract):
 
     @model_validator(mode="after")
     def validate_runtime_contexts(self) -> CalibrationRedesignV4RuntimeInput:
-        """Require the four decision-time positions in deterministic causal order."""
+        """Require four decision-time positions in deterministic causal order."""
 
         expected_position = 1
         seen_keys: set[tuple[int, int]] = set()
@@ -129,12 +132,14 @@ class CalibrationRedesignV4ExpectedOutcomes(StrictContract):
     scenario_family_id: Literal[
         "CRV4-CAL-CURVE-COVERAGE",
         "CRV4-CAL-POSITION-SPREAD",
+        "CRV4-CAL-WORKLOAD-MIX",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
     outcomes: tuple[SyntheticTraceExpectedOutcome, ...] = Field(
-        min_length=4, max_length=4
+        min_length=4,
+        max_length=4,
     )
 
     @model_validator(mode="after")
@@ -166,9 +171,7 @@ class CalibrationRedesignV4ReplayCase(StrictContract):
     expected_outcomes: CalibrationRedesignV4ExpectedOutcomes
 
     @model_validator(mode="after")
-    def validate_runtime_outcome_alignment(
-        self,
-    ) -> CalibrationRedesignV4ReplayCase:
+    def validate_runtime_outcome_alignment(self) -> CalibrationRedesignV4ReplayCase:
         """Join matching assets without making outcomes part of runtime state."""
 
         runtime = self.runtime_input
@@ -209,7 +212,7 @@ def validate_calibration_redesign_v4_replay_case_membership(
     replay_case: CalibrationRedesignV4ReplayCase,
     registry: CalibrationRedesignV4ScenarioFamilyRegistry,
 ) -> None:
-    """Verify the pair belongs to an authored calibration-only V4 family."""
+    """Verify the pair belongs to an authorised V4 calibration-only family."""
 
     if type(registry) is not CalibrationRedesignV4ScenarioFamilyRegistry:
         raise CalibrationRedesignV4CaseContractError(
@@ -218,6 +221,11 @@ def validate_calibration_redesign_v4_replay_case_membership(
         )
 
     runtime = replay_case.runtime_input
+    if runtime.scenario_family_id not in _V4_AUTHORISED_CALIBRATION_FAMILY_IDS:
+        raise CalibrationRedesignV4CaseContractError(
+            CalibrationRedesignV4CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
+            "V4 runtime case references a family outside the calibration-only boundary",
+        )
     family = next(
         (
             candidate
@@ -226,11 +234,8 @@ def validate_calibration_redesign_v4_replay_case_membership(
         ),
         None,
     )
-    if (
-        family is None
-        or family.scenario_family_id not in _V4_AUTHORED_CALIBRATION_FAMILY_IDS
-        or family.authoring_status not in _V4_AUTHORED_CALIBRATION_FAMILY_STATUSES
-    ):
+    expected_status = _V4_EXPECTED_STATUS_BY_FAMILY[runtime.scenario_family_id]
+    if family is None or family.authoring_status != expected_status:
         raise CalibrationRedesignV4CaseContractError(
             CalibrationRedesignV4CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
             "V4 runtime case references a family not authorised for current case loading",
@@ -246,7 +251,7 @@ def load_calibration_redesign_v4_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV4ReplayCase:
-    """Load one authorised CRV4-101 through CRV4-124 calibration case pair."""
+    """Load one authorised CRV4-101 through CRV4-136 calibration case pair."""
 
     if not _is_v4_case_id(case_id):
         raise CalibrationRedesignV4CaseContractError(
@@ -257,7 +262,7 @@ def load_calibration_redesign_v4_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_position_spread_assets=True,
+            allow_calibration_workload_mix_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4CaseContractError(

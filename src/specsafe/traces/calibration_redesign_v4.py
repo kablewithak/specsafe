@@ -1,9 +1,9 @@
-"""Governed V4 calibration authoring-boundary controls.
+"""Governed V4 calibration workload-mix evidence controls.
 
-This module advances V4 to exactly two authorised calibration-only families:
-CRV4-CAL-CURVE-COVERAGE and CRV4-CAL-POSITION-SPREAD. It permits the paired
-CRV4-101 through CRV4-124 assets while final evaluation and adversarial evidence
-remain absent. It does not fit calibration, create a manifest, or execute a policy.
+This module advances V4 to exactly three authorised calibration-only families:
+curve coverage (CRV4-101..112), position spread (CRV4-113..124), and workload mix
+(CRV4-125..136). Final evaluation and adversarial evidence remain absent. This module
+does not fit calibration, create a manifest, or execute a policy.
 """
 
 from __future__ import annotations
@@ -25,20 +25,25 @@ from specsafe.contracts.models import (
 _V4_REGISTRY_FILENAME = "scenario_family_registry.json"
 _V4_PROPOSAL_MANIFEST_FILENAME = "PROPOSAL_MANIFEST.md"
 _V4_AUTHORING_LEDGER_FILENAME = "authoring_ledger.md"
+
 _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS = tuple(
     f"CRV4-{number:03d}" for number in range(101, 113)
 )
 _V4_CALIBRATION_POSITION_SPREAD_CASE_IDS = tuple(
     f"CRV4-{number:03d}" for number in range(113, 125)
 )
-_V4_AUTHORED_CALIBRATION_CASE_IDS = (
+_V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS = tuple(
+    f"CRV4-{number:03d}" for number in range(125, 137)
+)
+_V4_AUTHORISED_CALIBRATION_CASE_IDS = (
     *_V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
     *_V4_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+    *_V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS,
 )
 _V4_EXPECTED_CASE_IDS_BY_FAMILY = {
     "CRV4-CAL-CURVE-COVERAGE": _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
     "CRV4-CAL-POSITION-SPREAD": _V4_CALIBRATION_POSITION_SPREAD_CASE_IDS,
-    "CRV4-CAL-WORKLOAD-MIX": tuple(f"CRV4-{number:03d}" for number in range(125, 137)),
+    "CRV4-CAL-WORKLOAD-MIX": _V4_CALIBRATION_WORKLOAD_MIX_CASE_IDS,
     "CRV4-CAL-CAPACITY-CONTRAST": tuple(
         f"CRV4-{number:03d}" for number in range(137, 149)
     ),
@@ -65,8 +70,7 @@ _V4_SCHEMA_ONLY_ROOT_FILENAMES = {
     _V4_AUTHORING_LEDGER_FILENAME,
     _V4_REGISTRY_FILENAME,
 }
-_V4_CALIBRATION_ALLOWED_ROOT_FILENAMES = _V4_SCHEMA_ONLY_ROOT_FILENAMES
-_V4_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
+_V4_ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _V4_FORBIDDEN_ROOT_PATH_NAMES = {
     "calibration_manifest.json",
     "final_evaluation_manifest.json",
@@ -92,6 +96,11 @@ _CLOSED_EVIDENCE_MARKERS = (
     b"logit-temperature-scaling-v1",
     b"quantile-isotonic-calibration-v1",
 )
+_EXPECTED_AUTHORED_STATUS_BY_FAMILY = {
+    "CRV4-CAL-CURVE-COVERAGE": "calibration_curve_coverage_authored",
+    "CRV4-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
+    "CRV4-CAL-WORKLOAD-MIX": "calibration_workload_mix_authored",
+}
 
 
 class CalibrationRedesignV4RegistryViolationCode(StrEnum):
@@ -111,10 +120,13 @@ class CalibrationRedesignV4RegistryViolationCode(StrEnum):
     CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION = (
         "calibration_redesign_v4_calibration_position_spread_boundary_violation"
     )
+    CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v4_calibration_workload_mix_boundary_violation"
+    )
 
 
 class CalibrationRedesignV4RegistryLoadError(ValueError):
-    """Raised when V4 registry metadata or its current authoring root is invalid."""
+    """Raised when V4 registry metadata or its active authoring root is invalid."""
 
     def __init__(
         self,
@@ -161,6 +173,7 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
     authoring_status: Literal[
         "calibration_curve_coverage_authored",
         "calibration_position_spread_authored",
+        "calibration_workload_mix_authored",
         "reserved_for_v4_case_authoring",
     ]
 
@@ -215,11 +228,7 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
                 "only V4 final-evaluation families may declare workload allocation"
             )
 
-        expected_status_by_family = {
-            "CRV4-CAL-CURVE-COVERAGE": "calibration_curve_coverage_authored",
-            "CRV4-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
-        }
-        expected_status = expected_status_by_family.get(
+        expected_status = _EXPECTED_AUTHORED_STATUS_BY_FAMILY.get(
             self.scenario_family_id,
             "reserved_for_v4_case_authoring",
         )
@@ -231,10 +240,10 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
 
 
 class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
-    """V4 registry after two calibration-only families have been authored."""
+    """V4 registry after three calibration-only families have been authored."""
 
     schema_version: Literal["calibration-redesign-v4-scenario-family-registry-v1"]
-    registry_status: Literal["calibration_position_spread_authored"]
+    registry_status: Literal["calibration_workload_mix_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v4"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -252,13 +261,13 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         max_length=10,
     )
     explicit_exclusions: tuple[str, ...] = Field(min_length=9)
-    next_authorized_artifact: Literal["v4-calibration-workload-mix-fixtures"]
+    next_authorized_artifact: Literal["v4-calibration-capacity-contrast-fixtures"]
 
     @model_validator(mode="after")
     def validate_registry_governance(
         self,
     ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-        """Enforce exact V4 reservation plus two authorised calibration families."""
+        """Enforce exact V4 reservation plus three authorised calibration families."""
 
         if self.v1_v2_v3_data_bearing_evidence_used:
             raise ValueError(
@@ -266,11 +275,11 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
             )
         if not self.v4_runtime_or_outcome_assets_authored:
             raise ValueError(
-                "the V4 position-spread authoring stage requires authored calibration case assets"
+                "the V4 workload-mix authoring stage requires authored calibration assets"
             )
         if self.v4_manifests_authored:
             raise ValueError(
-                "V4 position-spread authoring stage cannot record authored manifests"
+                "V4 workload-mix authoring stage cannot record authored manifests"
             )
 
         family_ids = tuple(family.scenario_family_id for family in self.families)
@@ -287,10 +296,10 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if len(set(all_case_ids)) != len(all_case_ids):
             raise ValueError("V4 case IDs must be unique across all families")
         for family in self.families:
-            expected_case_ids = _V4_EXPECTED_CASE_IDS_BY_FAMILY[
-                family.scenario_family_id
-            ]
-            if family.reserved_case_ids != expected_case_ids:
+            if (
+                family.reserved_case_ids
+                != _V4_EXPECTED_CASE_IDS_BY_FAMILY[family.scenario_family_id]
+            ):
                 raise ValueError(
                     "V4 family case IDs must match the fixed reservation ranges exactly"
                 )
@@ -310,32 +319,12 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if split_case_counts[TraceSplit.ADVERSARIAL_REGRESSION] != 12:
             raise ValueError("V4 adversarial reserved-case count must equal 12")
 
-        curve_family = next(
-            family
-            for family in self.families
-            if family.scenario_family_id == "CRV4-CAL-CURVE-COVERAGE"
-        )
-        if curve_family.reserved_case_ids != _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS:
-            raise ValueError(
-                "V4 curve-coverage family must reserve CRV4-101 through CRV4-112"
+        for family_id, expected_status in _EXPECTED_AUTHORED_STATUS_BY_FAMILY.items():
+            family = next(
+                item for item in self.families if item.scenario_family_id == family_id
             )
-        if curve_family.authoring_status != "calibration_curve_coverage_authored":
-            raise ValueError("V4 curve-coverage family must remain marked authored")
-
-        position_family = next(
-            family
-            for family in self.families
-            if family.scenario_family_id == "CRV4-CAL-POSITION-SPREAD"
-        )
-        if (
-            position_family.reserved_case_ids
-            != _V4_CALIBRATION_POSITION_SPREAD_CASE_IDS
-        ):
-            raise ValueError(
-                "V4 position-spread family must reserve CRV4-113 through CRV4-124"
-            )
-        if position_family.authoring_status != "calibration_position_spread_authored":
-            raise ValueError("V4 position-spread family must be marked authored")
+            if family.authoring_status != expected_status:
+                raise ValueError(f"V4 {family_id} must remain marked {expected_status}")
 
         final_families = tuple(
             family
@@ -367,7 +356,7 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError(
-                "V4 registry must retain every position-spread-stage exclusion"
+                "V4 registry must retain every workload-mix-stage exclusion"
             )
         return self
 
@@ -377,13 +366,15 @@ def load_calibration_redesign_v4_scenario_family_registry(
     *,
     allow_calibration_curve_coverage_assets: bool = False,
     allow_calibration_position_spread_assets: bool = False,
+    allow_calibration_workload_mix_assets: bool = False,
 ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-    """Load V4 registry only through an explicit, governed authoring boundary."""
+    """Load V4 registry only through one explicit, governed authoring boundary."""
 
     selected_boundary_count = sum(
         (
             allow_calibration_curve_coverage_assets,
             allow_calibration_position_spread_assets,
+            allow_calibration_workload_mix_assets,
         )
     )
     if selected_boundary_count > 1:
@@ -393,7 +384,9 @@ def load_calibration_redesign_v4_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_calibration_position_spread_assets:
+    if allow_calibration_workload_mix_assets:
+        assert_calibration_redesign_v4_calibration_workload_mix_fixture_root(root)
+    elif allow_calibration_position_spread_assets:
         assert_calibration_redesign_v4_calibration_position_spread_fixture_root(root)
     elif allow_calibration_curve_coverage_assets:
         assert_calibration_redesign_v4_calibration_curve_coverage_fixture_root(root)
@@ -431,7 +424,7 @@ def load_calibration_redesign_v4_scenario_family_registry(
 
 
 def assert_calibration_redesign_v4_schema_only_fixture_root(root: Path) -> None:
-    """Fail closed when case-bearing paths appear before an explicit stage is selected."""
+    """Fail closed when case-bearing paths appear before a stage is selected."""
 
     resolved_root = _require_fixture_root(root)
     unexpected_paths = []
@@ -452,7 +445,7 @@ def assert_calibration_redesign_v4_schema_only_fixture_root(root: Path) -> None:
 def assert_calibration_redesign_v4_calibration_curve_coverage_fixture_root(
     root: Path,
 ) -> None:
-    """Validate exactly the first twelve V4 calibration case pairs and nothing else."""
+    """Validate exactly the first twelve V4 calibration case pairs."""
 
     _assert_v4_calibration_fixture_root(
         root,
@@ -467,15 +460,33 @@ def assert_calibration_redesign_v4_calibration_curve_coverage_fixture_root(
 def assert_calibration_redesign_v4_calibration_position_spread_fixture_root(
     root: Path,
 ) -> None:
-    """Validate exactly the first two V4 calibration families and nothing else."""
+    """Validate the first twenty-four V4 calibration case pairs."""
 
     _assert_v4_calibration_fixture_root(
         root,
-        expected_case_ids=_V4_AUTHORED_CALIBRATION_CASE_IDS,
+        expected_case_ids=(
+            *_V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+            *_V4_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+        ),
         violation_code=(
             CalibrationRedesignV4RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
         ),
         boundary_name="position-spread",
+    )
+
+
+def assert_calibration_redesign_v4_calibration_workload_mix_fixture_root(
+    root: Path,
+) -> None:
+    """Validate exactly the first thirty-six V4 calibration case pairs."""
+
+    _assert_v4_calibration_fixture_root(
+        root,
+        expected_case_ids=_V4_AUTHORISED_CALIBRATION_CASE_IDS,
+        violation_code=(
+            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION
+        ),
+        boundary_name="workload-mix",
     )
 
 
@@ -491,22 +502,19 @@ def _assert_v4_calibration_fixture_root(
     for child in resolved_root.iterdir():
         if child.name in _V4_FORBIDDEN_ROOT_PATH_NAMES:
             unexpected_root_paths.append(child.name)
-        elif child.is_dir() and child.name not in _V4_CALIBRATION_DIRECTORIES:
+        elif child.is_dir() and child.name not in _V4_ALLOWED_CALIBRATION_DIRECTORIES:
             unexpected_root_paths.append(child.name)
-        elif (
-            not child.is_dir()
-            and child.name not in _V4_CALIBRATION_ALLOWED_ROOT_FILENAMES
-        ):
+        elif not child.is_dir() and child.name not in _V4_SCHEMA_ONLY_ROOT_FILENAMES:
             unexpected_root_paths.append(child.name)
     if unexpected_root_paths:
         raise CalibrationRedesignV4RegistryLoadError(
             violation_code,
-            f"V4 calibration {boundary_name} fixture root contains unauthorised assets: "
+            f"V4 {boundary_name} fixture root contains unauthorised assets: "
             + ", ".join(sorted(unexpected_root_paths)),
         )
 
     expected_names = {f"{case_id}.json" for case_id in expected_case_ids}
-    for artifact_directory in sorted(_V4_CALIBRATION_DIRECTORIES):
+    for artifact_directory in sorted(_V4_ALLOWED_CALIBRATION_DIRECTORIES):
         cases_path = resolved_root / artifact_directory / "cases"
         if not cases_path.is_dir():
             raise CalibrationRedesignV4RegistryLoadError(

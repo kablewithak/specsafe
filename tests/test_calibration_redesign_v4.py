@@ -1,4 +1,4 @@
-"""Tests for the V4 position-spread authoring boundary."""
+"""Tests for the V4 workload-mix authoring boundary."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from specsafe.traces.calibration_redesign_v4 import (
     CalibrationRedesignV4RegistryLoadError,
     CalibrationRedesignV4RegistryViolationCode,
     CalibrationRedesignV4ScenarioFamilyRegistry,
-    assert_calibration_redesign_v4_calibration_position_spread_fixture_root,
+    assert_calibration_redesign_v4_calibration_workload_mix_fixture_root,
     load_calibration_redesign_v4_scenario_family_registry,
 )
 
@@ -32,51 +32,35 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
     return copied_root
 
 
-def test_loads_v4_position_spread_registry_only_through_active_boundary() -> None:
+def test_loads_v4_workload_mix_registry_only_through_active_boundary() -> None:
     registry = load_calibration_redesign_v4_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_position_spread_assets=True,
+        allow_calibration_workload_mix_assets=True,
     )
 
-    assert registry.registry_status == "calibration_position_spread_authored"
+    assert registry.registry_status == "calibration_workload_mix_authored"
     assert registry.v4_runtime_or_outcome_assets_authored is True
     assert registry.v4_manifests_authored is False
-    assert registry.next_authorized_artifact == "v4-calibration-workload-mix-fixtures"
-    curve_family = next(
-        family
-        for family in registry.families
-        if family.scenario_family_id == "CRV4-CAL-CURVE-COVERAGE"
+    assert (
+        registry.next_authorized_artifact == "v4-calibration-capacity-contrast-fixtures"
     )
-    position_family = next(
-        family
+    statuses = {
+        family.scenario_family_id: family.authoring_status
         for family in registry.families
-        if family.scenario_family_id == "CRV4-CAL-POSITION-SPREAD"
+    }
+    assert statuses["CRV4-CAL-CURVE-COVERAGE"] == "calibration_curve_coverage_authored"
+    assert (
+        statuses["CRV4-CAL-POSITION-SPREAD"] == "calibration_position_spread_authored"
     )
-    assert curve_family.authoring_status == "calibration_curve_coverage_authored"
-    assert position_family.authoring_status == "calibration_position_spread_authored"
+    assert statuses["CRV4-CAL-WORKLOAD-MIX"] == "calibration_workload_mix_authored"
 
 
-def test_current_root_rejects_previous_boundary_loader_path() -> None:
+def test_current_root_rejects_previous_position_spread_loader_path() -> None:
     with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
         load_calibration_redesign_v4_scenario_family_registry(
             _REGISTRY_PATH,
-            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
         )
-
-    assert (
-        error.value.code
-        is CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
-    )
-
-
-def test_position_spread_boundary_requires_exact_case_pair_inventory(
-    tmp_path: Path,
-) -> None:
-    root = _copy_fixture_root(tmp_path)
-    (root / "inputs" / "cases" / "CRV4-124.json").unlink()
-
-    with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
-        assert_calibration_redesign_v4_calibration_position_spread_fixture_root(root)
 
     assert (
         error.value.code
@@ -84,31 +68,47 @@ def test_position_spread_boundary_requires_exact_case_pair_inventory(
     )
 
 
-def test_position_spread_boundary_rejects_final_or_adversarial_paths(
+def test_workload_mix_boundary_requires_exact_case_pair_inventory(
+    tmp_path: Path,
+) -> None:
+    root = _copy_fixture_root(tmp_path)
+    (root / "inputs" / "cases" / "CRV4-136.json").unlink()
+
+    with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
+        assert_calibration_redesign_v4_calibration_workload_mix_fixture_root(root)
+
+    assert (
+        error.value.code
+        is CalibrationRedesignV4RegistryViolationCode.CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION
+    )
+
+
+def test_workload_mix_boundary_rejects_final_or_adversarial_paths(
     tmp_path: Path,
 ) -> None:
     root = _copy_fixture_root(tmp_path)
     (root / "final_evaluation").mkdir()
 
     with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
-        assert_calibration_redesign_v4_calibration_position_spread_fixture_root(root)
+        assert_calibration_redesign_v4_calibration_workload_mix_fixture_root(root)
 
     assert (
         error.value.code
-        is CalibrationRedesignV4RegistryViolationCode.CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+        is CalibrationRedesignV4RegistryViolationCode.CALIBRATION_WORKLOAD_MIX_BOUNDARY_VIOLATION
     )
 
 
 def test_registry_retains_exact_split_counts_and_final_quarantine() -> None:
     registry = load_calibration_redesign_v4_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_position_spread_assets=True,
+        allow_calibration_workload_mix_assets=True,
     )
 
     split_counts: dict[str, int] = {}
     for family in registry.families:
         split_counts[family.split.value] = split_counts.get(
-            family.split.value, 0
+            family.split.value,
+            0,
         ) + len(family.reserved_case_ids)
 
     assert split_counts == {
@@ -125,9 +125,9 @@ def test_registry_retains_exact_split_counts_and_final_quarantine() -> None:
     assert all(family.workload_allocation is not None for family in final_families)
 
 
-def test_registry_rejects_unauthorised_third_calibration_family() -> None:
+def test_registry_rejects_unauthorised_capacity_contrast_authoring() -> None:
     payload = json.loads(_REGISTRY_PATH.read_text(encoding="utf-8"))
-    payload["families"][2]["authoring_status"] = "calibration_position_spread_authored"
+    payload["families"][3]["authoring_status"] = "calibration_workload_mix_authored"
 
     with pytest.raises(ValidationError, match="authoring status"):
         CalibrationRedesignV4ScenarioFamilyRegistry.model_validate(payload)
