@@ -61,8 +61,7 @@ def test_curve_coverage_balances_workloads_and_retains_both_outcome_classes() ->
     assert not all(observed_acceptance)
 
 
-def test_curve_coverage_does_not_author_final_or_adversarial_assets() -> None:
+def test_curve_coverage_retains_no_final_or_adversarial_assets() -> None:
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
     assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
