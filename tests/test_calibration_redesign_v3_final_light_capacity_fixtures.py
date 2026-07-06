@@ -21,9 +21,7 @@ def test_final_light_capacity_cases_are_quarantined_balanced_and_unscored() -> N
     workload_counts: Counter[WorkloadType] = Counter()
 
     for case_id in CASE_IDS:
-        runtime_path = (
-            FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases" / f"{case_id}.json"
-        )
+        runtime_path = FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases" / f"{case_id}.json"
         runtime_payload = json.loads(runtime_path.read_text(encoding="utf-8"))
         replay_case = load_calibration_redesign_v3_final_evaluation_replay_case(
             FIXTURE_ROOT, case_id
@@ -50,7 +48,8 @@ def test_final_light_capacity_cases_are_quarantined_balanced_and_unscored() -> N
             WorkloadType.OPEN_ENDED_CHAT: 2,
         }
     )
-    assert not (FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert not (FIXTURE_ROOT / "heldout_assessment.json").exists()
     assert not (FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 
 

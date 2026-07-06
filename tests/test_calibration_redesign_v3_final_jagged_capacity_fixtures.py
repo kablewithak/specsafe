@@ -56,7 +56,8 @@ def test_final_jagged_capacity_cases_are_quarantined_balanced_and_unscored() -> 
             WorkloadType.OPEN_ENDED_CHAT: 2,
         }
     )
-    assert not (FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert not (FIXTURE_ROOT / "heldout_assessment.json").exists()
     assert not (FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 
 

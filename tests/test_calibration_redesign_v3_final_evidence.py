@@ -30,9 +30,11 @@ def test_final_evidence_index_preserves_frozen_calibration_provenance() -> None:
     assert index.final_evaluation_case_count == 24
     assert index.final_evaluation_observation_count == 96
     assert index.candidate_positions_per_case == 4
-    assert index.index_status == "jagged_capacity_authored"
+    assert index.schema_version == "calibration-redesign-v3-final-evidence-index-v2"
+    assert index.index_status == "final_evaluation_manifest_frozen"
     assert sum(len(family.authored_case_ids) for family in index.families) == 24
-    assert index.next_authorized_artifact == "v3-final-evaluation-manifest-freeze"
+    assert index.final_evaluation_manifest_path == "final_evaluation_manifest.json"
+    assert index.next_authorized_artifact == "v3-one-time-final-assessment"
 
 
 def test_final_evidence_index_rejects_changed_frozen_artifact(tmp_path: Path) -> None:

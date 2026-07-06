@@ -1,8 +1,9 @@
 """Separate V3 final-evidence index and held-out case loader.
 
 This module records the full 24-case held-out inventory separately from the frozen
-calibration registry. All four capacity families are authored in this slice; no
-final-evaluation manifest, score, policy, or scheduler behaviour is introduced.
+calibration registry. All four capacity families are authored and the final-evaluation
+manifest is frozen. This module never scores held-out evidence or introduces scheduler
+behaviour.
 """
 
 from __future__ import annotations
@@ -143,8 +144,8 @@ class CalibrationRedesignV3FinalEvidenceFamily(StrictContract):
 class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
     """Provenance-safe index for held-out V3 evidence, separate from calibration state."""
 
-    schema_version: Literal["calibration-redesign-v3-final-evidence-index-v1"]
-    index_status: Literal["jagged_capacity_authored"]
+    schema_version: Literal["calibration-redesign-v3-final-evidence-index-v2"]
+    index_status: Literal["final_evaluation_manifest_frozen"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -168,7 +169,8 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
         max_length=4,
     )
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-final-evaluation-manifest-freeze"]
+    final_evaluation_manifest_path: Literal["final_evaluation_manifest.json"]
+    next_authorized_artifact: Literal["v3-one-time-final-assessment"]
 
     @model_validator(mode="after")
     def validate_index_shape(self) -> CalibrationRedesignV3FinalEvidenceIndex:
@@ -180,7 +182,7 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
         if sum(len(family.authored_case_ids) for family in self.families) != 24:
             raise ValueError("all four final capacity families must be authored in this slice")
         required_exclusions = {
-            "No V3 final-evaluation manifest or score is present.",
+            "No V3 final-evaluation score is present.",
             (
                 "No V3 scheduler, capacity-policy implementation, promotion decision, "
                 "or runtime-control claim is present."
@@ -191,7 +193,10 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
             ),
             "No V1 or V2 data-bearing evidence influenced V3 final-case design.",
             "No V3 adversarial-regression assets are present.",
-            "The fitted V3 calibrator must not be run against partial final evidence.",
+            (
+                "The fitted V3 calibrator must not be run against final evidence before "
+                "the one-time assessment gate."
+            ),
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("final evidence index is missing required isolation exclusions")
