@@ -2,9 +2,10 @@
 
 ## Causal Confidence-Scheduled Verification Policy Lab
 
-- **Document status:** Governing PRD — proposed for repository adoption
-- **Version:** 1.0
-- **Date:** 2026-06-28
+- **Document status:** Governing PRD — adopted and reconciled after V4 closeout
+- **Version:** 1.1
+- **Date:** 2026-07-07
+- **Reconciliation basis:** ADR-0017 and repository audit at `main` commit `5c3fd8b`
 - **Project owner:** Kabo Molefe
 - **Repository:** `https://github.com/kablewithak/specsafe`
 - **Primary branch:** `main`
@@ -52,11 +53,27 @@ Known committed boundaries include:
 
 ### 2.2 Current maturity statement
 
-At the time this PRD is introduced, SpecSafe is at:
+As reconciled after V4 closeout, SpecSafe is at:
 
-> **Phase 1 complete: typed causal-information boundary.**
+> **Contracts enforced and synthetic-fixture validated.**
 >
-> The repository has a strict runtime contract for visible-prefix scheduling decisions and a deterministic gate that rejects retrospective contexts carrying future sampled-token or verification-outcome information. No trace-replay scheduler, calibration module, model experiment, throughput result, Kaggle notebook, Hugging Face Space, or production-readiness claim exists yet.
+> The repository contains strict causal runtime contracts, separate runtime and post-hoc trace
+> assets, fixed-length and static-threshold causal baselines, an isolated retrospective unsafe
+> control, deterministic per-case synthetic replay, a descriptive baseline replay ledger, and
+> multiple governed calibration programmes.
+>
+> The most recent V4 regularized-isotonic programme is closed as a valid negative held-out
+> calibration result. Its Brier and ECE gates passed, but its ranking-safety gate failed. V4
+> is therefore not eligible for adaptive-policy research, policy comparison, runtime control,
+> refit, threshold tuning, rerun, or remediation in place.
+>
+> No causal load-aware adaptive scheduler, capacity-profile package, shared policy-utility
+> scorer, cross-policy comparison report, Kaggle model experiment, Hugging Face replay demo,
+> throughput result, or production-readiness claim exists yet.
+
+The current maturity label is intentionally below `held-out replay evaluated`: SpecSafe has a
+held-out **calibration** assessment, but it has not run a valid adaptive-versus-baseline policy
+comparison on the same frozen replay inputs.
 
 ### 2.3 Governing operating posture
 
@@ -1047,24 +1064,31 @@ The project may not spend the majority of its time on Kaggle or UI. At least 20�
 
 ### 21.2 Phases
 
-| Phase | Name | Target effort | Deliverable | Exit gate |
-|---|---|---:|---|---|
-| 0 | Repository and project constitution | Complete | Public repo, package scaffold, constitution, ADR-0001 | Clean `main`, local install/test path, scope boundary committed. |
-| 1 | Contracts and causal-information boundary | Complete | Strict Pydantic contracts, runtime guard, ADR-0002, negative control | Future-bearing runtime contexts fail deterministically. |
-| 1.5 | PRD adoption | Current | This PRD committed in repository | Main clean; PRD accurately reflects current code and future gates. |
-| 2 | Synthetic traces and policy baselines | 8–10h | Versioned fixture manifest, fixed and threshold policies, unsafe retrospective control | All policies replay immutable fixtures; unsafe policy is clearly evaluation-only. |
-| 3 | Calibration and confidence fitness | 7–9h | Calibration module, held-out split discipline, metrics/report | Raw vs calibrated reliability report; unfit-confidence fallback path tested. |
-| 4 | Causal load-aware scheduler | 8–10h | Causal adaptive policy, capacity profiles, decision traces | Scheduler uses only approved context and passes causal tests. |
-| 5 | Evaluation and negative controls | 8–10h | Full comparison harness, hard cases, regression report | Adaptive policy wins only where evidence supports it; negative results preserved. |
-| 6 | Kaggle small-model evidence | 7–10h | Same-tokenizer model-pair notebook, sanitized trace export, measured profile | Notebook reproduces output traces and records environment/configuration. |
-| 7 | Public proof release | 7–10h | GitHub docs, Hugging Face Dataset, Hugging Face Space, case study, walkthrough | Public assets use precomputed safe evidence and state non-claims. |
-| 8 | Final reconciliation and handover | 3–5h | PRD reconciliation, evidence inventory, maturity statement, next extension map | Main clean; all claims trace to retained evidence. |
+| Phase | Name | Reconciled status | Deliverable / retained evidence | Next gate |
+|---|---|---|---|---|
+| 0 | Repository and project constitution | Complete | Public repository, package scaffold, constitution, ADR-0001. | None. |
+| 1 | Contracts and causal-information boundary | Complete | Strict Pydantic contracts, exact-type runtime guard, ADR-0002, and unsafe negative control. | Preserve exact causal boundary. |
+| 1.5 | PRD adoption and reconciliation | Complete | PRD adopted; v1.1 reconciles historical phase wording with V4 closeout and audited source. | Keep PRD status aligned after material programme changes. |
+| 2 | Synthetic traces, valid baselines, and deterministic replay | Complete for the required foundation | Versioned fixtures; fixed-length and static-threshold policies; isolated unsafe control; deterministic per-case replay; descriptive development/adversarial baseline ledger. | Preserve immutable shared-input replay semantics. |
+| 3 | Calibration and confidence fitness | Complete for V4 as a negative result; overall route remains unresolved | V4 final calibration assessment is retained and blocks V4 promotion because ranking safety regressed. | A fresh, bounded successor constitution is required before any new calibration evidence is authored. |
+| 4 | Causal load-aware scheduler | Not implemented | No audited causal adaptive scheduler consumes capacity and calibrated confidence together. | A successor calibration gate must pass before scheduler implementation is authorized. |
+| 5 | Shared policy comparison and reports | Incomplete | Per-case replay exists, but no capacity-profile package, utility scorer, cross-policy comparator, or valid adaptive-versus-baseline report exists. | Build only after a valid adaptive policy exists. |
+| 6 | Kaggle small-model evidence | Not started | No committed Kaggle notebook or measured capacity profile. | Local core policy comparison must be complete first. |
+| 7 | Public proof release | Not started | No Dataset, Space, or public replay pack. | Deterministic reports and public-safe retained artifacts must exist first. |
+| 8 | Final reconciliation and handover | V4 closeout complete; project-wide completion pending | V4 handover and ADR-0017 reconcile the current route. | Complete only after the evidence ladder is satisfied. |
 
 ### 21.3 Core completion boundary
 
-The core research proof is complete only after Phase 5.
+The core research proof is complete only after Phase 5 produces a valid same-input comparison
+between a causal adaptive policy and the named blunt baselines.
 
-Phases 6 and 7 are evidence amplification and public packaging. They are valuable but must not mask an incomplete harness.
+Phase 2 is not a blocker: its synthetic baseline and replay foundation is implemented. The active
+blocker is the absence of an eligible calibrated adaptive-policy path after V4's ranking-safety
+regression. A fresh successor programme must be constituted before it creates new evidence; it
+must not use V4 final evidence as a tuning input.
+
+Phases 6 and 7 are evidence amplification and public packaging. They are valuable but must not
+mask an incomplete local policy-comparison harness.
 
 ### 21.4 Stop gates
 
@@ -1379,6 +1403,37 @@ The strongest allowable final maturity statement is:
 > **Research-grade, production-shaped policy evaluation harness. Locally validated with deterministic synthetic trace replay and, if completed, supplemental small-model Kaggle evidence. Not a production serving engine, not live-traffic validated, and not a DSpark reproduction.**
 
 ---
+
+
+## 28.8 Post-V4 route reconciliation
+
+ADR-0017 records the project-level decision after V4 closeout.
+
+The reconciliation distinguishes the reusable implementation foundation from the unproven
+north-star claim:
+
+```text
+implemented foundation
+  -> causal contracts and guard
+  -> synthetic trace and manifest discipline
+  -> fixed and threshold baselines
+  -> isolated unsafe control
+  -> deterministic per-case replay
+  -> descriptive baseline evidence ledger
+  -> calibration and held-out assessment controls
+
+missing core proof
+  -> fresh eligible calibration path
+  -> causal load-aware adaptive scheduler
+  -> declared capacity-profile implementation
+  -> shared utility scorer and comparison report
+  -> valid same-input adaptive-versus-baseline evidence
+```
+
+The next programme must be a bounded successor constitution, not V4 remediation in place and not
+immediate scheduler code. It must select its calibration route and complete gate semantics before
+authoring fresh calibration or final-evaluation evidence. It must include a stop decision that
+prevents unbounded rounds of post-hoc calibrator replacement.
 
 ## 29. Change-control rules
 

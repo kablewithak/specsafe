@@ -1,24 +1,34 @@
 # SpecSafe
 
-**SpecSafe: Causal Confidence-Scheduled Verification Policy Lab** is a research-grade policy-evaluation lab for testing whether confidence-calibrated, load-aware LLM verification policies can reduce low-value verification work without violating explicit causal correctness constraints.
+**SpecSafe: Causal Confidence-Scheduled Verification Policy Lab** is a research-grade
+policy-evaluation lab for testing whether confidence-calibrated, load-aware LLM verification
+policies can reduce low-value verification work without violating explicit causal correctness
+constraints.
 
-It is inspired by scheduling and non-anticipation concerns in speculative-decoding research. It is **not** a DSpark reproduction, a production LLM serving engine, or evidence of live-traffic throughput improvement.
+It is inspired by scheduling and non-anticipation concerns in speculative-decoding research. It
+is **not** a DSpark reproduction, a production LLM serving engine, or evidence of live-traffic
+throughput improvement.
 
 ## North star
 
-> Build a reproducible lab that proves whether an LLM verification scheduler can spend limited compute more intelligently than blunt fixed rules, without using forbidden future information or breaking its correctness guarantee.
+> Build a reproducible lab that proves whether an LLM verification scheduler can spend limited
+> compute more intelligently than blunt fixed rules, without using forbidden future information
+> or breaking its correctness guarantee.
 
-## What this repository will contain
+## Repository scope
+
+SpecSafe contains and will extend:
 
 - typed trace, confidence, capacity, and scheduling contracts;
-- fixed-policy, static-threshold, and causal load-aware scheduling baselines;
-- confidence calibration and held-out evaluation;
-- causal-safety regression fixtures and negative controls;
-- synthetic trace replay plus optional small-model Kaggle evidence;
-- machine-readable results and buyer-readable reports;
-- a Hugging Face replay demo that uses sanitized, precomputed traces.
+- strict causal-safety validation and an isolated unsafe retrospective control;
+- versioned synthetic trace fixtures with separate runtime inputs and post-hoc outcomes;
+- fixed-length and static-threshold causal baselines;
+- deterministic synthetic policy replay and descriptive baseline evidence ledgers;
+- governed calibration and held-out assessment protocols;
+- future causal load-aware scheduling, capacity profiles, policy comparison, reports, optional
+  small-model Kaggle evidence, and a public replay demonstration only when their gates permit.
 
-## What this repository will not contain in v1
+SpecSafe does not contain in v1:
 
 - a DSpark reimplementation or trained DSpark drafter;
 - custom CUDA kernels or a production serving engine;
@@ -37,8 +47,10 @@ It is inspired by scheduling and non-anticipation concerns in speculative-decodi
 - [Calibration split and raw-confidence fitness](docs/architecture/calibration-split-and-confidence-fitness.md)
 - [Frozen calibrator contract](docs/architecture/frozen-calibrator-contract.md)
 - [Held-out calibration fitness and promotion gate](docs/architecture/heldout-calibration-fitness.md)
+- [Post-V4 north-star reconciliation](docs/adr/ADR-0017-project-north-star-reconciliation-after-v4.md)
 
-The PRD is the governing product and experiment contract. When sources conflict, it takes precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
+The PRD is the governing product and experiment contract. When sources conflict, it takes
+precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
 
 ## Delivery status
 
@@ -46,23 +58,44 @@ The PRD is the governing product and experiment contract. When sources conflict,
 |---|---|---|
 | Repository and project constitution | Complete | Repository identity, package scaffold, and project scope exist. |
 | Causal-information boundary | Complete | Strict runtime contract and deterministic rejection of retrospective contexts. |
-| PRD adoption | Complete | Governing research and experiment contract is committed. |
+| PRD adoption and post-V4 reconciliation | Complete | Governing contract is adopted and reconciled against audited repository state. |
 | Synthetic trace fixture foundation | Complete | Versioned runtime inputs, separate expected outcomes, manifests, and deterministic fixture validation are committed. |
 | Synthetic policy baselines | Complete | Fixed-length and static-threshold baselines plus an isolated unsafe retrospective control are committed. |
 | Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
 | Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
-| Calibration split and raw-confidence fitness | Complete | Two calibration-only fixtures and a predeclared diagnostic protocol are versioned and tested. |
-| Frozen calibrator contract | Complete | A calibration-only histogram artifact is typed, deterministic, and blocked from runtime control pending held-out assessment. |
-| Held-out calibration fitness and promotion gate | Complete — negative result | Final evaluation retains raw-versus-calibrated metrics; the current frozen calibrator regresses and is not promoted. |
-| Causal load-aware scheduling | Blocked | Requires a new governed calibration approach that clears held-out fitness without final-evaluation tuning. |
-| Replay evaluation and reports | Blocked | Requires a valid adaptive policy and declared scoring contract. |
-| Kaggle evidence and public replay release | Blocked | Amplifies, but does not replace, the local evidence harness. |
+| Calibration programmes | V1–V3 historical; V4 closed negative | V4 final calibration assessment improved Brier/ECE but failed the predeclared ranking-safety gate. V4 is immutable and blocked from policy work. |
+| Causal load-aware scheduler | Not implemented | No causal adaptive scheduler has been evidenced in source. |
+| Capacity profiles and shared policy utility | Not implemented | Capacity exists only as typed snapshot/fixture metadata; no standalone profile package or shared scorer exists. |
+| Valid cross-policy comparison and reports | Not implemented | No adaptive-versus-baseline comparison on identical frozen inputs has been retained. |
+| Kaggle evidence and public replay release | Not started | These amplify, but do not replace, the local evidence harness. |
 
 ## Current maturity
 
-**Contracts enforced; calibration evidence closed on a reproducible negative result.** The repository contains strict causal runtime contracts, immutable synthetic fixture assets, deterministic baseline policies, sequential replay records, a descriptive baseline ledger with no-winner posture, calibration-only diagnostics, a frozen histogram calibrator, and a final-evaluation report that blocks promotion after the current calibrator regresses on held-out fitness.
+**Contracts enforced; synthetic-fixture validated; held-out calibration assessed as a retained
+negative result.**
 
-No adaptive policy, policy-utility result, cross-policy winner, Kaggle model experiment, public replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+The repository has a reusable causal and replay foundation, but it has not reached
+`held-out replay evaluated`. V4 is closed: it must not be refit, tuned, rerun, used for V4 policy
+comparison, or treated as a runtime-control candidate.
+
+No causal adaptive-policy result, cross-policy winner claim, Kaggle model experiment, public
+replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+
+## Next governed route
+
+The immediate next programme is documentation and constitution work only:
+
+```text
+audit retained foundation
+  -> fresh bounded successor constitution
+  -> fresh calibration and final-evaluation evidence only after the constitution is accepted
+  -> causal adaptive scheduler only after a complete held-out calibration pass
+  -> shared same-input policy comparison
+  -> supplemental Kaggle evidence
+  -> public replay proof
+```
+
+The project must not start a V4 remediation or immediate scheduler slice.
 
 ## Local development
 
@@ -75,6 +108,7 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 python -m pytest
 python -m ruff check src tests
+python -m ruff format --check .
 ```
 
 ## License
