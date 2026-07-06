@@ -1,0 +1,46 @@
+{
+  "case_id": "CRV4-220",
+  "data_role": "held_out_evaluation",
+  "fixture_id": "crv4-final-saturated-capacity-220",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "outcomes": [
+    {
+      "block_position_index": 1,
+      "candidate_token_id": 9200,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-final-saturated-trace-220"
+    },
+    {
+      "block_position_index": 2,
+      "candidate_token_id": 9201,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-final-saturated-trace-220"
+    },
+    {
+      "block_position_index": 3,
+      "candidate_token_id": 9202,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-final-saturated-trace-220"
+    },
+    {
+      "block_position_index": 4,
+      "candidate_token_id": 9203,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-final-saturated-trace-220"
+    }
+  ],
+  "scenario_family_id": "CRV4-FINAL-SATURATED-CAPACITY",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "final_evaluation",
+  "trace_id": "crv4-final-saturated-trace-220"
+}

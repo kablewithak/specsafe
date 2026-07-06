@@ -75,9 +75,7 @@ def test_capacity_contrast_runtime_assets_are_label_free_and_preserve_contrast()
         runtime_path = _FIXTURE_ROOT / "inputs" / "cases" / f"{case_id}.json"
         payload = json.loads(runtime_path.read_text(encoding="utf-8"))
         contexts = payload["contexts"]
-        confidences = tuple(
-            context["conditional_survival_confidence"] for context in contexts
-        )
+        confidences = tuple(context["conditional_survival_confidence"] for context in contexts)
         context_shapes.add(
             tuple(
                 (
@@ -106,7 +104,7 @@ def test_capacity_contrast_runtime_assets_are_label_free_and_preserve_contrast()
     assert all(len(set(snapshot)) > 1 for snapshot in jagged_snapshots)
 
 
-def test_capacity_contrast_retains_both_outcome_classes_and_no_final_assets() -> None:
+def test_capacity_contrast_retains_both_outcome_classes_and_no_final_result_assets() -> None:
     replay_cases = tuple(
         load_calibration_redesign_v4_replay_case(_FIXTURE_ROOT, case_id)
         for case_id in _CASE_IDS
@@ -119,6 +117,7 @@ def test_capacity_contrast_retains_both_outcome_classes_and_no_final_assets() ->
 
     assert any(observed_acceptance)
     assert not all(observed_acceptance)
-    assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
     assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert not (_FIXTURE_ROOT / "final_evidence_index.json").exists()
+    assert not (_FIXTURE_ROOT / "heldout_assessment.json").exists()

@@ -491,7 +491,7 @@ def load_regularized_isotonic_calibration_v4_fit_result(
         manifest = load_calibration_redesign_v4_calibration_manifest(resolved_fixture_root)
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_fixture_root / "scenario_family_registry.json",
-            allow_calibration_fit_diagnostics_assets=True,
+            allow_final_evaluation_fixture_assets=True,
         )
     except (CalibrationRedesignV4RegistryLoadError, ValueError) as error:
         raise RegularizedIsotonicCalibrationV4FitError(

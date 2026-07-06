@@ -1,4 +1,4 @@
-"""Tests for the V4 calibration fit-diagnostics registry boundary."""
+"""Tests for the V4 final-evaluation fixture-authoring registry boundary."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from specsafe.traces.calibration_redesign_v4 import (
     CalibrationRedesignV4RegistryLoadError,
     CalibrationRedesignV4RegistryViolationCode,
     CalibrationRedesignV4ScenarioFamilyRegistry,
-    assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root,
+    assert_calibration_redesign_v4_final_evaluation_fixture_root,
     load_calibration_redesign_v4_scenario_family_registry,
 )
 
@@ -35,17 +35,19 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
     return copied_root
 
 
-def test_loads_fit_diagnostics_registry_only_through_active_boundary() -> None:
+def test_loads_final_authoring_registry_only_through_active_boundary() -> None:
     registry = load_calibration_redesign_v4_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_fit_diagnostics_assets=True,
+        allow_final_evaluation_fixture_assets=True,
     )
 
-    assert registry.registry_status == "calibration_fit_diagnostics_complete"
+    assert registry.registry_status == "final_evaluation_fixtures_authored"
     assert registry.v4_runtime_or_outcome_assets_authored is True
     assert registry.v4_manifests_authored is True
     assert registry.v4_calibration_fit_diagnostics_authored is True
-    assert registry.next_authorized_artifact == "v4-final-evaluation-fixture-authoring"
+    assert registry.v4_final_evaluation_runtime_or_outcome_assets_authored is True
+    assert registry.v4_final_evaluation_manifest_authored is False
+    assert registry.next_authorized_artifact == "v4-final-evaluation-manifest-freeze"
     assert registry.frozen_calibration_manifest_sha256 == hashlib.sha256(
         _MANIFEST_PATH.read_bytes()
     ).hexdigest()
@@ -54,34 +56,43 @@ def test_loads_fit_diagnostics_registry_only_through_active_boundary() -> None:
     ).hexdigest()
 
 
-def test_current_root_rejects_previous_manifest_loader_path() -> None:
+def test_current_root_rejects_previous_fit_diagnostics_loader_path() -> None:
     with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
         load_calibration_redesign_v4_scenario_family_registry(
             _REGISTRY_PATH,
-            allow_calibration_manifest_assets=True,
+            allow_calibration_fit_diagnostics_assets=True,
         )
-
-    expected_code = _VIOLATION_CODE.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION
-    assert error.value.code is expected_code
-
-
-def test_fit_diagnostics_boundary_requires_complete_calibration_manifest(
-    tmp_path: Path,
-) -> None:
-    root = _copy_fixture_root(tmp_path)
-    (root / "calibration_manifest.json").unlink()
-
-    with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
-        assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root(root)
 
     expected_code = _VIOLATION_CODE.CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION
     assert error.value.code is expected_code
 
 
-def test_registry_retains_exact_split_counts_and_final_quarantine() -> None:
+def test_final_authoring_boundary_requires_complete_final_inventory(tmp_path: Path) -> None:
+    root = _copy_fixture_root(tmp_path)
+    (root / "final_evaluation" / "inputs" / "cases" / "CRV4-236.json").unlink()
+
+    with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
+        assert_calibration_redesign_v4_final_evaluation_fixture_root(root)
+
+    expected_code = _VIOLATION_CODE.FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+    assert error.value.code is expected_code
+
+
+def test_final_authoring_boundary_rejects_adversarial_paths(tmp_path: Path) -> None:
+    root = _copy_fixture_root(tmp_path)
+    (root / "adversarial_regression").mkdir()
+
+    with pytest.raises(CalibrationRedesignV4RegistryLoadError) as error:
+        assert_calibration_redesign_v4_final_evaluation_fixture_root(root)
+
+    expected_code = _VIOLATION_CODE.FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+    assert error.value.code is expected_code
+
+
+def test_registry_retains_exact_split_counts_and_final_authoring_statuses() -> None:
     registry = load_calibration_redesign_v4_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_fit_diagnostics_assets=True,
+        allow_final_evaluation_fixture_assets=True,
     )
 
     split_counts: dict[str, int] = {}
@@ -100,11 +111,15 @@ def test_registry_retains_exact_split_counts_and_final_quarantine() -> None:
     ]
     assert all(family.is_final_evaluation_quarantined for family in final_families)
     assert all(family.workload_allocation is not None for family in final_families)
+    assert all(
+        family.authoring_status == "final_evaluation_fixtures_authored"
+        for family in final_families
+    )
 
 
-def test_registry_rejects_false_claim_that_fit_evidence_exists() -> None:
+def test_registry_rejects_false_claim_that_final_manifest_exists() -> None:
     payload = json.loads(_REGISTRY_PATH.read_text(encoding="utf-8"))
-    payload["v4_calibration_fit_diagnostics_authored"] = False
+    payload["v4_final_evaluation_manifest_authored"] = True
 
     with pytest.raises(ValidationError):
         CalibrationRedesignV4ScenarioFamilyRegistry.model_validate(payload)

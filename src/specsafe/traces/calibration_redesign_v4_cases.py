@@ -1,9 +1,9 @@
 """Typed V4 calibration case contracts and loaders.
 
 CRV4-101 through CRV4-148 are the only authorised calibration-only case pairs. A
-calibration manifest is now present at the fixture root, but runtime inputs and post-hoc
-outcomes remain physically separate. Final and adversarial evidence remain absent; this
-module does not fit calibration or execute a scheduler.
+calibration manifest and calibration-only fit diagnostics are retained, while quarantined
+final-evaluation assets now exist in a separate tree. Runtime inputs and post-hoc outcomes
+remain physically separate. This module does not fit calibration or execute a scheduler.
 """
 
 from __future__ import annotations
@@ -255,7 +255,7 @@ def load_calibration_redesign_v4_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV4ReplayCase:
-    """Load one fit-stage-manifest-bound CRV4-101 through CRV4-148 calibration case pair."""
+    """Load one final-authoring-stage calibration case pair without touching final outcomes."""
 
     if not _is_v4_case_id(case_id):
         raise CalibrationRedesignV4CaseContractError(
@@ -266,7 +266,7 @@ def load_calibration_redesign_v4_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_fit_diagnostics_assets=True,
+            allow_final_evaluation_fixture_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4CaseContractError(

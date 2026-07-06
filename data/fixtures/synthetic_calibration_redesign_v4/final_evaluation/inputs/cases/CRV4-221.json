@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-221",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 20,
+        "profile_id": "v4-final-capacity-saturated",
+        "source": "synthetic",
+        "verification_batch_tokens": 144
+      },
+      "conditional_survival_confidence": 0.862,
+      "decode_round": 0,
+      "request_id": "crv4-final-saturated-request-221",
+      "trace_id": "crv4-final-saturated-trace-221",
+      "visible_prefix_token_ids": [],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 20,
+        "profile_id": "v4-final-capacity-saturated",
+        "source": "synthetic",
+        "verification_batch_tokens": 144
+      },
+      "conditional_survival_confidence": 0.782,
+      "decode_round": 0,
+      "request_id": "crv4-final-saturated-request-221",
+      "trace_id": "crv4-final-saturated-trace-221",
+      "visible_prefix_token_ids": [
+        9210
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 20,
+        "profile_id": "v4-final-capacity-saturated",
+        "source": "synthetic",
+        "verification_batch_tokens": 144
+      },
+      "conditional_survival_confidence": 0.692,
+      "decode_round": 0,
+      "request_id": "crv4-final-saturated-request-221",
+      "trace_id": "crv4-final-saturated-trace-221",
+      "visible_prefix_token_ids": [
+        9210,
+        9211
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 20,
+        "profile_id": "v4-final-capacity-saturated",
+        "source": "synthetic",
+        "verification_batch_tokens": 144
+      },
+      "conditional_survival_confidence": 0.612,
+      "decode_round": 0,
+      "request_id": "crv4-final-saturated-request-221",
+      "trace_id": "crv4-final-saturated-trace-221",
+      "visible_prefix_token_ids": [
+        9210,
+        9211,
+        9212
+      ],
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "data_role": "held_out_evaluation",
+  "fixture_id": "crv4-final-saturated-capacity-221",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Quarantined synthetic held-out final-evaluation runtime input; no outcome label is present in this runtime asset.",
+  "request_id": "crv4-final-saturated-request-221",
+  "scenario_family_id": "CRV4-FINAL-SATURATED-CAPACITY",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "final_evaluation",
+  "trace_id": "crv4-final-saturated-trace-221"
+}

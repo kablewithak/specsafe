@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-201",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-final-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.953,
+      "decode_round": 0,
+      "request_id": "crv4-final-light-request-201",
+      "trace_id": "crv4-final-light-trace-201",
+      "visible_prefix_token_ids": [],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-final-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.873,
+      "decode_round": 0,
+      "request_id": "crv4-final-light-request-201",
+      "trace_id": "crv4-final-light-trace-201",
+      "visible_prefix_token_ids": [
+        9010
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-final-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.783,
+      "decode_round": 0,
+      "request_id": "crv4-final-light-request-201",
+      "trace_id": "crv4-final-light-trace-201",
+      "visible_prefix_token_ids": [
+        9010,
+        9011
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 2,
+        "profile_id": "v4-final-capacity-light",
+        "source": "synthetic",
+        "verification_batch_tokens": 24
+      },
+      "conditional_survival_confidence": 0.693,
+      "decode_round": 0,
+      "request_id": "crv4-final-light-request-201",
+      "trace_id": "crv4-final-light-trace-201",
+      "visible_prefix_token_ids": [
+        9010,
+        9011,
+        9012
+      ],
+      "workload_type": "structured_text"
+    }
+  ],
+  "data_role": "held_out_evaluation",
+  "fixture_id": "crv4-final-light-capacity-201",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Quarantined synthetic held-out final-evaluation runtime input; no outcome label is present in this runtime asset.",
+  "request_id": "crv4-final-light-request-201",
+  "scenario_family_id": "CRV4-FINAL-LIGHT-CAPACITY",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "final_evaluation",
+  "trace_id": "crv4-final-light-trace-201"
+}
