@@ -1,0 +1,1077 @@
+{
+  "aggregate_byte_count": 199777,
+  "aggregate_sha256": "59ab328ff17a5c90dc4032106ad24759ca42095aa57338c720833d270c63e4ae",
+  "asset_count": 96,
+  "assets": [
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1364,
+      "case_id": "CRV4-101",
+      "relative_path": "expected_outcomes/cases/CRV4-101.json",
+      "sha256": "3f306de7a222800c40081eb667afb74f4c02ea3328fbcf290ad073a5e652780c"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1364,
+      "case_id": "CRV4-102",
+      "relative_path": "expected_outcomes/cases/CRV4-102.json",
+      "sha256": "487003ec5c3cb3b7bbb97bbde41c5fa9025ab0b354198f0bd5edd00e51f960a7"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1364,
+      "case_id": "CRV4-103",
+      "relative_path": "expected_outcomes/cases/CRV4-103.json",
+      "sha256": "7411cc234b25c50c1c8734ef79ac8d504f66765ccd927f3efd935fb5c3f115e1"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1364,
+      "case_id": "CRV4-104",
+      "relative_path": "expected_outcomes/cases/CRV4-104.json",
+      "sha256": "a8fd32e806129c65018aa244ad44e55ce7b95572dc605c24d2762951979a9916"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1363,
+      "case_id": "CRV4-105",
+      "relative_path": "expected_outcomes/cases/CRV4-105.json",
+      "sha256": "1c1d007773bfa6ade34fd2e30f9ff3fce23278f5e2d73271bc384fa30a2f8b7f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1363,
+      "case_id": "CRV4-106",
+      "relative_path": "expected_outcomes/cases/CRV4-106.json",
+      "sha256": "d3c4ce88ce856a6e36f94fa51df2b2839c20aa0d333cb29d027d9039fe2b3edd"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1362,
+      "case_id": "CRV4-107",
+      "relative_path": "expected_outcomes/cases/CRV4-107.json",
+      "sha256": "7ba4e30af5cd302ccffbb4df171b903b7a5b8a389055187e78600c8e300cc2c1"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1361,
+      "case_id": "CRV4-108",
+      "relative_path": "expected_outcomes/cases/CRV4-108.json",
+      "sha256": "b9bd937e73220bd311342c60ae6a96d5c31686570c7ac151c2105e97f951e200"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1360,
+      "case_id": "CRV4-109",
+      "relative_path": "expected_outcomes/cases/CRV4-109.json",
+      "sha256": "c4824e80ea14e49b1eccf5280277445b774ae087a20fbe3643c85084854fa2b1"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1359,
+      "case_id": "CRV4-110",
+      "relative_path": "expected_outcomes/cases/CRV4-110.json",
+      "sha256": "a0b95d5bb125d5a22b20efef3cbe1c49b711800ecc9275a33b538459cfc983a2"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1356,
+      "case_id": "CRV4-111",
+      "relative_path": "expected_outcomes/cases/CRV4-111.json",
+      "sha256": "ac0752a493e3723a5111f1009a5a1583caef723c7ae296d3734060b239dfb317"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1356,
+      "case_id": "CRV4-112",
+      "relative_path": "expected_outcomes/cases/CRV4-112.json",
+      "sha256": "b0c049fca29fd531d9660bf47a4d0afbafef987ef7079293fe800e1c6086c239"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1373,
+      "case_id": "CRV4-113",
+      "relative_path": "expected_outcomes/cases/CRV4-113.json",
+      "sha256": "99d1d44cec1dc762f5c5cf8fd2f79fc4f95b8bc3aa8fc8b80d9c624033fc1ec3"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1377,
+      "case_id": "CRV4-114",
+      "relative_path": "expected_outcomes/cases/CRV4-114.json",
+      "sha256": "2be74ed32754c0416df37ced6bf64a4d810cff523bc3e052cae037c7b32c79e7"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-115",
+      "relative_path": "expected_outcomes/cases/CRV4-115.json",
+      "sha256": "e8495649ff4abb925dbc7138112aa409cc1e23bbafc063b06bdf7a70b4e1e6ad"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-116",
+      "relative_path": "expected_outcomes/cases/CRV4-116.json",
+      "sha256": "48c55f2aad4321bba8bcee56f3ed9b4084be958d01d2e97b206f5f7aa2420ee6"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1375,
+      "case_id": "CRV4-117",
+      "relative_path": "expected_outcomes/cases/CRV4-117.json",
+      "sha256": "6862f807c784734735fc64d44e467b85a05b60e623b1481abc7d78af953eb0af"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1377,
+      "case_id": "CRV4-118",
+      "relative_path": "expected_outcomes/cases/CRV4-118.json",
+      "sha256": "3dd83ceb9a5a15296b8dbb8b696c0d1f114880b5a786c0d80262cb9d8c945971"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-119",
+      "relative_path": "expected_outcomes/cases/CRV4-119.json",
+      "sha256": "8153f18b747d7dc4e7c02a7e03594282de66438275feda99cbc2c29829f9f5ac"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-120",
+      "relative_path": "expected_outcomes/cases/CRV4-120.json",
+      "sha256": "46ee5a3e29023807eb31ab4c3e7d00eb8fc745e2796be4881ed889b787b0c383"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1375,
+      "case_id": "CRV4-121",
+      "relative_path": "expected_outcomes/cases/CRV4-121.json",
+      "sha256": "a4142d36ecdb920cf03636fc327aad101126cd5c140d960b8ee888b27b0c8610"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1377,
+      "case_id": "CRV4-122",
+      "relative_path": "expected_outcomes/cases/CRV4-122.json",
+      "sha256": "75e7fdde28bb2a1a5f09ebc02c90f5080aa6d4ce9424f3763560e997fcd05be1"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-123",
+      "relative_path": "expected_outcomes/cases/CRV4-123.json",
+      "sha256": "c0bb4882290a459a6fc897f378dc635c2909f6c61609d0f7f01e177afe8f42df"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-124",
+      "relative_path": "expected_outcomes/cases/CRV4-124.json",
+      "sha256": "f940f4992c3d5324f9dbcb9cf93c24f5d819c7b3d0103cff7e0346a58ee37332"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1369,
+      "case_id": "CRV4-125",
+      "relative_path": "expected_outcomes/cases/CRV4-125.json",
+      "sha256": "ac2af0d61590b2e9e6ad738a85d5449ec30d340385bb6948c1e5016912d4a02f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1370,
+      "case_id": "CRV4-126",
+      "relative_path": "expected_outcomes/cases/CRV4-126.json",
+      "sha256": "3c42767792fd4e15eb49766f56cbf0f7b7e9cfb4cfb5717af7f320bc11bc2185"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1371,
+      "case_id": "CRV4-127",
+      "relative_path": "expected_outcomes/cases/CRV4-127.json",
+      "sha256": "634c7b25c706f27a108430ccfc92374e14a6533a8b82ca3417bdfe970ea4d577"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1372,
+      "case_id": "CRV4-128",
+      "relative_path": "expected_outcomes/cases/CRV4-128.json",
+      "sha256": "460885a90d75849cd9f813e019fe04f3a0bbcd5311b89b0a40dc9b4fa768f383"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1367,
+      "case_id": "CRV4-129",
+      "relative_path": "expected_outcomes/cases/CRV4-129.json",
+      "sha256": "6fbd26612ce9c7c3a79967234ff740c953b8d864a5d4057eff7fb27310e78ece"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1370,
+      "case_id": "CRV4-130",
+      "relative_path": "expected_outcomes/cases/CRV4-130.json",
+      "sha256": "0472fa71bfe804f0b86a5b507ca7fd777f37e9b15034c4e906354a396a3c4581"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1372,
+      "case_id": "CRV4-131",
+      "relative_path": "expected_outcomes/cases/CRV4-131.json",
+      "sha256": "e41bf27b8b8ddeb92a0be570e751f6f5bcbc5805934b8e77fd431efa60f74c2f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1372,
+      "case_id": "CRV4-132",
+      "relative_path": "expected_outcomes/cases/CRV4-132.json",
+      "sha256": "75e6bb41a7c14aeff44bd0535074bca811740ab1d4c824a6f5f0a981fbd987dd"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1369,
+      "case_id": "CRV4-133",
+      "relative_path": "expected_outcomes/cases/CRV4-133.json",
+      "sha256": "17e9b260257d39d1460992b8fd88be8d9d1de31fb78457ad8d1c03341d5d3b0c"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1371,
+      "case_id": "CRV4-134",
+      "relative_path": "expected_outcomes/cases/CRV4-134.json",
+      "sha256": "d403de8a60c54e6c37947c837f38c751c17577f66b54da7b48aa2af6e236687e"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1371,
+      "case_id": "CRV4-135",
+      "relative_path": "expected_outcomes/cases/CRV4-135.json",
+      "sha256": "e4602f9e52ecdf96801349e33ffb844d32e81cfeafad3b7aecff499fe48bae2f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1372,
+      "case_id": "CRV4-136",
+      "relative_path": "expected_outcomes/cases/CRV4-136.json",
+      "sha256": "39399bdc3ecdf6b801303d823ec13b88a830e230d499b26443227a6b241c5d9a"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1377,
+      "case_id": "CRV4-137",
+      "relative_path": "expected_outcomes/cases/CRV4-137.json",
+      "sha256": "582196e14e70b9d344a40b0595ea66e17ee3f69a18033a938b3ff7c95e6a9929"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-138",
+      "relative_path": "expected_outcomes/cases/CRV4-138.json",
+      "sha256": "89f3195aa3a188f05e9d781d3071e143085714ea9fe2eec820e60d688260a495"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-139",
+      "relative_path": "expected_outcomes/cases/CRV4-139.json",
+      "sha256": "5bf70e16fa22602df42c1d4d765c8320c239305c922e1d843349715a5fc09ffa"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1383,
+      "case_id": "CRV4-140",
+      "relative_path": "expected_outcomes/cases/CRV4-140.json",
+      "sha256": "dd260544db41080832d39dbdc0a8cdaf4e29fa5088cebb9a982ce5b006d1a823"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-141",
+      "relative_path": "expected_outcomes/cases/CRV4-141.json",
+      "sha256": "8c052537cf76c06371e19a02c35257f031aa013249e59996b9e4ccc26c2c8241"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-142",
+      "relative_path": "expected_outcomes/cases/CRV4-142.json",
+      "sha256": "872607793b8fb31f51bb7c75be625879c0da37c938a0211ad5d2c3d9a1555ce0"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1383,
+      "case_id": "CRV4-143",
+      "relative_path": "expected_outcomes/cases/CRV4-143.json",
+      "sha256": "8f0aa3d9126c1e2f9a94d6a47782a55d77d27b6c4cbad26b5aa7c57724bb71ce"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1385,
+      "case_id": "CRV4-144",
+      "relative_path": "expected_outcomes/cases/CRV4-144.json",
+      "sha256": "0a759743da47776d17a12ee6c060175813eb26a802dfe8c35d574bdaa2dadcda"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1379,
+      "case_id": "CRV4-145",
+      "relative_path": "expected_outcomes/cases/CRV4-145.json",
+      "sha256": "70705e1e34c08880087deb109edb884da72a7f0e9e16b5384d038788aca7345f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1381,
+      "case_id": "CRV4-146",
+      "relative_path": "expected_outcomes/cases/CRV4-146.json",
+      "sha256": "9963da70e66600074dd6f9f8cf0a3b3d805806fe512fb38573b2fe87a29fc30f"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1383,
+      "case_id": "CRV4-147",
+      "relative_path": "expected_outcomes/cases/CRV4-147.json",
+      "sha256": "102b335e73d0022641012b9abf9df4009e2e62ed06b39fb6f15d019287719691"
+    },
+    {
+      "asset_kind": "expected_outcome",
+      "byte_count": 1385,
+      "case_id": "CRV4-148",
+      "relative_path": "expected_outcomes/cases/CRV4-148.json",
+      "sha256": "1c41b6c4a74ba7da09e84359903470e09be826e1ac4b50543ecece5ce514f5db"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2758,
+      "case_id": "CRV4-101",
+      "relative_path": "inputs/cases/CRV4-101.json",
+      "sha256": "88f85563f155885b06b57bb80a4ac16560ed597085b4409d22705a1df098d38d"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2758,
+      "case_id": "CRV4-102",
+      "relative_path": "inputs/cases/CRV4-102.json",
+      "sha256": "f4bbaa93665a638e6ffad4ddc9c248b930bddc03b4e0545daf8f582dee547187"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2757,
+      "case_id": "CRV4-103",
+      "relative_path": "inputs/cases/CRV4-103.json",
+      "sha256": "d4c6649b4de3da5abf3f58a689ac26f9857548b6c52d33bf551e6a0fa1fd8003"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2757,
+      "case_id": "CRV4-104",
+      "relative_path": "inputs/cases/CRV4-104.json",
+      "sha256": "5464b1b4b5cd608ccddce13a31144becdc0c1f5e85fdc427ca17ce93b0009d83"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2730,
+      "case_id": "CRV4-105",
+      "relative_path": "inputs/cases/CRV4-105.json",
+      "sha256": "5d3c5ebde0bd3aadfd4242776372344fdea7eaa14fb61c269ab2d2141da58ed0"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2729,
+      "case_id": "CRV4-106",
+      "relative_path": "inputs/cases/CRV4-106.json",
+      "sha256": "d462df041754c2e1cf8f60167dae901e5d4fef772b7515a26f87e4a94ce711ae"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2730,
+      "case_id": "CRV4-107",
+      "relative_path": "inputs/cases/CRV4-107.json",
+      "sha256": "6cd757af7cfee062453db74525487962f62a24d0bff59b4c7fa4ad1e76a6d4f5"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2729,
+      "case_id": "CRV4-108",
+      "relative_path": "inputs/cases/CRV4-108.json",
+      "sha256": "28a6793db2a511e30147c5708e907e39007828989d877cb38138206b5a304767"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2777,
+      "case_id": "CRV4-109",
+      "relative_path": "inputs/cases/CRV4-109.json",
+      "sha256": "e14a6f0dfe148ef44fe48c948f82b4cdde0a51aa3074c305e1bc4dbb221f8418"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2777,
+      "case_id": "CRV4-110",
+      "relative_path": "inputs/cases/CRV4-110.json",
+      "sha256": "a3a01bfd5d5647a81f83646f85e6c6df1e5b92792d6e769b6c9f7b41db3fa159"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2778,
+      "case_id": "CRV4-111",
+      "relative_path": "inputs/cases/CRV4-111.json",
+      "sha256": "80a5cdafd1e1c3bf7546db3f0b0b6d1ede4c02ce24b3c5440b633482937c3cfb"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2778,
+      "case_id": "CRV4-112",
+      "relative_path": "inputs/cases/CRV4-112.json",
+      "sha256": "76f60f0d229332ffb0ef63370211dd4150b34a7509da69ceaa213d0c386d6427"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-113",
+      "relative_path": "inputs/cases/CRV4-113.json",
+      "sha256": "2900276c3f455d97c44d19ebb8fc31979210df02f32d9c476d150475e027e19f"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2827,
+      "case_id": "CRV4-114",
+      "relative_path": "inputs/cases/CRV4-114.json",
+      "sha256": "491a99eb0c7de970355b734d60e07172fcbd81c1de4196b003ebe8f4c0dd3761"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-115",
+      "relative_path": "inputs/cases/CRV4-115.json",
+      "sha256": "2e8c9a1fd3263a400702a25fd0f90ade1da528a4a7ec0a5a572a5308b086635c"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-116",
+      "relative_path": "inputs/cases/CRV4-116.json",
+      "sha256": "47d22dab3d16c08cdbdc414a8750f14c33b72931b9b7ec01e972109c412f0df2"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2784,
+      "case_id": "CRV4-117",
+      "relative_path": "inputs/cases/CRV4-117.json",
+      "sha256": "b6bb264dabf76bfa9ec850c1df9e43a8e1cdeaf30a17fb9e35c883464ea681d4"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2784,
+      "case_id": "CRV4-118",
+      "relative_path": "inputs/cases/CRV4-118.json",
+      "sha256": "5bf0e281acb2ede8f4e0b5d67af4025d154df38b189c812eb8da80529d26c99e"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2784,
+      "case_id": "CRV4-119",
+      "relative_path": "inputs/cases/CRV4-119.json",
+      "sha256": "c7e330bb41e1b5b9f7eea73130ddc29ce2d459e0ed8b65f311d9aea7730862ab"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2784,
+      "case_id": "CRV4-120",
+      "relative_path": "inputs/cases/CRV4-120.json",
+      "sha256": "7df64f24a7cb5fbc338d374b325d6080bf5b24f2238d750a1855f7c8d65086f5"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-121",
+      "relative_path": "inputs/cases/CRV4-121.json",
+      "sha256": "e4298be030312fe4b3e42622016fb2c5f82faf3f095e2e5c48dee0319e5ab295"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-122",
+      "relative_path": "inputs/cases/CRV4-122.json",
+      "sha256": "199f144f84671985741f3d9e5934610e6e14dc350c010142c3a9efbcf99ce30e"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-123",
+      "relative_path": "inputs/cases/CRV4-123.json",
+      "sha256": "353b8b35343310dc08e19bab10f3d5be7aa71ff79866519e6092119b07050ed0"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2828,
+      "case_id": "CRV4-124",
+      "relative_path": "inputs/cases/CRV4-124.json",
+      "sha256": "84608ae5d2d917b6990766eecd5fffbcae202c138b4826d319d3b3bee82aad62"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-125",
+      "relative_path": "inputs/cases/CRV4-125.json",
+      "sha256": "c8124c2fff3956c79d77bdf714306eb4e1ede2aa95d01d426ef66bfbc052d6c2"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-126",
+      "relative_path": "inputs/cases/CRV4-126.json",
+      "sha256": "574511aac59e6406b495587ee27fd4508da12f7cc881308235f9a064ee497ce6"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-127",
+      "relative_path": "inputs/cases/CRV4-127.json",
+      "sha256": "429bfa70b4a53905f1786aa96fdecf46b76a254ace4a949d59a5d878264da180"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2804,
+      "case_id": "CRV4-128",
+      "relative_path": "inputs/cases/CRV4-128.json",
+      "sha256": "06e9d96cc1d3cedc1af95434921a014ffa928d0f9cbb123af1577b8cb85dae3a"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2760,
+      "case_id": "CRV4-129",
+      "relative_path": "inputs/cases/CRV4-129.json",
+      "sha256": "9338f816c37ddd2dbc3a8ea0a438c98777e29194fa4dc1ad73891c33300c1ca1"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2760,
+      "case_id": "CRV4-130",
+      "relative_path": "inputs/cases/CRV4-130.json",
+      "sha256": "954469f22d699001bf2d0dda835e8bc2787a155ac2bceaae29a5e058e03ee12d"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2760,
+      "case_id": "CRV4-131",
+      "relative_path": "inputs/cases/CRV4-131.json",
+      "sha256": "ca480698e87d2c6f3363333dc76bd6d3fb50391c1d1bf99f58d39a0462f0038e"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2761,
+      "case_id": "CRV4-132",
+      "relative_path": "inputs/cases/CRV4-132.json",
+      "sha256": "72caa7d188bc0b38a3a093087cbb714e5d1da3ba0a904125db3f8bf78068dc72"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-133",
+      "relative_path": "inputs/cases/CRV4-133.json",
+      "sha256": "d85a33d868a39ccb6290c45ccea8a79d76e7f8e9e7c9ce24894949fbdeeee1bc"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-134",
+      "relative_path": "inputs/cases/CRV4-134.json",
+      "sha256": "1ac6be34ad3960fa2ab166215261e32f8cb43d80f508d2050e5337b80f6c07c6"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-135",
+      "relative_path": "inputs/cases/CRV4-135.json",
+      "sha256": "821a8993e9d36fe129ed9bf96dfa7e32e405a2ac01d3c29db4e7ae52d4ebcf6f"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2805,
+      "case_id": "CRV4-136",
+      "relative_path": "inputs/cases/CRV4-136.json",
+      "sha256": "1e5275d8064244ef6f64af626b6d7d13b35e96541e4c1cbb8f8e66fa16286f9e"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2801,
+      "case_id": "CRV4-137",
+      "relative_path": "inputs/cases/CRV4-137.json",
+      "sha256": "7cffa32703410e36a0a4a19e50c827c4bd3dc75f58d54f616d33813ab21d14a8"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2817,
+      "case_id": "CRV4-138",
+      "relative_path": "inputs/cases/CRV4-138.json",
+      "sha256": "e83ed1430b54701dbf498391650aa8416d8fe54f570f8288bbbdca493419ff1d"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2823,
+      "case_id": "CRV4-139",
+      "relative_path": "inputs/cases/CRV4-139.json",
+      "sha256": "a434cbde2931072ecf467fde4c8eb777929ae429383f3021d9e44eed45edfa89"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2813,
+      "case_id": "CRV4-140",
+      "relative_path": "inputs/cases/CRV4-140.json",
+      "sha256": "ace5fabf3393e59551a1da68364eeeae05d5d222cc415511e58546759838c3e7"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2757,
+      "case_id": "CRV4-141",
+      "relative_path": "inputs/cases/CRV4-141.json",
+      "sha256": "5641ca948318cd2cf23870a93a5ac270d08cb61cfcc0e1b7c94b590d92023c53"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2772,
+      "case_id": "CRV4-142",
+      "relative_path": "inputs/cases/CRV4-142.json",
+      "sha256": "ec51e2bdc4cda7d6a44550b0b48d1f2f40a2a8c32812c88aff9310dac1f4ca85"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2781,
+      "case_id": "CRV4-143",
+      "relative_path": "inputs/cases/CRV4-143.json",
+      "sha256": "3b17e36169d42d917ad9107acb5ea11d4316283b28e818419d7d5dba29d60615"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2769,
+      "case_id": "CRV4-144",
+      "relative_path": "inputs/cases/CRV4-144.json",
+      "sha256": "18a66284c0958b98da35855f8ca76691de404fa665549c936e4d33b45b8dc601"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2801,
+      "case_id": "CRV4-145",
+      "relative_path": "inputs/cases/CRV4-145.json",
+      "sha256": "4d5abfd352a127d3bab71c483cf32a2d19e034566d7a716a3c2e795b484ed09e"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2816,
+      "case_id": "CRV4-146",
+      "relative_path": "inputs/cases/CRV4-146.json",
+      "sha256": "f69949baefde4680808fa50febf003483ddc3ba3d976abff32331cf9d89326c8"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2825,
+      "case_id": "CRV4-147",
+      "relative_path": "inputs/cases/CRV4-147.json",
+      "sha256": "492633cf8e01b99e00376e901eba1d5d2a846c6041306abcd3c4d404d2855041"
+    },
+    {
+      "asset_kind": "runtime_input",
+      "byte_count": 2813,
+      "case_id": "CRV4-148",
+      "relative_path": "inputs/cases/CRV4-148.json",
+      "sha256": "e4bee0b42d884b68008078ef8f53bcaf22adb4f6df99458bc9afc500ff36cb69"
+    }
+  ],
+  "calibration_method_id": "regularized-isotonic-calibration-v4",
+  "case_ids": [
+    "CRV4-101",
+    "CRV4-102",
+    "CRV4-103",
+    "CRV4-104",
+    "CRV4-105",
+    "CRV4-106",
+    "CRV4-107",
+    "CRV4-108",
+    "CRV4-109",
+    "CRV4-110",
+    "CRV4-111",
+    "CRV4-112",
+    "CRV4-113",
+    "CRV4-114",
+    "CRV4-115",
+    "CRV4-116",
+    "CRV4-117",
+    "CRV4-118",
+    "CRV4-119",
+    "CRV4-120",
+    "CRV4-121",
+    "CRV4-122",
+    "CRV4-123",
+    "CRV4-124",
+    "CRV4-125",
+    "CRV4-126",
+    "CRV4-127",
+    "CRV4-128",
+    "CRV4-129",
+    "CRV4-130",
+    "CRV4-131",
+    "CRV4-132",
+    "CRV4-133",
+    "CRV4-134",
+    "CRV4-135",
+    "CRV4-136",
+    "CRV4-137",
+    "CRV4-138",
+    "CRV4-139",
+    "CRV4-140",
+    "CRV4-141",
+    "CRV4-142",
+    "CRV4-143",
+    "CRV4-144",
+    "CRV4-145",
+    "CRV4-146",
+    "CRV4-147",
+    "CRV4-148"
+  ],
+  "case_pair_count": 48,
+  "case_pairs": [
+    {
+      "case_id": "CRV4-101",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-101.json",
+      "expected_outcome_sha256": "3f306de7a222800c40081eb667afb74f4c02ea3328fbcf290ad073a5e652780c",
+      "runtime_input_relative_path": "inputs/cases/CRV4-101.json",
+      "runtime_input_sha256": "88f85563f155885b06b57bb80a4ac16560ed597085b4409d22705a1df098d38d"
+    },
+    {
+      "case_id": "CRV4-102",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-102.json",
+      "expected_outcome_sha256": "487003ec5c3cb3b7bbb97bbde41c5fa9025ab0b354198f0bd5edd00e51f960a7",
+      "runtime_input_relative_path": "inputs/cases/CRV4-102.json",
+      "runtime_input_sha256": "f4bbaa93665a638e6ffad4ddc9c248b930bddc03b4e0545daf8f582dee547187"
+    },
+    {
+      "case_id": "CRV4-103",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-103.json",
+      "expected_outcome_sha256": "7411cc234b25c50c1c8734ef79ac8d504f66765ccd927f3efd935fb5c3f115e1",
+      "runtime_input_relative_path": "inputs/cases/CRV4-103.json",
+      "runtime_input_sha256": "d4c6649b4de3da5abf3f58a689ac26f9857548b6c52d33bf551e6a0fa1fd8003"
+    },
+    {
+      "case_id": "CRV4-104",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-104.json",
+      "expected_outcome_sha256": "a8fd32e806129c65018aa244ad44e55ce7b95572dc605c24d2762951979a9916",
+      "runtime_input_relative_path": "inputs/cases/CRV4-104.json",
+      "runtime_input_sha256": "5464b1b4b5cd608ccddce13a31144becdc0c1f5e85fdc427ca17ce93b0009d83"
+    },
+    {
+      "case_id": "CRV4-105",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-105.json",
+      "expected_outcome_sha256": "1c1d007773bfa6ade34fd2e30f9ff3fce23278f5e2d73271bc384fa30a2f8b7f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-105.json",
+      "runtime_input_sha256": "5d3c5ebde0bd3aadfd4242776372344fdea7eaa14fb61c269ab2d2141da58ed0"
+    },
+    {
+      "case_id": "CRV4-106",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-106.json",
+      "expected_outcome_sha256": "d3c4ce88ce856a6e36f94fa51df2b2839c20aa0d333cb29d027d9039fe2b3edd",
+      "runtime_input_relative_path": "inputs/cases/CRV4-106.json",
+      "runtime_input_sha256": "d462df041754c2e1cf8f60167dae901e5d4fef772b7515a26f87e4a94ce711ae"
+    },
+    {
+      "case_id": "CRV4-107",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-107.json",
+      "expected_outcome_sha256": "7ba4e30af5cd302ccffbb4df171b903b7a5b8a389055187e78600c8e300cc2c1",
+      "runtime_input_relative_path": "inputs/cases/CRV4-107.json",
+      "runtime_input_sha256": "6cd757af7cfee062453db74525487962f62a24d0bff59b4c7fa4ad1e76a6d4f5"
+    },
+    {
+      "case_id": "CRV4-108",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-108.json",
+      "expected_outcome_sha256": "b9bd937e73220bd311342c60ae6a96d5c31686570c7ac151c2105e97f951e200",
+      "runtime_input_relative_path": "inputs/cases/CRV4-108.json",
+      "runtime_input_sha256": "28a6793db2a511e30147c5708e907e39007828989d877cb38138206b5a304767"
+    },
+    {
+      "case_id": "CRV4-109",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-109.json",
+      "expected_outcome_sha256": "c4824e80ea14e49b1eccf5280277445b774ae087a20fbe3643c85084854fa2b1",
+      "runtime_input_relative_path": "inputs/cases/CRV4-109.json",
+      "runtime_input_sha256": "e14a6f0dfe148ef44fe48c948f82b4cdde0a51aa3074c305e1bc4dbb221f8418"
+    },
+    {
+      "case_id": "CRV4-110",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-110.json",
+      "expected_outcome_sha256": "a0b95d5bb125d5a22b20efef3cbe1c49b711800ecc9275a33b538459cfc983a2",
+      "runtime_input_relative_path": "inputs/cases/CRV4-110.json",
+      "runtime_input_sha256": "a3a01bfd5d5647a81f83646f85e6c6df1e5b92792d6e769b6c9f7b41db3fa159"
+    },
+    {
+      "case_id": "CRV4-111",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-111.json",
+      "expected_outcome_sha256": "ac0752a493e3723a5111f1009a5a1583caef723c7ae296d3734060b239dfb317",
+      "runtime_input_relative_path": "inputs/cases/CRV4-111.json",
+      "runtime_input_sha256": "80a5cdafd1e1c3bf7546db3f0b0b6d1ede4c02ce24b3c5440b633482937c3cfb"
+    },
+    {
+      "case_id": "CRV4-112",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-112.json",
+      "expected_outcome_sha256": "b0c049fca29fd531d9660bf47a4d0afbafef987ef7079293fe800e1c6086c239",
+      "runtime_input_relative_path": "inputs/cases/CRV4-112.json",
+      "runtime_input_sha256": "76f60f0d229332ffb0ef63370211dd4150b34a7509da69ceaa213d0c386d6427"
+    },
+    {
+      "case_id": "CRV4-113",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-113.json",
+      "expected_outcome_sha256": "99d1d44cec1dc762f5c5cf8fd2f79fc4f95b8bc3aa8fc8b80d9c624033fc1ec3",
+      "runtime_input_relative_path": "inputs/cases/CRV4-113.json",
+      "runtime_input_sha256": "2900276c3f455d97c44d19ebb8fc31979210df02f32d9c476d150475e027e19f"
+    },
+    {
+      "case_id": "CRV4-114",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-114.json",
+      "expected_outcome_sha256": "2be74ed32754c0416df37ced6bf64a4d810cff523bc3e052cae037c7b32c79e7",
+      "runtime_input_relative_path": "inputs/cases/CRV4-114.json",
+      "runtime_input_sha256": "491a99eb0c7de970355b734d60e07172fcbd81c1de4196b003ebe8f4c0dd3761"
+    },
+    {
+      "case_id": "CRV4-115",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-115.json",
+      "expected_outcome_sha256": "e8495649ff4abb925dbc7138112aa409cc1e23bbafc063b06bdf7a70b4e1e6ad",
+      "runtime_input_relative_path": "inputs/cases/CRV4-115.json",
+      "runtime_input_sha256": "2e8c9a1fd3263a400702a25fd0f90ade1da528a4a7ec0a5a572a5308b086635c"
+    },
+    {
+      "case_id": "CRV4-116",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-116.json",
+      "expected_outcome_sha256": "48c55f2aad4321bba8bcee56f3ed9b4084be958d01d2e97b206f5f7aa2420ee6",
+      "runtime_input_relative_path": "inputs/cases/CRV4-116.json",
+      "runtime_input_sha256": "47d22dab3d16c08cdbdc414a8750f14c33b72931b9b7ec01e972109c412f0df2"
+    },
+    {
+      "case_id": "CRV4-117",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-117.json",
+      "expected_outcome_sha256": "6862f807c784734735fc64d44e467b85a05b60e623b1481abc7d78af953eb0af",
+      "runtime_input_relative_path": "inputs/cases/CRV4-117.json",
+      "runtime_input_sha256": "b6bb264dabf76bfa9ec850c1df9e43a8e1cdeaf30a17fb9e35c883464ea681d4"
+    },
+    {
+      "case_id": "CRV4-118",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-118.json",
+      "expected_outcome_sha256": "3dd83ceb9a5a15296b8dbb8b696c0d1f114880b5a786c0d80262cb9d8c945971",
+      "runtime_input_relative_path": "inputs/cases/CRV4-118.json",
+      "runtime_input_sha256": "5bf0e281acb2ede8f4e0b5d67af4025d154df38b189c812eb8da80529d26c99e"
+    },
+    {
+      "case_id": "CRV4-119",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-119.json",
+      "expected_outcome_sha256": "8153f18b747d7dc4e7c02a7e03594282de66438275feda99cbc2c29829f9f5ac",
+      "runtime_input_relative_path": "inputs/cases/CRV4-119.json",
+      "runtime_input_sha256": "c7e330bb41e1b5b9f7eea73130ddc29ce2d459e0ed8b65f311d9aea7730862ab"
+    },
+    {
+      "case_id": "CRV4-120",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-120.json",
+      "expected_outcome_sha256": "46ee5a3e29023807eb31ab4c3e7d00eb8fc745e2796be4881ed889b787b0c383",
+      "runtime_input_relative_path": "inputs/cases/CRV4-120.json",
+      "runtime_input_sha256": "7df64f24a7cb5fbc338d374b325d6080bf5b24f2238d750a1855f7c8d65086f5"
+    },
+    {
+      "case_id": "CRV4-121",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-121.json",
+      "expected_outcome_sha256": "a4142d36ecdb920cf03636fc327aad101126cd5c140d960b8ee888b27b0c8610",
+      "runtime_input_relative_path": "inputs/cases/CRV4-121.json",
+      "runtime_input_sha256": "e4298be030312fe4b3e42622016fb2c5f82faf3f095e2e5c48dee0319e5ab295"
+    },
+    {
+      "case_id": "CRV4-122",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-122.json",
+      "expected_outcome_sha256": "75e7fdde28bb2a1a5f09ebc02c90f5080aa6d4ce9424f3763560e997fcd05be1",
+      "runtime_input_relative_path": "inputs/cases/CRV4-122.json",
+      "runtime_input_sha256": "199f144f84671985741f3d9e5934610e6e14dc350c010142c3a9efbcf99ce30e"
+    },
+    {
+      "case_id": "CRV4-123",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-123.json",
+      "expected_outcome_sha256": "c0bb4882290a459a6fc897f378dc635c2909f6c61609d0f7f01e177afe8f42df",
+      "runtime_input_relative_path": "inputs/cases/CRV4-123.json",
+      "runtime_input_sha256": "353b8b35343310dc08e19bab10f3d5be7aa71ff79866519e6092119b07050ed0"
+    },
+    {
+      "case_id": "CRV4-124",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-124.json",
+      "expected_outcome_sha256": "f940f4992c3d5324f9dbcb9cf93c24f5d819c7b3d0103cff7e0346a58ee37332",
+      "runtime_input_relative_path": "inputs/cases/CRV4-124.json",
+      "runtime_input_sha256": "84608ae5d2d917b6990766eecd5fffbcae202c138b4826d319d3b3bee82aad62"
+    },
+    {
+      "case_id": "CRV4-125",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-125.json",
+      "expected_outcome_sha256": "ac2af0d61590b2e9e6ad738a85d5449ec30d340385bb6948c1e5016912d4a02f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-125.json",
+      "runtime_input_sha256": "c8124c2fff3956c79d77bdf714306eb4e1ede2aa95d01d426ef66bfbc052d6c2"
+    },
+    {
+      "case_id": "CRV4-126",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-126.json",
+      "expected_outcome_sha256": "3c42767792fd4e15eb49766f56cbf0f7b7e9cfb4cfb5717af7f320bc11bc2185",
+      "runtime_input_relative_path": "inputs/cases/CRV4-126.json",
+      "runtime_input_sha256": "574511aac59e6406b495587ee27fd4508da12f7cc881308235f9a064ee497ce6"
+    },
+    {
+      "case_id": "CRV4-127",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-127.json",
+      "expected_outcome_sha256": "634c7b25c706f27a108430ccfc92374e14a6533a8b82ca3417bdfe970ea4d577",
+      "runtime_input_relative_path": "inputs/cases/CRV4-127.json",
+      "runtime_input_sha256": "429bfa70b4a53905f1786aa96fdecf46b76a254ace4a949d59a5d878264da180"
+    },
+    {
+      "case_id": "CRV4-128",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-128.json",
+      "expected_outcome_sha256": "460885a90d75849cd9f813e019fe04f3a0bbcd5311b89b0a40dc9b4fa768f383",
+      "runtime_input_relative_path": "inputs/cases/CRV4-128.json",
+      "runtime_input_sha256": "06e9d96cc1d3cedc1af95434921a014ffa928d0f9cbb123af1577b8cb85dae3a"
+    },
+    {
+      "case_id": "CRV4-129",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-129.json",
+      "expected_outcome_sha256": "6fbd26612ce9c7c3a79967234ff740c953b8d864a5d4057eff7fb27310e78ece",
+      "runtime_input_relative_path": "inputs/cases/CRV4-129.json",
+      "runtime_input_sha256": "9338f816c37ddd2dbc3a8ea0a438c98777e29194fa4dc1ad73891c33300c1ca1"
+    },
+    {
+      "case_id": "CRV4-130",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-130.json",
+      "expected_outcome_sha256": "0472fa71bfe804f0b86a5b507ca7fd777f37e9b15034c4e906354a396a3c4581",
+      "runtime_input_relative_path": "inputs/cases/CRV4-130.json",
+      "runtime_input_sha256": "954469f22d699001bf2d0dda835e8bc2787a155ac2bceaae29a5e058e03ee12d"
+    },
+    {
+      "case_id": "CRV4-131",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-131.json",
+      "expected_outcome_sha256": "e41bf27b8b8ddeb92a0be570e751f6f5bcbc5805934b8e77fd431efa60f74c2f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-131.json",
+      "runtime_input_sha256": "ca480698e87d2c6f3363333dc76bd6d3fb50391c1d1bf99f58d39a0462f0038e"
+    },
+    {
+      "case_id": "CRV4-132",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-132.json",
+      "expected_outcome_sha256": "75e6bb41a7c14aeff44bd0535074bca811740ab1d4c824a6f5f0a981fbd987dd",
+      "runtime_input_relative_path": "inputs/cases/CRV4-132.json",
+      "runtime_input_sha256": "72caa7d188bc0b38a3a093087cbb714e5d1da3ba0a904125db3f8bf78068dc72"
+    },
+    {
+      "case_id": "CRV4-133",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-133.json",
+      "expected_outcome_sha256": "17e9b260257d39d1460992b8fd88be8d9d1de31fb78457ad8d1c03341d5d3b0c",
+      "runtime_input_relative_path": "inputs/cases/CRV4-133.json",
+      "runtime_input_sha256": "d85a33d868a39ccb6290c45ccea8a79d76e7f8e9e7c9ce24894949fbdeeee1bc"
+    },
+    {
+      "case_id": "CRV4-134",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-134.json",
+      "expected_outcome_sha256": "d403de8a60c54e6c37947c837f38c751c17577f66b54da7b48aa2af6e236687e",
+      "runtime_input_relative_path": "inputs/cases/CRV4-134.json",
+      "runtime_input_sha256": "1ac6be34ad3960fa2ab166215261e32f8cb43d80f508d2050e5337b80f6c07c6"
+    },
+    {
+      "case_id": "CRV4-135",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-135.json",
+      "expected_outcome_sha256": "e4602f9e52ecdf96801349e33ffb844d32e81cfeafad3b7aecff499fe48bae2f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-135.json",
+      "runtime_input_sha256": "821a8993e9d36fe129ed9bf96dfa7e32e405a2ac01d3c29db4e7ae52d4ebcf6f"
+    },
+    {
+      "case_id": "CRV4-136",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-136.json",
+      "expected_outcome_sha256": "39399bdc3ecdf6b801303d823ec13b88a830e230d499b26443227a6b241c5d9a",
+      "runtime_input_relative_path": "inputs/cases/CRV4-136.json",
+      "runtime_input_sha256": "1e5275d8064244ef6f64af626b6d7d13b35e96541e4c1cbb8f8e66fa16286f9e"
+    },
+    {
+      "case_id": "CRV4-137",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-137.json",
+      "expected_outcome_sha256": "582196e14e70b9d344a40b0595ea66e17ee3f69a18033a938b3ff7c95e6a9929",
+      "runtime_input_relative_path": "inputs/cases/CRV4-137.json",
+      "runtime_input_sha256": "7cffa32703410e36a0a4a19e50c827c4bd3dc75f58d54f616d33813ab21d14a8"
+    },
+    {
+      "case_id": "CRV4-138",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-138.json",
+      "expected_outcome_sha256": "89f3195aa3a188f05e9d781d3071e143085714ea9fe2eec820e60d688260a495",
+      "runtime_input_relative_path": "inputs/cases/CRV4-138.json",
+      "runtime_input_sha256": "e83ed1430b54701dbf498391650aa8416d8fe54f570f8288bbbdca493419ff1d"
+    },
+    {
+      "case_id": "CRV4-139",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-139.json",
+      "expected_outcome_sha256": "5bf70e16fa22602df42c1d4d765c8320c239305c922e1d843349715a5fc09ffa",
+      "runtime_input_relative_path": "inputs/cases/CRV4-139.json",
+      "runtime_input_sha256": "a434cbde2931072ecf467fde4c8eb777929ae429383f3021d9e44eed45edfa89"
+    },
+    {
+      "case_id": "CRV4-140",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-140.json",
+      "expected_outcome_sha256": "dd260544db41080832d39dbdc0a8cdaf4e29fa5088cebb9a982ce5b006d1a823",
+      "runtime_input_relative_path": "inputs/cases/CRV4-140.json",
+      "runtime_input_sha256": "ace5fabf3393e59551a1da68364eeeae05d5d222cc415511e58546759838c3e7"
+    },
+    {
+      "case_id": "CRV4-141",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-141.json",
+      "expected_outcome_sha256": "8c052537cf76c06371e19a02c35257f031aa013249e59996b9e4ccc26c2c8241",
+      "runtime_input_relative_path": "inputs/cases/CRV4-141.json",
+      "runtime_input_sha256": "5641ca948318cd2cf23870a93a5ac270d08cb61cfcc0e1b7c94b590d92023c53"
+    },
+    {
+      "case_id": "CRV4-142",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-142.json",
+      "expected_outcome_sha256": "872607793b8fb31f51bb7c75be625879c0da37c938a0211ad5d2c3d9a1555ce0",
+      "runtime_input_relative_path": "inputs/cases/CRV4-142.json",
+      "runtime_input_sha256": "ec51e2bdc4cda7d6a44550b0b48d1f2f40a2a8c32812c88aff9310dac1f4ca85"
+    },
+    {
+      "case_id": "CRV4-143",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-143.json",
+      "expected_outcome_sha256": "8f0aa3d9126c1e2f9a94d6a47782a55d77d27b6c4cbad26b5aa7c57724bb71ce",
+      "runtime_input_relative_path": "inputs/cases/CRV4-143.json",
+      "runtime_input_sha256": "3b17e36169d42d917ad9107acb5ea11d4316283b28e818419d7d5dba29d60615"
+    },
+    {
+      "case_id": "CRV4-144",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-144.json",
+      "expected_outcome_sha256": "0a759743da47776d17a12ee6c060175813eb26a802dfe8c35d574bdaa2dadcda",
+      "runtime_input_relative_path": "inputs/cases/CRV4-144.json",
+      "runtime_input_sha256": "18a66284c0958b98da35855f8ca76691de404fa665549c936e4d33b45b8dc601"
+    },
+    {
+      "case_id": "CRV4-145",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-145.json",
+      "expected_outcome_sha256": "70705e1e34c08880087deb109edb884da72a7f0e9e16b5384d038788aca7345f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-145.json",
+      "runtime_input_sha256": "4d5abfd352a127d3bab71c483cf32a2d19e034566d7a716a3c2e795b484ed09e"
+    },
+    {
+      "case_id": "CRV4-146",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-146.json",
+      "expected_outcome_sha256": "9963da70e66600074dd6f9f8cf0a3b3d805806fe512fb38573b2fe87a29fc30f",
+      "runtime_input_relative_path": "inputs/cases/CRV4-146.json",
+      "runtime_input_sha256": "f69949baefde4680808fa50febf003483ddc3ba3d976abff32331cf9d89326c8"
+    },
+    {
+      "case_id": "CRV4-147",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-147.json",
+      "expected_outcome_sha256": "102b335e73d0022641012b9abf9df4009e2e62ed06b39fb6f15d019287719691",
+      "runtime_input_relative_path": "inputs/cases/CRV4-147.json",
+      "runtime_input_sha256": "492633cf8e01b99e00376e901eba1d5d2a846c6041306abcd3c4d404d2855041"
+    },
+    {
+      "case_id": "CRV4-148",
+      "expected_outcome_relative_path": "expected_outcomes/cases/CRV4-148.json",
+      "expected_outcome_sha256": "1c41b6c4a74ba7da09e84359903470e09be826e1ac4b50543ecece5ce514f5db",
+      "runtime_input_relative_path": "inputs/cases/CRV4-148.json",
+      "runtime_input_sha256": "e4bee0b42d884b68008078ef8f53bcaf22adb4f6df99458bc9afc500ff36cb69"
+    }
+  ],
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "manifest_id": "v4-calibration-manifest-freeze",
+  "manifest_scope": "calibration_only",
+  "method_constitution_version": "v4-method-and-evidence-constitution-v1",
+  "observation_count": 192,
+  "registry_sha256": "765042d8480efe129738352dc8237d12c43df768a2de845f1e63a1daf32d1c9c",
+  "schema_version": "calibration-redesign-v4-manifest-v1"
+}

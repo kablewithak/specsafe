@@ -92,5 +92,4 @@ def test_workload_mix_retains_both_outcome_classes_and_no_final_assets() -> None
     assert not all(observed_acceptance)
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
     assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()

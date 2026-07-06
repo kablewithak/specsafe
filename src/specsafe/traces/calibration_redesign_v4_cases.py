@@ -1,9 +1,9 @@
 """Typed V4 calibration case contracts and loaders.
 
-CRV4-101 through CRV4-148 are the only currently authorised calibration-only case
-pairs. Runtime inputs and post-hoc outcomes remain physically separate. Final and
-adversarial evidence remain absent; this module does not fit calibration or execute
-a scheduler.
+CRV4-101 through CRV4-148 are the only authorised calibration-only case pairs. A
+calibration manifest is now present at the fixture root, but runtime inputs and post-hoc
+outcomes remain physically separate. Final and adversarial evidence remain absent; this
+module does not fit calibration or execute a scheduler.
 """
 
 from __future__ import annotations
@@ -55,7 +55,9 @@ class CalibrationRedesignV4CaseViolationCode(StrEnum):
     REGISTRY_MEMBERSHIP_ERROR = "calibration_redesign_v4_registry_membership_error"
     UNTRUSTED_REGISTRY = "calibration_redesign_v4_untrusted_registry"
     CASE_ASSET_LAYOUT_ERROR = "calibration_redesign_v4_case_asset_layout_error"
-    CASE_ASSET_PROVENANCE_MISMATCH = "calibration_redesign_v4_case_asset_provenance_mismatch"
+    CASE_ASSET_PROVENANCE_MISMATCH = (
+        "calibration_redesign_v4_case_asset_provenance_mismatch"
+    )
 
 
 class CalibrationRedesignV4CaseContractError(ValueError):
@@ -100,16 +102,22 @@ class CalibrationRedesignV4RuntimeInput(StrictContract):
         seen_keys: set[tuple[int, int]] = set()
         for context in self.contexts:
             if context.trace_id != self.trace_id:
-                raise ValueError("all V4 runtime contexts must use the enclosing trace_id")
+                raise ValueError(
+                    "all V4 runtime contexts must use the enclosing trace_id"
+                )
             if context.request_id != self.request_id:
-                raise ValueError("all V4 runtime contexts must use the enclosing request_id")
+                raise ValueError(
+                    "all V4 runtime contexts must use the enclosing request_id"
+                )
             if context.decode_round != 0:
                 raise ValueError("V4 calibration cases must use decode round zero")
             key = (context.decode_round, context.block_position_index)
             if key in seen_keys:
                 raise ValueError("V4 runtime contexts must not repeat a position key")
             if context.block_position_index != expected_position:
-                raise ValueError("V4 runtime contexts must have contiguous positions from one")
+                raise ValueError(
+                    "V4 runtime contexts must have contiguous positions from one"
+                )
             seen_keys.add(key)
             expected_position += 1
         return self
@@ -153,7 +161,9 @@ class CalibrationRedesignV4ExpectedOutcomes(StrictContract):
                 raise ValueError("V4 outcomes must be contiguous from position one")
             prefix_survives = prefix_survives and outcome.observed_acceptance
             if outcome.prefix_survival_label is not prefix_survives:
-                raise ValueError("V4 prefix_survival_label must equal cumulative acceptance")
+                raise ValueError(
+                    "V4 prefix_survival_label must equal cumulative acceptance"
+                )
             expected_position += 1
         return self
 
@@ -195,7 +205,9 @@ class CalibrationRedesignV4ReplayCase(StrictContract):
             for outcome in outcomes.outcomes
         }
         if set(contexts_by_key) != set(outcomes_by_key):
-            raise ValueError("V4 runtime and outcomes must have identical position keys")
+            raise ValueError(
+                "V4 runtime and outcomes must have identical position keys"
+            )
         _validate_visible_prefixes(contexts_by_key, outcomes.outcomes)
         return self
 
@@ -243,7 +255,7 @@ def load_calibration_redesign_v4_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV4ReplayCase:
-    """Load one authorised CRV4-101 through CRV4-148 calibration case pair."""
+    """Load one manifest-bound CRV4-101 through CRV4-148 calibration case pair."""
 
     if not _is_v4_case_id(case_id):
         raise CalibrationRedesignV4CaseContractError(
@@ -254,7 +266,7 @@ def load_calibration_redesign_v4_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_capacity_contrast_assets=True,
+            allow_calibration_manifest_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4CaseContractError(
@@ -262,19 +274,25 @@ def load_calibration_redesign_v4_replay_case(
             f"V4 case asset root is not authorised for loading: {error}",
         ) from error
 
-    runtime_payload = _read_json_asset(resolved_root / "inputs" / "cases" / f"{case_id}.json")
+    runtime_payload = _read_json_asset(
+        resolved_root / "inputs" / "cases" / f"{case_id}.json"
+    )
     outcomes_payload = _read_json_asset(
         resolved_root / "expected_outcomes" / "cases" / f"{case_id}.json"
     )
     try:
-        runtime_input = CalibrationRedesignV4RuntimeInput.model_validate(runtime_payload)
+        runtime_input = CalibrationRedesignV4RuntimeInput.model_validate(
+            runtime_payload
+        )
     except ValidationError as error:
         raise CalibrationRedesignV4CaseContractError(
             CalibrationRedesignV4CaseViolationCode.RUNTIME_SCHEMA_ERROR,
             f"V4 runtime case asset schema validation failed: {error}",
         ) from error
     try:
-        expected_outcomes = CalibrationRedesignV4ExpectedOutcomes.model_validate(outcomes_payload)
+        expected_outcomes = CalibrationRedesignV4ExpectedOutcomes.model_validate(
+            outcomes_payload
+        )
     except ValidationError as error:
         raise CalibrationRedesignV4CaseContractError(
             CalibrationRedesignV4CaseViolationCode.OUTCOME_SCHEMA_ERROR,
