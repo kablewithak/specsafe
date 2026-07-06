@@ -1,7 +1,8 @@
-"""Tests for deterministic V4 calibration-manifest freeze behavior."""
+"""Tests for immutable V4 calibration-manifest verification after fit diagnostics."""
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -13,7 +14,6 @@ from specsafe.traces.calibration_redesign_v4_manifest import (
     CalibrationRedesignV4ManifestViolationCode,
     build_calibration_redesign_v4_calibration_manifest,
     load_calibration_redesign_v4_calibration_manifest,
-    write_calibration_redesign_v4_calibration_manifest,
 )
 
 _FIXTURE_ROOT = (
@@ -47,21 +47,16 @@ def test_manifest_hash_verifies_exact_complete_calibration_inventory() -> None:
     assert manifest.assets[-1].relative_path == "inputs/cases/CRV4-148.json"
 
 
-def test_manifest_write_is_deterministic_and_write_once(tmp_path: Path) -> None:
-    root = _copy_fixture_root(tmp_path)
-    (root / "calibration_manifest.json").unlink()
-
-    first_manifest = write_calibration_redesign_v4_calibration_manifest(root)
-    loaded_manifest = load_calibration_redesign_v4_calibration_manifest(root)
-
-    assert loaded_manifest == first_manifest
-    with pytest.raises(CalibrationRedesignV4ManifestError) as error:
-        write_calibration_redesign_v4_calibration_manifest(root)
-
-    assert (
-        error.value.code
-        is CalibrationRedesignV4ManifestViolationCode.DESTINATION_ALREADY_EXISTS
+def test_manifest_carry_forward_hashes_bind_fit_stage_to_original_freeze() -> None:
+    manifest = load_calibration_redesign_v4_calibration_manifest(_FIXTURE_ROOT)
+    registry_payload = json.loads(
+        (_FIXTURE_ROOT / "scenario_family_registry.json").read_text(encoding="utf-8")
     )
+
+    assert registry_payload["frozen_calibration_registry_sha256"] == manifest.registry_sha256
+    assert registry_payload["frozen_calibration_manifest_sha256"] == hashlib.sha256(
+        (_FIXTURE_ROOT / "calibration_manifest.json").read_bytes()
+    ).hexdigest()
 
 
 def test_manifest_detects_one_byte_asset_change(tmp_path: Path) -> None:
@@ -72,26 +67,22 @@ def test_manifest_detects_one_byte_asset_change(tmp_path: Path) -> None:
     with pytest.raises(CalibrationRedesignV4ManifestError) as error:
         load_calibration_redesign_v4_calibration_manifest(root)
 
-    assert (
-        error.value.code
-        is CalibrationRedesignV4ManifestViolationCode.ASSET_INTEGRITY_MISMATCH
-    )
+    expected_code = CalibrationRedesignV4ManifestViolationCode.ASSET_INTEGRITY_MISMATCH
+    assert error.value.code is expected_code
 
 
-def test_manifest_detects_registry_provenance_change(tmp_path: Path) -> None:
+def test_manifest_detects_changed_frozen_registry_carry_forward_hash(tmp_path: Path) -> None:
     root = _copy_fixture_root(tmp_path)
     registry_path = root / "scenario_family_registry.json"
     payload = json.loads(registry_path.read_text(encoding="utf-8"))
-    payload["explicit_exclusions"] = [*payload["explicit_exclusions"], "tampered"]
+    payload["frozen_calibration_registry_sha256"] = "0" * 64
     registry_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     with pytest.raises(CalibrationRedesignV4ManifestError) as error:
         load_calibration_redesign_v4_calibration_manifest(root)
 
-    assert (
-        error.value.code
-        is CalibrationRedesignV4ManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH
-    )
+    expected_code = CalibrationRedesignV4ManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH
+    assert error.value.code is expected_code
 
 
 def test_build_refuses_to_rebuild_existing_manifest(tmp_path: Path) -> None:
@@ -100,7 +91,5 @@ def test_build_refuses_to_rebuild_existing_manifest(tmp_path: Path) -> None:
     with pytest.raises(CalibrationRedesignV4ManifestError) as error:
         build_calibration_redesign_v4_calibration_manifest(root)
 
-    assert (
-        error.value.code
-        is CalibrationRedesignV4ManifestViolationCode.DESTINATION_ALREADY_EXISTS
-    )
+    expected_code = CalibrationRedesignV4ManifestViolationCode.DESTINATION_ALREADY_EXISTS
+    assert error.value.code is expected_code
