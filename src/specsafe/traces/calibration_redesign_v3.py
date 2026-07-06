@@ -41,9 +41,7 @@ _AUTHORISED_CALIBRATION_CASE_IDS = (
 _ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FINAL_EVALUATION_DIRECTORY_NAME = "final_evaluation"
 _FINAL_EVALUATION_ALLOWED_DIRECTORIES = {"inputs", "expected_outcomes"}
-_FINAL_AUTHORED_CAPACITY_CASE_IDS = tuple(
-    f"CRV3-{number:03d}" for number in range(201, 213)
-)
+_FINAL_AUTHORED_CAPACITY_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(201, 219))
 _FORBIDDEN_ROOT_PATH_NAMES = {
     "final_evaluation_manifest.json",
     "adversarial_regression_manifest.json",
@@ -69,13 +67,9 @@ class CalibrationRedesignV3RegistryViolationCode(StrEnum):
     """Machine-readable reasons the V3 authoring boundary cannot be trusted."""
 
     REGISTRY_SCHEMA_ERROR = "calibration_redesign_v3_registry_schema_error"
-    REGISTRY_PROVENANCE_MISMATCH = (
-        "calibration_redesign_v3_registry_provenance_mismatch"
-    )
+    REGISTRY_PROVENANCE_MISMATCH = "calibration_redesign_v3_registry_provenance_mismatch"
     V1_OR_V2_EVIDENCE_REFERENCE = "calibration_redesign_v3_v1_or_v2_evidence_reference"
-    SCHEMA_ONLY_BOUNDARY_VIOLATION = (
-        "calibration_redesign_v3_schema_only_boundary_violation"
-    )
+    SCHEMA_ONLY_BOUNDARY_VIOLATION = "calibration_redesign_v3_schema_only_boundary_violation"
     CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
         "calibration_redesign_v3_calibration_curve_coverage_boundary_violation"
     )
@@ -180,9 +174,7 @@ class CalibrationRedesignV3ScenarioFamilyRecord(StrictContract):
             raise ValueError("primary_data_role must match the governed V3 split role")
         expected_quarantine = self.split is TraceSplit.FINAL_EVALUATION
         if self.is_final_evaluation_quarantined is not expected_quarantine:
-            raise ValueError(
-                "final-evaluation quarantine must match the declared V3 split"
-            )
+            raise ValueError("final-evaluation quarantine must match the declared V3 split")
         if expected_quarantine != (self.workload_allocation is not None):
             raise ValueError(
                 "only final-evaluation V3 families may declare the required workload allocation"
@@ -219,9 +211,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
     v3_runtime_or_outcome_assets_authored: Literal[True]
     v3_manifests_authored: Literal[True]
     observation_budget: CalibrationRedesignV3ObservationBudget
-    families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(
-        min_length=1
-    )
+    families: tuple[CalibrationRedesignV3ScenarioFamilyRecord, ...] = Field(min_length=1)
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
     next_authorized_artifact: Literal["v3-quantile-isotonic-calibration-fit"]
 
@@ -234,9 +224,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
         if self.v1_or_v2_data_bearing_evidence_used:
             raise ValueError("V1 and V2 data-bearing evidence is prohibited in V3")
         if not self.v3_runtime_or_outcome_assets_authored:
-            raise ValueError(
-                "authorised V3 calibration case assets must be recorded as authored"
-            )
+            raise ValueError("authorised V3 calibration case assets must be recorded as authored")
         if not self.v3_manifests_authored:
             raise ValueError("V3 calibration manifest must be recorded as authored")
 
@@ -244,17 +232,13 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
         if len(set(family_ids)) != len(family_ids):
             raise ValueError("V3 scenario-family IDs must be unique")
 
-        case_ids = [
-            case_id for family in self.families for case_id in family.reserved_case_ids
-        ]
+        case_ids = [case_id for family in self.families for case_id in family.reserved_case_ids]
         if len(set(case_ids)) != len(case_ids):
             raise ValueError("V3 case IDs must be unique across all families")
 
         split_case_counts = {
             split: sum(
-                len(family.reserved_case_ids)
-                for family in self.families
-                if family.split is split
+                len(family.reserved_case_ids) for family in self.families if family.split is split
             )
             for split in _EXPECTED_DATA_ROLE_BY_SPLIT
         }
@@ -275,9 +259,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             raise ValueError("V3 adversarial reserved-case count must equal 8")
 
         final_families = [
-            family
-            for family in self.families
-            if family.split is TraceSplit.FINAL_EVALUATION
+            family for family in self.families if family.split is TraceSplit.FINAL_EVALUATION
         ]
         expected_final_families = {
             "CRV3-FINAL-LIGHT-CAPACITY",
@@ -285,16 +267,10 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             "CRV3-FINAL-SATURATED-CAPACITY",
             "CRV3-FINAL-JAGGED-CAPACITY",
         }
-        if {
-            family.scenario_family_id for family in final_families
-        } != expected_final_families:
-            raise ValueError(
-                "V3 final families must match the frozen four-capacity constitution"
-            )
+        if {family.scenario_family_id for family in final_families} != expected_final_families:
+            raise ValueError("V3 final families must match the frozen four-capacity constitution")
         if any(len(family.reserved_case_ids) != 6 for family in final_families):
-            raise ValueError(
-                "each V3 final capacity family must reserve exactly six cases"
-            )
+            raise ValueError("each V3 final capacity family must reserve exactly six cases")
 
         curve_family = next(
             family
@@ -302,9 +278,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             if family.scenario_family_id == "CRV3-CAL-CURVE-COVERAGE"
         )
         if curve_family.reserved_case_ids != _CURVE_COVERAGE_CASE_IDS:
-            raise ValueError(
-                "curve-coverage family must reserve exactly CRV3-101 through CRV3-112"
-            )
+            raise ValueError("curve-coverage family must reserve exactly CRV3-101 through CRV3-112")
         if curve_family.authoring_status != "calibration_curve_coverage_authored":
             raise ValueError("curve-coverage family must remain marked authored")
 
@@ -317,10 +291,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             raise ValueError(
                 "position-spread family must reserve exactly CRV3-113 through CRV3-124"
             )
-        if (
-            position_spread_family.authoring_status
-            != "calibration_position_spread_authored"
-        ):
+        if position_spread_family.authoring_status != "calibration_position_spread_authored":
             raise ValueError("position-spread family must be marked authored")
 
         workload_mix_family = next(
@@ -329,9 +300,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             if family.scenario_family_id == "CRV3-CAL-WORKLOAD-MIX"
         )
         if workload_mix_family.reserved_case_ids != _WORKLOAD_MIX_CASE_IDS:
-            raise ValueError(
-                "workload-mix family must reserve exactly CRV3-125 through CRV3-136"
-            )
+            raise ValueError("workload-mix family must reserve exactly CRV3-125 through CRV3-136")
         if workload_mix_family.authoring_status != "calibration_workload_mix_authored":
             raise ValueError("workload-mix family must be marked authored")
 
@@ -345,9 +314,7 @@ class CalibrationRedesignV3ScenarioFamilyRegistry(StrictContract):
             "No V3 performance or promotion claim is made.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError(
-                "V3 registry must retain every required manifest-stage exclusion"
-            )
+            raise ValueError("V3 registry must retain every required manifest-stage exclusion")
         return self
 
 
@@ -531,10 +498,7 @@ def _assert_v3_calibration_fixture_root(
             unexpected_root_paths.append(child.name)
         elif not child.is_dir() and (
             child.name not in _ALLOWED_ROOT_FILENAMES
-            or (
-                child.name == "calibration_manifest.json"
-                and not allow_calibration_manifest
-            )
+            or (child.name == "calibration_manifest.json" and not allow_calibration_manifest)
             or (
                 child.name == _V3_FINAL_EVIDENCE_INDEX_FILENAME
                 and not allow_final_authored_capacity_assets
@@ -623,9 +587,7 @@ def _assert_final_authored_capacity_asset_layout(
             "V3 final-authored boundary has unauthorised final_evaluation paths: "
             + ", ".join(sorted(unexpected)),
         )
-    expected_names = {
-        f"{case_id}.json" for case_id in _FINAL_AUTHORED_CAPACITY_CASE_IDS
-    }
+    expected_names = {f"{case_id}.json" for case_id in _FINAL_AUTHORED_CAPACITY_CASE_IDS}
     for artifact_kind in sorted(_FINAL_EVALUATION_ALLOWED_DIRECTORIES):
         cases_path = final_root / artifact_kind / "cases"
         if not cases_path.is_dir():
@@ -637,7 +599,7 @@ def _assert_final_authored_capacity_asset_layout(
         if direct_names != expected_names:
             raise CalibrationRedesignV3RegistryLoadError(
                 violation_code,
-                "V3 final-authored boundary must contain exactly CRV3-201 through CRV3-212",
+                "V3 final-authored boundary must contain exactly CRV3-201 through CRV3-218",
             )
         for path in cases_path.iterdir():
             if not path.is_file() or path.suffix != ".json":
