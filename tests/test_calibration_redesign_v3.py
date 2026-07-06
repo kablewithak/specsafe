@@ -15,7 +15,10 @@ from specsafe.traces.calibration_redesign_v3 import (
 )
 
 FIXTURE_ROOT = (
-    Path(__file__).resolve().parents[1] / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+    Path(__file__).resolve().parents[1]
+    / "data"
+    / "fixtures"
+    / "synthetic_calibration_redesign_v3"
 )
 
 
@@ -50,7 +53,9 @@ def test_v3_manifest_root_is_exact_and_prior_workload_guard_rejects_it() -> None
     assert_calibration_redesign_v3_calibration_manifest_fixture_root(FIXTURE_ROOT)
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
-        assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(FIXTURE_ROOT)
+        assert_calibration_redesign_v3_calibration_workload_mix_fixture_root(
+            FIXTURE_ROOT
+        )
 
     assert (
         error_info.value.code
@@ -58,7 +63,9 @@ def test_v3_manifest_root_is_exact_and_prior_workload_guard_rejects_it() -> None
     )
 
 
-def test_v3_registry_reserves_exact_split_capacity_and_authored_calibration_shape() -> None:
+def test_v3_registry_reserves_exact_split_capacity_and_authored_calibration_shape() -> (
+    None
+):
     registry = _load_registry()
 
     case_count_by_split = {
@@ -91,7 +98,9 @@ def test_v3_registry_reserves_exact_split_capacity_and_authored_calibration_shap
 def test_v3_manifest_root_rejects_final_case_bytes(tmp_path: Path) -> None:
     fixture_root = _copy_manifest_root(tmp_path)
     source = fixture_root / "inputs" / "cases" / "CRV3-125.json"
-    (fixture_root / "inputs" / "cases" / "CRV3-201.json").write_bytes(source.read_bytes())
+    (fixture_root / "inputs" / "cases" / "CRV3-201.json").write_bytes(
+        source.read_bytes()
+    )
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
         assert_calibration_redesign_v3_calibration_manifest_fixture_root(fixture_root)
@@ -130,7 +139,9 @@ def test_v3_registry_rejects_changed_calibration_case_budget(tmp_path: Path) -> 
         for family in payload["families"]
         if family["scenario_family_id"] == "CRV3-CAL-WORKLOAD-MIX"
     )
-    workload_mix_family["reserved_case_ids"] = workload_mix_family["reserved_case_ids"][:-1]
+    workload_mix_family["reserved_case_ids"] = workload_mix_family["reserved_case_ids"][
+        :-1
+    ]
     registry_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     with pytest.raises(CalibrationRedesignV3RegistryLoadError) as error_info:
@@ -139,7 +150,10 @@ def test_v3_registry_rejects_changed_calibration_case_budget(tmp_path: Path) -> 
             allow_calibration_manifest_assets=True,
         )
 
-    assert error_info.value.code is CalibrationRedesignV3RegistryViolationCode.REGISTRY_SCHEMA_ERROR
+    assert (
+        error_info.value.code
+        is CalibrationRedesignV3RegistryViolationCode.REGISTRY_SCHEMA_ERROR
+    )
 
 
 def test_v3_registry_rejects_multiple_selected_authoring_boundaries() -> None:
@@ -158,19 +172,9 @@ def test_v3_registry_rejects_multiple_selected_authoring_boundaries() -> None:
 
 def test_v3_manifest_root_rejects_unauthorised_next_final_case(tmp_path: Path) -> None:
     fixture_root = _copy_manifest_root(tmp_path)
-    source = (
-        fixture_root
-        / "final_evaluation"
-        / "inputs"
-        / "cases"
-        / "CRV3-206.json"
-    )
+    source = fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-212.json"
     destination = (
-        fixture_root
-        / "final_evaluation"
-        / "inputs"
-        / "cases"
-        / "CRV3-207.json"
+        fixture_root / "final_evaluation" / "inputs" / "cases" / "CRV3-213.json"
     )
     destination.write_bytes(source.read_bytes())
 

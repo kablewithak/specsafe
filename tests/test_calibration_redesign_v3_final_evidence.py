@@ -18,7 +18,10 @@ FIXTURE_ROOT = PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redes
 def _copy_project_root(tmp_path: Path) -> tuple[Path, Path]:
     project_root = tmp_path / "project"
     shutil.copytree(PROJECT_ROOT, project_root)
-    return project_root, project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+    return (
+        project_root,
+        project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3",
+    )
 
 
 def test_final_evidence_index_preserves_frozen_calibration_provenance() -> None:
@@ -27,9 +30,9 @@ def test_final_evidence_index_preserves_frozen_calibration_provenance() -> None:
     assert index.final_evaluation_case_count == 24
     assert index.final_evaluation_observation_count == 96
     assert index.candidate_positions_per_case == 4
-    assert index.index_status == "light_capacity_authored"
-    assert sum(len(family.authored_case_ids) for family in index.families) == 6
-    assert index.next_authorized_artifact == "v3-final-moderate-capacity-fixtures"
+    assert index.index_status == "moderate_capacity_authored"
+    assert sum(len(family.authored_case_ids) for family in index.families) == 12
+    assert index.next_authorized_artifact == "v3-final-saturated-capacity-fixtures"
 
 
 def test_final_evidence_index_rejects_changed_frozen_artifact(tmp_path: Path) -> None:
