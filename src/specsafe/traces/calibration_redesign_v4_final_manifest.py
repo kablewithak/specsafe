@@ -63,9 +63,15 @@ _EXPECTED_CASE_COUNT_BY_FAMILY = {family_id: 9 for family_id in _EXPECTED_FAMILY
 class CalibrationRedesignV4FinalManifestViolationCode(StrEnum):
     """Machine-readable reasons final held-out provenance cannot be trusted."""
 
-    DESTINATION_ALREADY_EXISTS = "calibration_redesign_v4_final_manifest_destination_exists"
-    DESTINATION_WRITE_ERROR = "calibration_redesign_v4_final_manifest_destination_write_error"
-    PRE_FREEZE_ROOT_INVALID = "calibration_redesign_v4_final_manifest_pre_freeze_root_invalid"
+    DESTINATION_ALREADY_EXISTS = (
+        "calibration_redesign_v4_final_manifest_destination_exists"
+    )
+    DESTINATION_WRITE_ERROR = (
+        "calibration_redesign_v4_final_manifest_destination_write_error"
+    )
+    PRE_FREEZE_ROOT_INVALID = (
+        "calibration_redesign_v4_final_manifest_pre_freeze_root_invalid"
+    )
     MANIFEST_READ_ERROR = "calibration_redesign_v4_final_manifest_read_error"
     MANIFEST_SCHEMA_ERROR = "calibration_redesign_v4_final_manifest_schema_error"
     INDEX_SCHEMA_ERROR = "calibration_redesign_v4_final_index_schema_error"
@@ -73,9 +79,13 @@ class CalibrationRedesignV4FinalManifestViolationCode(StrEnum):
         "calibration_redesign_v4_final_manifest_registry_provenance_mismatch"
     )
     INVENTORY_MISMATCH = "calibration_redesign_v4_final_manifest_inventory_mismatch"
-    ASSET_INTEGRITY_MISMATCH = "calibration_redesign_v4_final_manifest_asset_integrity_mismatch"
+    ASSET_INTEGRITY_MISMATCH = (
+        "calibration_redesign_v4_final_manifest_asset_integrity_mismatch"
+    )
     AGGREGATE_MISMATCH = "calibration_redesign_v4_final_manifest_aggregate_mismatch"
-    INDEX_INTEGRITY_MISMATCH = "calibration_redesign_v4_final_manifest_index_integrity_mismatch"
+    INDEX_INTEGRITY_MISMATCH = (
+        "calibration_redesign_v4_final_manifest_index_integrity_mismatch"
+    )
 
 
 class CalibrationRedesignV4FinalManifestError(ValueError):
@@ -101,7 +111,9 @@ class CalibrationRedesignV4FinalManifestAsset(StrictContract):
     """One hash-addressed final-evaluation runtime or outcome file."""
 
     relative_path: str = Field(
-        pattern=(r"^final_evaluation/(inputs|expected_outcomes)/cases/CRV4-2[0-9]{2}\.json$")
+        pattern=(
+            r"^final_evaluation/(inputs|expected_outcomes)/cases/CRV4-2[0-9]{2}\.json$"
+        )
     )
     case_id: str = Field(pattern=r"^CRV4-2[0-9]{2}$")
     asset_kind: CalibrationRedesignV4FinalManifestAssetKind
@@ -118,12 +130,15 @@ class CalibrationRedesignV4FinalManifestAsset(StrictContract):
     def validate_path_and_kind(self) -> CalibrationRedesignV4FinalManifestAsset:
         expected_parent = (
             "final_evaluation/inputs/cases"
-            if self.asset_kind is CalibrationRedesignV4FinalManifestAssetKind.RUNTIME_INPUT
+            if self.asset_kind
+            is CalibrationRedesignV4FinalManifestAssetKind.RUNTIME_INPUT
             else "final_evaluation/expected_outcomes/cases"
         )
         expected_path = f"{expected_parent}/{self.case_id}.json"
         if self.relative_path != expected_path:
-            raise ValueError("final manifest asset path must match its case ID and kind")
+            raise ValueError(
+                "final manifest asset path must match its case ID and kind"
+            )
         return self
 
 
@@ -155,7 +170,9 @@ class CalibrationRedesignV4FinalManifestCasePair(StrictContract):
         if self.expected_outcome_relative_path != (
             f"final_evaluation/expected_outcomes/cases/{self.case_id}.json"
         ):
-            raise ValueError("final expected-outcome pair path does not match its case ID")
+            raise ValueError(
+                "final expected-outcome pair path does not match its case ID"
+            )
         return self
 
 
@@ -222,24 +239,36 @@ class CalibrationRedesignV4FinalEvidenceIndex(StrictContract):
     @model_validator(mode="after")
     def validate_index_shape(self) -> CalibrationRedesignV4FinalEvidenceIndex:
         if self.case_ids != _EXPECTED_CASE_IDS:
-            raise ValueError("V4 final evidence index case IDs must be CRV4-201 through CRV4-236")
+            raise ValueError(
+                "V4 final evidence index case IDs must be CRV4-201 through CRV4-236"
+            )
         if len(set(self.trace_ids)) != _EXPECTED_CASE_COUNT:
             raise ValueError("V4 final evidence index trace IDs must be unique")
         if tuple(entry.case_id for entry in self.entries) != _EXPECTED_CASE_IDS:
-            raise ValueError("V4 final evidence index entries must be ordered by case ID")
+            raise ValueError(
+                "V4 final evidence index entries must be ordered by case ID"
+            )
         if tuple(entry.trace_id for entry in self.entries) != self.trace_ids:
-            raise ValueError("V4 final evidence index trace IDs must match ordered entries")
+            raise ValueError(
+                "V4 final evidence index trace IDs must match ordered entries"
+            )
         family_counts = Counter(entry.scenario_family_id for entry in self.entries)
         if dict(family_counts) != _EXPECTED_CASE_COUNT_BY_FAMILY:
-            raise ValueError("V4 final evidence index must retain all four family allocations")
+            raise ValueError(
+                "V4 final evidence index must retain all four family allocations"
+            )
         for family_id in _EXPECTED_FAMILY_IDS:
             family_workloads = Counter(
                 entry.workload_type.value
                 for entry in self.entries
                 if entry.scenario_family_id == family_id
             )
-            if family_workloads != Counter({"structured_text": 3, "code": 3, "open_ended_chat": 3}):
-                raise ValueError("V4 final evidence index must retain three workloads per family")
+            if family_workloads != Counter(
+                {"structured_text": 3, "code": 3, "open_ended_chat": 3}
+            ):
+                raise ValueError(
+                    "V4 final evidence index must retain three workloads per family"
+                )
         return self
 
 
@@ -257,7 +286,9 @@ class CalibrationRedesignV4FinalEvaluationManifest(StrictContract):
     method_constitution_version: Literal["v4-method-and-evidence-constitution-v1"] = (
         _METHOD_CONSTITUTION_VERSION
     )
-    calibration_method_id: Literal["regularized-isotonic-calibration-v4"] = _CALIBRATION_METHOD_ID
+    calibration_method_id: Literal["regularized-isotonic-calibration-v4"] = (
+        _CALIBRATION_METHOD_ID
+    )
     frozen_final_evaluation_registry_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     final_evidence_index_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     final_evidence_index_byte_count: int = Field(ge=1)
@@ -282,7 +313,9 @@ class CalibrationRedesignV4FinalEvaluationManifest(StrictContract):
     @model_validator(mode="after")
     def validate_manifest_shape(self) -> CalibrationRedesignV4FinalEvaluationManifest:
         if self.case_ids != _EXPECTED_CASE_IDS:
-            raise ValueError("V4 final manifest case IDs must be CRV4-201 through CRV4-236")
+            raise ValueError(
+                "V4 final manifest case IDs must be CRV4-201 through CRV4-236"
+            )
         expected_paths = tuple(
             sorted(
                 (
@@ -406,7 +439,8 @@ def load_calibration_redesign_v4_final_manifested_fixture_set(
     )
 
     cases = tuple(
-        _load_final_case_without_registry(resolved_root, case_id) for case_id in _EXPECTED_CASE_IDS
+        _load_final_case_without_registry(resolved_root, case_id)
+        for case_id in _EXPECTED_CASE_IDS
     )
     _verify_manifest_against_cases_and_root(resolved_root, manifest, index, cases)
     return CalibrationRedesignV4FinalManifestedFixtureSet(
@@ -468,7 +502,9 @@ def _build_final_evidence_index(
         "fixture_set_id": _FIXTURE_SET_ID,
         "fixture_set_version": _FIXTURE_SET_VERSION,
         "source_type": TraceSourceType.SYNTHETIC.value,
-        "frozen_final_evaluation_registry_sha256": _sha256_bytes(pre_freeze_registry_bytes),
+        "frozen_final_evaluation_registry_sha256": _sha256_bytes(
+            pre_freeze_registry_bytes
+        ),
         "case_ids": list(_EXPECTED_CASE_IDS),
         "trace_ids": [entry.trace_id for entry in entries],
         "case_count": _EXPECTED_CASE_COUNT,
@@ -479,7 +515,9 @@ def _build_final_evidence_index(
     return CalibrationRedesignV4FinalEvidenceIndex.model_validate(
         {
             **payload_without_aggregate,
-            "aggregate_sha256": _sha256_bytes(_canonical_json_bytes(payload_without_aggregate)),
+            "aggregate_sha256": _sha256_bytes(
+                _canonical_json_bytes(payload_without_aggregate)
+            ),
         }
     )
 
@@ -492,16 +530,20 @@ def _build_final_manifest(
     assets = _collect_final_asset_records(root)
     assets_by_path = {asset.relative_path: asset for asset in assets}
     cases = tuple(
-        _load_final_case_without_registry(root, case_id) for case_id in _EXPECTED_CASE_IDS
+        _load_final_case_without_registry(root, case_id)
+        for case_id in _EXPECTED_CASE_IDS
     )
     families_by_case = {
-        case.runtime_input.case_id: case.runtime_input.scenario_family_id for case in cases
+        case.runtime_input.case_id: case.runtime_input.scenario_family_id
+        for case in cases
     }
     case_pairs = tuple(
         CalibrationRedesignV4FinalManifestCasePair(
             case_id=case_id,
             scenario_family_id=families_by_case[case_id],
-            runtime_input_relative_path=(f"final_evaluation/inputs/cases/{case_id}.json"),
+            runtime_input_relative_path=(
+                f"final_evaluation/inputs/cases/{case_id}.json"
+            ),
             expected_outcome_relative_path=(
                 f"final_evaluation/expected_outcomes/cases/{case_id}.json"
             ),
@@ -515,7 +557,9 @@ def _build_final_manifest(
         for case_id in _EXPECTED_CASE_IDS
     )
     return CalibrationRedesignV4FinalEvaluationManifest(
-        frozen_final_evaluation_registry_sha256=_sha256_bytes(pre_freeze_registry_bytes),
+        frozen_final_evaluation_registry_sha256=_sha256_bytes(
+            pre_freeze_registry_bytes
+        ),
         final_evidence_index_sha256=_sha256_bytes(index_bytes),
         final_evidence_index_byte_count=len(index_bytes),
         case_ids=_EXPECTED_CASE_IDS,
@@ -530,13 +574,17 @@ def _load_final_case_without_registry(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV4FinalReplayCase:
-    runtime_payload = _read_json_asset(root / _FINAL_ROOT / "inputs" / "cases" / f"{case_id}.json")
+    runtime_payload = _read_json_asset(
+        root / _FINAL_ROOT / "inputs" / "cases" / f"{case_id}.json"
+    )
     outcome_payload = _read_json_asset(
         root / _FINAL_ROOT / "expected_outcomes" / "cases" / f"{case_id}.json"
     )
     try:
         runtime = CalibrationRedesignV4FinalRuntimeInput.model_validate(runtime_payload)
-        outcomes = CalibrationRedesignV4FinalExpectedOutcomes.model_validate(outcome_payload)
+        outcomes = CalibrationRedesignV4FinalExpectedOutcomes.model_validate(
+            outcome_payload
+        )
         replay_case = CalibrationRedesignV4FinalReplayCase(
             runtime_input=runtime,
             expected_outcomes=outcomes,
@@ -555,10 +603,22 @@ def _validate_case_membership_without_registry(
 ) -> None:
     runtime = replay_case.runtime_input
     expected_family_by_case = {
-        **{f"CRV4-{number:03d}": "CRV4-FINAL-LIGHT-CAPACITY" for number in range(201, 210)},
-        **{f"CRV4-{number:03d}": "CRV4-FINAL-MODERATE-CAPACITY" for number in range(210, 219)},
-        **{f"CRV4-{number:03d}": "CRV4-FINAL-SATURATED-CAPACITY" for number in range(219, 228)},
-        **{f"CRV4-{number:03d}": "CRV4-FINAL-JAGGED-CAPACITY" for number in range(228, 237)},
+        **{
+            f"CRV4-{number:03d}": "CRV4-FINAL-LIGHT-CAPACITY"
+            for number in range(201, 210)
+        },
+        **{
+            f"CRV4-{number:03d}": "CRV4-FINAL-MODERATE-CAPACITY"
+            for number in range(210, 219)
+        },
+        **{
+            f"CRV4-{number:03d}": "CRV4-FINAL-SATURATED-CAPACITY"
+            for number in range(219, 228)
+        },
+        **{
+            f"CRV4-{number:03d}": "CRV4-FINAL-JAGGED-CAPACITY"
+            for number in range(228, 237)
+        },
     }
     if runtime.case_id not in expected_family_by_case:
         raise CalibrationRedesignV4FinalManifestError(
@@ -578,14 +638,16 @@ def _index_entry_from_case(
     runtime = replay_case.runtime_input
     first_context = runtime.contexts[0]
     if any(
-        context.workload_type is not first_context.workload_type for context in runtime.contexts
+        context.workload_type is not first_context.workload_type
+        for context in runtime.contexts
     ):
         raise CalibrationRedesignV4FinalManifestError(
             CalibrationRedesignV4FinalManifestViolationCode.INVENTORY_MISMATCH,
             "V4 final case workload type must remain stable across positions",
         )
     if any(
-        context.capacity_snapshot.profile_id != first_context.capacity_snapshot.profile_id
+        context.capacity_snapshot.profile_id
+        != first_context.capacity_snapshot.profile_id
         for context in runtime.contexts
     ):
         raise CalibrationRedesignV4FinalManifestError(
@@ -598,7 +660,9 @@ def _index_entry_from_case(
         scenario_family_id=runtime.scenario_family_id,
         workload_type=first_context.workload_type,
         capacity_profile_id=first_context.capacity_snapshot.profile_id,
-        runtime_input_relative_path=(f"final_evaluation/inputs/cases/{runtime.case_id}.json"),
+        runtime_input_relative_path=(
+            f"final_evaluation/inputs/cases/{runtime.case_id}.json"
+        ),
         expected_outcome_relative_path=(
             f"final_evaluation/expected_outcomes/cases/{runtime.case_id}.json"
         ),
@@ -665,7 +729,13 @@ def _write_post_freeze_registry(
         {
             "registry_status": "final_evaluation_manifest_frozen",
             "v4_final_evaluation_manifest_authored": True,
-            "frozen_final_evaluation_registry_sha256": _sha256_bytes(pre_freeze_registry_bytes),
+            "v4_final_heldout_calibration_assessment_authored": False,
+            "final_heldout_calibration_assessment_sha256": None,
+            "final_heldout_calibration_assessment_relative_path": None,
+            "final_heldout_calibration_status": None,
+            "frozen_final_evaluation_registry_sha256": _sha256_bytes(
+                pre_freeze_registry_bytes
+            ),
             "frozen_final_evaluation_manifest_sha256": _sha256_bytes(manifest_bytes),
             "final_evidence_index_sha256": _sha256_bytes(index_bytes),
             "next_authorized_artifact": "v4-final-heldout-calibration-assessment",
@@ -677,14 +747,20 @@ def _write_post_freeze_registry(
         "V4 final-evaluation fixtures remain quarantined until their manifest is frozen.",
     }
     retained_exclusions = [
-        item for item in payload.get("explicit_exclusions", []) if item not in obsolete_exclusions
+        item
+        for item in payload.get("explicit_exclusions", [])
+        if item not in obsolete_exclusions
     ]
     for item in (
         "No V4 final-evaluation held-out assessment or result is present.",
-        "V4 final-evaluation manifest and final-evidence index are frozen provenance boundaries.",
+        "No V4 held-out calibration, policy, or runtime claim is made.",
         (
-            "V4 final-evaluation manifest freeze does not author an "
-            "assessment, baseline, or policy result."
+            "V4 final-evaluation manifest and final-evidence index are "
+            "frozen provenance boundaries."
+        ),
+        (
+            "V4 final-evaluation manifest freeze does not author an assessment, "
+            "baseline, or policy result."
         ),
     ):
         if item not in retained_exclusions:
@@ -737,7 +813,9 @@ def _verify_post_freeze_provenance(
             CalibrationRedesignV4FinalManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH,
             "V4 final evidence index does not carry forward the frozen final registry SHA-256",
         )
-    if registry.frozen_final_evaluation_manifest_sha256 != _sha256_bytes(manifest_bytes):
+    if registry.frozen_final_evaluation_manifest_sha256 != _sha256_bytes(
+        manifest_bytes
+    ):
         raise CalibrationRedesignV4FinalManifestError(
             CalibrationRedesignV4FinalManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH,
             "V4 active registry does not carry forward the final manifest SHA-256",
@@ -760,7 +838,11 @@ def _verify_post_freeze_provenance(
     index_payload = index.model_dump(mode="json")
     actual_index_aggregate = _sha256_bytes(
         _canonical_json_bytes(
-            {key: value for key, value in index_payload.items() if key != "aggregate_sha256"}
+            {
+                key: value
+                for key, value in index_payload.items()
+                if key != "aggregate_sha256"
+            }
         )
     )
     if index.aggregate_sha256 != actual_index_aggregate:
@@ -782,7 +864,9 @@ def _verify_manifest_against_cases_and_root(
             CalibrationRedesignV4FinalManifestViolationCode.ASSET_INTEGRITY_MISMATCH,
             "V4 final manifest asset hashes or byte counts do not match the fixture root",
         )
-    if manifest.aggregate_byte_count != sum(asset.byte_count for asset in actual_assets):
+    if manifest.aggregate_byte_count != sum(
+        asset.byte_count for asset in actual_assets
+    ):
         raise CalibrationRedesignV4FinalManifestError(
             CalibrationRedesignV4FinalManifestViolationCode.INVENTORY_MISMATCH,
             "V4 final manifest aggregate byte count does not match the fixture root",
@@ -812,13 +896,16 @@ def _expected_case_pairs(
 ) -> tuple[CalibrationRedesignV4FinalManifestCasePair, ...]:
     assets_by_path = {asset.relative_path: asset for asset in assets}
     family_by_case = {
-        case.runtime_input.case_id: case.runtime_input.scenario_family_id for case in cases
+        case.runtime_input.case_id: case.runtime_input.scenario_family_id
+        for case in cases
     }
     return tuple(
         CalibrationRedesignV4FinalManifestCasePair(
             case_id=case_id,
             scenario_family_id=family_by_case[case_id],
-            runtime_input_relative_path=(f"final_evaluation/inputs/cases/{case_id}.json"),
+            runtime_input_relative_path=(
+                f"final_evaluation/inputs/cases/{case_id}.json"
+            ),
             expected_outcome_relative_path=(
                 f"final_evaluation/expected_outcomes/cases/{case_id}.json"
             ),
@@ -910,7 +997,9 @@ def _index_file_bytes(index: CalibrationRedesignV4FinalEvidenceIndex) -> bytes:
 
 
 def _pretty_json_bytes(payload: object) -> bytes:
-    return (json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    return (
+        json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n"
+    ).encode("utf-8")
 
 
 def _canonical_json_bytes(payload: object) -> bytes:
@@ -925,7 +1014,9 @@ def _canonical_json_bytes(payload: object) -> bytes:
 def _aggregate_sha256(
     assets: tuple[CalibrationRedesignV4FinalManifestAsset, ...],
 ) -> str:
-    return _sha256_bytes(_canonical_json_bytes([asset.model_dump(mode="json") for asset in assets]))
+    return _sha256_bytes(
+        _canonical_json_bytes([asset.model_dump(mode="json") for asset in assets])
+    )
 
 
 def _sha256_bytes(raw_bytes: bytes) -> str:

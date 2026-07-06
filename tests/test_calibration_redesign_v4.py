@@ -1,4 +1,4 @@
-"""Tests for the V4 final-evaluation manifest-freeze registry boundary."""
+"""Tests for the V4 final-evidence boundary after one held-out assessment."""
 
 from __future__ import annotations
 
@@ -18,15 +18,20 @@ from specsafe.traces.calibration_redesign_v4 import (
     load_calibration_redesign_v4_scenario_family_registry,
 )
 
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _FIXTURE_ROOT = (
-    Path(__file__).resolve().parents[1]
-    / "data"
-    / "fixtures"
-    / "synthetic_calibration_redesign_v4"
+    _PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redesign_v4"
 )
 _REGISTRY_PATH = _FIXTURE_ROOT / "scenario_family_registry.json"
 _FINAL_MANIFEST_PATH = _FIXTURE_ROOT / "final_evaluation_manifest.json"
 _FINAL_INDEX_PATH = _FIXTURE_ROOT / "final_evidence_index.json"
+_RESULT_PATH = (
+    _PROJECT_ROOT
+    / "evidence"
+    / "heldout-calibration"
+    / "v4-final-heldout-calibration-assessment-v1"
+    / "result.json"
+)
 _VIOLATION_CODE = CalibrationRedesignV4RegistryViolationCode
 
 
@@ -36,17 +41,17 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
     return copied_root
 
 
-def test_loads_final_manifest_registry_only_through_active_boundary() -> None:
+def test_loads_post_assessment_registry_only_through_active_boundary() -> None:
     registry = load_calibration_redesign_v4_scenario_family_registry(
         _REGISTRY_PATH,
         allow_final_evaluation_manifest_assets=True,
     )
 
-    assert registry.registry_status == "final_evaluation_manifest_frozen"
+    assert registry.registry_status == "final_heldout_calibration_assessed"
     assert registry.v4_final_evaluation_manifest_authored is True
-    assert (
-        registry.next_authorized_artifact == "v4-final-heldout-calibration-assessment"
-    )
+    assert registry.v4_final_heldout_calibration_assessment_authored is True
+    assert registry.final_heldout_calibration_status == "RANKING_SAFETY_REGRESSION"
+    assert registry.next_authorized_artifact == "v4-calibration-remediation-decision"
     assert (
         registry.frozen_final_evaluation_manifest_sha256
         == hashlib.sha256(_FINAL_MANIFEST_PATH.read_bytes()).hexdigest()
@@ -54,6 +59,16 @@ def test_loads_final_manifest_registry_only_through_active_boundary() -> None:
     assert (
         registry.final_evidence_index_sha256
         == hashlib.sha256(_FINAL_INDEX_PATH.read_bytes()).hexdigest()
+    )
+    assert _RESULT_PATH.is_file()
+    assert (
+        registry.final_heldout_calibration_assessment_sha256
+        == hashlib.sha256(_RESULT_PATH.read_bytes()).hexdigest()
+    )
+    assert (
+        registry.final_heldout_calibration_assessment_relative_path
+        == "evidence/heldout-calibration/"
+        "v4-final-heldout-calibration-assessment-v1/result.json"
     )
     assert (
         registry.frozen_final_evaluation_registry_sha256
@@ -107,7 +122,8 @@ def test_registry_retains_exact_split_counts_and_final_manifest_state() -> None:
     split_counts: dict[str, int] = {}
     for family in registry.families:
         split_counts[family.split.value] = split_counts.get(
-            family.split.value, 0
+            family.split.value,
+            0,
         ) + len(family.reserved_case_ids)
 
     assert split_counts == {

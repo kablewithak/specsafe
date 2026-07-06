@@ -23,7 +23,7 @@ from specsafe.contracts.models import (
     TraceSourceType,
     TraceSplit,
 )
-from specsafe.heldout_calibration.v4_final_assessment import calculate_tie_aware_auroc
+from specsafe.metrics.ranking import calculate_tie_aware_auroc
 from specsafe.traces.calibration_redesign_v4 import (
     CalibrationRedesignV4RegistryLoadError,
     load_calibration_redesign_v4_scenario_family_registry,

@@ -32,6 +32,11 @@ from specsafe.heldout_calibration.v3_final_assessment import (
     run_v3_final_heldout_calibration_assessment_once,
     write_v3_final_heldout_calibration_assessment,
 )
+from specsafe.heldout_calibration.v4_final_assessment_runner import (
+    V4FinalHeldOutAssessmentExecutionError,
+    V4FinalHeldOutAssessmentExecutionErrorCode,
+    run_v4_final_heldout_calibration_assessment_once,
+)
 from specsafe.heldout_calibration.v4_final_assessment import (
     DEFAULT_V4_FINAL_ASSESSMENT_PROTOCOL,
     V4AdaptivePolicyResearchEligibility,
@@ -81,6 +86,8 @@ __all__ = [
     "V4ConservativeFallback",
     "V4ConservativeFallbackRecord",
     "V4FinalAssessmentError",
+    "V4FinalHeldOutAssessmentExecutionError",
+    "V4FinalHeldOutAssessmentExecutionErrorCode",
     "V4FinalAssessmentErrorCode",
     "V4FinalAssessmentGateChecks",
     "V4FinalAssessmentProtocol",
@@ -97,6 +104,7 @@ __all__ = [
     "reject_unsafe_retrospective_control",
     "run_v3_final_heldout_calibration_assessment_once",
     "run_v4_final_assessment_once",
+    "run_v4_final_heldout_calibration_assessment_once",
     "write_heldout_calibration_fitness_report",
     "write_v3_final_heldout_calibration_assessment",
     "write_v4_final_assessment_result",

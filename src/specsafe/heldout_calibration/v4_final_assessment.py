@@ -10,13 +10,19 @@ from __future__ import annotations
 import json
 from collections.abc import Callable, Sequence
 from enum import StrEnum
-from math import isclose, isfinite
+from math import isclose
 from pathlib import Path
 from typing import Literal
 
 from pydantic import Field, model_validator
 
 from specsafe.contracts.models import StrictContract
+from specsafe.metrics.ranking import (
+    TieAwareAurocInputError,
+)
+from specsafe.metrics.ranking import (
+    calculate_tie_aware_auroc as _calculate_tie_aware_auroc,
+)
 
 _ASSESSMENT_SCHEMA_VERSION = "v4-final-heldout-calibration-assessment-v1"
 _ASSESSMENT_PROTOCOL_ID = "v4_final_heldout_calibration_assessment_protocol_v1"
@@ -56,9 +62,7 @@ class V4FinalAssessmentError(ValueError):
 class V4FinalHeldOutAssessmentStatus(StrEnum):
     """Predeclared status precedence for the complete V4 calibration gate."""
 
-    PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE = (
-        "PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE"
-    )
+    PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE = "PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE"
     CALIBRATOR_REGRESSION = "CALIBRATOR_REGRESSION"
     INSUFFICIENT_HELD_OUT_COVERAGE = "INSUFFICIENT_HELD_OUT_COVERAGE"
     RANKING_SAFETY_REGRESSION = "RANKING_SAFETY_REGRESSION"
@@ -87,16 +91,12 @@ class V4FinalAssessmentProtocol(StrictContract):
     )
     expected_final_case_count: Literal[36] = _EXPECTED_FINAL_CASE_COUNT
     expected_final_observation_count: Literal[144] = _EXPECTED_FINAL_OBSERVATION_COUNT
-    expected_observations_per_position: Literal[36] = (
-        _EXPECTED_OBSERVATIONS_PER_POSITION
-    )
+    expected_observations_per_position: Literal[36] = _EXPECTED_OBSERVATIONS_PER_POSITION
     fixed_ece_bin_count: Literal[10] = _ECE_BIN_COUNT
     minimum_brier_score_improvement: Literal[0.01] = _MINIMUM_BRIER_IMPROVEMENT
     minimum_ece_10_bin_improvement: Literal[0.02] = _MINIMUM_ECE_IMPROVEMENT
     maximum_auroc_degradation: Literal[0.002] = _MAXIMUM_AUROC_DEGRADATION
-    auroc_calculation_version: Literal["tie_aware_mann_whitney_v1"] = (
-        _AUROC_CALCULATION_VERSION
-    )
+    auroc_calculation_version: Literal["tie_aware_mann_whitney_v1"] = _AUROC_CALCULATION_VERSION
 
 
 DEFAULT_V4_FINAL_ASSESSMENT_PROTOCOL = V4FinalAssessmentProtocol()
@@ -180,9 +180,7 @@ class V4FinalPositionMetrics(StrictContract):
 class V4ConservativeFallbackRecord(StrictContract):
     """The exact bounded fallback required whenever the complete V4 gate does not pass."""
 
-    action: Literal["CONSERVATIVE_FALLBACK"] = (
-        V4ConservativeFallback.CONSERVATIVE_FALLBACK
-    )
+    action: Literal["CONSERVATIVE_FALLBACK"] = V4ConservativeFallback.CONSERVATIVE_FALLBACK
     fallback_policy_id: Literal["fixed_short_1"] = "fixed_short_1"
     reason: Literal["complete_v4_calibration_gate_not_passed"] = (
         "complete_v4_calibration_gate_not_passed"
@@ -192,9 +190,7 @@ class V4ConservativeFallbackRecord(StrictContract):
 class V4UnsafeRetrospectiveControlRejection(StrictContract):
     """An explicit invalid label for the evaluation-only unsafe retrospective control."""
 
-    policy_id: Literal["unsafe_retrospective_oracle_v4"] = (
-        _UNSAFE_RETROSPECTIVE_CONTROL_ID
-    )
+    policy_id: Literal["unsafe_retrospective_oracle_v4"] = _UNSAFE_RETROSPECTIVE_CONTROL_ID
     classification: Literal["test_only_invalid_control"] = "test_only_invalid_control"
     result_label: Literal["INVALID_CAUSAL_COMPARISON"] = "INVALID_CAUSAL_COMPARISON"
     admitted_to_valid_baseline_comparison: Literal[False] = False
@@ -240,9 +236,7 @@ class V4FinalHeldOutAssessmentResult(StrictContract):
     @model_validator(mode="after")
     def validate_complete_gate_semantics(self) -> V4FinalHeldOutAssessmentResult:
         if type(self.protocol) is not V4FinalAssessmentProtocol:
-            raise ValueError(
-                "V4 result requires the exact frozen V4 assessment protocol"
-            )
+            raise ValueError("V4 result requires the exact frozen V4 assessment protocol")
         if self.case_count != len(self.assessment_case_ids):
             raise ValueError("case_count must match assessment_case_ids")
         if self.case_count != len(self.assessment_trace_ids):
@@ -255,20 +249,11 @@ class V4FinalHeldOutAssessmentResult(StrictContract):
             raise ValueError("assessment_case_ids must use the CRV4 namespace")
 
         expected_positions = tuple(range(1, _EXPECTED_POSITION_COUNT + 1))
-        actual_positions = tuple(
-            item.block_position_index for item in self.position_metrics
-        )
+        actual_positions = tuple(item.block_position_index for item in self.position_metrics)
         if actual_positions != expected_positions:
-            raise ValueError(
-                "position_metrics must cover positions one through four in order"
-            )
-        if (
-            sum(item.observation_count for item in self.position_metrics)
-            != self.observation_count
-        ):
-            raise ValueError(
-                "position metric observations must sum to observation_count"
-            )
+            raise ValueError("position_metrics must cover positions one through four in order")
+        if sum(item.observation_count for item in self.position_metrics) != self.observation_count:
+            raise ValueError("position metric observations must sum to observation_count")
 
         _require_matching_float(
             actual=self.brier_score_improvement,
@@ -289,21 +274,17 @@ class V4FinalHeldOutAssessmentResult(StrictContract):
         expected_gate_values = {
             "observation_coverage_passed": (
                 self.case_count == self.protocol.expected_final_case_count
-                and self.observation_count
-                == self.protocol.expected_final_observation_count
+                and self.observation_count == self.protocol.expected_final_observation_count
             ),
             "per_position_coverage_passed": all(
-                item.observation_count
-                == self.protocol.expected_observations_per_position
+                item.observation_count == self.protocol.expected_observations_per_position
                 for item in self.position_metrics
             ),
             "brier_improvement_passed": (
-                self.brier_score_improvement
-                >= self.protocol.minimum_brier_score_improvement
+                self.brier_score_improvement >= self.protocol.minimum_brier_score_improvement
             ),
             "ece_improvement_passed": (
-                self.ece_10_bin_improvement
-                >= self.protocol.minimum_ece_10_bin_improvement
+                self.ece_10_bin_improvement >= self.protocol.minimum_ece_10_bin_improvement
             ),
             "ranking_safety_passed": (
                 self.calibrated_metrics.auroc
@@ -329,14 +310,9 @@ class V4FinalHeldOutAssessmentResult(StrictContract):
         if self.adaptive_policy_research_eligibility is not expected_eligibility:
             raise ValueError("research eligibility must match the final V4 gate status")
 
-        if (
-            self.status
-            is V4FinalHeldOutAssessmentStatus.PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE
-        ):
+        if self.status is V4FinalHeldOutAssessmentStatus.PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE:
             if self.fallback is not None:
-                raise ValueError(
-                    "a passing V4 gate must not retain a conservative fallback"
-                )
+                raise ValueError("a passing V4 gate must not retain a conservative fallback")
         elif self.fallback is None:
             raise ValueError("a non-passing V4 gate requires the conservative fallback")
         return self
@@ -347,10 +323,7 @@ def derive_v4_final_assessment_status(
 ) -> V4FinalHeldOutAssessmentStatus:
     """Apply ADR-0015 status precedence without inspecting evidence assets."""
 
-    if not (
-        gate_checks.manifest_integrity_passed
-        and gate_checks.provenance_alignment_passed
-    ):
+    if not (gate_checks.manifest_integrity_passed and gate_checks.provenance_alignment_passed):
         return V4FinalHeldOutAssessmentStatus.INVALID_PROVENANCE
     if not (
         gate_checks.no_refit_passed
@@ -359,16 +332,11 @@ def derive_v4_final_assessment_status(
         and gate_checks.canonical_serialization_passed
     ):
         return V4FinalHeldOutAssessmentStatus.INCOMPLETE_GATE_EVIDENCE
-    if not (
-        gate_checks.observation_coverage_passed
-        and gate_checks.per_position_coverage_passed
-    ):
+    if not (gate_checks.observation_coverage_passed and gate_checks.per_position_coverage_passed):
         return V4FinalHeldOutAssessmentStatus.INSUFFICIENT_HELD_OUT_COVERAGE
     if not gate_checks.ranking_safety_passed:
         return V4FinalHeldOutAssessmentStatus.RANKING_SAFETY_REGRESSION
-    if not (
-        gate_checks.brier_improvement_passed and gate_checks.ece_improvement_passed
-    ):
+    if not (gate_checks.brier_improvement_passed and gate_checks.ece_improvement_passed):
         return V4FinalHeldOutAssessmentStatus.CALIBRATOR_REGRESSION
     return V4FinalHeldOutAssessmentStatus.PASSES_COMPLETE_HELD_OUT_CALIBRATION_GATE
 
@@ -377,33 +345,15 @@ def calculate_tie_aware_auroc(
     probabilities: Sequence[float],
     labels: Sequence[bool],
 ) -> float:
-    """Calculate AUROC with deterministic average ranks for tied probabilities."""
+    """Calculate AUROC while retaining the V4 assessment error contract."""
 
-    _validate_probability_label_inputs(probabilities, labels)
-    positive_count = sum(labels)
-    negative_count = len(labels) - positive_count
-    if positive_count == 0 or negative_count == 0:
+    try:
+        return _calculate_tie_aware_auroc(probabilities, labels)
+    except TieAwareAurocInputError as error:
         raise V4FinalAssessmentError(
             V4FinalAssessmentErrorCode.INVALID_METRICS,
-            "AUROC requires at least one positive and one negative outcome",
-        )
-
-    ranked = sorted(zip(probabilities, labels, strict=True), key=lambda item: item[0])
-    positive_rank_sum = 0.0
-    index = 0
-    while index < len(ranked):
-        group_end = index + 1
-        while group_end < len(ranked) and ranked[group_end][0] == ranked[index][0]:
-            group_end += 1
-        average_rank = ((index + 1) + group_end) / 2.0
-        positive_rank_sum += average_rank * sum(
-            label for _, label in ranked[index:group_end]
-        )
-        index = group_end
-
-    return (positive_rank_sum - (positive_count * (positive_count + 1) / 2.0)) / (
-        positive_count * negative_count
-    )
+            str(error),
+        ) from error
 
 
 def canonical_v4_final_assessment_json(
@@ -501,22 +451,3 @@ def reject_unsafe_retrospective_control(
 def _require_matching_float(*, actual: float, expected: float, message: str) -> None:
     if not isclose(actual, expected, rel_tol=0.0, abs_tol=1e-12):
         raise ValueError(message)
-
-
-def _validate_probability_label_inputs(
-    probabilities: Sequence[float],
-    labels: Sequence[bool],
-) -> None:
-    if len(probabilities) != len(labels) or len(probabilities) < 2:
-        raise V4FinalAssessmentError(
-            V4FinalAssessmentErrorCode.INVALID_METRICS,
-            "probabilities and labels must have equal length of at least two",
-        )
-    if any(
-        not isfinite(probability) or not 0.0 <= probability <= 1.0
-        for probability in probabilities
-    ):
-        raise V4FinalAssessmentError(
-            V4FinalAssessmentErrorCode.INVALID_METRICS,
-            "probabilities must be finite values inside the unit interval",
-        )
