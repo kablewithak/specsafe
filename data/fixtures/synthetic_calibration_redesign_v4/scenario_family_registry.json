@@ -99,7 +99,7 @@
       "workload_allocation": null
     },
     {
-      "authoring_status": "reserved_for_v4_case_authoring",
+      "authoring_status": "calibration_capacity_contrast_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": false,
       "primary_data_role": "calibration",
@@ -291,7 +291,7 @@
   "fixture_set_version": "1.0.0",
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v4-method-and-evidence-constitution-v1",
-  "next_authorized_artifact": "v4-calibration-capacity-contrast-fixtures",
+  "next_authorized_artifact": "v4-calibration-manifest-freeze",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -302,7 +302,7 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "calibration_workload_mix_authored",
+  "registry_status": "calibration_capacity_contrast_authored",
   "schema_version": "calibration-redesign-v4-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v1_v2_v3_data_bearing_evidence_used": false,
