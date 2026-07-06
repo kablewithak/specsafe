@@ -67,3 +67,18 @@ The next slice may define the pre-authoring gate for fresh V3 hidden final-evalu
 - Recorded hashes for the frozen calibration registry, calibration manifest, quantile-isotonic artifact, and fit report.
 - Authored `CRV3-201` through `CRV3-206` as separate held-out light-capacity runtime and outcome pairs under `final_evaluation/`.
 - Did not create a V3 final-evaluation manifest, run a held-out assessment, run the fitted calibrator on held-out data, add scheduler logic, or create adversarial evidence.
+
+
+## Final evidence index and moderate-capacity family
+
+- Updated `final_evidence_index.json` without touching the frozen calibration registry, calibration manifest, quantile-isotonic artifact, or fit report.
+- Authored `CRV3-207` through `CRV3-212` as separate held-out moderate-capacity runtime and outcome pairs under `final_evaluation/`.
+- The held-out inventory now contains 12 of 24 case pairs and 48 of 96 observations.
+- Workload balance remains two `structured_text`, two `code`, and two `open_ended_chat` cases for the moderate-capacity family.
+- Did not create a V3 final-evaluation manifest, run a held-out assessment, run the fitted calibrator against held-out evidence, add scheduler logic, or author adversarial evidence.
+
+## Next authorisation
+
+`v3-final-saturated-capacity-fixtures`
+
+The next authorised slice may add only `CRV3-213` through `CRV3-218` under the separate final-evaluation subtree. Frozen calibration assets remain unchanged.
