@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-105",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "v4-calibration-curve-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 96
+      },
+      "conditional_survival_confidence": 0.18,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-curve-request-105",
+      "trace_id": "crv4-calibration-curve-trace-105",
+      "visible_prefix_token_ids": [],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "v4-calibration-curve-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 96
+      },
+      "conditional_survival_confidence": 0.26,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-curve-request-105",
+      "trace_id": "crv4-calibration-curve-trace-105",
+      "visible_prefix_token_ids": [
+        4141
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "v4-calibration-curve-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 96
+      },
+      "conditional_survival_confidence": 0.34,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-curve-request-105",
+      "trace_id": "crv4-calibration-curve-trace-105",
+      "visible_prefix_token_ids": [
+        4141,
+        4142
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "v4-calibration-curve-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 96
+      },
+      "conditional_survival_confidence": 0.42,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-curve-request-105",
+      "trace_id": "crv4-calibration-curve-trace-105",
+      "visible_prefix_token_ids": [
+        4141,
+        4142,
+        4143
+      ],
+      "workload_type": "code"
+    }
+  ],
+  "data_role": "calibration",
+  "fixture_id": "crv4-calibration-curve-coverage-105",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Synthetic pre-sample confidence coverage for calibration fitting only; no outcome label is present in this runtime asset.",
+  "request_id": "crv4-calibration-curve-request-105",
+  "scenario_family_id": "CRV4-CAL-CURVE-COVERAGE",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "calibration",
+  "trace_id": "crv4-calibration-curve-trace-105"
+}

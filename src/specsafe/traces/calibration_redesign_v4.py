@@ -1,8 +1,9 @@
-"""Schema-only V4 evidence reservation controls.
+"""Governed V4 calibration curve-coverage evidence controls.
 
-This module reserves the fresh V4 namespace and evidence plan before a V4 runtime input,
-expected outcome, manifest, calibration artifact, or policy implementation exists. It is not a
-fixture loader and it must fail closed when any case-bearing path appears at this boundary.
+This module advances V4 from its schema-only reservation to exactly one authorised
+calibration-only family: CRV4-CAL-CURVE-COVERAGE. It permits the twelve paired
+CRV4-101 through CRV4-112 assets, while final evaluation and adversarial evidence
+remain absent. It does not fit calibration, create a manifest, or execute a policy.
 """
 
 from __future__ import annotations
@@ -22,32 +23,13 @@ from specsafe.contracts.models import (
 )
 
 _V4_REGISTRY_FILENAME = "scenario_family_registry.json"
-_V4_SCHEMA_ONLY_ROOT_FILENAMES = {
-    "PROPOSAL_MANIFEST.md",
-    "authoring_ledger.md",
-    _V4_REGISTRY_FILENAME,
-}
-_EXPECTED_DATA_ROLE_BY_SPLIT = {
-    TraceSplit.CALIBRATION: TraceDataRole.CALIBRATION,
-    TraceSplit.FINAL_EVALUATION: TraceDataRole.HELD_OUT_EVALUATION,
-    TraceSplit.ADVERSARIAL_REGRESSION: TraceDataRole.SYNTHETIC_FIXTURE,
-}
-_EXPECTED_FAMILY_IDS = {
-    "CRV4-CAL-CURVE-COVERAGE",
-    "CRV4-CAL-POSITION-SPREAD",
-    "CRV4-CAL-WORKLOAD-MIX",
-    "CRV4-CAL-CAPACITY-CONTRAST",
-    "CRV4-FINAL-LIGHT-CAPACITY",
-    "CRV4-FINAL-MODERATE-CAPACITY",
-    "CRV4-FINAL-SATURATED-CAPACITY",
-    "CRV4-FINAL-JAGGED-CAPACITY",
-    "CRV4-ADV-CAUSAL-GUARD",
-    "CRV4-ADV-PROVENANCE-GATE",
-}
-_EXPECTED_CASE_IDS_BY_FAMILY = {
-    "CRV4-CAL-CURVE-COVERAGE": tuple(
-        f"CRV4-{number:03d}" for number in range(101, 113)
-    ),
+_V4_PROPOSAL_MANIFEST_FILENAME = "PROPOSAL_MANIFEST.md"
+_V4_AUTHORING_LEDGER_FILENAME = "authoring_ledger.md"
+_V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS = tuple(
+    f"CRV4-{number:03d}" for number in range(101, 113)
+)
+_V4_EXPECTED_CASE_IDS_BY_FAMILY = {
+    "CRV4-CAL-CURVE-COVERAGE": _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
     "CRV4-CAL-POSITION-SPREAD": tuple(
         f"CRV4-{number:03d}" for number in range(113, 125)
     ),
@@ -72,6 +54,31 @@ _EXPECTED_CASE_IDS_BY_FAMILY = {
         f"CRV4-{number:03d}" for number in range(307, 313)
     ),
 }
+_V4_EXPECTED_FAMILY_IDS = frozenset(_V4_EXPECTED_CASE_IDS_BY_FAMILY)
+_V4_SCHEMA_ONLY_ROOT_FILENAMES = {
+    _V4_PROPOSAL_MANIFEST_FILENAME,
+    _V4_AUTHORING_LEDGER_FILENAME,
+    _V4_REGISTRY_FILENAME,
+}
+_V4_CALIBRATION_CURVE_COVERAGE_ALLOWED_ROOT_FILENAMES = _V4_SCHEMA_ONLY_ROOT_FILENAMES
+_V4_CALIBRATION_CURVE_COVERAGE_DIRECTORIES = {"inputs", "expected_outcomes"}
+_V4_FORBIDDEN_ROOT_PATH_NAMES = {
+    "calibration_manifest.json",
+    "final_evaluation_manifest.json",
+    "final_evidence_index.json",
+    "adversarial_regression_manifest.json",
+    "artifact.json",
+    "fit_report.json",
+    "heldout_assessment.json",
+    "result.json",
+    "final_evaluation",
+    "adversarial_regression",
+}
+_EXPECTED_DATA_ROLE_BY_SPLIT = {
+    TraceSplit.CALIBRATION: TraceDataRole.CALIBRATION,
+    TraceSplit.FINAL_EVALUATION: TraceDataRole.HELD_OUT_EVALUATION,
+    TraceSplit.ADVERSARIAL_REGRESSION: TraceDataRole.SYNTHETIC_FIXTURE,
+}
 _CLOSED_EVIDENCE_MARKERS = (
     b"crv1-",
     b"crv2-",
@@ -83,7 +90,7 @@ _CLOSED_EVIDENCE_MARKERS = (
 
 
 class CalibrationRedesignV4RegistryViolationCode(StrEnum):
-    """Machine-readable failures for the V4 schema-only reservation boundary."""
+    """Machine-readable failures for V4 authoring-boundary checks."""
 
     REGISTRY_SCHEMA_ERROR = "calibration_redesign_v4_registry_schema_error"
     REGISTRY_PROVENANCE_MISMATCH = (
@@ -93,10 +100,13 @@ class CalibrationRedesignV4RegistryViolationCode(StrEnum):
     SCHEMA_ONLY_BOUNDARY_VIOLATION = (
         "calibration_redesign_v4_schema_only_boundary_violation"
     )
+    CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v4_calibration_curve_coverage_boundary_violation"
+    )
 
 
 class CalibrationRedesignV4RegistryLoadError(ValueError):
-    """Raised when the V4 registry or schema-only root cannot be trusted."""
+    """Raised when V4 registry metadata or its current authoring root is invalid."""
 
     def __init__(
         self,
@@ -108,7 +118,7 @@ class CalibrationRedesignV4RegistryLoadError(ValueError):
 
 
 class CalibrationRedesignV4ObservationBudget(StrictContract):
-    """Fixed V4 split counts reserved before any V4 data is authored."""
+    """Fixed V4 evidence counts before later authoring stages begin."""
 
     calibration_case_count: Literal[48]
     final_evaluation_case_count: Literal[36]
@@ -121,7 +131,7 @@ class CalibrationRedesignV4ObservationBudget(StrictContract):
 
 
 class CalibrationRedesignV4WorkloadAllocation(StrictContract):
-    """Required workload balance for each reserved V4 final capacity family."""
+    """Fixed workload balance for each quarantined V4 final family."""
 
     structured_text_case_count: Literal[3]
     code_case_count: Literal[3]
@@ -129,7 +139,7 @@ class CalibrationRedesignV4WorkloadAllocation(StrictContract):
 
 
 class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
-    """One reserved V4 family without runtime or outcome assets."""
+    """One V4 evidence family with explicit stage and quarantine boundaries."""
 
     scenario_family_id: str = Field(min_length=1, max_length=128)
     split: TraceSplit
@@ -140,12 +150,15 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
     is_final_evaluation_quarantined: bool
     is_adversarial_regression_quarantined: bool
     workload_allocation: CalibrationRedesignV4WorkloadAllocation | None = None
-    authoring_status: Literal["reserved_for_v4_case_authoring"]
+    authoring_status: Literal[
+        "calibration_curve_coverage_authored",
+        "reserved_for_v4_case_authoring",
+    ]
 
     @field_validator("reserved_case_ids")
     @classmethod
     def validate_reserved_case_ids(cls, case_ids: tuple[str, ...]) -> tuple[str, ...]:
-        """Reserve only fresh V4 identifiers and preserve deterministic family membership."""
+        """Keep fresh V4 case reservations unique inside each family."""
 
         if len(set(case_ids)) != len(case_ids):
             raise ValueError("V4 case IDs must be unique within one family")
@@ -159,15 +172,13 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
         cls,
         failure_modes: tuple[str, ...],
     ) -> tuple[str, ...]:
-        """Keep each family’s failure-purpose declaration unambiguous."""
-
         if len(set(failure_modes)) != len(failure_modes):
             raise ValueError("V4 target failure modes must be unique within one family")
         return failure_modes
 
     @model_validator(mode="after")
     def validate_family_governance(self) -> CalibrationRedesignV4ScenarioFamilyRecord:
-        """Bind split, role, quarantine state, and workload allocation together."""
+        """Bind role, quarantine, workload allocation, and authoring stage."""
 
         if not self.scenario_family_id.startswith("CRV4-"):
             raise ValueError("V4 scenario-family IDs must use the CRV4 namespace")
@@ -194,14 +205,24 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
             raise ValueError(
                 "only V4 final-evaluation families may declare workload allocation"
             )
+
+        expected_status = (
+            "calibration_curve_coverage_authored"
+            if self.scenario_family_id == "CRV4-CAL-CURVE-COVERAGE"
+            else "reserved_for_v4_case_authoring"
+        )
+        if self.authoring_status != expected_status:
+            raise ValueError(
+                "V4 family authoring status does not match the active authoring boundary"
+            )
         return self
 
 
 class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
-    """Schema-only V4 registry: complete reservation, zero case-bearing assets."""
+    """V4 registry after exactly one calibration-only family has been authored."""
 
     schema_version: Literal["calibration-redesign-v4-scenario-family-registry-v1"]
-    registry_status: Literal["schema_only"]
+    registry_status: Literal["calibration_curve_coverage_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v4"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -210,7 +231,7 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
     adaptive_policy_id: Literal["causal-calibrated-prefix-utility-v4"]
     maximum_candidate_positions: Literal[4]
     v1_v2_v3_data_bearing_evidence_used: Literal[False]
-    v4_runtime_or_outcome_assets_authored: Literal[False]
+    v4_runtime_or_outcome_assets_authored: Literal[True]
     v4_manifests_authored: Literal[False]
     v4_final_assessment_contract_merged: Literal[True]
     observation_budget: CalibrationRedesignV4ObservationBudget
@@ -218,30 +239,32 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         min_length=10,
         max_length=10,
     )
-    explicit_exclusions: tuple[str, ...] = Field(min_length=10)
-    next_authorized_artifact: Literal["v4-calibration-curve-coverage-fixtures"]
+    explicit_exclusions: tuple[str, ...] = Field(min_length=9)
+    next_authorized_artifact: Literal["v4-calibration-position-spread-fixtures"]
 
     @model_validator(mode="after")
     def validate_registry_governance(
         self,
     ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-        """Enforce V4’s fresh, exact, no-case-bytes reservation plan."""
+        """Enforce exact V4 reservation plus one authorised calibration family."""
 
         if self.v1_v2_v3_data_bearing_evidence_used:
             raise ValueError(
                 "closed-programme data-bearing evidence is prohibited in V4"
             )
-        if self.v4_runtime_or_outcome_assets_authored:
+        if not self.v4_runtime_or_outcome_assets_authored:
             raise ValueError(
-                "schema-only V4 registry cannot record authored case assets"
+                "the V4 curve-coverage authoring stage requires authored calibration case assets"
             )
         if self.v4_manifests_authored:
-            raise ValueError("schema-only V4 registry cannot record authored manifests")
+            raise ValueError(
+                "V4 curve-coverage authoring stage cannot record authored manifests"
+            )
 
         family_ids = tuple(family.scenario_family_id for family in self.families)
         if len(set(family_ids)) != len(family_ids):
             raise ValueError("V4 scenario-family IDs must be unique")
-        if set(family_ids) != _EXPECTED_FAMILY_IDS:
+        if set(family_ids) != _V4_EXPECTED_FAMILY_IDS:
             raise ValueError(
                 "V4 scenario-family IDs must match the complete reserved plan"
             )
@@ -252,10 +275,10 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if len(set(all_case_ids)) != len(all_case_ids):
             raise ValueError("V4 case IDs must be unique across all families")
         for family in self.families:
-            if (
-                family.reserved_case_ids
-                != _EXPECTED_CASE_IDS_BY_FAMILY[family.scenario_family_id]
-            ):
+            expected_case_ids = _V4_EXPECTED_CASE_IDS_BY_FAMILY[
+                family.scenario_family_id
+            ]
+            if family.reserved_case_ids != expected_case_ids:
                 raise ValueError(
                     "V4 family case IDs must match the fixed reservation ranges exactly"
                 )
@@ -275,6 +298,18 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         if split_case_counts[TraceSplit.ADVERSARIAL_REGRESSION] != 12:
             raise ValueError("V4 adversarial reserved-case count must equal 12")
 
+        curve_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CRV4-CAL-CURVE-COVERAGE"
+        )
+        if curve_family.reserved_case_ids != _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS:
+            raise ValueError(
+                "V4 curve-coverage family must reserve CRV4-101 through CRV4-112"
+            )
+        if curve_family.authoring_status != "calibration_curve_coverage_authored":
+            raise ValueError("V4 curve-coverage family must remain marked authored")
+
         final_families = tuple(
             family
             for family in self.families
@@ -292,29 +327,37 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
             )
 
         required_exclusions = {
-            "No V4 runtime-input case assets are present.",
-            "No V4 expected-outcome case assets or labels are present.",
+            "No V4 final-evaluation runtime-input case assets are present.",
+            "No V4 final-evaluation expected-outcome assets or labels are present.",
+            "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
             "No V4 calibration or final-evaluation manifest is present.",
             "No V4 calibration artifact or fit report is present.",
             "No V4 final-evidence index or held-out result is present.",
-            "No V4 calibrator fitting is authorized by this reservation registry.",
+            "No V4 calibrator fitting is authorized by this registry.",
             "No V4 scheduler, baseline, capacity, or replay implementation is authorized.",
             "No closed-programme data-bearing evidence influenced V4 case design.",
             "No V4 performance, calibration, policy, or runtime claim is made.",
-            "No V4 adversarial-regression case assets are present.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V4 registry must retain every schema-only exclusion")
+            raise ValueError(
+                "V4 registry must retain every curve-coverage-stage exclusion"
+            )
         return self
 
 
 def load_calibration_redesign_v4_scenario_family_registry(
     path: Path,
+    *,
+    allow_calibration_curve_coverage_assets: bool = False,
 ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-    """Load the V4 registry only when the fixture root is still schema-only."""
+    """Load V4 registry only through an explicit, governed authoring boundary."""
 
     root = path.parent.resolve()
-    assert_calibration_redesign_v4_schema_only_fixture_root(root)
+    if allow_calibration_curve_coverage_assets:
+        assert_calibration_redesign_v4_calibration_curve_coverage_fixture_root(root)
+    else:
+        assert_calibration_redesign_v4_schema_only_fixture_root(root)
+
     if path.resolve() != root / _V4_REGISTRY_FILENAME:
         raise CalibrationRedesignV4RegistryLoadError(
             CalibrationRedesignV4RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
@@ -346,30 +389,79 @@ def load_calibration_redesign_v4_scenario_family_registry(
 
 
 def assert_calibration_redesign_v4_schema_only_fixture_root(root: Path) -> None:
-    """Reject case-bearing files, directories, manifests, and closed-evidence references."""
+    """Fail closed when case-bearing paths appear before an explicit stage is selected."""
 
     resolved_root = _require_fixture_root(root)
-    observed_names = {child.name for child in resolved_root.iterdir()}
-    if observed_names != _V4_SCHEMA_ONLY_ROOT_FILENAMES:
-        unexpected = ", ".join(sorted(observed_names ^ _V4_SCHEMA_ONLY_ROOT_FILENAMES))
+    unexpected_paths = []
+    for child in resolved_root.iterdir():
+        if child.name in _V4_FORBIDDEN_ROOT_PATH_NAMES or child.is_dir():
+            unexpected_paths.append(child.name)
+        elif child.name not in _V4_SCHEMA_ONLY_ROOT_FILENAMES:
+            unexpected_paths.append(child.name)
+    if unexpected_paths:
         raise CalibrationRedesignV4RegistryLoadError(
             CalibrationRedesignV4RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION,
-            "V4 schema-only fixture root must contain only reservation metadata; mismatch: "
-            + unexpected,
+            "V4 schema-only fixture root contains unauthorised assets: "
+            + ", ".join(sorted(unexpected_paths)),
         )
+    _reject_closed_references_in_root_metadata(resolved_root)
+
+
+def assert_calibration_redesign_v4_calibration_curve_coverage_fixture_root(
+    root: Path,
+) -> None:
+    """Validate exactly the first twelve V4 calibration case pairs and nothing else."""
+
+    resolved_root = _require_fixture_root(root)
+    unexpected_root_paths = []
     for child in resolved_root.iterdir():
-        if not child.is_file():
+        if child.name in _V4_FORBIDDEN_ROOT_PATH_NAMES:
+            unexpected_root_paths.append(child.name)
+        elif (
+            child.is_dir()
+            and child.name not in _V4_CALIBRATION_CURVE_COVERAGE_DIRECTORIES
+        ):
+            unexpected_root_paths.append(child.name)
+        elif not child.is_dir() and (
+            child.name not in _V4_CALIBRATION_CURVE_COVERAGE_ALLOWED_ROOT_FILENAMES
+        ):
+            unexpected_root_paths.append(child.name)
+    if unexpected_root_paths:
+        raise CalibrationRedesignV4RegistryLoadError(
+            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            "V4 calibration curve-coverage fixture root contains unauthorised assets: "
+            + ", ".join(sorted(unexpected_root_paths)),
+        )
+
+    expected_names = {
+        f"{case_id}.json" for case_id in _V4_CALIBRATION_CURVE_COVERAGE_CASE_IDS
+    }
+    for artifact_directory in sorted(_V4_CALIBRATION_CURVE_COVERAGE_DIRECTORIES):
+        cases_path = resolved_root / artifact_directory / "cases"
+        if not cases_path.is_dir():
             raise CalibrationRedesignV4RegistryLoadError(
-                CalibrationRedesignV4RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION,
-                "V4 schema-only fixture root may not contain directories",
+                CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                f"V4 curve-coverage root requires {artifact_directory}/cases",
             )
-        try:
-            _reject_closed_evidence_reference(child.read_bytes())
-        except OSError as error:
+        names = {path.name for path in cases_path.iterdir()}
+        if names != expected_names:
             raise CalibrationRedesignV4RegistryLoadError(
-                CalibrationRedesignV4RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
-                f"unable to inspect V4 schema-only root asset {child.name}: {error}",
-            ) from error
+                CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                f"V4 {artifact_directory}/cases must contain exactly "
+                "CRV4-101 through CRV4-112",
+            )
+        for asset_path in cases_path.iterdir():
+            if not asset_path.is_file() or asset_path.suffix != ".json":
+                raise CalibrationRedesignV4RegistryLoadError(
+                    CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                    f"V4 {artifact_directory}/cases may contain only JSON case files",
+                )
+            _reject_closed_evidence_reference(asset_path.read_bytes())
+        _reject_nested_or_sibling_assets(
+            resolved_root / artifact_directory,
+            allowed_child_name="cases",
+        )
+    _reject_closed_references_in_root_metadata(resolved_root)
 
 
 def _require_fixture_root(root: Path) -> Path:
@@ -379,7 +471,8 @@ def _require_fixture_root(root: Path) -> Path:
             CalibrationRedesignV4RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
             "V4 fixture root must be an existing directory",
         )
-    if not (resolved_root / _V4_REGISTRY_FILENAME).is_file():
+    registry_path = resolved_root / _V4_REGISTRY_FILENAME
+    if not registry_path.is_file():
         raise CalibrationRedesignV4RegistryLoadError(
             CalibrationRedesignV4RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
             "V4 fixture root requires scenario_family_registry.json",
@@ -387,10 +480,26 @@ def _require_fixture_root(root: Path) -> Path:
     return resolved_root
 
 
+def _reject_nested_or_sibling_assets(parent: Path, *, allowed_child_name: str) -> None:
+    child_names = {child.name for child in parent.iterdir()}
+    if child_names != {allowed_child_name}:
+        raise CalibrationRedesignV4RegistryLoadError(
+            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            f"V4 {parent.name} directory may contain only {allowed_child_name}",
+        )
+
+
+def _reject_closed_references_in_root_metadata(root: Path) -> None:
+    for filename in _V4_SCHEMA_ONLY_ROOT_FILENAMES:
+        path = root / filename
+        if path.is_file():
+            _reject_closed_evidence_reference(path.read_bytes())
+
+
 def _reject_closed_evidence_reference(raw_bytes: bytes) -> None:
     lowered = raw_bytes.lower()
     if any(marker in lowered for marker in _CLOSED_EVIDENCE_MARKERS):
         raise CalibrationRedesignV4RegistryLoadError(
             CalibrationRedesignV4RegistryViolationCode.CLOSED_EVIDENCE_REFERENCE,
-            "V4 reservation assets must not reference closed-programme data-bearing evidence",
+            "V4 assets must not reference closed-programme data-bearing evidence",
         )
