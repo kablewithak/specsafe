@@ -1,8 +1,8 @@
 """Governed V3 evidence registry controls for the full north-star programme.
 
-The V3 registry now records the frozen calibration manifest after all three fresh
-calibration-only families were authored. Final-evaluation and adversarial bytes remain
-absent, quarantined, and fail closed.
+The V3 registry records the frozen calibration manifest after all three fresh
+calibration-only families were authored. Held-out final evidence is separately indexed;
+the final-evaluation manifest is admitted only after all 24 case pairs exist.
 """
 
 from __future__ import annotations
@@ -23,11 +23,13 @@ from specsafe.contracts.models import (
 
 _V3_REGISTRY_FILENAME = "scenario_family_registry.json"
 _V3_FINAL_EVIDENCE_INDEX_FILENAME = "final_evidence_index.json"
+_V3_FINAL_EVALUATION_MANIFEST_FILENAME = "final_evaluation_manifest.json"
 _ALLOWED_ROOT_FILENAMES = {
     "PROPOSAL_MANIFEST.md",
     "authoring_ledger.md",
     "calibration_manifest.json",
     _V3_FINAL_EVIDENCE_INDEX_FILENAME,
+    _V3_FINAL_EVALUATION_MANIFEST_FILENAME,
     _V3_REGISTRY_FILENAME,
 }
 _CURVE_COVERAGE_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(101, 113))
@@ -43,7 +45,6 @@ _FINAL_EVALUATION_DIRECTORY_NAME = "final_evaluation"
 _FINAL_EVALUATION_ALLOWED_DIRECTORIES = {"inputs", "expected_outcomes"}
 _FINAL_AUTHORED_CAPACITY_CASE_IDS = tuple(f"CRV3-{number:03d}" for number in range(201, 225))
 _FORBIDDEN_ROOT_PATH_NAMES = {
-    "final_evaluation_manifest.json",
     "adversarial_regression_manifest.json",
     "artifact.json",
     "fit_report.json",

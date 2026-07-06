@@ -99,3 +99,17 @@ The next slice may define the pre-authoring gate for fresh V3 hidden final-evalu
 `v3-final-evaluation-manifest-freeze`
 
 The next authorised slice may freeze a complete `final_evaluation_manifest.json` over all 24 runtime/outcome case pairs. It must verify frozen calibration assets remain unchanged and must not run the one-time held-out assessment. After that manifest is merged, stop for the formal handover before any held-out scoring.
+
+## V3 final-evaluation manifest freeze
+
+- `final_evaluation_manifest.json` now freezes all 24 held-out runtime/outcome case pairs and all 96 held-out observations.
+- The manifest records SHA-256 and byte count for every final runtime and expected-outcome asset.
+- The manifest also records the exact `final_evidence_index.json` bytes that bind the frozen calibration provenance.
+- The calibration registry, calibration manifest, quantile-isotonic artifact, and fit report remain unchanged.
+- No calibrator execution against final evidence, score, scheduler, policy comparison, promotion decision, or adversarial evidence is added.
+
+## Next authorisation
+
+`v3-one-time-final-assessment`
+
+The complete held-out corpus is now frozen. Stop here for handover before the one-time final assessment. The next session must not alter the final-evidence index, final-evaluation manifest, calibration registry, calibration manifest, artifact, fit report, or any held-out case pair before assessment.

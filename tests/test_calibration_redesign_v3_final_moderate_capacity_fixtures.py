@@ -21,18 +21,13 @@ def test_final_moderate_capacity_cases_are_quarantined_balanced_and_unscored() -
     workload_counts: Counter[WorkloadType] = Counter()
 
     for case_id in CASE_IDS:
-        runtime_path = (
-            FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases" / f"{case_id}.json"
-        )
+        runtime_path = FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases" / f"{case_id}.json"
         runtime_payload = json.loads(runtime_path.read_text(encoding="utf-8"))
         replay_case = load_calibration_redesign_v3_final_evaluation_replay_case(
             FIXTURE_ROOT, case_id
         )
 
-        assert (
-            replay_case.runtime_input.scenario_family_id
-            == "CRV3-FINAL-MODERATE-CAPACITY"
-        )
+        assert replay_case.runtime_input.scenario_family_id == "CRV3-FINAL-MODERATE-CAPACITY"
         assert replay_case.runtime_input.split is TraceSplit.FINAL_EVALUATION
         assert replay_case.runtime_input.data_role is TraceDataRole.HELD_OUT_EVALUATION
         assert len(replay_case.runtime_input.contexts) == 4
@@ -41,8 +36,7 @@ def test_final_moderate_capacity_cases_are_quarantined_balanced_and_unscored() -
         assert "observed_acceptance" not in runtime_payload
         assert "prefix_survival_label" not in runtime_payload
         assert all(
-            context.capacity_snapshot.profile_id
-            == "synthetic-v3-final-moderate-capacity"
+            context.capacity_snapshot.profile_id == "synthetic-v3-final-moderate-capacity"
             for context in replay_case.runtime_input.contexts
         )
         workload_counts[replay_case.runtime_input.contexts[0].workload_type] += 1
@@ -54,14 +48,13 @@ def test_final_moderate_capacity_cases_are_quarantined_balanced_and_unscored() -
             WorkloadType.OPEN_ENDED_CHAT: 2,
         }
     )
-    assert not (FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert not (FIXTURE_ROOT / "heldout_assessment.json").exists()
     assert not (FIXTURE_ROOT / "adversarial_regression_manifest.json").exists()
 
 
 def test_final_moderate_capacity_keeps_frozen_calibration_manifest_loadable() -> None:
-    fixture_set = load_calibration_redesign_v3_calibration_manifested_fixture_set(
-        FIXTURE_ROOT
-    )
+    fixture_set = load_calibration_redesign_v3_calibration_manifested_fixture_set(FIXTURE_ROOT)
 
     assert fixture_set.manifest.case_count == 36
     assert len(fixture_set.cases) == 36

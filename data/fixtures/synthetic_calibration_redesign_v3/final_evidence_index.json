@@ -1,6 +1,6 @@
 {
-  "schema_version": "calibration-redesign-v3-final-evidence-index-v1",
-  "index_status": "jagged_capacity_authored",
+  "schema_version": "calibration-redesign-v3-final-evidence-index-v2",
+  "index_status": "final_evaluation_manifest_frozen",
   "fixture_set_id": "synthetic-calibration-redesign-v3",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -130,12 +130,13 @@
     }
   ],
   "explicit_exclusions": [
-    "No V3 final-evaluation manifest or score is present.",
+    "No V3 final-evaluation score is present.",
     "No V3 scheduler, capacity-policy implementation, promotion decision, or runtime-control claim is present.",
     "No V3 calibration registry, manifest, artifact, or fit report is modified by final-evidence authoring.",
     "No V1 or V2 data-bearing evidence influenced V3 final-case design.",
     "No V3 adversarial-regression assets are present.",
-    "The fitted V3 calibrator must not be run against partial final evidence."
+    "The fitted V3 calibrator must not be run against final evidence before the one-time assessment gate."
   ],
-  "next_authorized_artifact": "v3-final-evaluation-manifest-freeze"
+  "next_authorized_artifact": "v3-one-time-final-assessment",
+  "final_evaluation_manifest_path": "final_evaluation_manifest.json"
 }
