@@ -2,16 +2,18 @@
 
 ## Purpose
 
-This root records the fixed V4 evidence plan. All four calibration-only case families are
-complete, and `calibration_manifest.json` now freezes their exact runtime/outcome asset
-inventory. It is not a calibration artifact, scheduler input surface, policy comparison,
-or source of final-evaluation evidence.
+This root records the fixed V4 evidence plan. All four calibration-only case families and
+`calibration_manifest.json` remain frozen. The regularized-isotonic calibration artifact and
+fit report are retained outside this fixture root under
+`evidence/calibration/regularized-isotonic-calibration-v4/` and are tied back to this root by
+manifest and registry hashes. They are calibration-only diagnostics, not policy or held-out
+performance evidence.
 
 ## Fixed reservation
 
 | Split | Cases | Positions per case | Observations | Current state |
 |---|---:|---:|---:|---|
-| Calibration | 48 | 4 | 192 | Authored and hash-frozen |
+| Calibration | 48 | 4 | 192 | Authored, hash-frozen, and fitted once |
 | Final evaluation | 36 | 4 | 144 | Reserved and quarantined |
 | Adversarial regression | 12 | 4 | 48 | Reserved and quarantined |
 
@@ -31,15 +33,15 @@ expected_outcomes/cases/CRV4-101.json through CRV4-148.json
 ```
 
 `calibration_manifest.json` records the exact 96 calibration asset paths, SHA-256 hashes,
-byte counts, case-pair inventory, registry provenance hash, and an aggregate asset digest.
-Runtime inputs and expected outcomes remain separate physical assets.
+byte counts, case-pair inventory, frozen registry provenance hash, and an aggregate asset
+digest. Runtime inputs and expected outcomes remain separate physical assets.
 
-No final-evaluation or adversarial asset may appear. No calibration artifact, fit report,
-final-evaluation manifest, final-evidence index, or held-out result may appear.
+No final-evaluation or adversarial asset may appear. No final-evaluation manifest,
+final-evidence index, or held-out result may appear in this fixture root.
 
 ## Current authorization
 
-The next authorised artifact is `v4-calibration-fit-and-diagnostics`. Any fit must consume
-only the hash-verified frozen calibration corpus. Scheduler code, baseline execution,
-capacity modelling, replay scoring, final-evaluation authoring, and policy comparison remain
-prohibited at this boundary.
+The next authorised artifact is `v4-final-evaluation-fixture-authoring`. Final-evaluation
+assets remain quarantined until their own authoring boundary is introduced. Scheduler code,
+baseline execution, capacity modelling, replay scoring, policy comparison, and runtime control
+remain prohibited.

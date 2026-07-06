@@ -255,7 +255,7 @@ def load_calibration_redesign_v4_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationRedesignV4ReplayCase:
-    """Load one manifest-bound CRV4-101 through CRV4-148 calibration case pair."""
+    """Load one fit-stage-manifest-bound CRV4-101 through CRV4-148 calibration case pair."""
 
     if not _is_v4_case_id(case_id):
         raise CalibrationRedesignV4CaseContractError(
@@ -266,7 +266,7 @@ def load_calibration_redesign_v4_replay_case(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_manifest_assets=True,
+            allow_calibration_fit_diagnostics_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4CaseContractError(

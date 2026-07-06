@@ -1,17 +1,18 @@
 {
   "adaptive_policy_id": "causal-calibrated-prefix-utility-v4",
+  "calibration_artifact_sha256": "05cabab0fd744dadf92d50eac4dcc5093432f90f64203b3f09de10597c043b0d",
+  "calibration_fit_report_sha256": "3d1388c3a1a4ed7640249b1b7080bd2c9ca282d2870a69e04c9145f05f53d8f3",
   "calibration_method_id": "regularized-isotonic-calibration-v4",
   "explicit_exclusions": [
     "No V4 final-evaluation runtime-input case assets are present.",
     "No V4 final-evaluation expected-outcome assets or labels are present.",
     "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
     "No V4 final-evaluation manifest is present.",
-    "No V4 calibration artifact or fit report is present.",
     "No V4 final-evidence index or held-out result is present.",
-    "No V4 calibrator fitting has been performed.",
     "No V4 scheduler, baseline, capacity, or replay implementation is authorized.",
     "No closed-programme data-bearing evidence influenced V4 case design.",
-    "No V4 performance, calibration, policy, or runtime claim is made."
+    "No V4 held-out calibration, policy, or runtime claim is made.",
+    "V4 calibration artifact and fit report remain calibration-only diagnostics."
   ],
   "families": [
     {
@@ -289,9 +290,11 @@
   ],
   "fixture_set_id": "synthetic-calibration-redesign-v4",
   "fixture_set_version": "1.0.0",
+  "frozen_calibration_manifest_sha256": "f8ee1f0798fa0e00c6c328d61d69f2e7e0e2b123584dbe89a92f66dab4a4544f",
+  "frozen_calibration_registry_sha256": "765042d8480efe129738352dc8237d12c43df768a2de845f1e63a1daf32d1c9c",
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v4-method-and-evidence-constitution-v1",
-  "next_authorized_artifact": "v4-calibration-fit-and-diagnostics",
+  "next_authorized_artifact": "v4-final-evaluation-fixture-authoring",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -302,10 +305,11 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "calibration_manifest_frozen",
+  "registry_status": "calibration_fit_diagnostics_complete",
   "schema_version": "calibration-redesign-v4-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v1_v2_v3_data_bearing_evidence_used": false,
+  "v4_calibration_fit_diagnostics_authored": true,
   "v4_final_assessment_contract_merged": true,
   "v4_manifests_authored": true,
   "v4_runtime_or_outcome_assets_authored": true
