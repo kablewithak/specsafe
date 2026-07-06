@@ -1,0 +1,46 @@
+{
+  "case_id": "CRV4-122",
+  "data_role": "calibration",
+  "fixture_id": "crv4-calibration-position-spread-122",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "outcomes": [
+    {
+      "block_position_index": 1,
+      "candidate_token_id": 5091,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-calibration-position-trace-122"
+    },
+    {
+      "block_position_index": 2,
+      "candidate_token_id": 5092,
+      "decode_round": 0,
+      "observed_acceptance": true,
+      "prefix_survival_label": true,
+      "trace_id": "crv4-calibration-position-trace-122"
+    },
+    {
+      "block_position_index": 3,
+      "candidate_token_id": 5093,
+      "decode_round": 0,
+      "observed_acceptance": false,
+      "prefix_survival_label": false,
+      "trace_id": "crv4-calibration-position-trace-122"
+    },
+    {
+      "block_position_index": 4,
+      "candidate_token_id": 5094,
+      "decode_round": 0,
+      "observed_acceptance": false,
+      "prefix_survival_label": false,
+      "trace_id": "crv4-calibration-position-trace-122"
+    }
+  ],
+  "scenario_family_id": "CRV4-CAL-POSITION-SPREAD",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "calibration",
+  "trace_id": "crv4-calibration-position-trace-122"
+}

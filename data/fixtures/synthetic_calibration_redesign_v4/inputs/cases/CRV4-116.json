@@ -1,0 +1,85 @@
+{
+  "case_id": "CRV4-116",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 8,
+        "profile_id": "v4-calibration-position-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.78,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-position-request-116",
+      "trace_id": "crv4-calibration-position-trace-116",
+      "visible_prefix_token_ids": [],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 8,
+        "profile_id": "v4-calibration-position-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.51,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-position-request-116",
+      "trace_id": "crv4-calibration-position-trace-116",
+      "visible_prefix_token_ids": [
+        5031
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 8,
+        "profile_id": "v4-calibration-position-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.29,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-position-request-116",
+      "trace_id": "crv4-calibration-position-trace-116",
+      "visible_prefix_token_ids": [
+        5031,
+        5032
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 8,
+        "profile_id": "v4-calibration-position-moderate",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.12,
+      "decode_round": 0,
+      "request_id": "crv4-calibration-position-request-116",
+      "trace_id": "crv4-calibration-position-trace-116",
+      "visible_prefix_token_ids": [
+        5031,
+        5032,
+        5033
+      ],
+      "workload_type": "structured_text"
+    }
+  ],
+  "data_role": "calibration",
+  "fixture_id": "crv4-calibration-position-spread-116",
+  "fixture_set_id": "synthetic-calibration-redesign-v4",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Synthetic position-spread calibration evidence for fitting only; this runtime asset contains decision-time inputs and no outcome label.",
+  "request_id": "crv4-calibration-position-request-116",
+  "scenario_family_id": "CRV4-CAL-POSITION-SPREAD",
+  "schema_version": "calibration-redesign-v4-case-v1",
+  "source_type": "synthetic",
+  "split": "calibration",
+  "trace_id": "crv4-calibration-position-trace-116"
+}
