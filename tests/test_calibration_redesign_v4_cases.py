@@ -1,4 +1,4 @@
-"""Tests for V4 authored calibration case-pair contracts and loader behavior."""
+"""Tests for V4 active calibration case-pair contracts and loader behavior."""
 
 from __future__ import annotations
 
@@ -20,7 +20,12 @@ _FIXTURE_ROOT = (
     / "fixtures"
     / "synthetic_calibration_redesign_v4"
 )
-_CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(101, 125))
+_CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(101, 137))
+_AUTHORISED_FAMILIES = {
+    "CRV4-CAL-CURVE-COVERAGE",
+    "CRV4-CAL-POSITION-SPREAD",
+    "CRV4-CAL-WORKLOAD-MIX",
+}
 
 
 def _copy_fixture_root(tmp_path: Path) -> Path:
@@ -38,14 +43,13 @@ def test_loads_all_authorised_v4_calibration_case_pairs() -> None:
     assert tuple(case.runtime_input.case_id for case in replay_cases) == _CASE_IDS
     assert all(len(case.runtime_input.contexts) == 4 for case in replay_cases)
     assert all(len(case.expected_outcomes.outcomes) == 4 for case in replay_cases)
-    assert {case.runtime_input.scenario_family_id for case in replay_cases} == {
-        "CRV4-CAL-CURVE-COVERAGE",
-        "CRV4-CAL-POSITION-SPREAD",
-    }
+    assert {
+        case.runtime_input.scenario_family_id for case in replay_cases
+    } == _AUTHORISED_FAMILIES
 
 
 def test_runtime_assets_contain_decision_time_inputs_but_no_outcome_fields() -> None:
-    runtime_path = _FIXTURE_ROOT / "inputs" / "cases" / "CRV4-120.json"
+    runtime_path = _FIXTURE_ROOT / "inputs" / "cases" / "CRV4-132.json"
     runtime_payload = json.loads(runtime_path.read_text(encoding="utf-8"))
 
     serialized_runtime = json.dumps(runtime_payload, sort_keys=True)
@@ -58,13 +62,13 @@ def test_runtime_assets_contain_decision_time_inputs_but_no_outcome_fields() -> 
 
 def test_loader_rejects_misaligned_runtime_and_outcome_pair(tmp_path: Path) -> None:
     root = _copy_fixture_root(tmp_path)
-    outcome_path = root / "expected_outcomes" / "cases" / "CRV4-113.json"
+    outcome_path = root / "expected_outcomes" / "cases" / "CRV4-125.json"
     payload = json.loads(outcome_path.read_text(encoding="utf-8"))
     payload["fixture_id"] = "misaligned-fixture-id"
     outcome_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     with pytest.raises(CalibrationRedesignV4CaseContractError) as error:
-        load_calibration_redesign_v4_replay_case(root, "CRV4-113")
+        load_calibration_redesign_v4_replay_case(root, "CRV4-125")
 
     assert (
         error.value.code is CalibrationRedesignV4CaseViolationCode.CASE_ALIGNMENT_ERROR
@@ -75,7 +79,7 @@ def test_loader_rejects_missing_case_asset_after_boundary_validation(
     tmp_path: Path,
 ) -> None:
     root = _copy_fixture_root(tmp_path)
-    (root / "expected_outcomes" / "cases" / "CRV4-124.json").unlink()
+    (root / "expected_outcomes" / "cases" / "CRV4-136.json").unlink()
 
     with pytest.raises(CalibrationRedesignV4CaseContractError) as error:
         load_calibration_redesign_v4_replay_case(root, "CRV4-101")
