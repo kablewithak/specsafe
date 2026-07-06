@@ -17,7 +17,12 @@ from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 
-from specsafe.contracts.models import StrictContract, TraceDataRole, TraceSourceType, TraceSplit
+from specsafe.contracts.models import (
+    StrictContract,
+    TraceDataRole,
+    TraceSourceType,
+    TraceSplit,
+)
 from specsafe.heldout_calibration.v4_final_assessment import calculate_tie_aware_auroc
 from specsafe.traces.calibration_redesign_v4 import (
     CalibrationRedesignV4RegistryLoadError,
@@ -57,8 +62,12 @@ class RegularizedIsotonicCalibrationV4ViolationCode(StrEnum):
     """Machine-readable reasons the V4 calibration-only fit can be rejected."""
 
     UNTRUSTED_FIXTURE_SET = "regularized_isotonic_calibration_v4_untrusted_fixture_set"
-    NON_CALIBRATION_EVIDENCE = "regularized_isotonic_calibration_v4_non_calibration_evidence"
-    MANIFEST_PROVENANCE_FAILURE = "regularized_isotonic_calibration_v4_manifest_provenance_failure"
+    NON_CALIBRATION_EVIDENCE = (
+        "regularized_isotonic_calibration_v4_non_calibration_evidence"
+    )
+    MANIFEST_PROVENANCE_FAILURE = (
+        "regularized_isotonic_calibration_v4_manifest_provenance_failure"
+    )
     INSUFFICIENT_CALIBRATION_SAMPLES = (
         "regularized_isotonic_calibration_v4_insufficient_calibration_samples"
     )
@@ -66,12 +75,20 @@ class RegularizedIsotonicCalibrationV4ViolationCode(StrEnum):
         "regularized_isotonic_calibration_v4_degenerate_label_distribution"
     )
     NON_FINITE_CONFIDENCE = "regularized_isotonic_calibration_v4_non_finite_confidence"
-    INVALID_RAW_CONFIDENCE = "regularized_isotonic_calibration_v4_invalid_raw_confidence"
+    INVALID_RAW_CONFIDENCE = (
+        "regularized_isotonic_calibration_v4_invalid_raw_confidence"
+    )
     ARTIFACT_SCHEMA_ERROR = "regularized_isotonic_calibration_v4_artifact_schema_error"
-    DESTINATION_ALREADY_EXISTS = "regularized_isotonic_calibration_v4_destination_exists"
+    DESTINATION_ALREADY_EXISTS = (
+        "regularized_isotonic_calibration_v4_destination_exists"
+    )
     INVALID_DESTINATION = "regularized_isotonic_calibration_v4_invalid_destination"
-    FIT_EVIDENCE_READ_ERROR = "regularized_isotonic_calibration_v4_fit_evidence_read_error"
-    FIT_EVIDENCE_HASH_MISMATCH = "regularized_isotonic_calibration_v4_fit_evidence_hash_mismatch"
+    FIT_EVIDENCE_READ_ERROR = (
+        "regularized_isotonic_calibration_v4_fit_evidence_read_error"
+    )
+    FIT_EVIDENCE_HASH_MISMATCH = (
+        "regularized_isotonic_calibration_v4_fit_evidence_hash_mismatch"
+    )
 
 
 class RegularizedIsotonicCalibrationV4FitError(ValueError):
@@ -89,7 +106,9 @@ class RegularizedIsotonicCalibrationV4FitError(ValueError):
 class RegularizedIsotonicCalibrationV4FitProtocol(StrictContract):
     """Predeclared V4 equal-count, smoothing, and monotonic-pooling configuration."""
 
-    protocol_id: Literal["regularized_isotonic_calibration_v4_fit_protocol_v1"] = _PROTOCOL_ID
+    protocol_id: Literal["regularized_isotonic_calibration_v4_fit_protocol_v1"] = (
+        _PROTOCOL_ID
+    )
     equal_count_group_count: Literal[12] = _GROUP_COUNT
     minimum_observations_per_group: Literal[16] = _MINIMUM_GROUP_OBSERVATIONS
     laplace_success_prior: Literal[1] = _LAPLACE_SUCCESS_PRIOR
@@ -138,7 +157,9 @@ class RegularizedIsotonicCalibrationV4Bin(StrictContract):
     @model_validator(mode="after")
     def validate_bin_shape(self) -> RegularizedIsotonicCalibrationV4Bin:
         if self.raw_confidence_lower_bound > self.raw_confidence_upper_bound:
-            raise ValueError("raw-confidence bin lower bound must not exceed upper bound")
+            raise ValueError(
+                "raw-confidence bin lower bound must not exceed upper bound"
+            )
         if self.positive_label_count + self.negative_label_count != self.sample_count:
             raise ValueError("V4 bin label counts must sum to sample_count")
         return self
@@ -206,20 +227,28 @@ class RegularizedIsotonicCalibrationV4Artifact(StrictContract):
         if self.positive_label_count + self.negative_label_count != self.sample_count:
             raise ValueError("artifact label counts must sum to sample_count")
         if self.fit_case_ids != _EXPECTED_CASE_IDS:
-            raise ValueError("V4 artifact fit case IDs must be CRV4-101 through CRV4-148")
+            raise ValueError(
+                "V4 artifact fit case IDs must be CRV4-101 through CRV4-148"
+            )
         if self.fit_scenario_family_ids != _EXPECTED_FAMILY_IDS:
-            raise ValueError("V4 artifact must retain the four fixed calibration families")
+            raise ValueError(
+                "V4 artifact must retain the four fixed calibration families"
+            )
         if self.output_lower_bound >= self.output_upper_bound:
             raise ValueError("artifact output bounds are invalid")
         if tuple(bin_.group_index for bin_ in self.bins) != tuple(range(1, 13)):
-            raise ValueError("artifact bins must retain all twelve group indices in order")
+            raise ValueError(
+                "artifact bins must retain all twelve group indices in order"
+            )
         previous_upper_bound = -1.0
         previous_calibrated_confidence = -1.0
         for bin_ in self.bins:
             if bin_.raw_confidence_lower_bound < previous_upper_bound:
                 raise ValueError("artifact raw-confidence bins must be ordered")
             if bin_.calibrated_confidence < previous_calibrated_confidence:
-                raise ValueError("artifact calibrated confidence must be non-decreasing")
+                raise ValueError(
+                    "artifact calibrated confidence must be non-decreasing"
+                )
             previous_upper_bound = bin_.raw_confidence_upper_bound
             previous_calibrated_confidence = bin_.calibrated_confidence
         return self
@@ -488,10 +517,12 @@ def load_regularized_isotonic_calibration_v4_fit_result(
     resolved_fixture_root = fixture_root.resolve()
     resolved_output_directory = output_directory.resolve()
     try:
-        manifest = load_calibration_redesign_v4_calibration_manifest(resolved_fixture_root)
+        manifest = load_calibration_redesign_v4_calibration_manifest(
+            resolved_fixture_root
+        )
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_fixture_root / "scenario_family_registry.json",
-            allow_final_evaluation_fixture_assets=True,
+            allow_final_evaluation_manifest_assets=True,
         )
     except (CalibrationRedesignV4RegistryLoadError, ValueError) as error:
         raise RegularizedIsotonicCalibrationV4FitError(
@@ -505,8 +536,12 @@ def load_regularized_isotonic_calibration_v4_fit_result(
     report_payload = _read_json_object(report_path)
     try:
         result = RegularizedIsotonicCalibrationV4FitResult(
-            artifact=RegularizedIsotonicCalibrationV4Artifact.model_validate(artifact_payload),
-            report=RegularizedIsotonicCalibrationV4FitReport.model_validate(report_payload),
+            artifact=RegularizedIsotonicCalibrationV4Artifact.model_validate(
+                artifact_payload
+            ),
+            report=RegularizedIsotonicCalibrationV4FitReport.model_validate(
+                report_payload
+            ),
         )
     except ValueError as error:
         raise RegularizedIsotonicCalibrationV4FitError(
@@ -629,7 +664,9 @@ def _extract_fit_samples(
         for context in replay_case.runtime_input.contexts:
             raw_confidence = context.conditional_survival_confidence
             _validate_raw_confidence(raw_confidence)
-            outcome = outcomes_by_key[(context.decode_round, context.block_position_index)]
+            outcome = outcomes_by_key[
+                (context.decode_round, context.block_position_index)
+            ]
             samples.append(
                 _FitSample(
                     raw_confidence=raw_confidence,
@@ -771,7 +808,9 @@ def _build_artifact(
         fit_data_role=TraceDataRole.CALIBRATION,
         fit_case_ids=tuple(case.runtime_input.case_id for case in fixture_set.cases),
         fit_scenario_family_ids=tuple(
-            sorted({case.runtime_input.scenario_family_id for case in fixture_set.cases})
+            sorted(
+                {case.runtime_input.scenario_family_id for case in fixture_set.cases}
+            )
         ),
         sample_count=sample_count,
         positive_label_count=positive_label_count,
@@ -810,11 +849,14 @@ def _calibrate_with_bins(
 
 def _brier_score(probabilities: tuple[float, ...], labels: tuple[bool, ...]) -> float:
     _validate_probability_label_inputs(probabilities, labels)
-    return sum((probability - float(label)) ** 2 for probability, label in zip(
-        probabilities,
-        labels,
-        strict=True,
-    )) / len(probabilities)
+    return sum(
+        (probability - float(label)) ** 2
+        for probability, label in zip(
+            probabilities,
+            labels,
+            strict=True,
+        )
+    ) / len(probabilities)
 
 
 def _ece_10_bin(probabilities: tuple[float, ...], labels: tuple[bool, ...]) -> float:
