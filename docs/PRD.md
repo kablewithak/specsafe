@@ -3,7 +3,7 @@
 ## Causal Confidence-Scheduled Verification Policy Lab
 
 - **Document status:** Governing PRD â€” adopted and reconciled after V4 closeout
-- **Version:** 1.1
+- **Version:** 1.2
 - **Date:** 2026-07-07
 - **Reconciliation basis:** ADR-0017 and repository audit at `main` commit `5c3fd8b`
 - **Project owner:** Kabo Molefe
@@ -67,9 +67,11 @@ As reconciled after V4 closeout, SpecSafe is at:
 > is therefore not eligible for adaptive-policy research, policy comparison, runtime control,
 > refit, threshold tuning, rerun, or remediation in place.
 >
-> No causal load-aware adaptive scheduler, capacity-profile package, shared policy-utility
-> scorer, cross-policy comparison report, Kaggle model experiment, Hugging Face replay demo,
-> throughput result, or production-readiness claim exists yet.
+> ADR-0018 now charters V5 as a fresh pre-fixture calibration eligibility programme with one
+> fixed bounded monotone-beta method, a full held-out gate, and a hard stop rule. No V5 fixture,
+> artifact, final assessment, scheduler, capacity-profile package, shared policy-utility scorer,
+> cross-policy comparison report, Kaggle model experiment, Hugging Face replay demo, throughput
+> result, or production-readiness claim exists yet.
 
 The current maturity label is intentionally below `held-out replay evaluated`: SpecSafe has a
 held-out **calibration** assessment, but it has not run a valid adaptive-versus-baseline policy
@@ -1070,7 +1072,7 @@ The project may not spend the majority of its time on Kaggle or UI. At least 20â
 | 1 | Contracts and causal-information boundary | Complete | Strict Pydantic contracts, exact-type runtime guard, ADR-0002, and unsafe negative control. | Preserve exact causal boundary. |
 | 1.5 | PRD adoption and reconciliation | Complete | PRD adopted; v1.1 reconciles historical phase wording with V4 closeout and audited source. | Keep PRD status aligned after material programme changes. |
 | 2 | Synthetic traces, valid baselines, and deterministic replay | Complete for the required foundation | Versioned fixtures; fixed-length and static-threshold policies; isolated unsafe control; deterministic per-case replay; descriptive development/adversarial baseline ledger. | Preserve immutable shared-input replay semantics. |
-| 3 | Calibration and confidence fitness | Complete for V4 as a negative result; overall route remains unresolved | V4 final calibration assessment is retained and blocks V4 promotion because ranking safety regressed. | A fresh, bounded successor constitution is required before any new calibration evidence is authored. |
+| 3 | Calibration and confidence fitness | V4 closed negative; V5 chartered pre-fixture | ADR-0018 fixes a new V5 evidence namespace, bounded monotone-beta method, complete final gate, fallback, and hard stop rule. | Implement V5 typed artifact and final-assessment contracts plus non-final gate tests before any V5 evidence is authored. |
 | 4 | Causal load-aware scheduler | Not implemented | No audited causal adaptive scheduler consumes capacity and calibrated confidence together. | A successor calibration gate must pass before scheduler implementation is authorized. |
 | 5 | Shared policy comparison and reports | Incomplete | Per-case replay exists, but no capacity-profile package, utility scorer, cross-policy comparator, or valid adaptive-versus-baseline report exists. | Build only after a valid adaptive policy exists. |
 | 6 | Kaggle small-model evidence | Not started | No committed Kaggle notebook or measured capacity profile. | Local core policy comparison must be complete first. |
@@ -1084,8 +1086,9 @@ between a causal adaptive policy and the named blunt baselines.
 
 Phase 2 is not a blocker: its synthetic baseline and replay foundation is implemented. The active
 blocker is the absence of an eligible calibrated adaptive-policy path after V4's ranking-safety
-regression. A fresh successor programme must be constituted before it creates new evidence; it
-must not use V4 final evidence as a tuning input.
+regression. ADR-0018 now constitutes one fresh V5 eligibility programme, but V5 may not create
+fixture evidence until its typed artifact, assessment contract, and non-final complete-gate tests
+are merged. It must not use V4 final evidence as a tuning input.
 
 Phases 6 and 7 are evidence amplification and public packaging. They are valuable but must not
 mask an incomplete local policy-comparison harness.
@@ -1430,10 +1433,14 @@ missing core proof
   -> valid same-input adaptive-versus-baseline evidence
 ```
 
-The next programme must be a bounded successor constitution, not V4 remediation in place and not
-immediate scheduler code. It must select its calibration route and complete gate semantics before
-authoring fresh calibration or final-evaluation evidence. It must include a stop decision that
-prevents unbounded rounds of post-hoc calibrator replacement.
+ADR-0018 constitutes V5 as the bounded successor programme. It fixes one globally shared
+bounded monotone-beta calibration method, fresh evidence namespaces, complete held-out gate
+semantics, a conservative fallback, and a hard stop decision before V5 evidence exists.
+
+The next V5 implementation slice must build typed artifact and assessment contracts plus a
+non-final complete-gate regression harness. It must not author V5 calibration or final-evaluation
+evidence, fit a V5 artifact, or implement a scheduler. V5 remains a pre-fixture route until that
+contract boundary is merged.
 
 ## 29. Change-control rules
 

@@ -48,6 +48,7 @@ SpecSafe does not contain in v1:
 - [Frozen calibrator contract](docs/architecture/frozen-calibrator-contract.md)
 - [Held-out calibration fitness and promotion gate](docs/architecture/heldout-calibration-fitness.md)
 - [Post-V4 north-star reconciliation](docs/adr/ADR-0017-project-north-star-reconciliation-after-v4.md)
+- [V5 bounded calibration eligibility charter](docs/adr/ADR-0018-v5-bounded-monotone-beta-calibration-eligibility-charter.md)
 
 The PRD is the governing product and experiment contract. When sources conflict, it takes
 precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
@@ -63,7 +64,7 @@ precedence over ADRs, committed implementation evidence, session notes, and earl
 | Synthetic policy baselines | Complete | Fixed-length and static-threshold baselines plus an isolated unsafe retrospective control are committed. |
 | Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
 | Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
-| Calibration programmes | V1–V3 historical; V4 closed negative | V4 final calibration assessment improved Brier/ECE but failed the predeclared ranking-safety gate. V4 is immutable and blocked from policy work. |
+| Calibration programmes | V1–V4 historical; V5 chartered pre-fixture | V4 remains immutable negative evidence. ADR-0018 fixes V5’s fresh namespace, bounded monotone-beta method, complete held-out gate, and hard stop rule before any V5 data exists. |
 | Causal load-aware scheduler | Not implemented | No causal adaptive scheduler has been evidenced in source. |
 | Capacity profiles and shared policy utility | Not implemented | Capacity exists only as typed snapshot/fixture metadata; no standalone profile package or shared scorer exists. |
 | Valid cross-policy comparison and reports | Not implemented | No adaptive-versus-baseline comparison on identical frozen inputs has been retained. |
@@ -83,19 +84,20 @@ replay demo, throughput result, losslessness result, or production-readiness cla
 
 ## Next governed route
 
-The immediate next programme is documentation and constitution work only:
+V5 is chartered but has no fixtures, fitted artifact, final result, scheduler, or policy claim.
 
 ```text
-audit retained foundation
-  -> fresh bounded successor constitution
-  -> fresh calibration and final-evaluation evidence only after the constitution is accepted
-  -> causal adaptive scheduler only after a complete held-out calibration pass
-  -> shared same-input policy comparison
+V5 typed artifact and final-assessment contracts
+  -> non-final complete-gate regression harness
+  -> V5 calibration fixtures and frozen calibration artifact
+  -> V5 final fixtures and one write-once held-out eligibility assessment
+  -> capacity, causal adaptive-policy, shared-score, and comparison contracts only if V5 passes
   -> supplemental Kaggle evidence
   -> public replay proof
 ```
 
-The project must not start a V4 remediation or immediate scheduler slice.
+The project must not start V5 fixture authoring before its typed contract and non-final gate tests
+exist. It must not start a V4 remediation or immediate scheduler slice.
 
 ## Local development
 
