@@ -1,7 +1,7 @@
 """Separate V3 final-evidence index and held-out case loader.
 
 This module records the full 24-case held-out inventory separately from the frozen
-calibration registry. Light and moderate capacity families are authored in this
+calibration registry. Light, moderate, and saturated capacity families are authored in this
 slice; no final-evaluation manifest, score, policy, or scheduler behaviour is
 introduced.
 """
@@ -48,8 +48,9 @@ _EXPECTED_CASE_IDS = {
 _AUTHORED_FAMILY_IDS = (
     "CRV3-FINAL-LIGHT-CAPACITY",
     "CRV3-FINAL-MODERATE-CAPACITY",
+    "CRV3-FINAL-SATURATED-CAPACITY",
 )
-_AUTHORED_CASE_IDS = _LIGHT_CASE_IDS + _MODERATE_CASE_IDS
+_AUTHORED_CASE_IDS = _LIGHT_CASE_IDS + _MODERATE_CASE_IDS + _SATURATED_CASE_IDS
 _CLOSED_MARKERS = (
     b"crv1-",
     b"crv2-",
@@ -62,26 +63,18 @@ class CalibrationRedesignV3FinalEvidenceViolationCode(StrEnum):
     """Machine-readable reasons the V3 held-out boundary cannot be trusted."""
 
     INDEX_SCHEMA_ERROR = "calibration_redesign_v3_final_evidence_index_schema_error"
-    INDEX_INTEGRITY_MISMATCH = (
-        "calibration_redesign_v3_final_evidence_index_integrity_mismatch"
-    )
-    INDEX_PROVENANCE_MISMATCH = (
-        "calibration_redesign_v3_final_evidence_index_provenance_mismatch"
-    )
+    INDEX_INTEGRITY_MISMATCH = "calibration_redesign_v3_final_evidence_index_integrity_mismatch"
+    INDEX_PROVENANCE_MISMATCH = "calibration_redesign_v3_final_evidence_index_provenance_mismatch"
     CASE_SCHEMA_ERROR = "calibration_redesign_v3_final_evidence_case_schema_error"
     CASE_ALIGNMENT_ERROR = "calibration_redesign_v3_final_evidence_case_alignment_error"
-    CASE_MEMBERSHIP_ERROR = (
-        "calibration_redesign_v3_final_evidence_case_membership_error"
-    )
+    CASE_MEMBERSHIP_ERROR = "calibration_redesign_v3_final_evidence_case_membership_error"
     BOUNDARY_VIOLATION = "calibration_redesign_v3_final_evidence_boundary_violation"
 
 
 class CalibrationRedesignV3FinalEvidenceLoadError(ValueError):
     """Typed error raised when V3 final evidence cannot cross its boundary."""
 
-    def __init__(
-        self, code: CalibrationRedesignV3FinalEvidenceViolationCode, message: str
-    ) -> None:
+    def __init__(self, code: CalibrationRedesignV3FinalEvidenceViolationCode, message: str) -> None:
         super().__init__(message)
         self.code = code
 
@@ -117,6 +110,7 @@ class CalibrationRedesignV3FinalEvidenceFamily(StrictContract):
     authoring_status: Literal[
         "final_light_capacity_authored",
         "final_moderate_capacity_authored",
+        "final_saturated_capacity_authored",
         "reserved_for_v3_case_authoring",
     ]
 
@@ -131,23 +125,17 @@ class CalibrationRedesignV3FinalEvidenceFamily(StrictContract):
             raise ValueError("authored final case IDs must be unique")
         if not set(self.authored_case_ids).issubset(set(self.reserved_case_ids)):
             raise ValueError("authored final case IDs must be reserved by their family")
-        expected_authored = (
-            expected_ids if self.scenario_family_id in _AUTHORED_FAMILY_IDS else ()
-        )
+        expected_authored = expected_ids if self.scenario_family_id in _AUTHORED_FAMILY_IDS else ()
         if self.authored_case_ids != expected_authored:
-            raise ValueError(
-                "final family authoring state does not match this evidence slice"
-            )
+            raise ValueError("final family authoring state does not match this evidence slice")
         expected_status_by_family = {
             "CRV3-FINAL-LIGHT-CAPACITY": "final_light_capacity_authored",
             "CRV3-FINAL-MODERATE-CAPACITY": "final_moderate_capacity_authored",
-            "CRV3-FINAL-SATURATED-CAPACITY": "reserved_for_v3_case_authoring",
+            "CRV3-FINAL-SATURATED-CAPACITY": "final_saturated_capacity_authored",
             "CRV3-FINAL-JAGGED-CAPACITY": "reserved_for_v3_case_authoring",
         }
         if self.authoring_status != expected_status_by_family[self.scenario_family_id]:
-            raise ValueError(
-                "final family authoring status does not match this evidence slice"
-            )
+            raise ValueError("final family authoring status does not match this evidence slice")
         return self
 
 
@@ -155,7 +143,7 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
     """Provenance-safe index for held-out V3 evidence, separate from calibration state."""
 
     schema_version: Literal["calibration-redesign-v3-final-evidence-index-v1"]
-    index_status: Literal["moderate_capacity_authored"]
+    index_status: Literal["saturated_capacity_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v3"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -179,20 +167,18 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
         max_length=4,
     )
     explicit_exclusions: tuple[str, ...] = Field(min_length=6)
-    next_authorized_artifact: Literal["v3-final-saturated-capacity-fixtures"]
+    next_authorized_artifact: Literal["v3-final-jagged-capacity-fixtures"]
 
     @model_validator(mode="after")
     def validate_index_shape(self) -> CalibrationRedesignV3FinalEvidenceIndex:
         family_ids = {family.scenario_family_id for family in self.families}
         if family_ids != set(_EXPECTED_CASE_IDS):
-            raise ValueError(
-                "final evidence index must contain all four capacity families"
-            )
+            raise ValueError("final evidence index must contain all four capacity families")
         if sum(len(family.reserved_case_ids) for family in self.families) != 24:
             raise ValueError("final evidence index must reserve exactly 24 cases")
-        if sum(len(family.authored_case_ids) for family in self.families) != 12:
+        if sum(len(family.authored_case_ids) for family in self.families) != 18:
             raise ValueError(
-                "only light and moderate capacity cases may be authored in this slice"
+                "only light, moderate, and saturated capacity cases may be authored in this slice"
             )
         required_exclusions = {
             "No V3 final-evaluation manifest or score is present.",
@@ -209,9 +195,7 @@ class CalibrationRedesignV3FinalEvidenceIndex(StrictContract):
             "The fitted V3 calibrator must not be run against partial final evidence.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError(
-                "final evidence index is missing required isolation exclusions"
-            )
+            raise ValueError("final evidence index is missing required isolation exclusions")
         return self
 
 
@@ -245,13 +229,11 @@ def load_calibration_redesign_v3_final_evaluation_replay_case(
     if case_id not in _AUTHORED_CASE_IDS:
         raise CalibrationRedesignV3FinalEvidenceLoadError(
             CalibrationRedesignV3FinalEvidenceViolationCode.CASE_MEMBERSHIP_ERROR,
-            "only CRV3-201 through CRV3-212 are authorised for current held-out loading",
+            "only CRV3-201 through CRV3-218 are authorised for current held-out loading",
         )
     final_root = root.resolve() / _FINAL_ROOT
     runtime_payload = _read_json(final_root / "inputs" / "cases" / f"{case_id}.json")
-    outcomes_payload = _read_json(
-        final_root / "expected_outcomes" / "cases" / f"{case_id}.json"
-    )
+    outcomes_payload = _read_json(final_root / "expected_outcomes" / "cases" / f"{case_id}.json")
     try:
         runtime = CalibrationRedesignV3RuntimeInput.model_validate(runtime_payload)
     except ValidationError as error:
@@ -260,9 +242,7 @@ def load_calibration_redesign_v3_final_evaluation_replay_case(
             f"V3 held-out runtime schema validation failed: {error}",
         ) from error
     try:
-        outcomes = CalibrationRedesignV3ExpectedOutcomes.model_validate(
-            outcomes_payload
-        )
+        outcomes = CalibrationRedesignV3ExpectedOutcomes.model_validate(outcomes_payload)
     except ValidationError as error:
         raise CalibrationRedesignV3FinalEvidenceLoadError(
             CalibrationRedesignV3FinalEvidenceViolationCode.CASE_SCHEMA_ERROR,
@@ -342,9 +322,7 @@ def _validate_authored_case_membership(
             "held-out runtime case must declare final_evaluation and held_out_evaluation",
         )
     family = next(
-        item
-        for item in index.families
-        if item.scenario_family_id == runtime.scenario_family_id
+        item for item in index.families if item.scenario_family_id == runtime.scenario_family_id
     )
     if runtime.case_id not in family.authored_case_ids:
         raise CalibrationRedesignV3FinalEvidenceLoadError(

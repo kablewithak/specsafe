@@ -1,6 +1,6 @@
 {
   "schema_version": "calibration-redesign-v3-final-evidence-index-v1",
-  "index_status": "moderate_capacity_authored",
+  "index_status": "saturated_capacity_authored",
   "fixture_set_id": "synthetic-calibration-redesign-v3",
   "fixture_set_version": "1.0.0",
   "source_type": "synthetic",
@@ -85,13 +85,20 @@
         "CRV3-217",
         "CRV3-218"
       ],
-      "authored_case_ids": [],
+      "authored_case_ids": [
+        "CRV3-213",
+        "CRV3-214",
+        "CRV3-215",
+        "CRV3-216",
+        "CRV3-217",
+        "CRV3-218"
+      ],
       "workload_allocation": {
         "structured_text_case_count": 2,
         "code_case_count": 2,
         "open_ended_chat_case_count": 2
       },
-      "authoring_status": "reserved_for_v3_case_authoring"
+      "authoring_status": "final_saturated_capacity_authored"
     },
     {
       "scenario_family_id": "CRV3-FINAL-JAGGED-CAPACITY",
@@ -123,5 +130,5 @@
     "No V3 adversarial-regression assets are present.",
     "The fitted V3 calibrator must not be run against partial final evidence."
   ],
-  "next_authorized_artifact": "v3-final-saturated-capacity-fixtures"
+  "next_authorized_artifact": "v3-final-jagged-capacity-fixtures"
 }
