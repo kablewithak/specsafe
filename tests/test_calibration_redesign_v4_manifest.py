@@ -1,4 +1,4 @@
-"""Tests for immutable V4 calibration-manifest verification after fit diagnostics."""
+"""Tests for immutable V4 calibration-manifest verification after final authoring."""
 
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ def test_manifest_hash_verifies_exact_complete_calibration_inventory() -> None:
     assert manifest.assets[-1].relative_path == "inputs/cases/CRV4-148.json"
 
 
-def test_manifest_carry_forward_hashes_bind_fit_stage_to_original_freeze() -> None:
+def test_manifest_carry_forward_hashes_bind_active_stage_to_original_freeze() -> None:
     manifest = load_calibration_redesign_v4_calibration_manifest(_FIXTURE_ROOT)
     registry_payload = json.loads(
         (_FIXTURE_ROOT / "scenario_family_registry.json").read_text(encoding="utf-8")

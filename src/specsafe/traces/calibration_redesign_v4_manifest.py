@@ -255,7 +255,7 @@ def load_calibration_redesign_v4_calibration_manifest(
     try:
         registry = load_calibration_redesign_v4_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_fit_diagnostics_assets=True,
+            allow_final_evaluation_fixture_assets=True,
         )
     except CalibrationRedesignV4RegistryLoadError as error:
         raise CalibrationRedesignV4ManifestError(
@@ -327,13 +327,13 @@ def _verify_manifest_against_root(
     if registry.frozen_calibration_registry_sha256 != manifest.registry_sha256:
         raise CalibrationRedesignV4ManifestError(
             CalibrationRedesignV4ManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH,
-            "V4 fit-stage registry does not carry forward the frozen registry SHA-256",
+            "V4 active registry does not carry forward the frozen registry SHA-256",
         )
     actual_manifest_sha256 = _sha256(root / _MANIFEST_FILENAME)
     if registry.frozen_calibration_manifest_sha256 != actual_manifest_sha256:
         raise CalibrationRedesignV4ManifestError(
             CalibrationRedesignV4ManifestViolationCode.REGISTRY_PROVENANCE_MISMATCH,
-            "V4 fit-stage registry does not carry forward the immutable manifest SHA-256",
+            "V4 active registry does not carry forward the immutable manifest SHA-256",
         )
 
     actual_assets = _collect_asset_records(root)

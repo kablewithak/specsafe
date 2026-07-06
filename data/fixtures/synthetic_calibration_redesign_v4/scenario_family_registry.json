@@ -4,15 +4,15 @@
   "calibration_fit_report_sha256": "3d1388c3a1a4ed7640249b1b7080bd2c9ca282d2870a69e04c9145f05f53d8f3",
   "calibration_method_id": "regularized-isotonic-calibration-v4",
   "explicit_exclusions": [
-    "No V4 final-evaluation runtime-input case assets are present.",
-    "No V4 final-evaluation expected-outcome assets or labels are present.",
     "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
     "No V4 final-evaluation manifest is present.",
     "No V4 final-evidence index or held-out result is present.",
     "No V4 scheduler, baseline, capacity, or replay implementation is authorized.",
     "No closed-programme data-bearing evidence influenced V4 case design.",
     "No V4 held-out calibration, policy, or runtime claim is made.",
-    "V4 calibration artifact and fit report remain calibration-only diagnostics."
+    "V4 calibration artifact and fit report remain calibration-only diagnostics.",
+    "V4 final-evaluation fixtures remain quarantined until their manifest is frozen.",
+    "No V4 final-evaluation held-out assessment has been run."
   ],
   "families": [
     {
@@ -128,7 +128,7 @@
       "workload_allocation": null
     },
     {
-      "authoring_status": "reserved_for_v4_case_authoring",
+      "authoring_status": "final_evaluation_fixtures_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": true,
       "primary_data_role": "held_out_evaluation",
@@ -157,7 +157,7 @@
       }
     },
     {
-      "authoring_status": "reserved_for_v4_case_authoring",
+      "authoring_status": "final_evaluation_fixtures_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": true,
       "primary_data_role": "held_out_evaluation",
@@ -186,7 +186,7 @@
       }
     },
     {
-      "authoring_status": "reserved_for_v4_case_authoring",
+      "authoring_status": "final_evaluation_fixtures_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": true,
       "primary_data_role": "held_out_evaluation",
@@ -215,7 +215,7 @@
       }
     },
     {
-      "authoring_status": "reserved_for_v4_case_authoring",
+      "authoring_status": "final_evaluation_fixtures_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": true,
       "primary_data_role": "held_out_evaluation",
@@ -294,7 +294,7 @@
   "frozen_calibration_registry_sha256": "765042d8480efe129738352dc8237d12c43df768a2de845f1e63a1daf32d1c9c",
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v4-method-and-evidence-constitution-v1",
-  "next_authorized_artifact": "v4-final-evaluation-fixture-authoring",
+  "next_authorized_artifact": "v4-final-evaluation-manifest-freeze",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -305,12 +305,14 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "calibration_fit_diagnostics_complete",
+  "registry_status": "final_evaluation_fixtures_authored",
   "schema_version": "calibration-redesign-v4-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v1_v2_v3_data_bearing_evidence_used": false,
   "v4_calibration_fit_diagnostics_authored": true,
   "v4_final_assessment_contract_merged": true,
+  "v4_final_evaluation_manifest_authored": false,
+  "v4_final_evaluation_runtime_or_outcome_assets_authored": true,
   "v4_manifests_authored": true,
   "v4_runtime_or_outcome_assets_authored": true
 }

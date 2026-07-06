@@ -1,9 +1,9 @@
-"""Governed V4 calibration-fit and diagnostics controls.
+"""Governed V4 final-evaluation fixture-authoring controls.
 
-This module permits the frozen V4 calibration-only corpus and its externally retained,
-write-once regularized-isotonic artifact and diagnostics. Final-evaluation and adversarial
-evidence remain absent. It does not execute a scheduler, compare policies, or authorize
-runtime control.
+This module permits the frozen calibration corpus, its externally retained calibration-only
+artifact and diagnostics, and the quarantined V4 final-evaluation case assets. It does not
+freeze final evidence, run a held-out assessment, execute a scheduler, compare policies, or
+authorize runtime control.
 """
 
 from __future__ import annotations
@@ -81,7 +81,13 @@ _V4_CALIBRATION_MANIFEST_ROOT_FILENAMES = {
     _V4_CALIBRATION_MANIFEST_FILENAME,
 }
 _V4_CALIBRATION_FIT_ROOT_FILENAMES = _V4_CALIBRATION_MANIFEST_ROOT_FILENAMES
+_V4_FINAL_EVALUATION_AUTHORING_ROOT_FILENAMES = _V4_CALIBRATION_FIT_ROOT_FILENAMES
 _V4_ALLOWED_CALIBRATION_DIRECTORIES = {"inputs", "expected_outcomes"}
+_V4_ALLOWED_FINAL_EVALUATION_ROOT_DIRECTORIES = {
+    *_V4_ALLOWED_CALIBRATION_DIRECTORIES,
+    "final_evaluation",
+}
+_V4_ALLOWED_FINAL_EVALUATION_DIRECTORIES = {"inputs", "expected_outcomes"}
 _V4_FORBIDDEN_ROOT_PATH_NAMES = {
     "final_evaluation_manifest.json",
     "final_evidence_index.json",
@@ -90,7 +96,6 @@ _V4_FORBIDDEN_ROOT_PATH_NAMES = {
     "fit_report.json",
     "heldout_assessment.json",
     "result.json",
-    "final_evaluation",
     "adversarial_regression",
 }
 _EXPECTED_DATA_ROLE_BY_SPLIT = {
@@ -111,6 +116,10 @@ _EXPECTED_AUTHORED_STATUS_BY_FAMILY = {
     "CRV4-CAL-POSITION-SPREAD": "calibration_position_spread_authored",
     "CRV4-CAL-WORKLOAD-MIX": "calibration_workload_mix_authored",
     "CRV4-CAL-CAPACITY-CONTRAST": "calibration_capacity_contrast_authored",
+    "CRV4-FINAL-LIGHT-CAPACITY": "final_evaluation_fixtures_authored",
+    "CRV4-FINAL-MODERATE-CAPACITY": "final_evaluation_fixtures_authored",
+    "CRV4-FINAL-SATURATED-CAPACITY": "final_evaluation_fixtures_authored",
+    "CRV4-FINAL-JAGGED-CAPACITY": "final_evaluation_fixtures_authored",
 }
 
 
@@ -142,6 +151,9 @@ class CalibrationRedesignV4RegistryViolationCode(StrEnum):
     )
     CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION = (
         "calibration_redesign_v4_calibration_fit_diagnostics_boundary_violation"
+    )
+    FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION = (
+        "calibration_redesign_v4_final_evaluation_fixture_authoring_boundary_violation"
     )
 
 
@@ -195,6 +207,7 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
         "calibration_position_spread_authored",
         "calibration_workload_mix_authored",
         "calibration_capacity_contrast_authored",
+        "final_evaluation_fixtures_authored",
         "reserved_for_v4_case_authoring",
     ]
 
@@ -261,10 +274,10 @@ class CalibrationRedesignV4ScenarioFamilyRecord(StrictContract):
 
 
 class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
-    """V4 registry after calibration-only fit diagnostics have been retained."""
+    """V4 registry after quarantined final-evaluation fixtures have been authored."""
 
     schema_version: Literal["calibration-redesign-v4-scenario-family-registry-v1"]
-    registry_status: Literal["calibration_fit_diagnostics_complete"]
+    registry_status: Literal["final_evaluation_fixtures_authored"]
     fixture_set_id: Literal["synthetic-calibration-redesign-v4"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -276,6 +289,8 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
     v4_runtime_or_outcome_assets_authored: Literal[True]
     v4_manifests_authored: Literal[True]
     v4_calibration_fit_diagnostics_authored: Literal[True]
+    v4_final_evaluation_runtime_or_outcome_assets_authored: Literal[True]
+    v4_final_evaluation_manifest_authored: Literal[False]
     v4_final_assessment_contract_merged: Literal[True]
     frozen_calibration_manifest_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     frozen_calibration_registry_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
@@ -287,20 +302,24 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
         max_length=10,
     )
     explicit_exclusions: tuple[str, ...] = Field(min_length=9)
-    next_authorized_artifact: Literal["v4-final-evaluation-fixture-authoring"]
+    next_authorized_artifact: Literal["v4-final-evaluation-manifest-freeze"]
 
     @model_validator(mode="after")
     def validate_registry_governance(self) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-        """Enforce the fixed V4 reservation after calibration-only fit diagnostics."""
+        """Enforce the fixed V4 reservation after final assets are authored."""
 
         if self.v1_v2_v3_data_bearing_evidence_used:
             raise ValueError("closed-programme data-bearing evidence is prohibited in V4")
         if not self.v4_runtime_or_outcome_assets_authored:
-            raise ValueError("V4 fit diagnostics require authored calibration assets")
+            raise ValueError("V4 final authoring requires frozen calibration assets")
         if not self.v4_manifests_authored:
-            raise ValueError("V4 fit diagnostics require a frozen calibration manifest")
+            raise ValueError("V4 final authoring requires a frozen calibration manifest")
         if not self.v4_calibration_fit_diagnostics_authored:
-            raise ValueError("V4 fit diagnostics stage requires retained fit evidence")
+            raise ValueError("V4 final authoring requires retained calibration-only diagnostics")
+        if not self.v4_final_evaluation_runtime_or_outcome_assets_authored:
+            raise ValueError("V4 final authoring requires authored final-evaluation assets")
+        if self.v4_final_evaluation_manifest_authored:
+            raise ValueError("V4 final authoring cannot record a frozen final-evaluation manifest")
 
         family_ids = tuple(family.scenario_family_id for family in self.families)
         if len(set(family_ids)) != len(family_ids):
@@ -357,8 +376,6 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
             raise ValueError("each V4 final family requires the fixed workload allocation")
 
         required_exclusions = {
-            "No V4 final-evaluation runtime-input case assets are present.",
-            "No V4 final-evaluation expected-outcome assets or labels are present.",
             "No V4 adversarial-regression runtime-input or expected-outcome assets are present.",
             "No V4 final-evaluation manifest is present.",
             "No V4 final-evidence index or held-out result is present.",
@@ -366,9 +383,10 @@ class CalibrationRedesignV4ScenarioFamilyRegistry(StrictContract):
             "No closed-programme data-bearing evidence influenced V4 case design.",
             "No V4 held-out calibration, policy, or runtime claim is made.",
             "V4 calibration artifact and fit report remain calibration-only diagnostics.",
+            "V4 final-evaluation fixtures remain quarantined until their manifest is frozen.",
         }
         if not required_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V4 registry must retain every fit-diagnostics-stage exclusion")
+            raise ValueError("V4 registry must retain every final-authoring-stage exclusion")
         return self
 
 def load_calibration_redesign_v4_scenario_family_registry(
@@ -380,8 +398,9 @@ def load_calibration_redesign_v4_scenario_family_registry(
     allow_calibration_capacity_contrast_assets: bool = False,
     allow_calibration_manifest_assets: bool = False,
     allow_calibration_fit_diagnostics_assets: bool = False,
+    allow_final_evaluation_fixture_assets: bool = False,
 ) -> CalibrationRedesignV4ScenarioFamilyRegistry:
-    """Load V4 registry only through one explicit, governed authoring boundary."""
+    """Load V4 registry only through one explicit, governed evidence boundary."""
 
     selected_boundary_count = sum(
         (
@@ -391,16 +410,19 @@ def load_calibration_redesign_v4_scenario_family_registry(
             allow_calibration_capacity_contrast_assets,
             allow_calibration_manifest_assets,
             allow_calibration_fit_diagnostics_assets,
+            allow_final_evaluation_fixture_assets,
         )
     )
     if selected_boundary_count > 1:
         raise CalibrationRedesignV4RegistryLoadError(
             CalibrationRedesignV4RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
-            "V4 registry loading must select exactly one authored calibration boundary",
+            "V4 registry loading must select exactly one authored evidence boundary",
         )
 
     root = path.parent.resolve()
-    if allow_calibration_fit_diagnostics_assets:
+    if allow_final_evaluation_fixture_assets:
+        assert_calibration_redesign_v4_final_evaluation_fixture_root(root)
+    elif allow_calibration_fit_diagnostics_assets:
         assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root(root)
     elif allow_calibration_manifest_assets:
         assert_calibration_redesign_v4_calibration_manifest_fixture_root(root)
@@ -443,13 +465,13 @@ def load_calibration_redesign_v4_scenario_family_registry(
             CalibrationRedesignV4RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V4 scenario-family registry validation failed: {error}",
         ) from error
-    if not allow_calibration_fit_diagnostics_assets:
+    if not allow_final_evaluation_fixture_assets:
         raise CalibrationRedesignV4RegistryLoadError(
-            CalibrationRedesignV4RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION,
-            "V4 registry has advanced beyond the manifest-only boundary",
+            CalibrationRedesignV4RegistryViolationCode
+            .CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION,
+            "V4 registry has advanced beyond the calibration-fit diagnostics boundary",
         )
     return registry
-
 
 def assert_calibration_redesign_v4_schema_only_fixture_root(root: Path) -> None:
     """Fail closed when case-bearing paths appear before a stage is selected."""
@@ -576,6 +598,71 @@ def assert_calibration_redesign_v4_calibration_fit_diagnostics_fixture_root(
     )
 
 
+def assert_calibration_redesign_v4_final_evaluation_fixture_root(root: Path) -> None:
+    """Validate all frozen calibration assets plus quarantined final case pairs."""
+
+    violation_code = (
+        CalibrationRedesignV4RegistryViolationCode
+        .FINAL_EVALUATION_FIXTURE_AUTHORING_BOUNDARY_VIOLATION
+    )
+    _assert_v4_calibration_fixture_root(
+        root,
+        expected_case_ids=_V4_AUTHORISED_CALIBRATION_CASE_IDS,
+        violation_code=violation_code,
+        boundary_name="final-evaluation-fixture-authoring",
+        allowed_root_filenames=_V4_FINAL_EVALUATION_AUTHORING_ROOT_FILENAMES,
+        required_root_filenames=_V4_FINAL_EVALUATION_AUTHORING_ROOT_FILENAMES,
+        allowed_root_directories=_V4_ALLOWED_FINAL_EVALUATION_ROOT_DIRECTORIES,
+    )
+    resolved_root = root.resolve()
+    _assert_v4_final_evaluation_case_tree(resolved_root, violation_code)
+
+
+def _assert_v4_final_evaluation_case_tree(
+    root: Path,
+    violation_code: CalibrationRedesignV4RegistryViolationCode,
+) -> None:
+    final_root = root / "final_evaluation"
+    if not final_root.is_dir():
+        raise CalibrationRedesignV4RegistryLoadError(
+            violation_code,
+            "V4 final-evaluation fixture root requires final_evaluation",
+        )
+    if {child.name for child in final_root.iterdir()} != _V4_ALLOWED_FINAL_EVALUATION_DIRECTORIES:
+        raise CalibrationRedesignV4RegistryLoadError(
+            violation_code,
+            "V4 final_evaluation directory must contain only inputs and expected_outcomes",
+        )
+
+    expected_case_ids = tuple(f"CRV4-{number:03d}" for number in range(201, 237))
+    expected_names = {f"{case_id}.json" for case_id in expected_case_ids}
+    for artifact_directory in sorted(_V4_ALLOWED_FINAL_EVALUATION_DIRECTORIES):
+        cases_path = final_root / artifact_directory / "cases"
+        if not cases_path.is_dir():
+            raise CalibrationRedesignV4RegistryLoadError(
+                violation_code,
+                f"V4 final_evaluation/{artifact_directory} requires cases",
+            )
+        if {child.name for child in cases_path.iterdir()} != expected_names:
+            raise CalibrationRedesignV4RegistryLoadError(
+                violation_code,
+                f"V4 final_evaluation/{artifact_directory}/cases must contain exactly "
+                "CRV4-201 through CRV4-236",
+            )
+        for asset_path in cases_path.iterdir():
+            if not asset_path.is_file() or asset_path.suffix != ".json":
+                raise CalibrationRedesignV4RegistryLoadError(
+                    violation_code,
+                    f"V4 final_evaluation/{artifact_directory}/cases may contain only JSON files",
+                )
+            _reject_closed_evidence_reference(asset_path.read_bytes())
+        _reject_nested_or_sibling_assets(
+            final_root / artifact_directory,
+            allowed_child_name="cases",
+            violation_code=violation_code,
+        )
+
+
 def _assert_v4_calibration_fixture_root(
     root: Path,
     *,
@@ -584,6 +671,7 @@ def _assert_v4_calibration_fixture_root(
     boundary_name: str,
     allowed_root_filenames: set[str],
     required_root_filenames: set[str] | None = None,
+    allowed_root_directories: set[str] = _V4_ALLOWED_CALIBRATION_DIRECTORIES,
 ) -> None:
     resolved_root = _require_fixture_root(root)
     unexpected_root_paths = []
@@ -591,7 +679,7 @@ def _assert_v4_calibration_fixture_root(
     for child in resolved_root.iterdir():
         if child.name in _V4_FORBIDDEN_ROOT_PATH_NAMES:
             unexpected_root_paths.append(child.name)
-        elif child.is_dir() and child.name not in _V4_ALLOWED_CALIBRATION_DIRECTORIES:
+        elif child.is_dir() and child.name not in allowed_root_directories:
             unexpected_root_paths.append(child.name)
         elif not child.is_dir() and child.name not in allowed_root_filenames:
             unexpected_root_paths.append(child.name)

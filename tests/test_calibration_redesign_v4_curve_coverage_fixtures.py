@@ -18,9 +18,7 @@ _FIXTURE_ROOT = (
 _CASE_IDS = tuple(f"CRV4-{number:03d}" for number in range(101, 113))
 
 
-def test_curve_coverage_has_48_observations_across_all_fixed_probability_deciles() -> (
-    None
-):
+def test_curve_coverage_has_48_observations_across_all_fixed_probability_deciles() -> None:
     confidences = [
         context.conditional_survival_confidence
         for case_id in _CASE_IDS
@@ -31,9 +29,7 @@ def test_curve_coverage_has_48_observations_across_all_fixed_probability_deciles
     ]
 
     assert len(confidences) == 48
-    assert {min(int(confidence * 10), 9) for confidence in confidences} == set(
-        range(10)
-    )
+    assert {min(int(confidence * 10), 9) for confidence in confidences} == set(range(10))
     assert min(confidences) <= 0.05
     assert max(confidences) >= 0.95
 
@@ -61,7 +57,8 @@ def test_curve_coverage_balances_workloads_and_retains_both_outcome_classes() ->
     assert not all(observed_acceptance)
 
 
-def test_curve_coverage_retains_no_final_or_adversarial_assets() -> None:
-    assert not (_FIXTURE_ROOT / "final_evaluation").exists()
+def test_curve_coverage_retains_no_adversarial_or_final_result_assets() -> None:
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
     assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert not (_FIXTURE_ROOT / "final_evidence_index.json").exists()
+    assert not (_FIXTURE_ROOT / "heldout_assessment.json").exists()
