@@ -288,10 +288,21 @@ def _load_calibration_successor_v5_replay_case(
     case_id: str,
 ) -> CalibrationSuccessorV5ReplayCase:
     resolved_root = root.resolve()
+    fit_artifact_names = {
+        "bounded_monotone_beta_calibration_artifact.json",
+        "bounded_monotone_beta_calibration_fit_diagnostics.json",
+    }
+    present_names = {child.name for child in resolved_root.iterdir()}
+    if present_names & fit_artifact_names and not fit_artifact_names.issubset(present_names):
+        raise CalibrationSuccessorV5CaseContractError(
+            CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            "V5 fit-stage case root must retain artifact and diagnostics files together",
+        )
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_manifest_assets=True,
+            allow_calibration_fit_diagnostics_assets=fit_artifact_names.issubset(present_names),
+            allow_calibration_manifest_assets=not fit_artifact_names.issubset(present_names),
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5CaseContractError(
