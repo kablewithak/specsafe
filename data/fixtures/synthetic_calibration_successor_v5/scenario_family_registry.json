@@ -8,8 +8,8 @@
     "Only CSV5-101..CSV5-148 calibration runtime-input and expected-outcome case pairs are authored.",
     "V5 calibration manifest is frozen and hash-addressed; final-evaluation and adversarial reservations remain quarantined.",
     "V5 bounded-monotone-beta calibration artifact and fit diagnostics are retained as calibration-only evidence.",
-    "Only CSV5-201..CSV5-209 final-evaluation runtime-input and expected-outcome case pairs are authored.",
-    "No V5 final-evaluation manifest, held-out assessment, scheduler, baseline comparison, capacity profile, utility scorer, or runtime control is authorized."
+    "No V5 final-evaluation manifest, held-out assessment, scheduler, baseline comparison, capacity profile, utility scorer, or runtime control is authorized.",
+    "Only CSV5-201..CSV5-218 final-evaluation runtime-input and expected-outcome case pairs are authored."
   ],
   "families": [
     {
@@ -155,7 +155,7 @@
       }
     },
     {
-      "authoring_status": "reserved_for_v5_case_authoring",
+      "authoring_status": "final_position_spread_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": true,
       "primary_data_role": "held_out_evaluation",
@@ -296,7 +296,7 @@
   "historical_data_bearing_evidence_used": false,
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v5-bounded-monotone-beta-calibration-eligibility-charter-v1",
-  "next_authorized_artifact": "v5-final-evaluation-position-spread-fixtures",
+  "next_authorized_artifact": "v5-final-evaluation-workload-variation-fixtures",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -306,7 +306,7 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "final_curve_coverage_authored",
+  "registry_status": "final_position_spread_authored",
   "schema_version": "calibration-successor-v5-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v5_calibration_artifact_authored": true,

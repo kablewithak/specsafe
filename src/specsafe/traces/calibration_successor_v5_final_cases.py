@@ -32,7 +32,19 @@ from specsafe.traces.calibration_successor_v5 import (
 )
 
 _V5_FINAL_CURVE_COVERAGE_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(201, 210))
+_V5_FINAL_POSITION_SPREAD_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(210, 219))
 _V5_FINAL_CURVE_COVERAGE_FAMILY_ID = "CSV5-FINAL-CURVE-COVERAGE"
+_V5_FINAL_POSITION_SPREAD_FAMILY_ID = "CSV5-FINAL-POSITION-SPREAD"
+_FINAL_FAMILY_CONFIGURATION = {
+    _V5_FINAL_CURVE_COVERAGE_FAMILY_ID: (
+        _V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        "final_curve_coverage_authored",
+    ),
+    _V5_FINAL_POSITION_SPREAD_FAMILY_ID: (
+        _V5_FINAL_POSITION_SPREAD_CASE_IDS,
+        "final_position_spread_authored",
+    ),
+}
 
 
 class CalibrationSuccessorV5FinalCaseViolationCode(StrEnum):
@@ -65,7 +77,10 @@ class CalibrationSuccessorV5FinalRuntimeInput(StrictContract):
     case_id: str = Field(pattern=r"^CSV5-2[0-9]{2}$")
     trace_id: str = Field(min_length=1, max_length=128)
     request_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CSV5-FINAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CSV5-FINAL-CURVE-COVERAGE",
+        "CSV5-FINAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.FINAL_EVALUATION]
     data_role: Literal[TraceDataRole.HELD_OUT_EVALUATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -95,7 +110,10 @@ class CalibrationSuccessorV5FinalExpectedOutcomes(StrictContract):
     fixture_id: str = Field(min_length=1, max_length=128)
     case_id: str = Field(pattern=r"^CSV5-2[0-9]{2}$")
     trace_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CSV5-FINAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CSV5-FINAL-CURVE-COVERAGE",
+        "CSV5-FINAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.FINAL_EVALUATION]
     data_role: Literal[TraceDataRole.HELD_OUT_EVALUATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -166,7 +184,7 @@ def validate_calibration_successor_v5_final_replay_case_membership(
     replay_case: CalibrationSuccessorV5FinalReplayCase,
     registry: CalibrationSuccessorV5ScenarioFamilyRegistry,
 ) -> None:
-    """Verify a held-out case belongs to the one currently authored final family."""
+    """Verify a held-out case belongs to an authored, still-quarantined final family."""
 
     if type(registry) is not CalibrationSuccessorV5ScenarioFamilyRegistry:
         raise CalibrationSuccessorV5FinalCaseContractError(
@@ -174,20 +192,25 @@ def validate_calibration_successor_v5_final_replay_case_membership(
             "V5 final case membership requires the exact V5 scenario-family registry",
         )
     runtime = replay_case.runtime_input
-    if runtime.case_id not in _V5_FINAL_CURVE_COVERAGE_CASE_IDS:
+    configuration = _FINAL_FAMILY_CONFIGURATION.get(runtime.scenario_family_id)
+    if configuration is None:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5 final curve coverage loads only CSV5-201 through CSV5-209",
+            "V5 final replay case uses an unauthorised final family",
+        )
+    expected_case_ids, expected_authoring_status = configuration
+    if runtime.case_id not in expected_case_ids:
+        raise CalibrationSuccessorV5FinalCaseContractError(
+            CalibrationSuccessorV5FinalCaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
+            "V5 final replay case identifier is outside its declared family reservation",
         )
     family = next(
-        item
-        for item in registry.families
-        if item.scenario_family_id == _V5_FINAL_CURVE_COVERAGE_FAMILY_ID
+        item for item in registry.families if item.scenario_family_id == runtime.scenario_family_id
     )
-    if family.authoring_status != "final_curve_coverage_authored":
+    if family.authoring_status != expected_authoring_status:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5 final curve family is not authorised for loading at the current stage",
+            "V5 final family is not authorised for loading at the current stage",
         )
     if (
         family.split is not TraceSplit.FINAL_EVALUATION
@@ -195,7 +218,7 @@ def validate_calibration_successor_v5_final_replay_case_membership(
     ):
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5 final curve family must remain held-out and quarantined",
+            "V5 final family must remain held-out and quarantined",
         )
 
 
@@ -203,23 +226,55 @@ def load_calibration_successor_v5_final_curve_coverage_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationSuccessorV5FinalReplayCase:
-    """Load one CSV5-201..CSV5-209 held-out curve-coverage pair without assessment."""
+    """Load one CSV5-201..CSV5-209 final curve pair without assessment execution."""
 
-    if case_id not in _V5_FINAL_CURVE_COVERAGE_CASE_IDS:
+    return _load_final_replay_case(
+        root,
+        case_id,
+        expected_case_ids=_V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        family_id=_V5_FINAL_CURVE_COVERAGE_FAMILY_ID,
+        boundary_label="final curve-coverage",
+    )
+
+
+def load_calibration_successor_v5_final_position_spread_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationSuccessorV5FinalReplayCase:
+    """Load one CSV5-210..CSV5-218 final position pair without assessment execution."""
+
+    return _load_final_replay_case(
+        root,
+        case_id,
+        expected_case_ids=_V5_FINAL_POSITION_SPREAD_CASE_IDS,
+        family_id=_V5_FINAL_POSITION_SPREAD_FAMILY_ID,
+        boundary_label="final position-spread",
+    )
+
+
+def _load_final_replay_case(
+    root: Path,
+    case_id: str,
+    *,
+    expected_case_ids: tuple[str, ...],
+    family_id: str,
+    boundary_label: str,
+) -> CalibrationSuccessorV5FinalReplayCase:
+    if case_id not in expected_case_ids:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
-            "final curve-coverage loading requires a CSV5-201 through CSV5-209 identifier",
+            f"{boundary_label} loading requires a case identifier from its reserved range",
         )
     resolved_root = root.resolve()
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_curve_coverage_assets=True,
+            allow_final_position_spread_assets=True,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
-            f"V5 final curve root is not authorised for loading: {error}",
+            f"V5 {boundary_label} root is not authorised for loading: {error}",
         ) from error
     runtime_payload = _read_json_asset(
         resolved_root / "final_evaluation" / "inputs" / "cases" / f"{case_id}.json"
@@ -232,7 +287,7 @@ def load_calibration_successor_v5_final_curve_coverage_replay_case(
     except ValidationError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.RUNTIME_SCHEMA_ERROR,
-            f"V5 final runtime case asset schema validation failed: {error}",
+            f"V5 {boundary_label} runtime case asset schema validation failed: {error}",
         ) from error
     try:
         expected_outcomes = CalibrationSuccessorV5FinalExpectedOutcomes.model_validate(
@@ -241,7 +296,7 @@ def load_calibration_successor_v5_final_curve_coverage_replay_case(
     except ValidationError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.OUTCOME_SCHEMA_ERROR,
-            f"V5 final expected-outcome asset schema validation failed: {error}",
+            f"V5 {boundary_label} expected-outcome asset schema validation failed: {error}",
         ) from error
     try:
         replay_case = CalibrationSuccessorV5FinalReplayCase(
@@ -251,8 +306,13 @@ def load_calibration_successor_v5_final_curve_coverage_replay_case(
     except ValidationError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.CASE_ALIGNMENT_ERROR,
-            f"V5 final runtime and expected-outcome assets do not align: {error}",
+            f"V5 {boundary_label} runtime and expected-outcome assets do not align: {error}",
         ) from error
+    if replay_case.runtime_input.scenario_family_id != family_id:
+        raise CalibrationSuccessorV5FinalCaseContractError(
+            CalibrationSuccessorV5FinalCaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
+            f"V5 {boundary_label} case has the wrong scenario family identifier",
+        )
     validate_calibration_successor_v5_final_replay_case_membership(replay_case, registry)
     return replay_case
 
@@ -260,13 +320,37 @@ def load_calibration_successor_v5_final_curve_coverage_replay_case(
 def summarize_final_curve_coverage_workloads(
     replay_cases: tuple[CalibrationSuccessorV5FinalReplayCase, ...],
 ) -> dict[str, int]:
-    """Return an inspectable held-out workload count without using labels for decisions."""
+    """Return held-out curve workload counts without using labels for decisions."""
 
+    return _summarize_final_family_workloads(
+        replay_cases,
+        _V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        "V5 final curve workload summary",
+    )
+
+
+def summarize_final_position_spread_workloads(
+    replay_cases: tuple[CalibrationSuccessorV5FinalReplayCase, ...],
+) -> dict[str, int]:
+    """Return held-out position-spread workload counts without using labels for decisions."""
+
+    return _summarize_final_family_workloads(
+        replay_cases,
+        _V5_FINAL_POSITION_SPREAD_CASE_IDS,
+        "V5 final position workload summary",
+    )
+
+
+def _summarize_final_family_workloads(
+    replay_cases: tuple[CalibrationSuccessorV5FinalReplayCase, ...],
+    expected_case_ids: tuple[str, ...],
+    label: str,
+) -> dict[str, int]:
     replay_case_ids = tuple(case.runtime_input.case_id for case in replay_cases)
-    if replay_case_ids != _V5_FINAL_CURVE_COVERAGE_CASE_IDS:
+    if replay_case_ids != expected_case_ids:
         raise CalibrationSuccessorV5FinalCaseContractError(
             CalibrationSuccessorV5FinalCaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
-            "V5 final curve workload summary requires all nine ordered cases",
+            f"{label} requires all nine ordered cases",
         )
     counts = Counter(case.runtime_input.contexts[0].workload_type.value for case in replay_cases)
     return dict(sorted(counts.items()))

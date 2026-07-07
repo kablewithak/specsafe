@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-successor-v5-case-v1",
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "csv5-final-position-spread-215",
+  "case_id": "CSV5-215",
+  "trace_id": "csv5-final-position-trace-215",
+  "scenario_family_id": "CSV5-FINAL-POSITION-SPREAD",
+  "split": "final_evaluation",
+  "data_role": "held_out_evaluation",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "csv5-final-position-trace-215",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 64051,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-final-position-trace-215",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 64052,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-final-position-trace-215",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 64053,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-final-position-trace-215",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 64054,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    }
+  ]
+}
