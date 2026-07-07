@@ -259,11 +259,18 @@ def load_calibration_successor_v5_calibration_manifest(
             CalibrationSuccessorV5ManifestViolationCode.FINAL_ROOT_INVALID,
             "V5 fit-stage root must retain both artifact and diagnostics files together",
         )
+    final_evaluation_present = "final_evaluation" in present_names
+    fit_diagnostics_present = fit_artifact_names.issubset(present_names)
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_fit_diagnostics_assets=fit_artifact_names.issubset(present_names),
-            allow_calibration_manifest_assets=not fit_artifact_names.issubset(present_names),
+            allow_final_curve_coverage_assets=final_evaluation_present,
+            allow_calibration_fit_diagnostics_assets=(
+                fit_diagnostics_present and not final_evaluation_present
+            ),
+            allow_calibration_manifest_assets=(
+                not fit_diagnostics_present and not final_evaluation_present
+            ),
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5ManifestError(

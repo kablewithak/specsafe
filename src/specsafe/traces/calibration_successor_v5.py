@@ -102,6 +102,9 @@ class CalibrationSuccessorV5RegistryViolationCode(StrEnum):
     CALIBRATION_FIT_DIAGNOSTICS_BOUNDARY_VIOLATION = (
         "calibration_successor_v5_calibration_fit_diagnostics_boundary_violation"
     )
+    FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
+        "calibration_successor_v5_final_curve_coverage_boundary_violation"
+    )
 
 
 class CalibrationSuccessorV5RegistryLoadError(ValueError):
@@ -154,6 +157,7 @@ class CalibrationSuccessorV5ScenarioFamilyRecord(StrictContract):
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
         "calibration_mixed_reliability_contrast_authored",
+        "final_curve_coverage_authored",
         "calibration_manifest_frozen",
     ]
 
@@ -207,6 +211,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
         "calibration_mixed_reliability_contrast_authored",
+        "final_curve_coverage_authored",
         "calibration_manifest_frozen",
         "calibration_fit_diagnostics_retained",
     ]
@@ -239,7 +244,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         default=None,
         pattern=r"^[a-f0-9]{64}$",
     )
-    v5_final_evaluation_runtime_or_outcome_assets_authored: Literal[False]
+    v5_final_evaluation_runtime_or_outcome_assets_authored: bool
     v5_final_evaluation_manifest_authored: Literal[False]
     v5_final_assessment_contract_merged: Literal[True]
     v5_final_heldout_calibration_assessment_authored: Literal[False]
@@ -257,6 +262,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "v5-calibration-manifest-freeze",
         "v5-bounded-monotone-beta-fit-diagnostics",
         "v5-final-evaluation-fixture-authoring",
+        "v5-final-evaluation-position-spread-fixtures",
     ]
 
     @model_validator(mode="after")
@@ -267,11 +273,18 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             raise ValueError("historical data-bearing evidence is prohibited in V5")
         if (
             self.registry_status
-            not in ("calibration_manifest_frozen", "calibration_fit_diagnostics_retained")
+            not in (
+                "calibration_manifest_frozen",
+                "calibration_fit_diagnostics_retained",
+                "final_curve_coverage_authored",
+            )
             and self.v5_calibration_manifest_authored
         ):
             raise ValueError("only post-freeze V5 stages may claim a calibration manifest")
-        if self.registry_status == "calibration_fit_diagnostics_retained":
+        if self.registry_status in (
+            "calibration_fit_diagnostics_retained",
+            "final_curve_coverage_authored",
+        ):
             if not self.v5_calibration_artifact_authored:
                 raise ValueError("V5 fit diagnostics stage requires a frozen calibration artifact")
             if not self.v5_calibration_fit_diagnostics_authored:
@@ -287,8 +300,6 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             or self.frozen_calibration_fit_diagnostics_sha256 is not None
         ):
             raise ValueError("pre-fit V5 stages must not claim calibration artifact evidence")
-        if self.v5_final_evaluation_runtime_or_outcome_assets_authored:
-            raise ValueError("V5-3b does not author final-evaluation assets")
         if self.v5_final_evaluation_manifest_authored:
             raise ValueError("V5-3b does not author a final-evaluation manifest")
         if self.v5_final_heldout_calibration_assessment_authored:
@@ -353,14 +364,15 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
             "No V5 fitter, threshold selection, or parameter mutation is authorized.",
         }
-        if (
-            self.registry_status != "calibration_fit_diagnostics_retained"
-            and not pre_fit_exclusions.issubset(set(self.explicit_exclusions))
-        ):
+        if self.registry_status not in (
+            "calibration_fit_diagnostics_retained",
+            "final_curve_coverage_authored",
+        ) and not pre_fit_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("pre-fit V5 stages must retain no-artifact exclusions")
         if self.registry_status not in (
             "calibration_manifest_frozen",
             "calibration_fit_diagnostics_retained",
+            "final_curve_coverage_authored",
         ) and (
             "No V5 calibration or final-evaluation manifest is present."
             not in self.explicit_exclusions
@@ -498,18 +510,28 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             != "calibration_mixed_reliability_contrast_authored"
         ):
             raise ValueError("mixed-reliability family must be marked authored at V5-3e")
-        if any(
-            family.authoring_status != "reserved_for_v5_case_authoring"
-            for family in remaining_families
-        ):
-            raise ValueError("only calibration families may be authored at V5")
+        final_curve_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CSV5-FINAL-CURVE-COVERAGE"
+        )
+        remaining_final_and_adversarial_families = tuple(
+            family for family in remaining_families if family is not final_curve_family
+        )
         if (
-            "Only CSV5-101..CSV5-148 runtime-input and expected-outcome case pairs "
+            "Only CSV5-101..CSV5-148 calibration runtime-input and expected-outcome case pairs "
             "are authored." not in self.explicit_exclusions
         ):
-            raise ValueError("V5 must state its exact authored-case boundary")
+            raise ValueError("V5 must state its exact frozen calibration boundary")
 
         if self.registry_status == "calibration_mixed_reliability_contrast_authored":
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in remaining_families
+            ):
+                raise ValueError("only calibration families may be authored at V5-3e")
+            if self.v5_final_evaluation_runtime_or_outcome_assets_authored:
+                raise ValueError("V5-3e must not claim final-evaluation assets")
             if self.next_authorized_artifact != "v5-calibration-manifest-freeze":
                 raise ValueError("V5-3e must authorize calibration-manifest freeze next")
             if self.v5_calibration_manifest_authored:
@@ -524,6 +546,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         if self.registry_status not in (
             "calibration_manifest_frozen",
             "calibration_fit_diagnostics_retained",
+            "final_curve_coverage_authored",
         ):
             raise ValueError("V5 registry status is not authorised")
         if not self.v5_calibration_manifest_authored:
@@ -538,20 +561,68 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         ):
             raise ValueError("V5 post-freeze stages must state the frozen calibration boundary")
         if self.registry_status == "calibration_manifest_frozen":
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in remaining_families
+            ):
+                raise ValueError("V5 manifest stage must not claim final assets")
+            if self.v5_final_evaluation_runtime_or_outcome_assets_authored:
+                raise ValueError("V5 manifest stage must not claim final assets")
             if self.next_authorized_artifact != "v5-bounded-monotone-beta-fit-diagnostics":
                 raise ValueError("V5 manifest stage must authorize fit diagnostics next")
             return self
-        if self.next_authorized_artifact != "v5-final-evaluation-fixture-authoring":
-            raise ValueError("V5 fit diagnostics stage must authorize final-fixture authoring next")
-        expected_fit_exclusions = {
-            "V5 bounded-monotone-beta calibration artifact and fit diagnostics are retained "
-            "as calibration-only evidence.",
-            "No V5 final-evaluation asset, final manifest, held-out assessment, scheduler, "
-            "baseline comparison, capacity profile, utility scorer, or runtime control "
-            "is authorized.",
+        if self.registry_status == "calibration_fit_diagnostics_retained":
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in remaining_families
+            ):
+                raise ValueError("V5 fit stage must retain final and adversarial reservations")
+            if self.v5_final_evaluation_runtime_or_outcome_assets_authored:
+                raise ValueError("V5 fit stage must not claim final assets")
+            if self.next_authorized_artifact != "v5-final-evaluation-fixture-authoring":
+                raise ValueError(
+                    "V5 fit diagnostics stage must authorize final-fixture authoring next"
+                )
+            expected_fit_exclusions = {
+                "V5 bounded-monotone-beta calibration artifact and fit diagnostics are retained "
+                "as calibration-only evidence.",
+                "No V5 final-evaluation asset, final manifest, held-out assessment, scheduler, "
+                "baseline comparison, capacity profile, utility scorer, or runtime control "
+                "is authorized.",
+            }
+            if not expected_fit_exclusions.issubset(set(self.explicit_exclusions)):
+                raise ValueError(
+                    "V5 fit diagnostics stage must retain its calibration-only exclusions"
+                )
+            return self
+
+        if final_curve_family.authoring_status != "final_curve_coverage_authored":
+            raise ValueError("V5 final curve-coverage family must be marked authored")
+        if any(
+            family.authoring_status != "reserved_for_v5_case_authoring"
+            for family in remaining_final_and_adversarial_families
+        ):
+            raise ValueError(
+                "V5 final curve stage must retain later final and adversarial families"
+            )
+        if not self.v5_final_evaluation_runtime_or_outcome_assets_authored:
+            raise ValueError("V5 final curve stage requires final-evaluation case assets")
+        if self.v5_final_evaluation_manifest_authored:
+            raise ValueError("V5 final curve stage must not claim a final-evaluation manifest")
+        if self.v5_final_heldout_calibration_assessment_authored:
+            raise ValueError("V5 final curve stage must not claim a held-out assessment")
+        if self.next_authorized_artifact != "v5-final-evaluation-position-spread-fixtures":
+            raise ValueError(
+                "V5 final curve stage must authorize final position-spread fixtures next"
+            )
+        expected_final_curve_exclusions = {
+            "Only CSV5-201..CSV5-209 final-evaluation runtime-input and expected-outcome "
+            "case pairs are authored.",
+            "No V5 final-evaluation manifest, held-out assessment, scheduler, baseline comparison, "
+            "capacity profile, utility scorer, or runtime control is authorized.",
         }
-        if not expected_fit_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError("V5 fit diagnostics stage must retain its calibration-only exclusions")
+        if not expected_final_curve_exclusions.issubset(set(self.explicit_exclusions)):
+            raise ValueError("V5 final curve stage must retain its held-out quarantine exclusions")
         return self
 
 
@@ -564,6 +635,7 @@ def load_calibration_successor_v5_scenario_family_registry(
     allow_calibration_mixed_reliability_contrast_assets: bool = False,
     allow_calibration_manifest_assets: bool = False,
     allow_calibration_fit_diagnostics_assets: bool = False,
+    allow_final_curve_coverage_assets: bool = False,
 ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
     """Load V5 registry only through one explicit active evidence boundary."""
 
@@ -575,6 +647,7 @@ def load_calibration_successor_v5_scenario_family_registry(
             allow_calibration_mixed_reliability_contrast_assets,
             allow_calibration_manifest_assets,
             allow_calibration_fit_diagnostics_assets,
+            allow_final_curve_coverage_assets,
         )
     )
     if active_boundary_count > 1:
@@ -584,7 +657,9 @@ def load_calibration_successor_v5_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_calibration_fit_diagnostics_assets:
+    if allow_final_curve_coverage_assets:
+        assert_calibration_successor_v5_final_curve_coverage_fixture_root(root)
+    elif allow_calibration_fit_diagnostics_assets:
         assert_calibration_successor_v5_calibration_fit_diagnostics_fixture_root(root)
     elif allow_calibration_manifest_assets:
         assert_calibration_successor_v5_calibration_manifest_fixture_root(root)
@@ -625,6 +700,13 @@ def load_calibration_successor_v5_scenario_family_registry(
             CalibrationSuccessorV5RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
+    if allow_final_curve_coverage_assets:
+        if registry.registry_status != "final_curve_coverage_authored":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                "V5 registry has not reached the quarantined final curve-coverage boundary",
+            )
+        return registry
     if allow_calibration_fit_diagnostics_assets:
         if registry.registry_status != "calibration_fit_diagnostics_retained":
             raise CalibrationSuccessorV5RegistryLoadError(
@@ -817,6 +899,97 @@ def assert_calibration_successor_v5_calibration_fit_diagnostics_fixture_root(
         ),
         boundary_name="calibration fit diagnostics",
     )
+
+
+def assert_calibration_successor_v5_final_curve_coverage_fixture_root(root: Path) -> None:
+    """Validate frozen calibration evidence plus only CSV5-201..CSV5-209 final pairs."""
+
+    resolved_root = root.resolve()
+    if not resolved_root.is_dir():
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+            "V5 final curve-coverage fixture root must be an existing directory",
+        )
+    allowed_root_names = {
+        *_V5_ROOT_METADATA_FILENAMES,
+        _V5_CALIBRATION_MANIFEST_FILENAME,
+        _V5_CALIBRATION_ARTIFACT_FILENAME,
+        _V5_CALIBRATION_FIT_DIAGNOSTICS_FILENAME,
+        "inputs",
+        "expected_outcomes",
+        "final_evaluation",
+    }
+    present_names = {child.name for child in resolved_root.iterdir()}
+    if present_names != allowed_root_names:
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            "V5 final curve-coverage root has unexpected or missing paths: "
+            + ", ".join(sorted(present_names ^ allowed_root_names)),
+        )
+    metadata_root_names = allowed_root_names - {
+        "inputs",
+        "expected_outcomes",
+        "final_evaluation",
+    }
+    for filename in sorted(metadata_root_names):
+        try:
+            _reject_historical_data_bearing_reference((resolved_root / filename).read_bytes())
+        except OSError as error:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+                f"unable to read V5 metadata {filename}: {error}",
+            ) from error
+    calibration_case_ids = (
+        *_V5_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+        *_V5_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+        *_V5_CALIBRATION_WORKLOAD_VARIATION_CASE_IDS,
+        *_V5_CALIBRATION_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+    )
+    _assert_case_directory(
+        resolved_root / "inputs" / "cases",
+        calibration_case_ids,
+        CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+        "final curve coverage calibration",
+    )
+    _assert_case_directory(
+        resolved_root / "expected_outcomes" / "cases",
+        calibration_case_ids,
+        CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+        "final curve coverage calibration",
+    )
+    for container in (resolved_root / "inputs", resolved_root / "expected_outcomes"):
+        if {child.name for child in container.iterdir()} != {"cases"}:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                "V5 final curve calibration container has unexpected paths",
+            )
+    final_root = resolved_root / "final_evaluation"
+    final_root_names = (
+        {child.name for child in final_root.iterdir()} if final_root.is_dir() else set()
+    )
+    if not final_root.is_dir() or final_root_names != {"inputs", "expected_outcomes"}:
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+            "V5 final curve root must contain only separate inputs and expected_outcomes",
+        )
+    _assert_case_directory(
+        final_root / "inputs" / "cases",
+        _V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+        "final curve coverage",
+    )
+    _assert_case_directory(
+        final_root / "expected_outcomes" / "cases",
+        _V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+        "final curve coverage",
+    )
+    for container in (final_root / "inputs", final_root / "expected_outcomes"):
+        if {child.name for child in container.iterdir()} != {"cases"}:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_CURVE_COVERAGE_BOUNDARY_VIOLATION,
+                "V5 final curve evidence container has unexpected paths",
+            )
 
 
 def _assert_root_layout(

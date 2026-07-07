@@ -284,9 +284,11 @@ def load_v5_bounded_monotone_beta_calibration_fit(
 
     resolved_root = root.resolve()
     try:
+        final_evaluation_present = (resolved_root / "final_evaluation").is_dir()
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_fit_diagnostics_assets=True,
+            allow_final_curve_coverage_assets=final_evaluation_present,
+            allow_calibration_fit_diagnostics_assets=not final_evaluation_present,
         )
         manifest = load_calibration_successor_v5_calibration_manifest(resolved_root)
     except (CalibrationSuccessorV5RegistryLoadError, CalibrationSuccessorV5ManifestError) as error:
