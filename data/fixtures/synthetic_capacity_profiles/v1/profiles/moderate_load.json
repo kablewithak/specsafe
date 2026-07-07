@@ -1,0 +1,32 @@
+{
+  "capacity_unit": "normalized_capacity_points",
+  "load_unit": "request_token_load_units",
+  "profile_id": "synthetic-moderate-load-v1",
+  "profile_kind": "moderate_load",
+  "profile_version": "v1",
+  "provenance_note": "Synthetic moderate-load control for deterministic replay; not a serving measurement.",
+  "schema_version": "synthetic-capacity-profile-v1",
+  "source": "synthetic",
+  "windows": [
+    {
+      "available_capacity_units": 95.0,
+      "marginal_verification_cost_units": 0.25,
+      "maximum_request_token_load": 256
+    },
+    {
+      "available_capacity_units": 75.0,
+      "marginal_verification_cost_units": 0.75,
+      "maximum_request_token_load": 1024
+    },
+    {
+      "available_capacity_units": 50.0,
+      "marginal_verification_cost_units": 1.5,
+      "maximum_request_token_load": 4096
+    },
+    {
+      "available_capacity_units": 30.0,
+      "marginal_verification_cost_units": 2.5,
+      "maximum_request_token_load": null
+    }
+  ]
+}
