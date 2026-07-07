@@ -1,6 +1,6 @@
 """Typed V5 calibration case contracts and staged loaders.
 
-V5-3c authorises only CSV5-101 through CSV5-124. Runtime inputs and post-hoc
+V5-3d authorises only CSV5-101 through CSV5-136. Runtime inputs and post-hoc
 outcomes stay physically separate. This boundary does not fit calibration, freeze a
 manifest, load final evidence, or execute a scheduler.
 """
@@ -29,21 +29,21 @@ from specsafe.traces.calibration_successor_v5 import (
     load_calibration_successor_v5_scenario_family_registry,
 )
 
-_V5_CURVE_COVERAGE_CASE_IDS = tuple(
-    f"CSV5-{number:03d}" for number in range(101, 113)
-)
-_V5_POSITION_SPREAD_CASE_IDS = tuple(
-    f"CSV5-{number:03d}" for number in range(113, 125)
-)
+_V5_CURVE_COVERAGE_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(101, 113))
+_V5_POSITION_SPREAD_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(113, 125))
+_V5_WORKLOAD_VARIATION_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(125, 137))
 _V5_CURVE_COVERAGE_FAMILY_ID = "CSV5-CAL-CURVE-COVERAGE"
 _V5_POSITION_SPREAD_FAMILY_ID = "CSV5-CAL-POSITION-SPREAD"
+_V5_WORKLOAD_VARIATION_FAMILY_ID = "CSV5-CAL-WORKLOAD-VARIATION"
 _V5_CASE_IDS_BY_FAMILY = {
     _V5_CURVE_COVERAGE_FAMILY_ID: _V5_CURVE_COVERAGE_CASE_IDS,
     _V5_POSITION_SPREAD_FAMILY_ID: _V5_POSITION_SPREAD_CASE_IDS,
+    _V5_WORKLOAD_VARIATION_FAMILY_ID: _V5_WORKLOAD_VARIATION_CASE_IDS,
 }
 _V5_AUTHORED_STATUS_BY_FAMILY = {
     _V5_CURVE_COVERAGE_FAMILY_ID: "calibration_curve_coverage_authored",
     _V5_POSITION_SPREAD_FAMILY_ID: "calibration_position_spread_authored",
+    _V5_WORKLOAD_VARIATION_FAMILY_ID: "calibration_workload_variation_authored",
 }
 
 
@@ -56,9 +56,7 @@ class CalibrationSuccessorV5CaseViolationCode(StrEnum):
     REGISTRY_MEMBERSHIP_ERROR = "calibration_successor_v5_registry_membership_error"
     UNTRUSTED_REGISTRY = "calibration_successor_v5_untrusted_registry"
     CASE_ASSET_LAYOUT_ERROR = "calibration_successor_v5_case_asset_layout_error"
-    CASE_ASSET_PROVENANCE_MISMATCH = (
-        "calibration_successor_v5_case_asset_provenance_mismatch"
-    )
+    CASE_ASSET_PROVENANCE_MISMATCH = "calibration_successor_v5_case_asset_provenance_mismatch"
 
 
 class CalibrationSuccessorV5CaseContractError(ValueError):
@@ -82,6 +80,7 @@ class CalibrationSuccessorV5RuntimeInput(StrictContract):
     scenario_family_id: Literal[
         "CSV5-CAL-CURVE-COVERAGE",
         "CSV5-CAL-POSITION-SPREAD",
+        "CSV5-CAL-WORKLOAD-VARIATION",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
@@ -117,6 +116,7 @@ class CalibrationSuccessorV5ExpectedOutcomes(StrictContract):
     scenario_family_id: Literal[
         "CSV5-CAL-CURVE-COVERAGE",
         "CSV5-CAL-POSITION-SPREAD",
+        "CSV5-CAL-WORKLOAD-VARIATION",
     ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
@@ -191,7 +191,7 @@ def validate_calibration_successor_v5_replay_case_membership(
     replay_case: CalibrationSuccessorV5ReplayCase,
     registry: CalibrationSuccessorV5ScenarioFamilyRegistry,
 ) -> None:
-    """Verify one case belongs to an authorised V5-3c calibration family."""
+    """Verify one case belongs to an authorised V5-3d calibration family."""
 
     if type(registry) is not CalibrationSuccessorV5ScenarioFamilyRegistry:
         raise CalibrationSuccessorV5CaseContractError(
@@ -204,12 +204,10 @@ def validate_calibration_successor_v5_replay_case_membership(
     if allowed_case_ids is None or expected_status is None:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5-3c loads only curve-coverage and position-spread calibration families",
+            "V5-3d loads only curve, position-spread, and workload-variation families",
         )
     family = next(
-        item
-        for item in registry.families
-        if item.scenario_family_id == runtime.scenario_family_id
+        item for item in registry.families if item.scenario_family_id == runtime.scenario_family_id
     )
     if family.authoring_status != expected_status:
         raise CalibrationSuccessorV5CaseContractError(
@@ -251,6 +249,20 @@ def load_calibration_successor_v5_position_spread_replay_case(
     return _load_calibration_successor_v5_replay_case(root, case_id)
 
 
+def load_calibration_successor_v5_workload_variation_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationSuccessorV5ReplayCase:
+    """Load one V5-3d workload-variation calibration case pair."""
+
+    if case_id not in _V5_WORKLOAD_VARIATION_CASE_IDS:
+        raise CalibrationSuccessorV5CaseContractError(
+            CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            "workload-variation loading requires a CSV5-125 through CSV5-136 identifier",
+        )
+    return _load_calibration_successor_v5_replay_case(root, case_id)
+
+
 def _load_calibration_successor_v5_replay_case(
     root: Path,
     case_id: str,
@@ -259,16 +271,14 @@ def _load_calibration_successor_v5_replay_case(
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_position_spread_assets=True,
+            allow_calibration_workload_variation_assets=True,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
             f"V5 case asset root is not authorised for loading: {error}",
         ) from error
-    runtime_payload = _read_json_asset(
-        resolved_root / "inputs" / "cases" / f"{case_id}.json"
-    )
+    runtime_payload = _read_json_asset(resolved_root / "inputs" / "cases" / f"{case_id}.json")
     outcomes_payload = _read_json_asset(
         resolved_root / "expected_outcomes" / "cases" / f"{case_id}.json"
     )
@@ -280,9 +290,7 @@ def _load_calibration_successor_v5_replay_case(
             f"V5 runtime case asset schema validation failed: {error}",
         ) from error
     try:
-        expected_outcomes = CalibrationSuccessorV5ExpectedOutcomes.model_validate(
-            outcomes_payload
-        )
+        expected_outcomes = CalibrationSuccessorV5ExpectedOutcomes.model_validate(outcomes_payload)
     except ValidationError as error:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.OUTCOME_SCHEMA_ERROR,
@@ -300,6 +308,7 @@ def _load_calibration_successor_v5_replay_case(
         ) from error
     validate_calibration_successor_v5_replay_case_membership(replay_case, registry)
     return replay_case
+
 
 def _read_json_asset(path: Path) -> Mapping[str, Any]:
     try:

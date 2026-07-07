@@ -1,7 +1,7 @@
 {
   "calibration_method_id": "bounded-monotone-beta-calibration-v5",
   "explicit_exclusions": [
-    "Only CSV5-101..CSV5-124 runtime-input and expected-outcome case pairs are authored.",
+    "Only CSV5-101..CSV5-136 runtime-input and expected-outcome case pairs are authored.",
     "No V5 calibration or final-evaluation manifest is present.",
     "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
     "No V5 fitter, threshold selection, or parameter mutation is authorized.",
@@ -69,7 +69,7 @@
       "workload_allocation": null
     },
     {
-      "authoring_status": "reserved_for_v5_case_authoring",
+      "authoring_status": "calibration_workload_variation_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": false,
       "primary_data_role": "calibration",
@@ -291,7 +291,7 @@
   "historical_data_bearing_evidence_used": false,
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v5-bounded-monotone-beta-calibration-eligibility-charter-v1",
-  "next_authorized_artifact": "v5-calibration-workload-variation-fixtures",
+  "next_authorized_artifact": "v5-calibration-mixed-reliability-contrast-fixtures",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -301,7 +301,7 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "calibration_position_spread_authored",
+  "registry_status": "calibration_workload_variation_authored",
   "schema_version": "calibration-successor-v5-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v5_calibration_artifact_authored": false,
