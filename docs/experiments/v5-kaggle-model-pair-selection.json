@@ -1,0 +1,71 @@
+{
+  "selection_id": "v5-kaggle-model-pair-selection-v1",
+  "selection_status": "provisional_preflight_required",
+  "selected_on": "2026-07-08",
+  "authorization": {
+    "phase5_gate_status": "passes_controlled_synthetic_phase5_gate",
+    "kaggle_experiment_authorized": true,
+    "public_replay_release_authorized": false,
+    "runtime_control_eligible": false
+  },
+  "pair": {
+    "draft_model": {
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "role": "draft",
+      "family": "Qwen2.5",
+      "training_stage": "pretraining",
+      "parameter_count": "0.49B",
+      "license": "apache-2.0",
+      "revision": null
+    },
+    "target_model": {
+      "model_id": "Qwen/Qwen2.5-1.5B",
+      "role": "target",
+      "family": "Qwen2.5",
+      "training_stage": "pretraining",
+      "parameter_count": "1.54B",
+      "license": "apache-2.0",
+      "revision": null
+    }
+  },
+  "selection_rationale": [
+    "Same Qwen2.5 base-model family creates a plausible token-level experimental boundary.",
+    "The 0.5B-to-1.5B size gap is small enough for a controlled Kaggle pilot.",
+    "Both model repositories report Apache-2.0 licensing.",
+    "Base models are selected for direct next-token trace collection, not chat quality."
+  ],
+  "required_preflight_checks": [
+    "resolve immutable revisions",
+    "record source and license",
+    "compare tokenizer class names",
+    "compare vocabulary sizes",
+    "compare complete token-to-id mappings",
+    "compare special-token maps and IDs",
+    "compare token IDs for fixed self-authored probes",
+    "record environment metadata",
+    "access target and draft logits"
+  ],
+  "failure_policy": {
+    "on_preflight_failure": "stop_and_retain_failure_record",
+    "alternate_pair_without_new_adr": false,
+    "trace_collection_allowed": false
+  },
+  "sources_verified_on": "2026-07-08",
+  "sources": [
+    {
+      "publisher": "Qwen / Hugging Face",
+      "artifact": "Qwen/Qwen2.5-0.5B",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B"
+    },
+    {
+      "publisher": "Qwen / Hugging Face",
+      "artifact": "Qwen/Qwen2.5-1.5B",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B"
+    },
+    {
+      "publisher": "Qwen",
+      "artifact": "Qwen2.5 release note",
+      "url": "https://qwenlm.github.io/blog/qwen2.5/"
+    }
+  ]
+}
