@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-102",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-light-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.9,
+      "decode_round": 0,
+      "request_id": "matched-policy-light-neutral-request-v1",
+      "trace_id": "matched-policy-light-neutral-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-light-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.75,
+      "decode_round": 0,
+      "request_id": "matched-policy-light-neutral-request-v1",
+      "trace_id": "matched-policy-light-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5201
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-light-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.65,
+      "decode_round": 0,
+      "request_id": "matched-policy-light-neutral-request-v1",
+      "trace_id": "matched-policy-light-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5201,
+        5202
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-light-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.6,
+      "decode_round": 0,
+      "request_id": "matched-policy-light-neutral-request-v1",
+      "trace_id": "matched-policy-light-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5201,
+        5202,
+        5203
+      ],
+      "workload_type": "code"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-light-neutral-v1",
+  "generation_note": "Self-authored light-load neutral control; extra verification remains inexpensive in declared synthetic units.",
+  "request_id": "matched-policy-light-neutral-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "development",
+  "trace_id": "matched-policy-light-neutral-trace-v1"
+}

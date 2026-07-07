@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-106",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.4,
+      "decode_round": 0,
+      "request_id": "matched-policy-unsafe-lookahead-request-v1",
+      "trace_id": "matched-policy-unsafe-lookahead-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.35,
+      "decode_round": 0,
+      "request_id": "matched-policy-unsafe-lookahead-request-v1",
+      "trace_id": "matched-policy-unsafe-lookahead-trace-v1",
+      "visible_prefix_token_ids": [
+        5601
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.3,
+      "decode_round": 0,
+      "request_id": "matched-policy-unsafe-lookahead-request-v1",
+      "trace_id": "matched-policy-unsafe-lookahead-trace-v1",
+      "visible_prefix_token_ids": [
+        5601,
+        5602
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.25,
+      "decode_round": 0,
+      "request_id": "matched-policy-unsafe-lookahead-request-v1",
+      "trace_id": "matched-policy-unsafe-lookahead-trace-v1",
+      "visible_prefix_token_ids": [
+        5601,
+        5602,
+        5603
+      ],
+      "workload_type": "structured_text"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-unsafe-lookahead-v1",
+  "generation_note": "Self-authored adversarial look-ahead control; retrospective outcome access must remain causal-fail and excluded from valid scoring.",
+  "request_id": "matched-policy-unsafe-lookahead-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "adversarial_regression",
+  "trace_id": "matched-policy-unsafe-lookahead-trace-v1"
+}

@@ -1,0 +1,140 @@
+{
+  "case_count": 6,
+  "entries": [
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2696,
+      "case_id": "MPC5-101",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-101.json",
+      "sha256": "c0c802459d62821db09bee18466d147c0f31f11fb107b2cf9eeab35f4ba1fa60",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1240,
+      "case_id": "MPC5-101",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-101.json",
+      "sha256": "c24c3b56c7db81d442c9c92084ca9fa707944d37efd8c61b4d5464add8ad27ab",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2603,
+      "case_id": "MPC5-102",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-102.json",
+      "sha256": "273fddeef40ca5ed895d8ee901874df25fe0b56834be44ee8deaea956c411892",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1246,
+      "case_id": "MPC5-102",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-102.json",
+      "sha256": "1074665fe5cb426db8babe5107e74ec4a86b2909b0bd0241b49d4176354591c5",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2740,
+      "case_id": "MPC5-103",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-103.json",
+      "sha256": "86c7bd956fa9e08af9c49866161f3fcd0766fa148a022f674a94347e4c5c807e",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1306,
+      "case_id": "MPC5-103",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-103.json",
+      "sha256": "9bc5e5ea1645a6177839c456939be4303ef12d3031e7aee7fbe6d9335cb09590",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2803,
+      "case_id": "MPC5-104",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-104.json",
+      "sha256": "a98fbdbc11b59e186e6600377d6f0a297c62edec7a7cbc23927ca55ce08d26dd",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1324,
+      "case_id": "MPC5-104",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-104.json",
+      "sha256": "d03b80edac5dce94c1b6066a6e05fe13e10421fd8bb74e34232866721c833494",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2758,
+      "case_id": "MPC5-105",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-105.json",
+      "sha256": "843dfd288a43ce1ebcfde8b8f9b5b7af8d39008f135ee3dd8eccb181cf9a4490",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1294,
+      "case_id": "MPC5-105",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-105.json",
+      "sha256": "be828951611758aa08b9c9201fb8b20dc26ec85ce18819173b9d2f3345e477dc",
+      "source_type": "synthetic",
+      "split": "development"
+    },
+    {
+      "artifact_kind": "runtime_input",
+      "byte_count": 2757,
+      "case_id": "MPC5-106",
+      "data_role": "synthetic_fixture",
+      "relative_path": "inputs/cases/MPC5-106.json",
+      "sha256": "1558429c154c180505848630a220e898fc17bcdde46bf2cd5f42098333e72964",
+      "source_type": "synthetic",
+      "split": "adversarial_regression"
+    },
+    {
+      "artifact_kind": "expected_outcomes",
+      "byte_count": 1280,
+      "case_id": "MPC5-106",
+      "data_role": "synthetic_fixture",
+      "relative_path": "expected_outcomes/cases/MPC5-106.json",
+      "sha256": "225a944d19841857fb4fedc431e0f7b690ab2a55cbc75e8018572b480fa20983",
+      "source_type": "synthetic",
+      "split": "adversarial_regression"
+    }
+  ],
+  "fixture_set_id": "synthetic-matched-policy-comparison-v1",
+  "fixture_set_version": "1.0.0",
+  "generation_note": "Self-authored, immutable diagnostic corpus for controlled case-level matched policy comparison. It is development/adversarial evidence only, not calibration or held-out final evaluation evidence.",
+  "schema_version": "synthetic-trace-fixture-manifest-v1",
+  "source_type": "synthetic",
+  "split_counts": [
+    {
+      "case_count": 5,
+      "split": "development"
+    },
+    {
+      "case_count": 1,
+      "split": "adversarial_regression"
+    }
+  ]
+}
