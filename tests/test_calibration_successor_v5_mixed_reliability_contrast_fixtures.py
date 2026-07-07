@@ -102,10 +102,10 @@ def test_mixed_reliability_retains_heldout_containment_and_adversarial_quarantin
     final_outcomes = _FIXTURE_ROOT / "final_evaluation" / "expected_outcomes" / "cases"
 
     assert tuple(sorted(path.stem for path in final_inputs.glob("*.json"))) == tuple(
-        f"CSV5-{number:03d}" for number in range(201, 228)
+        f"CSV5-{number:03d}" for number in range(201, 237)
     )
     assert tuple(sorted(path.stem for path in final_outcomes.glob("*.json"))) == tuple(
-        f"CSV5-{number:03d}" for number in range(201, 228)
+        f"CSV5-{number:03d}" for number in range(201, 237)
     )
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
     assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()

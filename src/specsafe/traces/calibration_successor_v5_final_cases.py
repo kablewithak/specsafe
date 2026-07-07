@@ -1,9 +1,9 @@
-"""Quarantined V5 final-evaluation curve-coverage case contracts and loaders.
+"""Quarantined V5 quarantined final-evaluation case contracts and loaders.
 
-CSV5-201 through CSV5-209 are fresh held-out final-evaluation case pairs. They are
+CSV5-201 through CSV5-236 are fresh held-out final-evaluation case pairs. They are
 physically separate from V5 calibration assets and may not be supplied to fitting,
 threshold selection, scheduling, policy execution, or a held-out assessment. This
-module authorizes only the first held-out family; it does not create a final manifest.
+module authorizes fixture loading only; it does not create a final manifest.
 """
 
 from __future__ import annotations
@@ -34,9 +34,13 @@ from specsafe.traces.calibration_successor_v5 import (
 _V5_FINAL_CURVE_COVERAGE_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(201, 210))
 _V5_FINAL_POSITION_SPREAD_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(210, 219))
 _V5_FINAL_WORKLOAD_VARIATION_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(219, 228))
+_V5_FINAL_MIXED_RELIABILITY_CONTRAST_CASE_IDS = tuple(
+    f"CSV5-{number:03d}" for number in range(228, 237)
+)
 _V5_FINAL_CURVE_COVERAGE_FAMILY_ID = "CSV5-FINAL-CURVE-COVERAGE"
 _V5_FINAL_POSITION_SPREAD_FAMILY_ID = "CSV5-FINAL-POSITION-SPREAD"
 _V5_FINAL_WORKLOAD_VARIATION_FAMILY_ID = "CSV5-FINAL-WORKLOAD-VARIATION"
+_V5_FINAL_MIXED_RELIABILITY_CONTRAST_FAMILY_ID = "CSV5-FINAL-MIXED-RELIABILITY-CONTRAST"
 _FINAL_FAMILY_CONFIGURATION = {
     _V5_FINAL_CURVE_COVERAGE_FAMILY_ID: (
         _V5_FINAL_CURVE_COVERAGE_CASE_IDS,
@@ -49,6 +53,10 @@ _FINAL_FAMILY_CONFIGURATION = {
     _V5_FINAL_WORKLOAD_VARIATION_FAMILY_ID: (
         _V5_FINAL_WORKLOAD_VARIATION_CASE_IDS,
         "final_workload_variation_authored",
+    ),
+    _V5_FINAL_MIXED_RELIABILITY_CONTRAST_FAMILY_ID: (
+        _V5_FINAL_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+        "final_mixed_reliability_contrast_authored",
     ),
 }
 
@@ -87,6 +95,7 @@ class CalibrationSuccessorV5FinalRuntimeInput(StrictContract):
         "CSV5-FINAL-CURVE-COVERAGE",
         "CSV5-FINAL-POSITION-SPREAD",
         "CSV5-FINAL-WORKLOAD-VARIATION",
+        "CSV5-FINAL-MIXED-RELIABILITY-CONTRAST",
     ]
     split: Literal[TraceSplit.FINAL_EVALUATION]
     data_role: Literal[TraceDataRole.HELD_OUT_EVALUATION]
@@ -121,6 +130,7 @@ class CalibrationSuccessorV5FinalExpectedOutcomes(StrictContract):
         "CSV5-FINAL-CURVE-COVERAGE",
         "CSV5-FINAL-POSITION-SPREAD",
         "CSV5-FINAL-WORKLOAD-VARIATION",
+        "CSV5-FINAL-MIXED-RELIABILITY-CONTRAST",
     ]
     split: Literal[TraceSplit.FINAL_EVALUATION]
     data_role: Literal[TraceDataRole.HELD_OUT_EVALUATION]
@@ -275,6 +285,21 @@ def load_calibration_successor_v5_final_workload_variation_replay_case(
     )
 
 
+def load_calibration_successor_v5_final_mixed_reliability_contrast_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationSuccessorV5FinalReplayCase:
+    """Load one CSV5-228..CSV5-236 final mixed-reliability pair without assessment."""
+
+    return _load_final_replay_case(
+        root,
+        case_id,
+        expected_case_ids=_V5_FINAL_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+        family_id=_V5_FINAL_MIXED_RELIABILITY_CONTRAST_FAMILY_ID,
+        boundary_label="final mixed-reliability contrast",
+    )
+
+
 def _load_final_replay_case(
     root: Path,
     case_id: str,
@@ -292,7 +317,7 @@ def _load_final_replay_case(
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_workload_variation_assets=True,
+            allow_final_mixed_reliability_contrast_assets=True,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(
@@ -373,6 +398,18 @@ def summarize_final_workload_variation_workloads(
         replay_cases,
         _V5_FINAL_WORKLOAD_VARIATION_CASE_IDS,
         "V5 final workload summary",
+    )
+
+
+def summarize_final_mixed_reliability_contrast_workloads(
+    replay_cases: tuple[CalibrationSuccessorV5FinalReplayCase, ...],
+) -> dict[str, int]:
+    """Return held-out mixed-reliability workload counts without policy execution."""
+
+    return _summarize_final_family_workloads(
+        replay_cases,
+        _V5_FINAL_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+        "V5 final mixed-reliability workload summary",
     )
 
 
