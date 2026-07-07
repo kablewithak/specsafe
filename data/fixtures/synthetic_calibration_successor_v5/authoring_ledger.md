@@ -4,10 +4,10 @@
 
 ```text
 fixture_set_id=synthetic-calibration-successor-v5
-registry_status=calibration_curve_coverage_authored
-runtime_input_assets=12
-expected_outcome_assets=12
-calibration_observations_authored=48
+registry_status=calibration_position_spread_authored
+runtime_input_assets=24
+expected_outcome_assets=24
+calibration_observations_authored=96
 calibration_manifest=absent
 calibration_artifact=absent
 fit_diagnostics=absent
@@ -18,17 +18,18 @@ heldout_result=absent
 
 ## Authoring record
 
-`CSV5-101..CSV5-112` are self-authored synthetic calibration-only curve-coverage case pairs.
-They provide four workloads each for `structured_text`, `code`, and `open_ended_chat`, with four
-candidate positions per case. Runtime inputs contain only decision-time scheduler context; labels
-and candidate token identifiers remain in the separate expected-outcome assets.
+`CSV5-101..CSV5-112` remain self-authored synthetic calibration-only curve-coverage pairs.
+`CSV5-113..CSV5-124` are self-authored synthetic calibration-only position-spread pairs. They
+balance `structured_text`, `code`, and `open_ended_chat` workloads across four cases each, with
+four candidate positions per case. Runtime inputs contain only decision-time scheduler context;
+labels and candidate token identifiers remain in separate expected-outcome assets.
 
 ## Evidence boundary
 
-This slice does not create a calibration manifest. The 48 authored observations are not yet a
-frozen fit corpus and may not be used for a V5 fit until the complete 48-case calibration corpus
-is authored and its manifest is frozen.
+This slice does not create a calibration manifest. The 96 authored observations are not yet a
+frozen fit corpus and may not be used for a V5 fit until all 48 calibration cases are authored and
+one calibration manifest is frozen.
 
 ## Next authorised artifact
 
-`v5-calibration-position-spread-fixtures`
+`v5-calibration-workload-variation-fixtures`

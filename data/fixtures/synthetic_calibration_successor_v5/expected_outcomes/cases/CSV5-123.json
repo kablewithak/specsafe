@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-successor-v5-case-v1",
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "csv5-calibration-position-spread-123",
+  "case_id": "CSV5-123",
+  "trace_id": "csv5-position-trace-123",
+  "scenario_family_id": "CSV5-CAL-POSITION-SPREAD",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "csv5-position-trace-123",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 53201,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-position-trace-123",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 53202,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-position-trace-123",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 53203,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-position-trace-123",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 53204,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    }
+  ]
+}
