@@ -25,8 +25,8 @@ def test_position_spread_inventory_is_exact_and_physically_separated() -> None:
 
     assert expected_names.issubset(input_names)
     assert expected_names.issubset(outcome_names)
-    assert len(input_names) == 36
-    assert len(outcome_names) == 36
+    assert len(input_names) == 48
+    assert len(outcome_names) == 48
 
 
 def test_position_spread_balances_workloads_and_covers_each_candidate_position() -> None:

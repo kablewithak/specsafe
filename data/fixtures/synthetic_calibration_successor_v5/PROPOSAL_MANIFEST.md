@@ -1,19 +1,20 @@
-# V5 Calibration Workload-Variation Proposal Manifest
+# V5 Calibration Mixed-Reliability Contrast Proposal Manifest
 
 ## Active boundary
 
-V5-3d retains the curve-coverage and position-spread families and authors only the fresh
-calibration workload-variation family. The active case pairs are:
+V5-3e retains the curve-coverage, position-spread, and workload-variation families and
+authors only the fresh calibration mixed-reliability-contrast family. The active case pairs are:
 
 ```text
-CSV5-101..CSV5-136
+CSV5-101..CSV5-148
 ```
 
-`CSV5-125..CSV5-136` add twelve fresh calibration-only cases with four candidate positions per
+`CSV5-137..CSV5-148` add twelve fresh calibration-only cases with four candidate positions per
 case. They balance `structured_text`, `code`, and `open_ended_chat` workloads across four cases
-each while retaining overlapping confidence bands and distinct observed-outcome mixes.
+each. Six cases deliberately pair high stated confidence with weak observed acceptance, while six
+contrast cases pair lower stated confidence with stronger observed acceptance.
 
-The workload labels are diagnostic provenance. V5 remains a single globally shared bounded
+The contrast is a calibration diagnostic only. V5 remains one globally shared bounded
 monotone-beta calibration method: no workload-specific parameters, thresholds, or policy rules are
 introduced by this slice.
 
@@ -23,13 +24,12 @@ introduced by this slice.
 scenario_family_registry.json
 PROPOSAL_MANIFEST.md
 authoring_ledger.md
-inputs/cases/CSV5-101.json .. CSV5-136.json
-expected_outcomes/cases/CSV5-101.json .. CSV5-136.json
+inputs/cases/CSV5-101.json .. CSV5-148.json
+expected_outcomes/cases/CSV5-101.json .. CSV5-148.json
 ```
 
 ## Quarantine and exclusions
 
-- `CSV5-137..CSV5-148` remain reserved and unauthored.
 - `CSV5-201..CSV5-236` final-evaluation reservations remain quarantined.
 - `CSV5-301..CSV5-312` adversarial-regression reservations remain quarantined.
 - No calibration or final-evaluation manifest exists.
@@ -39,4 +39,4 @@ expected_outcomes/cases/CSV5-101.json .. CSV5-136.json
 
 ## Next authorised artifact
 
-`v5-calibration-mixed-reliability-contrast-fixtures`
+`v5-calibration-manifest-freeze`
