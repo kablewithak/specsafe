@@ -24,6 +24,7 @@ from specsafe.contracts.models import (
 _V5_REGISTRY_FILENAME = "scenario_family_registry.json"
 _V5_PROPOSAL_MANIFEST_FILENAME = "PROPOSAL_MANIFEST.md"
 _V5_AUTHORING_LEDGER_FILENAME = "authoring_ledger.md"
+_V5_CALIBRATION_MANIFEST_FILENAME = "calibration_manifest.json"
 _V5_ROOT_METADATA_FILENAMES = {
     _V5_REGISTRY_FILENAME,
     _V5_PROPOSAL_MANIFEST_FILENAME,
@@ -93,6 +94,9 @@ class CalibrationSuccessorV5RegistryViolationCode(StrEnum):
     CALIBRATION_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION = (
         "calibration_successor_v5_calibration_mixed_reliability_contrast_boundary_violation"
     )
+    CALIBRATION_MANIFEST_BOUNDARY_VIOLATION = (
+        "calibration_successor_v5_calibration_manifest_boundary_violation"
+    )
 
 
 class CalibrationSuccessorV5RegistryLoadError(ValueError):
@@ -145,6 +149,7 @@ class CalibrationSuccessorV5ScenarioFamilyRecord(StrictContract):
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
         "calibration_mixed_reliability_contrast_authored",
+        "calibration_manifest_frozen",
     ]
 
     @field_validator("reserved_case_ids")
@@ -197,6 +202,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
         "calibration_mixed_reliability_contrast_authored",
+        "calibration_manifest_frozen",
     ]
     fixture_set_id: Literal["synthetic-calibration-successor-v5"]
     fixture_set_version: Literal["1.0.0"]
@@ -208,7 +214,15 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
     maximum_candidate_positions: Literal[4]
     historical_data_bearing_evidence_used: Literal[False]
     v5_runtime_or_outcome_assets_authored: bool
-    v5_calibration_manifest_authored: Literal[False]
+    v5_calibration_manifest_authored: bool
+    frozen_calibration_manifest_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[a-f0-9]{64}$",
+    )
+    frozen_calibration_pre_freeze_registry_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[a-f0-9]{64}$",
+    )
     v5_calibration_artifact_authored: Literal[False]
     v5_calibration_fit_diagnostics_authored: Literal[False]
     v5_final_evaluation_runtime_or_outcome_assets_authored: Literal[False]
@@ -227,6 +241,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "v5-calibration-workload-variation-fixtures",
         "v5-calibration-mixed-reliability-contrast-fixtures",
         "v5-calibration-manifest-freeze",
+        "v5-bounded-monotone-beta-fit-diagnostics",
     ]
 
     @model_validator(mode="after")
@@ -235,8 +250,11 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
     ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
         if self.historical_data_bearing_evidence_used:
             raise ValueError("historical data-bearing evidence is prohibited in V5")
-        if self.v5_calibration_manifest_authored:
-            raise ValueError("V5-3b does not author a calibration manifest")
+        if (
+            self.registry_status != "calibration_manifest_frozen"
+            and self.v5_calibration_manifest_authored
+        ):
+            raise ValueError("only the V5 manifest stage may claim a calibration manifest")
         if self.v5_calibration_artifact_authored:
             raise ValueError("V5-3b does not author a calibration artifact")
         if self.v5_calibration_fit_diagnostics_authored:
@@ -292,7 +310,6 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             if family.scenario_family_id == "CSV5-CAL-CURVE-COVERAGE"
         )
         base_exclusions = {
-            "No V5 calibration or final-evaluation manifest is present.",
             "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
             "No V5 fitter, threshold selection, or parameter mutation is authorized.",
             "No V5 scheduler, baseline comparison, capacity profile, utility scorer, "
@@ -306,6 +323,11 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         }
         if not base_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("V5 registry must retain its stage exclusions")
+        if self.registry_status != "calibration_manifest_frozen" and (
+            "No V5 calibration or final-evaluation manifest is present."
+            not in self.explicit_exclusions
+        ):
+            raise ValueError("pre-freeze V5 must state that no manifest exists")
 
         position_family = next(
             family
@@ -442,14 +464,40 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             family.authoring_status != "reserved_for_v5_case_authoring"
             for family in remaining_families
         ):
-            raise ValueError("only calibration families may be authored at V5-3e")
-        if self.next_authorized_artifact != "v5-calibration-manifest-freeze":
-            raise ValueError("V5-3e must authorize calibration-manifest freeze next")
+            raise ValueError("only calibration families may be authored at V5")
         if (
             "Only CSV5-101..CSV5-148 runtime-input and expected-outcome case pairs "
             "are authored." not in self.explicit_exclusions
         ):
-            raise ValueError("V5-3e must state its exact authored-case boundary")
+            raise ValueError("V5 must state its exact authored-case boundary")
+
+        if self.registry_status == "calibration_mixed_reliability_contrast_authored":
+            if self.next_authorized_artifact != "v5-calibration-manifest-freeze":
+                raise ValueError("V5-3e must authorize calibration-manifest freeze next")
+            if self.v5_calibration_manifest_authored:
+                raise ValueError("V5-3e must not claim a frozen calibration manifest")
+            if (
+                self.frozen_calibration_manifest_sha256 is not None
+                or self.frozen_calibration_pre_freeze_registry_sha256 is not None
+            ):
+                raise ValueError("V5-3e must not carry manifest provenance hashes")
+            return self
+
+        if self.registry_status != "calibration_manifest_frozen":
+            raise ValueError("V5 registry status is not authorised")
+        if not self.v5_calibration_manifest_authored:
+            raise ValueError("V5 manifest stage requires a frozen calibration manifest")
+        if self.frozen_calibration_manifest_sha256 is None:
+            raise ValueError("V5 manifest stage requires the manifest SHA-256")
+        if self.frozen_calibration_pre_freeze_registry_sha256 is None:
+            raise ValueError("V5 manifest stage requires pre-freeze registry provenance")
+        if self.next_authorized_artifact != "v5-bounded-monotone-beta-fit-diagnostics":
+            raise ValueError("V5 manifest stage must authorize fit diagnostics next")
+        if (
+            "V5 calibration manifest is frozen and hash-addressed; final-evaluation "
+            "and adversarial reservations remain quarantined." not in self.explicit_exclusions
+        ):
+            raise ValueError("V5 manifest stage must state its frozen calibration boundary")
         return self
 
 
@@ -460,6 +508,7 @@ def load_calibration_successor_v5_scenario_family_registry(
     allow_calibration_position_spread_assets: bool = False,
     allow_calibration_workload_variation_assets: bool = False,
     allow_calibration_mixed_reliability_contrast_assets: bool = False,
+    allow_calibration_manifest_assets: bool = False,
 ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
     """Load V5 registry only through one explicit active evidence boundary."""
 
@@ -469,6 +518,7 @@ def load_calibration_successor_v5_scenario_family_registry(
             allow_calibration_position_spread_assets,
             allow_calibration_workload_variation_assets,
             allow_calibration_mixed_reliability_contrast_assets,
+            allow_calibration_manifest_assets,
         )
     )
     if active_boundary_count > 1:
@@ -478,7 +528,9 @@ def load_calibration_successor_v5_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_calibration_mixed_reliability_contrast_assets:
+    if allow_calibration_manifest_assets:
+        assert_calibration_successor_v5_calibration_manifest_fixture_root(root)
+    elif allow_calibration_mixed_reliability_contrast_assets:
         assert_calibration_successor_v5_calibration_mixed_reliability_contrast_fixture_root(root)
     elif allow_calibration_workload_variation_assets:
         assert_calibration_successor_v5_calibration_workload_variation_fixture_root(root)
@@ -515,6 +567,13 @@ def load_calibration_successor_v5_scenario_family_registry(
             CalibrationSuccessorV5RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
+    if allow_calibration_manifest_assets:
+        if registry.registry_status != "calibration_manifest_frozen":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION,
+                "V5 registry has not reached the calibration-manifest boundary",
+            )
+        return registry
     if allow_calibration_mixed_reliability_contrast_assets:
         if registry.registry_status != "calibration_mixed_reliability_contrast_authored":
             raise CalibrationSuccessorV5RegistryLoadError(
@@ -642,6 +701,30 @@ def assert_calibration_successor_v5_calibration_mixed_reliability_contrast_fixtu
             CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION
         ),
         boundary_name="calibration mixed reliability contrast",
+    )
+
+
+def assert_calibration_successor_v5_calibration_manifest_fixture_root(
+    root: Path,
+) -> None:
+    """Validate all calibration assets plus one immutable V5 calibration manifest."""
+
+    _assert_root_layout(
+        root,
+        allowed_root_names={
+            *_V5_ROOT_METADATA_FILENAMES,
+            _V5_CALIBRATION_MANIFEST_FILENAME,
+        },
+        expected_case_ids=(
+            *_V5_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+            *_V5_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+            *_V5_CALIBRATION_WORKLOAD_VARIATION_CASE_IDS,
+            *_V5_CALIBRATION_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+        ),
+        violation_code=(
+            CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_MANIFEST_BOUNDARY_VIOLATION
+        ),
+        boundary_name="calibration manifest",
     )
 
 

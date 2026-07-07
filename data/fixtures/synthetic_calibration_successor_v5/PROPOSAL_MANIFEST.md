@@ -1,22 +1,21 @@
-# V5 Calibration Mixed-Reliability Contrast Proposal Manifest
+# V5 Frozen Calibration Corpus Manifest
 
 ## Active boundary
 
-V5-3e retains the curve-coverage, position-spread, and workload-variation families and
-authors only the fresh calibration mixed-reliability-contrast family. The active case pairs are:
+V5 calibration-case authoring is complete. `calibration_manifest.json` now freezes the exact
+calibration-only evidence inventory before any bounded monotone-beta fitting begins.
 
 ```text
 CSV5-101..CSV5-148
+48 calibration case pairs
+96 immutable source assets
+192 calibration observations
 ```
 
-`CSV5-137..CSV5-148` add twelve fresh calibration-only cases with four candidate positions per
-case. They balance `structured_text`, `code`, and `open_ended_chat` workloads across four cases
-each. Six cases deliberately pair high stated confidence with weak observed acceptance, while six
-contrast cases pair lower stated confidence with stronger observed acceptance.
-
-The contrast is a calibration diagnostic only. V5 remains one globally shared bounded
-monotone-beta calibration method: no workload-specific parameters, thresholds, or policy rules are
-introduced by this slice.
+The manifest records a SHA-256 and byte count for every runtime-input and expected-outcome asset,
+the aggregate corpus hash, each case-pair relationship, and the SHA-256 of the pre-freeze V5
+registry. The active registry carries the canonical manifest hash and the matching pre-freeze
+registry hash.
 
 ## Present assets
 
@@ -24,6 +23,7 @@ introduced by this slice.
 scenario_family_registry.json
 PROPOSAL_MANIFEST.md
 authoring_ledger.md
+calibration_manifest.json
 inputs/cases/CSV5-101.json .. CSV5-148.json
 expected_outcomes/cases/CSV5-101.json .. CSV5-148.json
 ```
@@ -32,11 +32,12 @@ expected_outcomes/cases/CSV5-101.json .. CSV5-148.json
 
 - `CSV5-201..CSV5-236` final-evaluation reservations remain quarantined.
 - `CSV5-301..CSV5-312` adversarial-regression reservations remain quarantined.
-- No calibration or final-evaluation manifest exists.
-- No fitter, artifact, diagnostics, scheduler, capacity profile, utility scorer, policy comparison,
-  or final assessment is authorised.
-- No V1–V4 data-bearing evidence was used to select or author these assets.
+- The frozen calibration corpus may support only the predeclared globally shared bounded
+  monotone-beta fit-diagnostics stage next.
+- No V5 calibration artifact, fit diagnostics, final-evaluation asset, final-evaluation manifest,
+  scheduler, capacity profile, utility scorer, policy comparison, or final assessment exists yet.
+- No V1–V4 data-bearing evidence was used to select or author V5 assets.
 
 ## Next authorised artifact
 
-`v5-calibration-manifest-freeze`
+`v5-bounded-monotone-beta-fit-diagnostics`

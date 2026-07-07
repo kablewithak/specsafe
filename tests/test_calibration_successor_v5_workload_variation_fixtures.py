@@ -91,4 +91,4 @@ def test_workload_variation_retains_distinct_workload_signals_without_runtime_le
 def test_workload_variation_retains_final_and_adversarial_quarantine() -> None:
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

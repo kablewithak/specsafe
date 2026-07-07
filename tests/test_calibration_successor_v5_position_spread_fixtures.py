@@ -74,4 +74,4 @@ def test_position_spread_confidence_declines_with_position_and_retains_outcome_m
 def test_position_spread_retains_final_and_adversarial_quarantine() -> None:
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

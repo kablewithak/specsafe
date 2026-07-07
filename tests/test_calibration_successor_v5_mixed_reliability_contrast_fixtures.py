@@ -100,4 +100,4 @@ def test_mixed_reliability_exposes_over_and_under_confident_regions_without_leak
 def test_mixed_reliability_retains_final_and_adversarial_quarantine() -> None:
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()
