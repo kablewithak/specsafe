@@ -68,6 +68,7 @@ def _restore_pre_freeze_root(root: Path) -> None:
             "CSV5-FINAL-CURVE-COVERAGE",
             "CSV5-FINAL-POSITION-SPREAD",
             "CSV5-FINAL-WORKLOAD-VARIATION",
+            "CSV5-FINAL-MIXED-RELIABILITY-CONTRAST",
         }:
             family["authoring_status"] = "reserved_for_v5_case_authoring"
     payload["explicit_exclusions"] = [

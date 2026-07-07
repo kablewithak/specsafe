@@ -111,6 +111,9 @@ class CalibrationSuccessorV5RegistryViolationCode(StrEnum):
     FINAL_WORKLOAD_VARIATION_BOUNDARY_VIOLATION = (
         "calibration_successor_v5_final_workload_variation_boundary_violation"
     )
+    FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION = (
+        "calibration_successor_v5_final_mixed_reliability_contrast_boundary_violation"
+    )
 
 
 class CalibrationSuccessorV5RegistryLoadError(ValueError):
@@ -166,6 +169,7 @@ class CalibrationSuccessorV5ScenarioFamilyRecord(StrictContract):
         "final_curve_coverage_authored",
         "final_position_spread_authored",
         "final_workload_variation_authored",
+        "final_mixed_reliability_contrast_authored",
         "calibration_manifest_frozen",
     ]
 
@@ -222,6 +226,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "final_curve_coverage_authored",
         "final_position_spread_authored",
         "final_workload_variation_authored",
+        "final_mixed_reliability_contrast_authored",
         "calibration_manifest_frozen",
         "calibration_fit_diagnostics_retained",
     ]
@@ -275,6 +280,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "v5-final-evaluation-position-spread-fixtures",
         "v5-final-evaluation-workload-variation-fixtures",
         "v5-final-evaluation-mixed-reliability-contrast-fixtures",
+        "v5-final-evaluation-manifest-freeze",
     ]
 
     @model_validator(mode="after")
@@ -291,6 +297,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 "final_curve_coverage_authored",
                 "final_position_spread_authored",
                 "final_workload_variation_authored",
+                "final_mixed_reliability_contrast_authored",
             )
             and self.v5_calibration_manifest_authored
         ):
@@ -300,6 +307,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_curve_coverage_authored",
             "final_position_spread_authored",
             "final_workload_variation_authored",
+            "final_mixed_reliability_contrast_authored",
         ):
             if not self.v5_calibration_artifact_authored:
                 raise ValueError("V5 fit diagnostics stage requires a frozen calibration artifact")
@@ -385,6 +393,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_curve_coverage_authored",
             "final_position_spread_authored",
             "final_workload_variation_authored",
+            "final_mixed_reliability_contrast_authored",
         ) and not pre_fit_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("pre-fit V5 stages must retain no-artifact exclusions")
         if self.registry_status not in (
@@ -393,6 +402,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_curve_coverage_authored",
             "final_position_spread_authored",
             "final_workload_variation_authored",
+            "final_mixed_reliability_contrast_authored",
         ) and (
             "No V5 calibration or final-evaluation manifest is present."
             not in self.explicit_exclusions
@@ -545,6 +555,11 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             for family in self.families
             if family.scenario_family_id == "CSV5-FINAL-WORKLOAD-VARIATION"
         )
+        final_mixed_reliability_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CSV5-FINAL-MIXED-RELIABILITY-CONTRAST"
+        )
         later_final_and_adversarial_families = tuple(
             family
             for family in remaining_families
@@ -558,6 +573,17 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 final_curve_family,
                 final_position_family,
                 final_workload_family,
+            )
+        )
+        adversarial_families = tuple(
+            family
+            for family in remaining_families
+            if family
+            not in (
+                final_curve_family,
+                final_position_family,
+                final_workload_family,
+                final_mixed_reliability_family,
             )
         )
         if (
@@ -591,6 +617,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_curve_coverage_authored",
             "final_position_spread_authored",
             "final_workload_variation_authored",
+            "final_mixed_reliability_contrast_authored",
         ):
             raise ValueError("V5 registry status is not authorised")
         if not self.v5_calibration_manifest_authored:
@@ -703,36 +730,66 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 )
             return self
 
-        if self.registry_status != "final_workload_variation_authored":
+        if self.registry_status == "final_workload_variation_authored":
+            if final_position_family.authoring_status != "final_position_spread_authored":
+                raise ValueError("V5 final workload stage must retain position spread as authored")
+            if final_workload_family.authoring_status != "final_workload_variation_authored":
+                raise ValueError("V5 final workload-variation family must be marked authored")
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in later_after_workload_and_adversarial_families
+            ):
+                raise ValueError(
+                    "V5 final workload stage must retain later final and adversarial families"
+                )
+            if (
+                self.next_authorized_artifact
+                != "v5-final-evaluation-mixed-reliability-contrast-fixtures"
+            ):
+                raise ValueError(
+                    "V5 final workload stage must authorize final mixed-reliability fixtures next"
+                )
+            expected_final_workload_exclusions = {
+                "Only CSV5-201..CSV5-227 final-evaluation runtime-input and expected-outcome "
+                "case pairs are authored.",
+                "No V5 final-evaluation manifest, held-out assessment, scheduler, "
+                "baseline comparison, capacity profile, utility scorer, or runtime control "
+                "is authorized.",
+            }
+            if not expected_final_workload_exclusions.issubset(set(self.explicit_exclusions)):
+                raise ValueError(
+                    "V5 final workload stage must retain its held-out quarantine exclusions"
+                )
+            return self
+
+        if self.registry_status != "final_mixed_reliability_contrast_authored":
             raise ValueError("V5 registry status is not authorised")
         if final_position_family.authoring_status != "final_position_spread_authored":
-            raise ValueError("V5 final workload stage must retain position spread as authored")
+            raise ValueError("V5 final mixed stage must retain position spread as authored")
         if final_workload_family.authoring_status != "final_workload_variation_authored":
-            raise ValueError("V5 final workload-variation family must be marked authored")
+            raise ValueError("V5 final mixed stage must retain workload variation as authored")
+        if (
+            final_mixed_reliability_family.authoring_status
+            != "final_mixed_reliability_contrast_authored"
+        ):
+            raise ValueError("V5 final mixed-reliability family must be marked authored")
         if any(
             family.authoring_status != "reserved_for_v5_case_authoring"
-            for family in later_after_workload_and_adversarial_families
+            for family in adversarial_families
         ):
+            raise ValueError("V5 final mixed stage must retain adversarial reservations")
+        if self.next_authorized_artifact != "v5-final-evaluation-manifest-freeze":
             raise ValueError(
-                "V5 final workload stage must retain later final and adversarial families"
+                "V5 final mixed stage must authorize final-evaluation manifest freeze next"
             )
-        if (
-            self.next_authorized_artifact
-            != "v5-final-evaluation-mixed-reliability-contrast-fixtures"
-        ):
-            raise ValueError(
-                "V5 final workload stage must authorize final mixed-reliability fixtures next"
-            )
-        expected_final_workload_exclusions = {
-            "Only CSV5-201..CSV5-227 final-evaluation runtime-input and expected-outcome "
+        expected_final_mixed_exclusions = {
+            "Only CSV5-201..CSV5-236 final-evaluation runtime-input and expected-outcome "
             "case pairs are authored.",
             "No V5 final-evaluation manifest, held-out assessment, scheduler, baseline comparison, "
             "capacity profile, utility scorer, or runtime control is authorized.",
         }
-        if not expected_final_workload_exclusions.issubset(set(self.explicit_exclusions)):
-            raise ValueError(
-                "V5 final workload stage must retain its held-out quarantine exclusions"
-            )
+        if not expected_final_mixed_exclusions.issubset(set(self.explicit_exclusions)):
+            raise ValueError("V5 final mixed stage must retain its held-out quarantine exclusions")
         return self
 
 
@@ -748,6 +805,7 @@ def load_calibration_successor_v5_scenario_family_registry(
     allow_final_curve_coverage_assets: bool = False,
     allow_final_position_spread_assets: bool = False,
     allow_final_workload_variation_assets: bool = False,
+    allow_final_mixed_reliability_contrast_assets: bool = False,
 ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
     """Load V5 registry only through one explicit active evidence boundary."""
 
@@ -762,6 +820,7 @@ def load_calibration_successor_v5_scenario_family_registry(
             allow_final_curve_coverage_assets,
             allow_final_position_spread_assets,
             allow_final_workload_variation_assets,
+            allow_final_mixed_reliability_contrast_assets,
         )
     )
     if active_boundary_count > 1:
@@ -771,7 +830,9 @@ def load_calibration_successor_v5_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_final_workload_variation_assets:
+    if allow_final_mixed_reliability_contrast_assets:
+        assert_calibration_successor_v5_final_mixed_reliability_contrast_fixture_root(root)
+    elif allow_final_workload_variation_assets:
         assert_calibration_successor_v5_final_workload_variation_fixture_root(root)
     elif allow_final_position_spread_assets:
         assert_calibration_successor_v5_final_position_spread_fixture_root(root)
@@ -818,6 +879,13 @@ def load_calibration_successor_v5_scenario_family_registry(
             CalibrationSuccessorV5RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
+    if allow_final_mixed_reliability_contrast_assets:
+        if registry.registry_status != "final_mixed_reliability_contrast_authored":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+                "V5 registry has not reached the quarantined final mixed-reliability boundary",
+            )
+        return registry
     if allow_final_workload_variation_assets:
         if registry.registry_status != "final_workload_variation_authored":
             raise CalibrationSuccessorV5RegistryLoadError(
@@ -1293,6 +1361,97 @@ def assert_calibration_successor_v5_final_workload_variation_fixture_root(root: 
             raise CalibrationSuccessorV5RegistryLoadError(
                 CalibrationSuccessorV5RegistryViolationCode.FINAL_WORKLOAD_VARIATION_BOUNDARY_VIOLATION,
                 "V5 final workload evidence container has unexpected paths",
+            )
+
+
+def assert_calibration_successor_v5_final_mixed_reliability_contrast_fixture_root(
+    root: Path,
+) -> None:
+    """Validate frozen calibration evidence plus CSV5-201..CSV5-236 held-out pairs."""
+
+    resolved_root = root.resolve()
+    if not resolved_root.is_dir():
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+            "V5 final mixed-reliability fixture root must be an existing directory",
+        )
+    allowed_root_names = {
+        *_V5_ROOT_METADATA_FILENAMES,
+        _V5_CALIBRATION_MANIFEST_FILENAME,
+        _V5_CALIBRATION_ARTIFACT_FILENAME,
+        _V5_CALIBRATION_FIT_DIAGNOSTICS_FILENAME,
+        "inputs",
+        "expected_outcomes",
+        "final_evaluation",
+    }
+    present_names = {child.name for child in resolved_root.iterdir()}
+    if present_names != allowed_root_names:
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+            "V5 final mixed-reliability root has unexpected or missing paths: "
+            + ", ".join(sorted(present_names ^ allowed_root_names)),
+        )
+    metadata_root_names = allowed_root_names - {"inputs", "expected_outcomes", "final_evaluation"}
+    for filename in sorted(metadata_root_names):
+        try:
+            _reject_historical_data_bearing_reference((resolved_root / filename).read_bytes())
+        except OSError as error:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+                f"unable to read V5 metadata {filename}: {error}",
+            ) from error
+    calibration_case_ids = (
+        *_V5_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+        *_V5_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+        *_V5_CALIBRATION_WORKLOAD_VARIATION_CASE_IDS,
+        *_V5_CALIBRATION_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+    )
+    for directory, boundary_name in (
+        (resolved_root / "inputs" / "cases", "final mixed calibration"),
+        (resolved_root / "expected_outcomes" / "cases", "final mixed calibration"),
+    ):
+        _assert_case_directory(
+            directory,
+            calibration_case_ids,
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+            boundary_name,
+        )
+    for container in (resolved_root / "inputs", resolved_root / "expected_outcomes"):
+        if {child.name for child in container.iterdir()} != {"cases"}:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+                "V5 final mixed calibration container has unexpected paths",
+            )
+    final_root = resolved_root / "final_evaluation"
+    final_root_names = (
+        {child.name for child in final_root.iterdir()} if final_root.is_dir() else set()
+    )
+    if not final_root.is_dir() or final_root_names != {"inputs", "expected_outcomes"}:
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+            "V5 final mixed root must contain only separate inputs and expected_outcomes",
+        )
+    final_case_ids = (
+        *_V5_FINAL_CURVE_COVERAGE_CASE_IDS,
+        *_V5_FINAL_POSITION_SPREAD_CASE_IDS,
+        *_V5_FINAL_WORKLOAD_VARIATION_CASE_IDS,
+        *_V5_FINAL_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+    )
+    for directory in (
+        final_root / "inputs" / "cases",
+        final_root / "expected_outcomes" / "cases",
+    ):
+        _assert_case_directory(
+            directory,
+            final_case_ids,
+            CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+            "final mixed reliability contrast",
+        )
+    for container in (final_root / "inputs", final_root / "expected_outcomes"):
+        if {child.name for child in container.iterdir()} != {"cases"}:
+            raise CalibrationSuccessorV5RegistryLoadError(
+                CalibrationSuccessorV5RegistryViolationCode.FINAL_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION,
+                "V5 final mixed evidence container has unexpected paths",
             )
 
 

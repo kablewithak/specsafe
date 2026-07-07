@@ -287,7 +287,7 @@ def load_v5_bounded_monotone_beta_calibration_fit(
         final_evaluation_present = (resolved_root / "final_evaluation").is_dir()
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_workload_variation_assets=final_evaluation_present,
+            allow_final_mixed_reliability_contrast_assets=final_evaluation_present,
             allow_calibration_fit_diagnostics_assets=not final_evaluation_present,
         )
         manifest = load_calibration_successor_v5_calibration_manifest(resolved_root)
