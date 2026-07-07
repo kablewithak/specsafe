@@ -63,9 +63,7 @@ def build_baseline_replay_evidence_ledger(
         )
 
     selected_cases = tuple(
-        case
-        for case in fixture_set.cases
-        if case.runtime_input.split in _ALLOWED_SPLITS
+        case for case in fixture_set.cases if case.runtime_input.split in _ALLOWED_SPLITS
     )
     if not selected_cases:
         raise BaselineLedgerBuildError(
@@ -136,9 +134,15 @@ def _describe_baseline_policy(
     """Accept only typed causal baselines and retain their exact configurations."""
 
     if type(policy) is FixedLengthVerificationPolicy:
-        return FixedLengthPolicyLedgerDescriptor(config=policy.config), policy
+        return FixedLengthPolicyLedgerDescriptor(
+            policy_descriptor=policy.descriptor,
+            config=policy.config,
+        ), policy
     if type(policy) is StaticThresholdVerificationPolicy:
-        return StaticThresholdPolicyLedgerDescriptor(config=policy.config), policy
+        return StaticThresholdPolicyLedgerDescriptor(
+            policy_descriptor=policy.descriptor,
+            config=policy.config,
+        ), policy
 
     config = getattr(policy, "config", None)
     if getattr(config, "evaluation_only", False) is True:

@@ -1,5 +1,11 @@
-"""Causal baseline policy controls for deterministic SpecSafe replay."""
+"""Causal baseline policy controls and normalized provenance for SpecSafe replay."""
 
+from specsafe.scheduling.models import (
+    BaselinePolicyDescriptor,
+    BaselinePolicyKind,
+    PolicyCapacitySensitivity,
+    PolicyClassification,
+)
 from specsafe.scheduling.policies import (
     FixedLengthPolicyConfig,
     FixedLengthVerificationPolicy,
@@ -10,8 +16,12 @@ from specsafe.scheduling.policies import (
 )
 
 __all__ = [
+    "BaselinePolicyDescriptor",
+    "BaselinePolicyKind",
     "FixedLengthPolicyConfig",
     "FixedLengthVerificationPolicy",
+    "PolicyCapacitySensitivity",
+    "PolicyClassification",
     "StaticThresholdPolicyConfig",
     "StaticThresholdVerificationPolicy",
     "UnsafeRetrospectiveLookaheadPolicy",
