@@ -24,6 +24,16 @@ _FROZEN_EXCLUSION = (
     "V5 calibration manifest is frozen and hash-addressed; final-evaluation "
     "and adversarial reservations remain quarantined."
 )
+_FIT_EXCLUSIONS = {
+    "V5 bounded-monotone-beta calibration artifact and fit diagnostics are retained "
+    "as calibration-only evidence.",
+    "No V5 final-evaluation asset, final manifest, held-out assessment, scheduler, "
+    "baseline comparison, capacity profile, utility scorer, or runtime control is authorized.",
+}
+_PRE_FIT_EXCLUSIONS = {
+    "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
+    "No V5 fitter, threshold selection, or parameter mutation is authorized.",
+}
 
 
 def _copy_fixture_root(tmp_path: Path) -> Path:
@@ -34,6 +44,8 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
 
 def _restore_pre_freeze_root(root: Path) -> None:
     (root / "calibration_manifest.json").unlink()
+    (root / "bounded_monotone_beta_calibration_artifact.json").unlink()
+    (root / "bounded_monotone_beta_calibration_fit_diagnostics.json").unlink()
     registry_path = root / "scenario_family_registry.json"
     payload = json.loads(registry_path.read_text(encoding="utf-8"))
     payload.update(
@@ -42,13 +54,20 @@ def _restore_pre_freeze_root(root: Path) -> None:
             "v5_calibration_manifest_authored": False,
             "frozen_calibration_manifest_sha256": None,
             "frozen_calibration_pre_freeze_registry_sha256": None,
+            "v5_calibration_artifact_authored": False,
+            "v5_calibration_fit_diagnostics_authored": False,
+            "frozen_calibration_artifact_sha256": None,
+            "frozen_calibration_fit_diagnostics_sha256": None,
             "next_authorized_artifact": "v5-calibration-manifest-freeze",
         }
     )
     payload["explicit_exclusions"] = [
-        exclusion for exclusion in payload["explicit_exclusions"] if exclusion != _FROZEN_EXCLUSION
+        exclusion
+        for exclusion in payload["explicit_exclusions"]
+        if exclusion != _FROZEN_EXCLUSION and exclusion not in _FIT_EXCLUSIONS
     ]
     payload["explicit_exclusions"].append(_NO_MANIFEST_EXCLUSION)
+    payload["explicit_exclusions"].extend(sorted(_PRE_FIT_EXCLUSIONS))
     registry_path.write_text(
         json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

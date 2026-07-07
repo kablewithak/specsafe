@@ -12,7 +12,7 @@ from pydantic import ValidationError
 from specsafe.traces.calibration_successor_v5 import (
     CalibrationSuccessorV5RegistryLoadError,
     CalibrationSuccessorV5ScenarioFamilyRegistry,
-    assert_calibration_successor_v5_calibration_manifest_fixture_root,
+    assert_calibration_successor_v5_calibration_fit_diagnostics_fixture_root,
     load_calibration_successor_v5_scenario_family_registry,
 )
 
@@ -27,20 +27,23 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
     return copied_root
 
 
-def test_loads_the_v5_registry_only_through_manifest_boundary() -> None:
+def test_loads_the_v5_registry_only_through_fit_diagnostics_boundary() -> None:
     registry = load_calibration_successor_v5_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_manifest_assets=True,
+        allow_calibration_fit_diagnostics_assets=True,
     )
 
-    assert registry.registry_status == "calibration_manifest_frozen"
+    assert registry.registry_status == "calibration_fit_diagnostics_retained"
     assert registry.v5_runtime_or_outcome_assets_authored is True
     assert registry.v5_calibration_manifest_authored is True
     assert registry.frozen_calibration_manifest_sha256 is not None
     assert registry.frozen_calibration_pre_freeze_registry_sha256 is not None
-    assert registry.v5_calibration_artifact_authored is False
+    assert registry.v5_calibration_artifact_authored is True
+    assert registry.v5_calibration_fit_diagnostics_authored is True
+    assert registry.frozen_calibration_artifact_sha256 is not None
+    assert registry.frozen_calibration_fit_diagnostics_sha256 is not None
     assert registry.v5_final_evaluation_runtime_or_outcome_assets_authored is False
-    assert registry.next_authorized_artifact == "v5-bounded-monotone-beta-fit-diagnostics"
+    assert registry.next_authorized_artifact == "v5-final-evaluation-fixture-authoring"
 
 
 def test_active_root_rejects_obsolete_mixed_reliability_loader_path() -> None:
@@ -55,27 +58,27 @@ def test_active_root_rejects_obsolete_mixed_reliability_loader_path() -> None:
     )
 
 
-def test_manifest_root_requires_exactly_forty_eight_case_pairs(tmp_path: Path) -> None:
+def test_fit_diagnostics_root_requires_exactly_forty_eight_case_pairs(tmp_path: Path) -> None:
     root = _copy_fixture_root(tmp_path)
     (root / "inputs" / "cases" / "CSV5-148.json").unlink()
 
     with pytest.raises(CalibrationSuccessorV5RegistryLoadError) as error:
-        assert_calibration_successor_v5_calibration_manifest_fixture_root(root)
+        assert_calibration_successor_v5_calibration_fit_diagnostics_fixture_root(root)
 
     assert error.value.code.value == (
-        "calibration_successor_v5_calibration_manifest_boundary_violation"
+        "calibration_successor_v5_calibration_fit_diagnostics_boundary_violation"
     )
 
 
-def test_manifest_root_rejects_final_evaluation_path(tmp_path: Path) -> None:
+def test_fit_diagnostics_root_rejects_final_evaluation_path(tmp_path: Path) -> None:
     root = _copy_fixture_root(tmp_path)
     (root / "final_evaluation").mkdir()
 
     with pytest.raises(CalibrationSuccessorV5RegistryLoadError) as error:
-        assert_calibration_successor_v5_calibration_manifest_fixture_root(root)
+        assert_calibration_successor_v5_calibration_fit_diagnostics_fixture_root(root)
 
     assert error.value.code.value == (
-        "calibration_successor_v5_calibration_manifest_boundary_violation"
+        "calibration_successor_v5_calibration_fit_diagnostics_boundary_violation"
     )
 
 
@@ -90,7 +93,7 @@ def test_registry_rejects_frozen_status_without_manifest_provenance() -> None:
 def test_registry_retains_final_and_adversarial_reservations_as_quarantined() -> None:
     registry = load_calibration_successor_v5_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_calibration_manifest_assets=True,
+        allow_calibration_fit_diagnostics_assets=True,
     )
     final_families = [
         family for family in registry.families if family.split.value == "final_evaluation"

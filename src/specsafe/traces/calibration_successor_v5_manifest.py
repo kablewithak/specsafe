@@ -249,10 +249,21 @@ def load_calibration_successor_v5_calibration_manifest(
     """Load and hash-verify the frozen V5 calibration manifest and all named assets."""
 
     resolved_root = root.resolve()
+    fit_artifact_names = {
+        "bounded_monotone_beta_calibration_artifact.json",
+        "bounded_monotone_beta_calibration_fit_diagnostics.json",
+    }
+    present_names = {child.name for child in resolved_root.iterdir()}
+    if present_names & fit_artifact_names and not fit_artifact_names.issubset(present_names):
+        raise CalibrationSuccessorV5ManifestError(
+            CalibrationSuccessorV5ManifestViolationCode.FINAL_ROOT_INVALID,
+            "V5 fit-stage root must retain both artifact and diagnostics files together",
+        )
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_manifest_assets=True,
+            allow_calibration_fit_diagnostics_assets=fit_artifact_names.issubset(present_names),
+            allow_calibration_manifest_assets=not fit_artifact_names.issubset(present_names),
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5ManifestError(

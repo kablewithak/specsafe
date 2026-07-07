@@ -1,0 +1,58 @@
+{
+  "calibration_manifest": {
+    "aggregate_sha256": "c84085828e04176fef31ed02466697650dbb7723afa065b2561227125ba5a795",
+    "case_count": 48,
+    "case_id_end": "CSV5-148",
+    "case_id_start": "CSV5-101",
+    "evidence_role": "calibration",
+    "fixture_set_id": "synthetic-calibration-successor-v5",
+    "fixture_set_version": "1.0.0",
+    "manifest_relative_path": "calibration_manifest.json",
+    "manifest_schema_version": "calibration-successor-v5-manifest-v1",
+    "manifest_sha256": "ed950e222462a57575c4b644bc5cfd57a763a99150a83a90ab207c9bc20d7aed",
+    "observation_count": 192
+  },
+  "calibration_observation_count": 192,
+  "fitting_completed": true,
+  "monotonicity_verification": {
+    "boundary_input_count": 9,
+    "boundary_inputs_sha256": "17ae0cb1e289cd73ebfa77239f0d8a6f8cc366bc72bbbc9135db387f297badb4",
+    "boundary_strictly_increasing": true,
+    "observed_calibration_input_count": 87,
+    "observed_calibration_inputs_sha256": "5649f93eb782ce1ec5f23e1d25c38a0865ac2405cf26ed9d7902b1e57359eb1b",
+    "observed_inputs_non_decreasing": true,
+    "verification_id": "bounded_monotone_beta_order_check_v1",
+    "verification_passed": true
+  },
+  "parameters": {
+    "a": 0.4842569647145243,
+    "b": 0.38665164489663356,
+    "c": 0.11190947100094854
+  },
+  "protocol": {
+    "a_maximum": 4.0,
+    "a_minimum": 0.25,
+    "artifact_id": "bounded-monotone-beta-calibration-v5",
+    "artifact_version": "1.0.0",
+    "b_maximum": 4.0,
+    "b_minimum": 0.25,
+    "c_maximum": 4.0,
+    "c_minimum": -4.0,
+    "confidence_clipping_epsilon": 1e-06,
+    "equal_objective_tie_rule": "retain_earlier_iteration",
+    "fit_data_role": "calibration",
+    "fit_split": "calibration",
+    "gradient_norm_tolerance": 1e-08,
+    "initial_a": 1.0,
+    "initial_b": 1.0,
+    "initial_c": 0.0,
+    "learning_rate": 0.02,
+    "maximum_iterations": 8000,
+    "method_family": "global_monotone_beta_calibration",
+    "objective_regularization_weight": 0.02,
+    "objective_tolerance": 1e-12,
+    "optimizer_id": "deterministic_projected_gradient_descent_v1",
+    "runtime_control_eligible": false
+  },
+  "schema_version": "bounded-monotone-beta-calibration-artifact-v5"
+}
