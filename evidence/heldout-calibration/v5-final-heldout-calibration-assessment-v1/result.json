@@ -1,0 +1,301 @@
+{
+  "adaptive_policy_research_eligibility": "eligible_for_controlled_policy_research",
+  "assessment_case_ids": [
+    "CSV5-201",
+    "CSV5-202",
+    "CSV5-203",
+    "CSV5-204",
+    "CSV5-205",
+    "CSV5-206",
+    "CSV5-207",
+    "CSV5-208",
+    "CSV5-209",
+    "CSV5-210",
+    "CSV5-211",
+    "CSV5-212",
+    "CSV5-213",
+    "CSV5-214",
+    "CSV5-215",
+    "CSV5-216",
+    "CSV5-217",
+    "CSV5-218",
+    "CSV5-219",
+    "CSV5-220",
+    "CSV5-221",
+    "CSV5-222",
+    "CSV5-223",
+    "CSV5-224",
+    "CSV5-225",
+    "CSV5-226",
+    "CSV5-227",
+    "CSV5-228",
+    "CSV5-229",
+    "CSV5-230",
+    "CSV5-231",
+    "CSV5-232",
+    "CSV5-233",
+    "CSV5-234",
+    "CSV5-235",
+    "CSV5-236"
+  ],
+  "assessment_trace_ids": [
+    "csv5-final-curve-trace-201",
+    "csv5-final-curve-trace-202",
+    "csv5-final-curve-trace-203",
+    "csv5-final-curve-trace-204",
+    "csv5-final-curve-trace-205",
+    "csv5-final-curve-trace-206",
+    "csv5-final-curve-trace-207",
+    "csv5-final-curve-trace-208",
+    "csv5-final-curve-trace-209",
+    "csv5-final-position-trace-210",
+    "csv5-final-position-trace-211",
+    "csv5-final-position-trace-212",
+    "csv5-final-position-trace-213",
+    "csv5-final-position-trace-214",
+    "csv5-final-position-trace-215",
+    "csv5-final-position-trace-216",
+    "csv5-final-position-trace-217",
+    "csv5-final-position-trace-218",
+    "csv5-final-workload-trace-219",
+    "csv5-final-workload-trace-220",
+    "csv5-final-workload-trace-221",
+    "csv5-final-workload-trace-222",
+    "csv5-final-workload-trace-223",
+    "csv5-final-workload-trace-224",
+    "csv5-final-workload-trace-225",
+    "csv5-final-workload-trace-226",
+    "csv5-final-workload-trace-227",
+    "csv5-final-mixed-trace-228",
+    "csv5-final-mixed-trace-229",
+    "csv5-final-mixed-trace-230",
+    "csv5-final-mixed-trace-231",
+    "csv5-final-mixed-trace-232",
+    "csv5-final-mixed-trace-233",
+    "csv5-final-mixed-trace-234",
+    "csv5-final-mixed-trace-235",
+    "csv5-final-mixed-trace-236"
+  ],
+  "auroc_delta": 0.0,
+  "brier_score_improvement": 0.043888783385395425,
+  "calibrated_metrics": {
+    "auroc": 0.5034965034965035,
+    "brier_score": 0.26017302217016014,
+    "ece_10_bin": 0.12478925813015543
+  },
+  "calibration_artifact": {
+    "calibration_manifest": {
+      "aggregate_sha256": "c84085828e04176fef31ed02466697650dbb7723afa065b2561227125ba5a795",
+      "case_count": 48,
+      "case_id_end": "CSV5-148",
+      "case_id_start": "CSV5-101",
+      "evidence_role": "calibration",
+      "fixture_set_id": "synthetic-calibration-successor-v5",
+      "fixture_set_version": "1.0.0",
+      "manifest_relative_path": "calibration_manifest.json",
+      "manifest_schema_version": "calibration-successor-v5-manifest-v1",
+      "manifest_sha256": "ed950e222462a57575c4b644bc5cfd57a763a99150a83a90ab207c9bc20d7aed",
+      "observation_count": 192
+    },
+    "calibration_observation_count": 192,
+    "fitting_completed": true,
+    "monotonicity_verification": {
+      "boundary_input_count": 9,
+      "boundary_inputs_sha256": "17ae0cb1e289cd73ebfa77239f0d8a6f8cc366bc72bbbc9135db387f297badb4",
+      "boundary_strictly_increasing": true,
+      "observed_calibration_input_count": 87,
+      "observed_calibration_inputs_sha256": "5649f93eb782ce1ec5f23e1d25c38a0865ac2405cf26ed9d7902b1e57359eb1b",
+      "observed_inputs_non_decreasing": true,
+      "verification_id": "bounded_monotone_beta_order_check_v1",
+      "verification_passed": true
+    },
+    "parameters": {
+      "a": 0.4842569647145243,
+      "b": 0.38665164489663356,
+      "c": 0.11190947100094854
+    },
+    "protocol": {
+      "a_maximum": 4.0,
+      "a_minimum": 0.25,
+      "artifact_id": "bounded-monotone-beta-calibration-v5",
+      "artifact_version": "1.0.0",
+      "b_maximum": 4.0,
+      "b_minimum": 0.25,
+      "c_maximum": 4.0,
+      "c_minimum": -4.0,
+      "confidence_clipping_epsilon": 1e-06,
+      "equal_objective_tie_rule": "retain_earlier_iteration",
+      "fit_data_role": "calibration",
+      "fit_split": "calibration",
+      "gradient_norm_tolerance": 1e-08,
+      "initial_a": 1.0,
+      "initial_b": 1.0,
+      "initial_c": 0.0,
+      "learning_rate": 0.02,
+      "maximum_iterations": 8000,
+      "method_family": "global_monotone_beta_calibration",
+      "objective_regularization_weight": 0.02,
+      "objective_tolerance": 1e-12,
+      "optimizer_id": "deterministic_projected_gradient_descent_v1",
+      "runtime_control_eligible": false
+    },
+    "schema_version": "bounded-monotone-beta-calibration-artifact-v5"
+  },
+  "calibration_artifact_sha256": "a3baeb2db94221d68a69fc757c8865e384e3ac92ca05585919188fe1c744cd14",
+  "calibration_fit_report_sha256": "3f697caa5e621351a786ce043c931e6a84e3255f6108a6b9a64c77840dbc0971",
+  "calibration_manifest": {
+    "aggregate_sha256": "c84085828e04176fef31ed02466697650dbb7723afa065b2561227125ba5a795",
+    "case_count": 48,
+    "case_id_end": "CSV5-148",
+    "case_id_start": "CSV5-101",
+    "evidence_role": "calibration",
+    "fixture_set_id": "synthetic-calibration-successor-v5",
+    "fixture_set_version": "1.0.0",
+    "manifest_relative_path": "calibration_manifest.json",
+    "manifest_schema_version": "calibration-successor-v5-manifest-v1",
+    "manifest_sha256": "ed950e222462a57575c4b644bc5cfd57a763a99150a83a90ab207c9bc20d7aed",
+    "observation_count": 192
+  },
+  "calibration_refit_performed": false,
+  "case_count": 36,
+  "ece_10_bin_improvement": 0.10653018631428904,
+  "fallback": null,
+  "final_evidence_index_sha256": "0be444e275916efe21381998a67f1f4b960e619dfd9957bdedd5ee2ad56a8b2a",
+  "final_manifest": {
+    "aggregate_sha256": "ef1cceb3bc453fc9f6e8934b245c89fc2fc0f2809d57d311eec8eedb68da5ff4",
+    "case_count": 36,
+    "case_id_end": "CSV5-236",
+    "case_id_start": "CSV5-201",
+    "evidence_role": "final_evaluation",
+    "fixture_set_id": "synthetic-calibration-successor-v5",
+    "fixture_set_version": "1.0.0",
+    "manifest_relative_path": "final_evaluation_manifest.json",
+    "manifest_schema_version": "calibration-successor-v5-final-evaluation-manifest-v1",
+    "manifest_sha256": "5887a63cfa7e185fb93c6d0a346946dea53c79051f5c9010da012e5ce4e2ac36",
+    "observation_count": 144
+  },
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "gate_checks": {
+    "brier_improvement_passed": true,
+    "canonical_serialization_passed": true,
+    "ece_improvement_passed": true,
+    "manifest_integrity_passed": true,
+    "monotonicity_verification_passed": true,
+    "no_policy_execution_passed": true,
+    "no_refit_passed": true,
+    "observation_coverage_passed": true,
+    "per_position_coverage_passed": true,
+    "provenance_alignment_passed": true,
+    "ranking_safety_passed": true,
+    "workload_coverage_passed": true,
+    "write_once_precheck_passed": true
+  },
+  "observation_count": 144,
+  "policy_or_replay_execution_performed": false,
+  "position_metrics": [
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 1,
+      "brier_score_improvement": 0.058851074849798624,
+      "calibrated_metrics": {
+        "auroc": 0.5174603174603175,
+        "brier_score": 0.2554322584835347,
+        "ece_10_bin": 0.21710162896191734
+      },
+      "ece_10_bin_improvement": 0.12512059326030486,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 0.5174603174603175,
+        "brier_score": 0.3142833333333333,
+        "ece_10_bin": 0.3422222222222222
+      }
+    },
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 2,
+      "brier_score_improvement": 0.0442470664299755,
+      "calibrated_metrics": {
+        "auroc": 0.43492063492063493,
+        "brier_score": 0.2651557113478023,
+        "ece_10_bin": 0.10203358239061733
+      },
+      "ece_10_bin_improvement": 0.13935530649827158,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 0.43492063492063493,
+        "brier_score": 0.3094027777777778,
+        "ece_10_bin": 0.2413888888888889
+      }
+    },
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 3,
+      "brier_score_improvement": 0.03931468441710606,
+      "calibrated_metrics": {
+        "auroc": 0.40634920634920635,
+        "brier_score": 0.2638297600273384,
+        "ece_10_bin": 0.18482601314074432
+      },
+      "ece_10_bin_improvement": 0.08795176463703341,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 0.40634920634920635,
+        "brier_score": 0.30314444444444444,
+        "ece_10_bin": 0.27277777777777773
+      }
+    },
+    {
+      "auroc_delta": 0.0,
+      "block_position_index": 4,
+      "brier_score_improvement": 0.03314230784470151,
+      "calibrated_metrics": {
+        "auroc": 0.5317460317460317,
+        "brier_score": 0.25627435882196514,
+        "ece_10_bin": 0.11028310619364316
+      },
+      "ece_10_bin_improvement": 0.12805022713969016,
+      "observation_count": 36,
+      "raw_metrics": {
+        "auroc": 0.5317460317460317,
+        "brier_score": 0.28941666666666666,
+        "ece_10_bin": 0.2383333333333333
+      }
+    }
+  ],
+  "protocol": {
+    "auroc_calculation_version": "tie_aware_mann_whitney_v1",
+    "expected_final_case_count": 36,
+    "expected_final_observation_count": 144,
+    "expected_observations_per_position": 36,
+    "expected_observations_per_workload": 48,
+    "fixed_ece_bin_count": 10,
+    "maximum_auroc_degradation": 0.001,
+    "minimum_brier_score_improvement": 0.005,
+    "minimum_ece_10_bin_improvement": 0.01,
+    "protocol_id": "v5_final_heldout_calibration_assessment_protocol_v1"
+  },
+  "raw_metrics": {
+    "auroc": 0.5034965034965035,
+    "brier_score": 0.30406180555555556,
+    "ece_10_bin": 0.23131944444444447
+  },
+  "runtime_control_eligible": false,
+  "schema_version": "v5-final-heldout-calibration-assessment-v1",
+  "status": "PASSES_V5_CALIBRATION_ELIGIBILITY_GATE",
+  "workload_coverage": [
+    {
+      "observation_count": 48,
+      "workload_type": "structured_text"
+    },
+    {
+      "observation_count": 48,
+      "workload_type": "code"
+    },
+    {
+      "observation_count": 48,
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "write_mode": "write_once"
+}

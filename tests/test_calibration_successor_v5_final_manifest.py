@@ -55,17 +55,36 @@ def _restore_pre_freeze(root: Path) -> None:
             "frozen_final_evaluation_pre_freeze_registry_sha256": None,
             "final_evidence_index_sha256": None,
             "next_authorized_artifact": "v5-final-evaluation-manifest-freeze",
+            "v5_final_heldout_calibration_assessment_authored": False,
+            "final_heldout_calibration_assessment_sha256": None,
+            "final_heldout_calibration_assessment_relative_path": None,
+            "final_heldout_calibration_status": None,
         }
     )
     obsolete = {
         _FINAL_MANIFEST_FROZEN_EXCLUSION,
         _FINAL_MANIFEST_NON_ASSESSMENT_EXCLUSION,
         _FINAL_ASSESSMENT_BLOCKED_EXCLUSION,
+        "V5 held-out calibration assessment is write-once evidence.",
+        (
+            "V5 held-out calibration evidence is synthetic and does not establish "
+            "production performance."
+        ),
+        "No V5 runtime control is authorized.",
+        (
+            "V5 adaptive policy research is eligible only under controlled "
+            "frozen-evidence evaluation; no scheduler, baseline comparison, "
+            "capacity profile, or utility result is present."
+        ),
     }
     payload["explicit_exclusions"] = [
         item for item in payload["explicit_exclusions"] if item not in obsolete
     ]
     payload["explicit_exclusions"].append(_PRE_MANIFEST_BLOCKED_EXCLUSION)
+    payload["explicit_exclusions"].append(
+        "No V5 scheduler, baseline comparison, capacity profile, utility scorer, "
+        "or runtime control is authorized."
+    )
     path.write_text(
         json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )

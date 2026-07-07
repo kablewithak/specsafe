@@ -37,15 +37,15 @@ def test_loads_the_v5_registry_only_through_final_manifest_boundary() -> None:
         allow_final_evaluation_manifest_assets=True,
     )
 
-    assert registry.registry_status == "final_evaluation_manifest_frozen"
+    assert registry.registry_status == "final_heldout_calibration_assessed"
     assert registry.v5_runtime_or_outcome_assets_authored is True
     assert registry.v5_calibration_manifest_authored is True
     assert registry.v5_calibration_artifact_authored is True
     assert registry.v5_calibration_fit_diagnostics_authored is True
     assert registry.v5_final_evaluation_runtime_or_outcome_assets_authored is True
     assert registry.v5_final_evaluation_manifest_authored is True
-    assert registry.v5_final_heldout_calibration_assessment_authored is False
-    assert registry.next_authorized_artifact == "v5-final-heldout-calibration-assessment"
+    assert registry.v5_final_heldout_calibration_assessment_authored is True
+    assert registry.next_authorized_artifact == "v5-calibrated-causal-load-aware-policy-foundation"
 
 
 def test_active_root_rejects_obsolete_final_workload_loader_path() -> None:
