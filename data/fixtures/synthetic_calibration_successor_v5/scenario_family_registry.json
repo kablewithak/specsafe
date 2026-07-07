@@ -1,14 +1,14 @@
 {
   "calibration_method_id": "bounded-monotone-beta-calibration-v5",
   "explicit_exclusions": [
-    "No V5 calibration or final-evaluation manifest is present.",
     "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
     "No V5 fitter, threshold selection, or parameter mutation is authorized.",
     "No V5 scheduler, baseline comparison, capacity profile, utility scorer, or runtime control is authorized.",
     "No historical data-bearing evidence influenced V5 fixture reservations.",
     "V5 final-evaluation and adversarial reservations remain quarantined.",
     "The V5 final-assessment contract does not authorize evidence loading or assessment execution.",
-    "Only CSV5-101..CSV5-148 runtime-input and expected-outcome case pairs are authored."
+    "Only CSV5-101..CSV5-148 runtime-input and expected-outcome case pairs are authored.",
+    "V5 calibration manifest is frozen and hash-addressed; final-evaluation and adversarial reservations remain quarantined."
   ],
   "families": [
     {
@@ -288,10 +288,12 @@
   ],
   "fixture_set_id": "synthetic-calibration-successor-v5",
   "fixture_set_version": "1.0.0",
+  "frozen_calibration_manifest_sha256": "ed950e222462a57575c4b644bc5cfd57a763a99150a83a90ab207c9bc20d7aed",
+  "frozen_calibration_pre_freeze_registry_sha256": "b5f4d729444ab7efeabb18755759403e9dfe8e6950ad7155426326bb5192d50b",
   "historical_data_bearing_evidence_used": false,
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v5-bounded-monotone-beta-calibration-eligibility-charter-v1",
-  "next_authorized_artifact": "v5-calibration-manifest-freeze",
+  "next_authorized_artifact": "v5-bounded-monotone-beta-fit-diagnostics",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -301,12 +303,12 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "calibration_mixed_reliability_contrast_authored",
+  "registry_status": "calibration_manifest_frozen",
   "schema_version": "calibration-successor-v5-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v5_calibration_artifact_authored": false,
   "v5_calibration_fit_diagnostics_authored": false,
-  "v5_calibration_manifest_authored": false,
+  "v5_calibration_manifest_authored": true,
   "v5_final_assessment_contract_merged": true,
   "v5_final_evaluation_manifest_authored": false,
   "v5_final_evaluation_runtime_or_outcome_assets_authored": false,

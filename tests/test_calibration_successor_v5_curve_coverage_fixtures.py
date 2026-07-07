@@ -10,10 +10,7 @@ from specsafe.traces.calibration_successor_v5_cases import (
 )
 
 _FIXTURE_ROOT = (
-    Path(__file__).resolve().parents[1]
-    / "data"
-    / "fixtures"
-    / "synthetic_calibration_successor_v5"
+    Path(__file__).resolve().parents[1] / "data" / "fixtures" / "synthetic_calibration_successor_v5"
 )
 _CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(101, 113))
 
@@ -55,4 +52,4 @@ def test_curve_coverage_balances_workloads_and_retains_both_outcome_classes() ->
 def test_curve_coverage_retains_final_and_adversarial_quarantine() -> None:
     assert not (_FIXTURE_ROOT / "final_evaluation").exists()
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "calibration_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

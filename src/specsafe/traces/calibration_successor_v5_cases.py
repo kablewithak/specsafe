@@ -291,12 +291,12 @@ def _load_calibration_successor_v5_replay_case(
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_mixed_reliability_contrast_assets=True,
+            allow_calibration_manifest_assets=True,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
-            f"V5 case asset root is not authorised for loading: {error}",
+            f"V5 manifest-stage case root is not authorised for loading: {error}",
         ) from error
     runtime_payload = _read_json_asset(resolved_root / "inputs" / "cases" / f"{case_id}.json")
     outcomes_payload = _read_json_asset(
