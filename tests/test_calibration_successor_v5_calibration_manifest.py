@@ -67,6 +67,7 @@ def _restore_pre_freeze_root(root: Path) -> None:
         if family["scenario_family_id"] in {
             "CSV5-FINAL-CURVE-COVERAGE",
             "CSV5-FINAL-POSITION-SPREAD",
+            "CSV5-FINAL-WORKLOAD-VARIATION",
         }:
             family["authoring_status"] = "reserved_for_v5_case_authoring"
     payload["explicit_exclusions"] = [
