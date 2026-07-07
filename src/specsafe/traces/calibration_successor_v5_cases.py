@@ -299,11 +299,15 @@ def _load_calibration_successor_v5_replay_case(
             "V5 fit-stage case root must retain artifact and diagnostics files together",
         )
     final_evaluation_present = "final_evaluation" in present_names
+    final_manifest_present = "final_evaluation_manifest.json" in present_names
     fit_diagnostics_present = fit_artifact_names.issubset(present_names)
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_mixed_reliability_contrast_assets=final_evaluation_present,
+            allow_final_evaluation_manifest_assets=final_manifest_present,
+            allow_final_mixed_reliability_contrast_assets=(
+                final_evaluation_present and not final_manifest_present
+            ),
             allow_calibration_fit_diagnostics_assets=(
                 fit_diagnostics_present and not final_evaluation_present
             ),

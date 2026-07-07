@@ -47,6 +47,8 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
 
 def _restore_manifest_only_root(root: Path) -> None:
     shutil.rmtree(root / "final_evaluation")
+    (root / "final_evaluation_manifest.json").unlink()
+    (root / "final_evidence_index.json").unlink()
     (root / _ARTIFACT_FILENAME).unlink()
     (root / _DIAGNOSTICS_FILENAME).unlink()
     registry_path = root / "scenario_family_registry.json"
@@ -55,6 +57,10 @@ def _restore_manifest_only_root(root: Path) -> None:
         {
             "registry_status": "calibration_manifest_frozen",
             "v5_final_evaluation_runtime_or_outcome_assets_authored": False,
+            "v5_final_evaluation_manifest_authored": False,
+            "frozen_final_evaluation_manifest_sha256": None,
+            "frozen_final_evaluation_pre_freeze_registry_sha256": None,
+            "final_evidence_index_sha256": None,
             "v5_calibration_artifact_authored": False,
             "v5_calibration_fit_diagnostics_authored": False,
             "frozen_calibration_artifact_sha256": None,
@@ -161,7 +167,8 @@ def test_retained_fit_coexists_with_quarantined_final_assets_without_final_resul
 
     assert "final_evaluation" in present_names
     assert "adversarial_regression" not in present_names
-    assert "final_evaluation_manifest.json" not in present_names
+    assert "final_evaluation_manifest.json" in present_names
+    assert "final_evidence_index.json" in present_names
     assert "final_assessment_result.json" not in present_names
     assert "scheduling" not in present_names
     assert "capacity_profiles" not in present_names

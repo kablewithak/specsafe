@@ -108,5 +108,6 @@ def test_mixed_reliability_retains_heldout_containment_and_adversarial_quarantin
         f"CSV5-{number:03d}" for number in range(201, 237)
     )
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
-    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert (_FIXTURE_ROOT / "final_evidence_index.json").is_file()
     assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

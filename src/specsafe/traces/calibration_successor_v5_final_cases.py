@@ -315,9 +315,11 @@ def _load_final_replay_case(
         )
     resolved_root = root.resolve()
     try:
+        final_manifest_present = (resolved_root / "final_evaluation_manifest.json").is_file()
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_mixed_reliability_contrast_assets=True,
+            allow_final_evaluation_manifest_assets=final_manifest_present,
+            allow_final_mixed_reliability_contrast_assets=not final_manifest_present,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5FinalCaseContractError(

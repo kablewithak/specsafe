@@ -12,7 +12,7 @@ from pydantic import ValidationError
 from specsafe.traces.calibration_successor_v5 import (
     CalibrationSuccessorV5RegistryLoadError,
     CalibrationSuccessorV5ScenarioFamilyRegistry,
-    assert_calibration_successor_v5_final_mixed_reliability_contrast_fixture_root,
+    assert_calibration_successor_v5_final_evaluation_manifest_fixture_root,
     load_calibration_successor_v5_scenario_family_registry,
 )
 
@@ -31,21 +31,21 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
     return copied_root
 
 
-def test_loads_the_v5_registry_only_through_final_mixed_reliability_boundary() -> None:
+def test_loads_the_v5_registry_only_through_final_manifest_boundary() -> None:
     registry = load_calibration_successor_v5_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_final_mixed_reliability_contrast_assets=True,
+        allow_final_evaluation_manifest_assets=True,
     )
 
-    assert registry.registry_status == "final_mixed_reliability_contrast_authored"
+    assert registry.registry_status == "final_evaluation_manifest_frozen"
     assert registry.v5_runtime_or_outcome_assets_authored is True
     assert registry.v5_calibration_manifest_authored is True
     assert registry.v5_calibration_artifact_authored is True
     assert registry.v5_calibration_fit_diagnostics_authored is True
     assert registry.v5_final_evaluation_runtime_or_outcome_assets_authored is True
-    assert registry.v5_final_evaluation_manifest_authored is False
+    assert registry.v5_final_evaluation_manifest_authored is True
     assert registry.v5_final_heldout_calibration_assessment_authored is False
-    assert registry.next_authorized_artifact == "v5-final-evaluation-manifest-freeze"
+    assert registry.next_authorized_artifact == "v5-final-heldout-calibration-assessment"
 
 
 def test_active_root_rejects_obsolete_final_workload_loader_path() -> None:
@@ -67,11 +67,11 @@ def test_final_mixed_root_requires_exactly_thirty_six_heldout_case_pairs(
     (root / "final_evaluation" / "inputs" / "cases" / "CSV5-236.json").unlink()
 
     with pytest.raises(CalibrationSuccessorV5RegistryLoadError) as error:
-        assert_calibration_successor_v5_final_mixed_reliability_contrast_fixture_root(root)
+        assert_calibration_successor_v5_final_evaluation_manifest_fixture_root(root)
 
     assert (
         error.value.code.value
-        == "calibration_successor_v5_final_mixed_reliability_contrast_boundary_violation"
+        == "calibration_successor_v5_final_evaluation_manifest_boundary_violation"
     )
 
 
@@ -82,11 +82,11 @@ def test_final_mixed_root_rejects_adversarial_case_contamination(tmp_path: Path)
     target.write_bytes(source.read_bytes())
 
     with pytest.raises(CalibrationSuccessorV5RegistryLoadError) as error:
-        assert_calibration_successor_v5_final_mixed_reliability_contrast_fixture_root(root)
+        assert_calibration_successor_v5_final_evaluation_manifest_fixture_root(root)
 
     assert (
         error.value.code.value
-        == "calibration_successor_v5_final_mixed_reliability_contrast_boundary_violation"
+        == "calibration_successor_v5_final_evaluation_manifest_boundary_violation"
     )
 
 
@@ -101,7 +101,7 @@ def test_registry_rejects_final_workload_status_without_manifest_provenance() ->
 def test_registry_retains_later_final_and_adversarial_reservations_as_quarantined() -> None:
     registry = load_calibration_successor_v5_scenario_family_registry(
         _REGISTRY_PATH,
-        allow_final_mixed_reliability_contrast_assets=True,
+        allow_final_evaluation_manifest_assets=True,
     )
     curve_family = next(
         family

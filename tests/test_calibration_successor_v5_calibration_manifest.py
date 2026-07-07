@@ -44,6 +44,8 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
 
 def _restore_pre_freeze_root(root: Path) -> None:
     shutil.rmtree(root / "final_evaluation")
+    (root / "final_evaluation_manifest.json").unlink()
+    (root / "final_evidence_index.json").unlink()
     (root / "calibration_manifest.json").unlink()
     (root / "bounded_monotone_beta_calibration_artifact.json").unlink()
     (root / "bounded_monotone_beta_calibration_fit_diagnostics.json").unlink()
@@ -53,6 +55,10 @@ def _restore_pre_freeze_root(root: Path) -> None:
         {
             "registry_status": "calibration_mixed_reliability_contrast_authored",
             "v5_final_evaluation_runtime_or_outcome_assets_authored": False,
+            "v5_final_evaluation_manifest_authored": False,
+            "frozen_final_evaluation_manifest_sha256": None,
+            "frozen_final_evaluation_pre_freeze_registry_sha256": None,
+            "final_evidence_index_sha256": None,
             "v5_calibration_manifest_authored": False,
             "frozen_calibration_manifest_sha256": None,
             "frozen_calibration_pre_freeze_registry_sha256": None,
