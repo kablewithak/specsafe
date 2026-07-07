@@ -1,40 +1,37 @@
-# V5 Schema-Only Proposal Manifest
+# V5 Calibration Curve-Coverage Proposal Manifest
 
-## Purpose
+## Active boundary
 
-This root reserves a fresh V5 synthetic calibration corpus before any runtime inputs,
-expected outcomes, manifests, fitting artifacts, or final-assessment evidence exists.
-
-## Governing scope
-
-- Fixture set: `synthetic-calibration-successor-v5`
-- Method constitution: `v5-bounded-monotone-beta-calibration-eligibility-charter-v1`
-- Calibration method: `bounded-monotone-beta-calibration-v5`
-- Active boundary: schema-only namespace and scenario-family reservation.
-
-## Reserved evidence roles
-
-| Role | Case range | Cases | Positions per case | Observations |
-|---|---:|---:|---:|---:|
-| Calibration | `CSV5-101..CSV5-148` | 48 | 4 | 192 |
-| Final evaluation | `CSV5-201..CSV5-236` | 36 | 4 | 144 |
-| Adversarial regression | `CSV5-301..CSV5-312` | 12 | 4 | 48 |
-
-## Current authorised contents
-
-Only these root metadata files may exist at this stage:
+V5-3b authors only the fresh calibration curve-coverage family. The active case pairs are:
 
 ```text
-PROPOSAL_MANIFEST.md
-authoring_ledger.md
-scenario_family_registry.json
+CSV5-101..CSV5-112
 ```
 
-## Explicit exclusions
+Each case has four decision-time runtime contexts and four structurally separate post-hoc outcome
+labels. This creates 48 calibration observations across all fixed probability deciles without
+freezing a calibration manifest or fitting the V5 method.
 
-- No runtime-input or expected-outcome case asset exists.
+## Present assets
+
+```text
+scenario_family_registry.json
+PROPOSAL_MANIFEST.md
+authoring_ledger.md
+inputs/cases/CSV5-101.json .. CSV5-112.json
+expected_outcomes/cases/CSV5-101.json .. CSV5-112.json
+```
+
+## Quarantine and exclusions
+
+- `CSV5-113..CSV5-148` remain reserved and unauthored.
+- `CSV5-201..CSV5-236` final-evaluation reservations remain quarantined.
+- `CSV5-301..CSV5-312` adversarial-regression reservations remain quarantined.
 - No calibration or final-evaluation manifest exists.
-- No calibration artifact, fit diagnostic, or held-out result exists.
-- No fitting, threshold selection, parameter mutation, scheduler, capacity profile, utility scorer,
-  policy comparison, or runtime control is authorised.
-- Final-evaluation and adversarial case reservations remain quarantined.
+- No fitter, artifact, diagnostics, scheduler, capacity profile, utility scorer, policy comparison,
+  or final assessment is authorised.
+- No V1–V4 data-bearing evidence was used to select or author these assets.
+
+## Next authorised artifact
+
+`v5-calibration-position-spread-fixtures`

@@ -4,9 +4,10 @@
 
 ```text
 fixture_set_id=synthetic-calibration-successor-v5
-registry_status=schema_only
-runtime_input_assets=0
-expected_outcome_assets=0
+registry_status=calibration_curve_coverage_authored
+runtime_input_assets=12
+expected_outcome_assets=12
+calibration_observations_authored=48
 calibration_manifest=absent
 calibration_artifact=absent
 fit_diagnostics=absent
@@ -15,19 +16,19 @@ final_evaluation_manifest=absent
 heldout_result=absent
 ```
 
-## Reservation decision
+## Authoring record
 
-The V5 namespace is reserved before case authoring. The registry fixes separate calibration,
-final-evaluation, and adversarial-regression ranges so later assets cannot be silently repurposed.
+`CSV5-101..CSV5-112` are self-authored synthetic calibration-only curve-coverage case pairs.
+They provide four workloads each for `structured_text`, `code`, and `open_ended_chat`, with four
+candidate positions per case. Runtime inputs contain only decision-time scheduler context; labels
+and candidate token identifiers remain in the separate expected-outcome assets.
 
-## Source constraints
+## Evidence boundary
 
-All later V5 case content must be self-authored, public-safe, and independently designed.
-This schema-only root contains no case-level runtime inputs, labels, outcomes, fitted parameters,
-or final metrics.
+This slice does not create a calibration manifest. The 48 authored observations are not yet a
+frozen fit corpus and may not be used for a V5 fit until the complete 48-case calibration corpus
+is authored and its manifest is frozen.
 
 ## Next authorised artifact
 
-`v5-calibration-curve-coverage-fixtures`
-
-No other V5 artifact is authorised from this stage.
+`v5-calibration-position-spread-fixtures`

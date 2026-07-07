@@ -1,20 +1,18 @@
 {
   "calibration_method_id": "bounded-monotone-beta-calibration-v5",
   "explicit_exclusions": [
-    "No V5 runtime-input or expected-outcome assets are present.",
+    "Only CSV5-101..CSV5-112 runtime-input and expected-outcome case pairs are authored.",
     "No V5 calibration or final-evaluation manifest is present.",
     "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
     "No V5 fitter, threshold selection, or parameter mutation is authorized.",
     "No V5 scheduler, baseline comparison, capacity profile, utility scorer, or runtime control is authorized.",
     "No historical data-bearing evidence influenced V5 fixture reservations.",
     "V5 final-evaluation and adversarial reservations remain quarantined.",
-    "The V5 final-assessment contract does not authorize evidence loading or assessment execution.",
-    "No V5 calibration case may be relabeled as final evaluation or adversarial regression.",
-    "No V5 final-evaluation reservation may influence case authoring outside its designated split."
+    "The V5 final-assessment contract does not authorize evidence loading or assessment execution."
   ],
   "families": [
     {
-      "authoring_status": "reserved_for_v5_case_authoring",
+      "authoring_status": "calibration_curve_coverage_authored",
       "is_adversarial_regression_quarantined": false,
       "is_final_evaluation_quarantined": false,
       "primary_data_role": "calibration",
@@ -293,7 +291,7 @@
   "historical_data_bearing_evidence_used": false,
   "maximum_candidate_positions": 4,
   "method_constitution_version": "v5-bounded-monotone-beta-calibration-eligibility-charter-v1",
-  "next_authorized_artifact": "v5-calibration-curve-coverage-fixtures",
+  "next_authorized_artifact": "v5-calibration-position-spread-fixtures",
   "observation_budget": {
     "adversarial_regression_case_count": 12,
     "adversarial_regression_observation_count": 48,
@@ -303,7 +301,7 @@
     "final_evaluation_case_count": 36,
     "final_evaluation_observation_count": 144
   },
-  "registry_status": "schema_only",
+  "registry_status": "calibration_curve_coverage_authored",
   "schema_version": "calibration-successor-v5-scenario-family-registry-v1",
   "source_type": "synthetic",
   "v5_calibration_artifact_authored": false,
@@ -313,5 +311,5 @@
   "v5_final_evaluation_manifest_authored": false,
   "v5_final_evaluation_runtime_or_outcome_assets_authored": false,
   "v5_final_heldout_calibration_assessment_authored": false,
-  "v5_runtime_or_outcome_assets_authored": false
+  "v5_runtime_or_outcome_assets_authored": true
 }

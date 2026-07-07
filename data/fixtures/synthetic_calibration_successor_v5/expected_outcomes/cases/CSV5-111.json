@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-successor-v5-case-v1",
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "csv5-calibration-curve-coverage-111",
+  "case_id": "CSV5-111",
+  "trace_id": "csv5-curve-trace-111",
+  "scenario_family_id": "CSV5-CAL-CURVE-COVERAGE",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "csv5-curve-trace-111",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 52111,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-curve-trace-111",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 52112,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-curve-trace-111",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 52113,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-curve-trace-111",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 52114,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    }
+  ]
+}
