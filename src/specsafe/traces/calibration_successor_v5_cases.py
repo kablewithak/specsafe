@@ -303,7 +303,7 @@ def _load_calibration_successor_v5_replay_case(
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_final_position_spread_assets=final_evaluation_present,
+            allow_final_workload_variation_assets=final_evaluation_present,
             allow_calibration_fit_diagnostics_assets=(
                 fit_diagnostics_present and not final_evaluation_present
             ),

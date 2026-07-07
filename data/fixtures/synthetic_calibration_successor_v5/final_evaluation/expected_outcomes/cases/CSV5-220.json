@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-successor-v5-case-v1",
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "csv5-final-workload-variation-220",
+  "case_id": "CSV5-220",
+  "trace_id": "csv5-final-workload-trace-220",
+  "scenario_family_id": "CSV5-FINAL-WORKLOAD-VARIATION",
+  "split": "final_evaluation",
+  "data_role": "held_out_evaluation",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "csv5-final-workload-trace-220",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 64011,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "csv5-final-workload-trace-220",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 64012,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-final-workload-trace-220",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 64013,
+      "observed_acceptance": true,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-final-workload-trace-220",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 64014,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    }
+  ]
+}
