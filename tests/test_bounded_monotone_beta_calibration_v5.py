@@ -63,13 +63,16 @@ def _restore_manifest_only_root(root: Path) -> None:
         }
     )
     for family in payload["families"]:
-        if family["scenario_family_id"] == "CSV5-FINAL-CURVE-COVERAGE":
+        if family["scenario_family_id"] in {
+            "CSV5-FINAL-CURVE-COVERAGE",
+            "CSV5-FINAL-POSITION-SPREAD",
+        }:
             family["authoring_status"] = "reserved_for_v5_case_authoring"
     payload["explicit_exclusions"] = [
         exclusion
         for exclusion in payload["explicit_exclusions"]
         if exclusion not in _FIT_EXCLUSIONS
-        and not exclusion.startswith("Only CSV5-201..CSV5-209")
+        and not exclusion.startswith("Only CSV5-201..CSV5-")
         and not exclusion.startswith("No V5 final-evaluation manifest")
     ]
     payload["explicit_exclusions"].extend(sorted(_PRE_FIT_EXCLUSIONS))
