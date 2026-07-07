@@ -88,7 +88,16 @@ def test_workload_variation_retains_distinct_workload_signals_without_runtime_le
     )
 
 
-def test_workload_variation_retains_final_and_adversarial_quarantine() -> None:
-    assert not (_FIXTURE_ROOT / "final_evaluation").exists()
+def test_workload_variation_retains_heldout_containment_and_adversarial_quarantine() -> None:
+    final_inputs = _FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases"
+    final_outcomes = _FIXTURE_ROOT / "final_evaluation" / "expected_outcomes" / "cases"
+
+    assert tuple(sorted(path.stem for path in final_inputs.glob("*.json"))) == tuple(
+        f"CSV5-{number:03d}" for number in range(201, 210)
+    )
+    assert tuple(sorted(path.stem for path in final_outcomes.glob("*.json"))) == tuple(
+        f"CSV5-{number:03d}" for number in range(201, 210)
+    )
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
+    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

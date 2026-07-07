@@ -71,7 +71,16 @@ def test_position_spread_confidence_declines_with_position_and_retains_outcome_m
     assert all(any(values) and not all(values) for values in accepted_by_position.values())
 
 
-def test_position_spread_retains_final_and_adversarial_quarantine() -> None:
-    assert not (_FIXTURE_ROOT / "final_evaluation").exists()
+def test_position_spread_retains_heldout_containment_and_adversarial_quarantine() -> None:
+    final_inputs = _FIXTURE_ROOT / "final_evaluation" / "inputs" / "cases"
+    final_outcomes = _FIXTURE_ROOT / "final_evaluation" / "expected_outcomes" / "cases"
+
+    assert tuple(sorted(path.stem for path in final_inputs.glob("*.json"))) == tuple(
+        f"CSV5-{number:03d}" for number in range(201, 210)
+    )
+    assert tuple(sorted(path.stem for path in final_outcomes.glob("*.json"))) == tuple(
+        f"CSV5-{number:03d}" for number in range(201, 210)
+    )
     assert not (_FIXTURE_ROOT / "adversarial_regression").exists()
+    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
     assert (_FIXTURE_ROOT / "calibration_manifest.json").is_file()

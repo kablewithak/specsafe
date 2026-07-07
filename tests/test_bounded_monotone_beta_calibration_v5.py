@@ -46,6 +46,7 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
 
 
 def _restore_manifest_only_root(root: Path) -> None:
+    shutil.rmtree(root / "final_evaluation")
     (root / _ARTIFACT_FILENAME).unlink()
     (root / _DIAGNOSTICS_FILENAME).unlink()
     registry_path = root / "scenario_family_registry.json"
@@ -53,6 +54,7 @@ def _restore_manifest_only_root(root: Path) -> None:
     payload.update(
         {
             "registry_status": "calibration_manifest_frozen",
+            "v5_final_evaluation_runtime_or_outcome_assets_authored": False,
             "v5_calibration_artifact_authored": False,
             "v5_calibration_fit_diagnostics_authored": False,
             "frozen_calibration_artifact_sha256": None,
@@ -60,10 +62,15 @@ def _restore_manifest_only_root(root: Path) -> None:
             "next_authorized_artifact": "v5-bounded-monotone-beta-fit-diagnostics",
         }
     )
+    for family in payload["families"]:
+        if family["scenario_family_id"] == "CSV5-FINAL-CURVE-COVERAGE":
+            family["authoring_status"] = "reserved_for_v5_case_authoring"
     payload["explicit_exclusions"] = [
         exclusion
         for exclusion in payload["explicit_exclusions"]
         if exclusion not in _FIT_EXCLUSIONS
+        and not exclusion.startswith("Only CSV5-201..CSV5-209")
+        and not exclusion.startswith("No V5 final-evaluation manifest")
     ]
     payload["explicit_exclusions"].extend(sorted(_PRE_FIT_EXCLUSIONS))
     registry_path.write_text(
@@ -144,10 +151,10 @@ def test_retained_fit_rejects_tampered_artifact_bytes(tmp_path: Path) -> None:
     assert error.value.code is V5BoundedMonotoneBetaFitViolationCode.PROVENANCE_MISMATCH
 
 
-def test_fit_root_contains_no_final_evidence_or_policy_execution_assets() -> None:
+def test_retained_fit_coexists_with_quarantined_final_assets_without_final_result() -> None:
     present_names = {child.name for child in _FIXTURE_ROOT.iterdir()}
 
-    assert "final_evaluation" not in present_names
+    assert "final_evaluation" in present_names
     assert "adversarial_regression" not in present_names
     assert "final_evaluation_manifest.json" not in present_names
     assert "final_assessment_result.json" not in present_names

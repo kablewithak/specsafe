@@ -43,6 +43,7 @@ def _copy_fixture_root(tmp_path: Path) -> Path:
 
 
 def _restore_pre_freeze_root(root: Path) -> None:
+    shutil.rmtree(root / "final_evaluation")
     (root / "calibration_manifest.json").unlink()
     (root / "bounded_monotone_beta_calibration_artifact.json").unlink()
     (root / "bounded_monotone_beta_calibration_fit_diagnostics.json").unlink()
@@ -51,6 +52,7 @@ def _restore_pre_freeze_root(root: Path) -> None:
     payload.update(
         {
             "registry_status": "calibration_mixed_reliability_contrast_authored",
+            "v5_final_evaluation_runtime_or_outcome_assets_authored": False,
             "v5_calibration_manifest_authored": False,
             "frozen_calibration_manifest_sha256": None,
             "frozen_calibration_pre_freeze_registry_sha256": None,
@@ -61,10 +63,16 @@ def _restore_pre_freeze_root(root: Path) -> None:
             "next_authorized_artifact": "v5-calibration-manifest-freeze",
         }
     )
+    for family in payload["families"]:
+        if family["scenario_family_id"] == "CSV5-FINAL-CURVE-COVERAGE":
+            family["authoring_status"] = "reserved_for_v5_case_authoring"
     payload["explicit_exclusions"] = [
         exclusion
         for exclusion in payload["explicit_exclusions"]
-        if exclusion != _FROZEN_EXCLUSION and exclusion not in _FIT_EXCLUSIONS
+        if exclusion != _FROZEN_EXCLUSION
+        and exclusion not in _FIT_EXCLUSIONS
+        and not exclusion.startswith("Only CSV5-201..CSV5-209")
+        and not exclusion.startswith("No V5 final-evaluation manifest")
     ]
     payload["explicit_exclusions"].append(_NO_MANIFEST_EXCLUSION)
     payload["explicit_exclusions"].extend(sorted(_PRE_FIT_EXCLUSIONS))
