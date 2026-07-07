@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-105",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 12,
+        "profile_id": "synthetic-jagged-capacity-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.95,
+      "decode_round": 0,
+      "request_id": "matched-policy-jagged-discontinuity-request-v1",
+      "trace_id": "matched-policy-jagged-discontinuity-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 12,
+        "profile_id": "synthetic-jagged-capacity-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.9,
+      "decode_round": 0,
+      "request_id": "matched-policy-jagged-discontinuity-request-v1",
+      "trace_id": "matched-policy-jagged-discontinuity-trace-v1",
+      "visible_prefix_token_ids": [
+        5501
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 12,
+        "profile_id": "synthetic-jagged-capacity-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.85,
+      "decode_round": 0,
+      "request_id": "matched-policy-jagged-discontinuity-request-v1",
+      "trace_id": "matched-policy-jagged-discontinuity-trace-v1",
+      "visible_prefix_token_ids": [
+        5501,
+        5502
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 12,
+        "profile_id": "synthetic-jagged-capacity-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.8,
+      "decode_round": 0,
+      "request_id": "matched-policy-jagged-discontinuity-request-v1",
+      "trace_id": "matched-policy-jagged-discontinuity-trace-v1",
+      "visible_prefix_token_ids": [
+        5501,
+        5502,
+        5503
+      ],
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-jagged-discontinuity-v1",
+  "generation_note": "Self-authored jagged-capacity discontinuity control; the 768-unit boundary exposes high marginal-cost pruning behavior.",
+  "request_id": "matched-policy-jagged-discontinuity-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "development",
+  "trace_id": "matched-policy-jagged-discontinuity-trace-v1"
+}

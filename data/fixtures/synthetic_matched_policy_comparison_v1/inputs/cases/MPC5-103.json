@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-103",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "synthetic-moderate-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.7,
+      "decode_round": 0,
+      "request_id": "matched-policy-moderate-adaptive-loses-request-v1",
+      "trace_id": "matched-policy-moderate-adaptive-loses-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "synthetic-moderate-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.65,
+      "decode_round": 0,
+      "request_id": "matched-policy-moderate-adaptive-loses-request-v1",
+      "trace_id": "matched-policy-moderate-adaptive-loses-trace-v1",
+      "visible_prefix_token_ids": [
+        5301
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "synthetic-moderate-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.63,
+      "decode_round": 0,
+      "request_id": "matched-policy-moderate-adaptive-loses-request-v1",
+      "trace_id": "matched-policy-moderate-adaptive-loses-trace-v1",
+      "visible_prefix_token_ids": [
+        5301,
+        5302
+      ],
+      "workload_type": "code"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 16,
+        "profile_id": "synthetic-moderate-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.61,
+      "decode_round": 0,
+      "request_id": "matched-policy-moderate-adaptive-loses-request-v1",
+      "trace_id": "matched-policy-moderate-adaptive-loses-trace-v1",
+      "visible_prefix_token_ids": [
+        5301,
+        5302,
+        5303
+      ],
+      "workload_type": "code"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-moderate-adaptive-loses-v1",
+  "generation_note": "Self-authored moderate-load losing control; raw threshold confidence clears while calibrated expected utility does not.",
+  "request_id": "matched-policy-moderate-adaptive-loses-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "development",
+  "trace_id": "matched-policy-moderate-adaptive-loses-trace-v1"
+}

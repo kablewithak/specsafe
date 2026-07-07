@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-101",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.9,
+      "decode_round": 0,
+      "request_id": "matched-policy-flat-neutral-request-v1",
+      "trace_id": "matched-policy-flat-neutral-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.75,
+      "decode_round": 0,
+      "request_id": "matched-policy-flat-neutral-request-v1",
+      "trace_id": "matched-policy-flat-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5101
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.65,
+      "decode_round": 0,
+      "request_id": "matched-policy-flat-neutral-request-v1",
+      "trace_id": "matched-policy-flat-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5101,
+        5102
+      ],
+      "workload_type": "structured_text"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 4,
+        "profile_id": "synthetic-flat-capacity-control-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.6,
+      "decode_round": 0,
+      "request_id": "matched-policy-flat-neutral-request-v1",
+      "trace_id": "matched-policy-flat-neutral-trace-v1",
+      "visible_prefix_token_ids": [
+        5101,
+        5102,
+        5103
+      ],
+      "workload_type": "structured_text"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-flat-neutral-v1",
+  "generation_note": "Self-authored flat-capacity neutral control; all valid policies should admit under the predeclared development configuration.",
+  "request_id": "matched-policy-flat-neutral-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "development",
+  "trace_id": "matched-policy-flat-neutral-trace-v1"
+}

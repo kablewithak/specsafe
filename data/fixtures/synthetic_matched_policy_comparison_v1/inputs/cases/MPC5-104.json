@@ -1,0 +1,82 @@
+{
+  "case_id": "MPC5-104",
+  "contexts": [
+    {
+      "block_position_index": 1,
+      "capacity_snapshot": {
+        "active_request_count": 64,
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.95,
+      "decode_round": 0,
+      "request_id": "matched-policy-saturated-adaptive-prunes-request-v1",
+      "trace_id": "matched-policy-saturated-adaptive-prunes-trace-v1",
+      "visible_prefix_token_ids": [],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 2,
+      "capacity_snapshot": {
+        "active_request_count": 64,
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.9,
+      "decode_round": 0,
+      "request_id": "matched-policy-saturated-adaptive-prunes-request-v1",
+      "trace_id": "matched-policy-saturated-adaptive-prunes-trace-v1",
+      "visible_prefix_token_ids": [
+        5401
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 3,
+      "capacity_snapshot": {
+        "active_request_count": 64,
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.85,
+      "decode_round": 0,
+      "request_id": "matched-policy-saturated-adaptive-prunes-request-v1",
+      "trace_id": "matched-policy-saturated-adaptive-prunes-trace-v1",
+      "visible_prefix_token_ids": [
+        5401,
+        5402
+      ],
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "block_position_index": 4,
+      "capacity_snapshot": {
+        "active_request_count": 64,
+        "profile_id": "synthetic-saturated-load-v1",
+        "source": "synthetic",
+        "verification_batch_tokens": 64
+      },
+      "conditional_survival_confidence": 0.8,
+      "decode_round": 0,
+      "request_id": "matched-policy-saturated-adaptive-prunes-request-v1",
+      "trace_id": "matched-policy-saturated-adaptive-prunes-trace-v1",
+      "visible_prefix_token_ids": [
+        5401,
+        5402,
+        5403
+      ],
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "data_role": "synthetic_fixture",
+  "fixture_id": "matched-policy-saturated-adaptive-prunes-v1",
+  "generation_note": "Self-authored saturated-load pruning control; high confidence does not outweigh declared saturated marginal cost.",
+  "request_id": "matched-policy-saturated-adaptive-prunes-request-v1",
+  "schema_version": "matched-policy-comparison-fixture-v1",
+  "source_type": "synthetic",
+  "split": "development",
+  "trace_id": "matched-policy-saturated-adaptive-prunes-trace-v1"
+}
