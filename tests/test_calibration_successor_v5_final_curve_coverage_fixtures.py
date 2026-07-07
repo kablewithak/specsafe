@@ -138,5 +138,6 @@ def test_final_assets_do_not_change_frozen_calibration_manifest_or_fit_provenanc
     assert all(not asset.relative_path.startswith("final_evaluation/") for asset in manifest.assets)
     assert retained_fit.artifact.calibration_manifest.aggregate_sha256 == manifest.aggregate_sha256
     assert retained_fit.diagnostics.final_evaluation_accessed is False
-    assert not (_FIXTURE_ROOT / "final_evaluation_manifest.json").exists()
+    assert (_FIXTURE_ROOT / "final_evaluation_manifest.json").is_file()
+    assert (_FIXTURE_ROOT / "final_evidence_index.json").is_file()
     assert not (_FIXTURE_ROOT / "final_assessment_result.json").exists()
