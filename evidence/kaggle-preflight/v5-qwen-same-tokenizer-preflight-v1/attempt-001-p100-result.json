@@ -1,0 +1,38 @@
+{
+  "draft_logits_access": null,
+  "draft_model": {
+    "license": "apache-2.0",
+    "model_id": "Qwen/Qwen2.5-0.5B",
+    "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987"
+  },
+  "environment": {
+    "cuda_available": true,
+    "cuda_version": "12.8",
+    "gpu_name": "Tesla P100-PCIE-16GB",
+    "huggingface_hub_version": "1.11.0",
+    "kaggle_kernel_run_type": "Interactive",
+    "kaggle_url_base": "https://www.kaggle.com",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "python_version": "3.12.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "5.0.0"
+  },
+  "failure": {
+    "code": "unexpected_preflight_failure",
+    "message": "AttributeError: Qwen2Tokenizer has no attribute additional_special_tokens_ids"
+  },
+  "preflight_id": "v5-qwen-same-tokenizer-preflight-v1",
+  "preflight_status": "fails_kaggle_preflight",
+  "schema_version": "specsafe-kaggle-preflight-result-v1",
+  "source_commit_sha": "5274d3b4f958c9d435e878342fa5dd2053252ebe",
+  "target_logits_access": null,
+  "target_model": {
+    "license": "apache-2.0",
+    "model_id": "Qwen/Qwen2.5-1.5B",
+    "revision": "8faed761d45a263340a0528343f099c05c9a4323"
+  },
+  "timestamp_utc": "2026-07-07T23:20:08.917182+00:00",
+  "tokenizer_compatibility": null,
+  "trace_collection_allowed": false,
+  "trace_collection_performed": false
+}

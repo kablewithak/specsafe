@@ -7,6 +7,13 @@ from pathlib import Path
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _NOTEBOOK_PATH = _PROJECT_ROOT / "notebooks" / "kaggle" / "specsafe_v5_qwen_preflight.ipynb"
+_P100_FAILURE_PATH = (
+    _PROJECT_ROOT
+    / "evidence"
+    / "kaggle-preflight"
+    / "v5-qwen-same-tokenizer-preflight-v1"
+    / "attempt-001-p100-result.json"
+)
 
 
 def _notebook_source() -> str:
@@ -35,13 +42,27 @@ def test_notebook_pins_revisions_and_proves_tokenizer_compatibility() -> None:
     assert "api.model_info(model_id)" in source
     assert "revision=draft_revision.revision" in source
     assert "revision=target_revision.revision" in source
-    assert "draft_tokenizer.get_vocab() == target_tokenizer.get_vocab()" in source
+    assert "token_to_id_mapping_match" in source
+    assert "draft_tokenizer.get_vocab()" in source
+    assert "target_tokenizer.get_vocab()" in source
     assert "special_token_map_match" in source
     assert "draft_tokenizer.special_tokens_map" in source
     assert "target_tokenizer.special_tokens_map" in source
-    assert "special_token_ids(draft_tokenizer)" in source
+    assert "additional_special_token_ids" in source
+    assert "convert_tokens_to_ids" in source
+    assert "additional_special_tokens_ids" not in source
     assert "probe_token_ids_match" in source
     assert "trust_remote_code=False" in source
+
+
+def test_notebook_rejects_unsupported_gpu_architecture_before_hub_access() -> None:
+    source = _notebook_source()
+
+    assert "require_supported_gpu_architecture()" in source
+    assert '"gpu_architecture_unsupported"' in source
+    assert "torch.cuda.get_device_capability(0)" in source
+    assert "torch.cuda.get_arch_list()" in source
+    assert source.index("require_supported_gpu_architecture()") < source.index("api = HfApi()")
 
 
 def test_notebook_requires_bounded_failure_record_and_finite_logits() -> None:
@@ -54,6 +75,19 @@ def test_notebook_requires_bounded_failure_record_and_finite_logits() -> None:
     assert "write_result(result)" in source
     assert "specsafe_v5_qwen_preflight_result.json" in source
     assert "Kaggle preflight failed. The result file was retained" in source
+
+
+def test_first_p100_attempt_is_retained_without_trace_collection() -> None:
+    result = json.loads(_P100_FAILURE_PATH.read_text(encoding="utf-8"))
+
+    assert result["preflight_status"] == "fails_kaggle_preflight"
+    assert result["trace_collection_allowed"] is False
+    assert result["trace_collection_performed"] is False
+    assert result["failure"]["code"] == "unexpected_preflight_failure"
+    assert "additional_special_tokens_ids" in result["failure"]["message"]
+    assert result["environment"]["gpu_name"] == "Tesla P100-PCIE-16GB"
+    assert result["draft_logits_access"] is None
+    assert result["target_logits_access"] is None
 
 
 def test_notebook_does_not_reference_tokens_or_private_prompt_inputs() -> None:
