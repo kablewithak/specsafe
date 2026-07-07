@@ -1,0 +1,37 @@
+{
+  "capacity_unit": "normalized_capacity_points",
+  "load_unit": "request_token_load_units",
+  "profile_id": "synthetic-jagged-capacity-v1",
+  "profile_kind": "jagged_capacity",
+  "profile_version": "v1",
+  "provenance_note": "Synthetic discontinuous-capacity stress profile for deterministic replay; not a serving measurement.",
+  "schema_version": "synthetic-capacity-profile-v1",
+  "source": "synthetic",
+  "windows": [
+    {
+      "available_capacity_units": 92.0,
+      "marginal_verification_cost_units": 0.4,
+      "maximum_request_token_load": 256
+    },
+    {
+      "available_capacity_units": 45.0,
+      "marginal_verification_cost_units": 2.2,
+      "maximum_request_token_load": 768
+    },
+    {
+      "available_capacity_units": 70.0,
+      "marginal_verification_cost_units": 1.0,
+      "maximum_request_token_load": 2048
+    },
+    {
+      "available_capacity_units": 20.0,
+      "marginal_verification_cost_units": 4.5,
+      "maximum_request_token_load": 4096
+    },
+    {
+      "available_capacity_units": 55.0,
+      "marginal_verification_cost_units": 1.8,
+      "maximum_request_token_load": null
+    }
+  ]
+}

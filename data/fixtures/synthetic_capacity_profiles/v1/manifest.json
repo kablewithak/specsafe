@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "byte_count": 966,
+      "profile_id": "synthetic-light-load-v1",
+      "profile_kind": "light_load",
+      "profile_version": "v1",
+      "relative_path": "profiles/light_load.json",
+      "sha256": "38dccf11845fa5f28f3ecc501d2cab162311db99093504619e700b8f4f85ba41"
+    },
+    {
+      "byte_count": 974,
+      "profile_id": "synthetic-moderate-load-v1",
+      "profile_kind": "moderate_load",
+      "profile_version": "v1",
+      "relative_path": "profiles/moderate_load.json",
+      "sha256": "c6e5996825d45fd1772201bc452260b8ed533f83a1dc61f813799df22adf38a5"
+    },
+    {
+      "byte_count": 974,
+      "profile_id": "synthetic-saturated-load-v1",
+      "profile_kind": "saturated_load",
+      "profile_version": "v1",
+      "relative_path": "profiles/saturated_load.json",
+      "sha256": "75c63681611000dc8a079f87e44f84621aafc75cca8526c0ee4b55fc17781540"
+    },
+    {
+      "byte_count": 1132,
+      "profile_id": "synthetic-jagged-capacity-v1",
+      "profile_kind": "jagged_capacity",
+      "profile_version": "v1",
+      "relative_path": "profiles/jagged_capacity.json",
+      "sha256": "fc6b36caaf65894d5754a923fc31b34045e02d0db89685de6968688fe84796ad"
+    },
+    {
+      "byte_count": 992,
+      "profile_id": "synthetic-flat-capacity-control-v1",
+      "profile_kind": "flat_capacity_control",
+      "profile_version": "v1",
+      "relative_path": "profiles/flat_capacity_control.json",
+      "sha256": "57017bbbdb6aa4fafdb36250f31124786ede1f7923d0eff01091f5dc3236b159"
+    }
+  ],
+  "fixture_set_id": "synthetic-capacity-profiles-v1",
+  "fixture_set_version": "v1",
+  "provenance_note": "Self-authored synthetic replay controls; not measured serving capacity.",
+  "schema_version": "synthetic-capacity-profile-manifest-v1",
+  "source": "synthetic"
+}
