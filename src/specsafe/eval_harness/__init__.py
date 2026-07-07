@@ -13,6 +13,20 @@ from specsafe.eval_harness.comparison_models import (
     MatchedPolicyComparisonResult,
     UnsafeRetrospectiveControlExclusion,
 )
+from specsafe.eval_harness.governed_comparison import (
+    DEFAULT_GOVERNED_MATCHED_POLICY_COMPARISON_PROTOCOL,
+    GovernedArtifactReference,
+    GovernedMatchedPolicyComparisonError,
+    GovernedMatchedPolicyComparisonErrorCode,
+    GovernedMatchedPolicyComparisonProtocol,
+    GovernedMatchedPolicyComparisonResult,
+    GovernedOutcomeCount,
+    build_governed_matched_policy_comparison_result,
+    canonical_governed_matched_policy_comparison_json,
+    default_governed_comparison_result_path,
+    run_governed_matched_policy_comparison_once,
+    write_governed_matched_policy_comparison_result,
+)
 from specsafe.eval_harness.models import (
     AdmittedPositionCost,
     PolicyUtilityScore,
@@ -42,4 +56,16 @@ __all__ = [
     "UnsafeRetrospectiveControlExclusion",
     "run_matched_policy_comparison",
     "score_valid_policy_replay",
+    "DEFAULT_GOVERNED_MATCHED_POLICY_COMPARISON_PROTOCOL",
+    "GovernedArtifactReference",
+    "GovernedMatchedPolicyComparisonError",
+    "GovernedMatchedPolicyComparisonErrorCode",
+    "GovernedMatchedPolicyComparisonProtocol",
+    "GovernedMatchedPolicyComparisonResult",
+    "GovernedOutcomeCount",
+    "build_governed_matched_policy_comparison_result",
+    "canonical_governed_matched_policy_comparison_json",
+    "default_governed_comparison_result_path",
+    "run_governed_matched_policy_comparison_once",
+    "write_governed_matched_policy_comparison_result",
 ]
