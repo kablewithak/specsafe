@@ -1,4 +1,4 @@
-"""Contract and loader tests for V5 calibration case pairs through V5-3d."""
+"""Contract and loader tests for V5 calibration case pairs through V5-3e."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from specsafe.traces.calibration_successor_v5_cases import (
     CalibrationSuccessorV5CaseContractError,
     CalibrationSuccessorV5CaseViolationCode,
     load_calibration_successor_v5_curve_coverage_replay_case,
+    load_calibration_successor_v5_mixed_reliability_contrast_replay_case,
     load_calibration_successor_v5_position_spread_replay_case,
     load_calibration_successor_v5_workload_variation_replay_case,
 )
@@ -21,6 +22,7 @@ _FIXTURE_ROOT = _PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_suc
 _CURVE_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(101, 113))
 _POSITION_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(113, 125))
 _WORKLOAD_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(125, 137))
+_MIXED_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(137, 149))
 
 
 def _copy_fixture_root(tmp_path: Path) -> Path:
@@ -46,10 +48,19 @@ def test_loads_all_authorised_v5_calibration_case_pairs() -> None:
         for case_id in _WORKLOAD_CASE_IDS
     )
 
-    replay_cases = (*curve_cases, *position_cases, *workload_cases)
+    mixed_cases = tuple(
+        load_calibration_successor_v5_mixed_reliability_contrast_replay_case(
+            _FIXTURE_ROOT,
+            case_id,
+        )
+        for case_id in _MIXED_CASE_IDS
+    )
+
+    replay_cases = (*curve_cases, *position_cases, *workload_cases, *mixed_cases)
     assert tuple(case.runtime_input.case_id for case in curve_cases) == _CURVE_CASE_IDS
     assert tuple(case.runtime_input.case_id for case in position_cases) == _POSITION_CASE_IDS
     assert tuple(case.runtime_input.case_id for case in workload_cases) == _WORKLOAD_CASE_IDS
+    assert tuple(case.runtime_input.case_id for case in mixed_cases) == _MIXED_CASE_IDS
     assert all(len(case.runtime_input.contexts) == 4 for case in replay_cases)
     assert all(len(case.expected_outcomes.outcomes) == 4 for case in replay_cases)
     assert {case.runtime_input.scenario_family_id for case in curve_cases} == {
@@ -61,11 +72,14 @@ def test_loads_all_authorised_v5_calibration_case_pairs() -> None:
     assert {case.runtime_input.scenario_family_id for case in workload_cases} == {
         "CSV5-CAL-WORKLOAD-VARIATION"
     }
+    assert {case.runtime_input.scenario_family_id for case in mixed_cases} == {
+        "CSV5-CAL-MIXED-RELIABILITY-CONTRAST"
+    }
 
 
 def test_runtime_assets_exclude_evaluation_only_outcome_fields() -> None:
     runtime_payload = json.loads(
-        (_FIXTURE_ROOT / "inputs" / "cases" / "CSV5-131.json").read_text(encoding="utf-8")
+        (_FIXTURE_ROOT / "inputs" / "cases" / "CSV5-143.json").read_text(encoding="utf-8")
     )
     serialized_runtime = json.dumps(runtime_payload, sort_keys=True)
 
@@ -80,13 +94,13 @@ def test_workload_loader_rejects_a_misaligned_runtime_and_outcome_pair(
     tmp_path: Path,
 ) -> None:
     root = _copy_fixture_root(tmp_path)
-    outcome_path = root / "expected_outcomes" / "cases" / "CSV5-131.json"
+    outcome_path = root / "expected_outcomes" / "cases" / "CSV5-143.json"
     payload = json.loads(outcome_path.read_text(encoding="utf-8"))
     payload["fixture_id"] = "misaligned-v5-fixture"
     outcome_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     with pytest.raises(CalibrationSuccessorV5CaseContractError) as error:
-        load_calibration_successor_v5_workload_variation_replay_case(root, "CSV5-131")
+        load_calibration_successor_v5_mixed_reliability_contrast_replay_case(root, "CSV5-143")
 
     assert error.value.code is CalibrationSuccessorV5CaseViolationCode.CASE_ALIGNMENT_ERROR
 
@@ -98,6 +112,10 @@ def test_loaders_reject_case_ids_outside_their_active_family_boundaries() -> Non
         load_calibration_successor_v5_position_spread_replay_case(_FIXTURE_ROOT, "CSV5-125")
     with pytest.raises(CalibrationSuccessorV5CaseContractError) as workload_error:
         load_calibration_successor_v5_workload_variation_replay_case(_FIXTURE_ROOT, "CSV5-137")
+    with pytest.raises(CalibrationSuccessorV5CaseContractError) as mixed_error:
+        load_calibration_successor_v5_mixed_reliability_contrast_replay_case(
+            _FIXTURE_ROOT, "CSV5-201"
+        )
 
     assert curve_error.value.code is CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR
     assert (
@@ -106,3 +124,4 @@ def test_loaders_reject_case_ids_outside_their_active_family_boundaries() -> Non
     assert (
         workload_error.value.code is CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR
     )
+    assert mixed_error.value.code is CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR

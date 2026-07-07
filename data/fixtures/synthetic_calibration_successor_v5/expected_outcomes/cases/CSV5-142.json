@@ -1,0 +1,46 @@
+{
+  "schema_version": "calibration-successor-v5-case-v1",
+  "fixture_set_id": "synthetic-calibration-successor-v5",
+  "fixture_set_version": "1.0.0",
+  "fixture_id": "csv5-calibration-mixed-reliability-contrast-142",
+  "case_id": "CSV5-142",
+  "trace_id": "csv5-mixed-reliability-trace-142",
+  "scenario_family_id": "CSV5-CAL-MIXED-RELIABILITY-CONTRAST",
+  "split": "calibration",
+  "data_role": "calibration",
+  "source_type": "synthetic",
+  "outcomes": [
+    {
+      "trace_id": "csv5-mixed-reliability-trace-142",
+      "decode_round": 0,
+      "block_position_index": 1,
+      "candidate_token_id": 57351,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "csv5-mixed-reliability-trace-142",
+      "decode_round": 0,
+      "block_position_index": 2,
+      "candidate_token_id": 57352,
+      "observed_acceptance": true,
+      "prefix_survival_label": true
+    },
+    {
+      "trace_id": "csv5-mixed-reliability-trace-142",
+      "decode_round": 0,
+      "block_position_index": 3,
+      "candidate_token_id": 57353,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    },
+    {
+      "trace_id": "csv5-mixed-reliability-trace-142",
+      "decode_round": 0,
+      "block_position_index": 4,
+      "candidate_token_id": 57354,
+      "observed_acceptance": false,
+      "prefix_survival_label": false
+    }
+  ]
+}

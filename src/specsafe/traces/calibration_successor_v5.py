@@ -90,6 +90,9 @@ class CalibrationSuccessorV5RegistryViolationCode(StrEnum):
     CALIBRATION_WORKLOAD_VARIATION_BOUNDARY_VIOLATION = (
         "calibration_successor_v5_calibration_workload_variation_boundary_violation"
     )
+    CALIBRATION_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION = (
+        "calibration_successor_v5_calibration_mixed_reliability_contrast_boundary_violation"
+    )
 
 
 class CalibrationSuccessorV5RegistryLoadError(ValueError):
@@ -141,6 +144,7 @@ class CalibrationSuccessorV5ScenarioFamilyRecord(StrictContract):
         "calibration_curve_coverage_authored",
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
+        "calibration_mixed_reliability_contrast_authored",
     ]
 
     @field_validator("reserved_case_ids")
@@ -192,6 +196,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "calibration_curve_coverage_authored",
         "calibration_position_spread_authored",
         "calibration_workload_variation_authored",
+        "calibration_mixed_reliability_contrast_authored",
     ]
     fixture_set_id: Literal["synthetic-calibration-successor-v5"]
     fixture_set_version: Literal["1.0.0"]
@@ -221,6 +226,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "v5-calibration-position-spread-fixtures",
         "v5-calibration-workload-variation-fixtures",
         "v5-calibration-mixed-reliability-contrast-fixtures",
+        "v5-calibration-manifest-freeze",
     ]
 
     @model_validator(mode="after")
@@ -311,10 +317,21 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             for family in self.families
             if family.scenario_family_id == "CSV5-CAL-WORKLOAD-VARIATION"
         )
+        mixed_reliability_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CSV5-CAL-MIXED-RELIABILITY-CONTRAST"
+        )
         remaining_families = tuple(
             family
             for family in self.families
-            if family not in (curve_family, position_family, workload_family)
+            if family
+            not in (
+                curve_family,
+                position_family,
+                workload_family,
+                mixed_reliability_family,
+            )
         )
 
         if self.registry_status == "schema_only":
@@ -326,6 +343,8 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 raise ValueError("schema-only V5 must retain position spread as reserved")
             if workload_family.authoring_status != "reserved_for_v5_case_authoring":
                 raise ValueError("schema-only V5 must retain workload variation as reserved")
+            if mixed_reliability_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("schema-only V5 must retain mixed reliability as reserved")
             if any(
                 family.authoring_status != "reserved_for_v5_case_authoring"
                 for family in remaining_families
@@ -350,6 +369,8 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 raise ValueError("V5-3b must retain position spread as reserved")
             if workload_family.authoring_status != "reserved_for_v5_case_authoring":
                 raise ValueError("V5-3b must retain workload variation as reserved")
+            if mixed_reliability_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("V5-3b must retain mixed reliability as reserved")
             if any(
                 family.authoring_status != "reserved_for_v5_case_authoring"
                 for family in remaining_families
@@ -370,6 +391,8 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         if self.registry_status == "calibration_position_spread_authored":
             if workload_family.authoring_status != "reserved_for_v5_case_authoring":
                 raise ValueError("V5-3c must retain workload variation as reserved")
+            if mixed_reliability_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("V5-3c must retain mixed reliability as reserved")
             if any(
                 family.authoring_status != "reserved_for_v5_case_authoring"
                 for family in remaining_families
@@ -386,21 +409,47 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
 
         if workload_family.authoring_status != "calibration_workload_variation_authored":
             raise ValueError("workload-variation family must be marked authored at V5-3d")
+
+        if self.registry_status == "calibration_workload_variation_authored":
+            if mixed_reliability_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("V5-3d must retain mixed reliability as reserved")
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in remaining_families
+            ):
+                raise ValueError(
+                    "only curve coverage, position spread, and workload variation may be authored "
+                    "at V5-3d"
+                )
+            if (
+                self.next_authorized_artifact
+                != "v5-calibration-mixed-reliability-contrast-fixtures"
+            ):
+                raise ValueError("V5-3d must authorize mixed-reliability fixtures next")
+            if (
+                "Only CSV5-101..CSV5-136 runtime-input and expected-outcome case pairs "
+                "are authored." not in self.explicit_exclusions
+            ):
+                raise ValueError("V5-3d must state its exact authored-case boundary")
+            return self
+
+        if (
+            mixed_reliability_family.authoring_status
+            != "calibration_mixed_reliability_contrast_authored"
+        ):
+            raise ValueError("mixed-reliability family must be marked authored at V5-3e")
         if any(
             family.authoring_status != "reserved_for_v5_case_authoring"
             for family in remaining_families
         ):
-            raise ValueError(
-                "only curve coverage, position spread, and workload variation may be authored "
-                "at V5-3d"
-            )
-        if self.next_authorized_artifact != "v5-calibration-mixed-reliability-contrast-fixtures":
-            raise ValueError("V5-3d must authorize mixed-reliability fixtures next")
+            raise ValueError("only calibration families may be authored at V5-3e")
+        if self.next_authorized_artifact != "v5-calibration-manifest-freeze":
+            raise ValueError("V5-3e must authorize calibration-manifest freeze next")
         if (
-            "Only CSV5-101..CSV5-136 runtime-input and expected-outcome case pairs "
+            "Only CSV5-101..CSV5-148 runtime-input and expected-outcome case pairs "
             "are authored." not in self.explicit_exclusions
         ):
-            raise ValueError("V5-3d must state its exact authored-case boundary")
+            raise ValueError("V5-3e must state its exact authored-case boundary")
         return self
 
 
@@ -410,6 +459,7 @@ def load_calibration_successor_v5_scenario_family_registry(
     allow_calibration_curve_coverage_assets: bool = False,
     allow_calibration_position_spread_assets: bool = False,
     allow_calibration_workload_variation_assets: bool = False,
+    allow_calibration_mixed_reliability_contrast_assets: bool = False,
 ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
     """Load V5 registry only through one explicit active evidence boundary."""
 
@@ -418,6 +468,7 @@ def load_calibration_successor_v5_scenario_family_registry(
             allow_calibration_curve_coverage_assets,
             allow_calibration_position_spread_assets,
             allow_calibration_workload_variation_assets,
+            allow_calibration_mixed_reliability_contrast_assets,
         )
     )
     if active_boundary_count > 1:
@@ -427,7 +478,9 @@ def load_calibration_successor_v5_scenario_family_registry(
         )
 
     root = path.parent.resolve()
-    if allow_calibration_workload_variation_assets:
+    if allow_calibration_mixed_reliability_contrast_assets:
+        assert_calibration_successor_v5_calibration_mixed_reliability_contrast_fixture_root(root)
+    elif allow_calibration_workload_variation_assets:
         assert_calibration_successor_v5_calibration_workload_variation_fixture_root(root)
     elif allow_calibration_position_spread_assets:
         assert_calibration_successor_v5_calibration_position_spread_fixture_root(root)
@@ -462,6 +515,15 @@ def load_calibration_successor_v5_scenario_family_registry(
             CalibrationSuccessorV5RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
+    if allow_calibration_mixed_reliability_contrast_assets:
+        if registry.registry_status != "calibration_mixed_reliability_contrast_authored":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                (
+                    CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION
+                ),
+                "V5 registry has not reached the mixed-reliability evidence boundary",
+            )
+        return registry
     if allow_calibration_workload_variation_assets:
         if registry.registry_status != "calibration_workload_variation_authored":
             raise CalibrationSuccessorV5RegistryLoadError(
@@ -559,6 +621,27 @@ def assert_calibration_successor_v5_calibration_workload_variation_fixture_root(
             CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_WORKLOAD_VARIATION_BOUNDARY_VIOLATION
         ),
         boundary_name="calibration workload variation",
+    )
+
+
+def assert_calibration_successor_v5_calibration_mixed_reliability_contrast_fixture_root(
+    root: Path,
+) -> None:
+    """Validate all forty-eight V5 calibration pairs and no later assets."""
+
+    _assert_root_layout(
+        root,
+        allowed_root_names=_V5_ROOT_METADATA_FILENAMES,
+        expected_case_ids=(
+            *_V5_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+            *_V5_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+            *_V5_CALIBRATION_WORKLOAD_VARIATION_CASE_IDS,
+            *_V5_CALIBRATION_MIXED_RELIABILITY_CONTRAST_CASE_IDS,
+        ),
+        violation_code=(
+            CalibrationSuccessorV5RegistryViolationCode.CALIBRATION_MIXED_RELIABILITY_CONTRAST_BOUNDARY_VIOLATION
+        ),
+        boundary_name="calibration mixed reliability contrast",
     )
 
 
