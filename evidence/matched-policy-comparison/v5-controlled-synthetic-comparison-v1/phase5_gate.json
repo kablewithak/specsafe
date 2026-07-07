@@ -1,0 +1,51 @@
+{
+  "adaptive_vs_fixed_length_outcome_counts": [
+    {
+      "case_count": 2,
+      "outcome": "adaptive_higher_utility"
+    },
+    {
+      "case_count": 3,
+      "outcome": "utility_neutral"
+    },
+    {
+      "case_count": 1,
+      "outcome": "adaptive_lower_utility"
+    }
+  ],
+  "adaptive_vs_static_threshold_outcome_counts": [
+    {
+      "case_count": 3,
+      "outcome": "adaptive_higher_utility"
+    },
+    {
+      "case_count": 2,
+      "outcome": "utility_neutral"
+    },
+    {
+      "case_count": 1,
+      "outcome": "adaptive_lower_utility"
+    }
+  ],
+  "calibration_refit_performed": false,
+  "case_count": 6,
+  "claim_status": "bounded_controlled_synthetic_evidence_only",
+  "evidence_class": "synthetic_controlled",
+  "evidence_maturity_label": "synthetic_fixture_validated",
+  "final_evaluation_accessed": false,
+  "kaggle_experiment_authorized": true,
+  "phase5_gate_status": "passes_controlled_synthetic_phase5_gate",
+  "promotion_eligible": false,
+  "public_replay_release_authorized": false,
+  "result_artifact": {
+    "relative_path": "evidence/matched-policy-comparison/v5-controlled-synthetic-comparison-v1/result.json",
+    "sha256": "e82e21853526e687b068cd8a0b3abb4bb390da755be977bf5f3045148a7d17f4"
+  },
+  "result_reexecution_performed": false,
+  "result_schema_version": "v5-controlled-synthetic-policy-comparison-result-v1",
+  "runtime_control_eligible": false,
+  "schema_version": "v5-controlled-synthetic-phase5-gate-v1",
+  "unsafe_control_exclusion_count": 6,
+  "valid_matched_comparison_count": 6,
+  "validity_marker": "VALID_COMPARISON"
+}
