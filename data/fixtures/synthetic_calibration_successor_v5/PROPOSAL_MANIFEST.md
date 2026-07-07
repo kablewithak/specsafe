@@ -1,4 +1,4 @@
-# V5 Frozen Calibration and Final-Evaluation Manifest Boundary
+# V5 Frozen Calibration and Held-Out Assessment Boundary
 
 ## Active boundary
 
@@ -46,10 +46,11 @@ assessment provenance.
 
 - `CSV5-301..CSV5-312` remain unauthored adversarial-regression reservations.
 - The frozen calibration manifest, calibration artifact, and fit diagnostics remain byte-identical.
-- No V5 held-out assessment, threshold selection, scheduler, baseline comparison, capacity profile,
-  utility scorer, policy replay, or runtime control is introduced here.
+- The V5 held-out calibration assessment is retained once as immutable synthetic evidence.
+- No threshold selection, scheduler, baseline comparison, capacity profile, utility scorer, policy replay,
+  or runtime control result is introduced here.
 - No V1–V4 data-bearing evidence was used to select, fit, or evaluate V5 assets.
 
 ## Next authorised artifact
 
-`v5-final-heldout-calibration-assessment`
+`v5-calibrated-causal-load-aware-policy-foundation`

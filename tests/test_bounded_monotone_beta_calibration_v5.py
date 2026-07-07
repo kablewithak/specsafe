@@ -66,6 +66,10 @@ def _restore_manifest_only_root(root: Path) -> None:
             "frozen_calibration_artifact_sha256": None,
             "frozen_calibration_fit_diagnostics_sha256": None,
             "next_authorized_artifact": "v5-bounded-monotone-beta-fit-diagnostics",
+            "v5_final_heldout_calibration_assessment_authored": False,
+            "final_heldout_calibration_assessment_sha256": None,
+            "final_heldout_calibration_assessment_relative_path": None,
+            "final_heldout_calibration_status": None,
         }
     )
     for family in payload["families"]:
@@ -82,8 +86,26 @@ def _restore_manifest_only_root(root: Path) -> None:
         if exclusion not in _FIT_EXCLUSIONS
         and not exclusion.startswith("Only CSV5-201..CSV5-")
         and not exclusion.startswith("No V5 final-evaluation manifest")
+        and exclusion
+        not in {
+            "V5 held-out calibration assessment is write-once evidence.",
+            (
+                "V5 held-out calibration evidence is synthetic and does not establish "
+                "production performance."
+            ),
+            "No V5 runtime control is authorized.",
+            (
+                "V5 adaptive policy research is eligible only under controlled "
+                "frozen-evidence evaluation; no scheduler, baseline comparison, "
+                "capacity profile, or utility result is present."
+            ),
+        }
     ]
     payload["explicit_exclusions"].extend(sorted(_PRE_FIT_EXCLUSIONS))
+    payload["explicit_exclusions"].append(
+        "No V5 scheduler, baseline comparison, capacity profile, utility scorer, "
+        "or runtime control is authorized."
+    )
     registry_path.write_text(
         json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

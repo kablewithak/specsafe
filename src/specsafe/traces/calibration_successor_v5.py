@@ -236,6 +236,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "final_evaluation_manifest_frozen",
         "calibration_manifest_frozen",
         "calibration_fit_diagnostics_retained",
+        "final_heldout_calibration_assessed",
     ]
     fixture_set_id: Literal["synthetic-calibration-successor-v5"]
     fixture_set_version: Literal["1.0.0"]
@@ -276,7 +277,28 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
     )
     final_evidence_index_sha256: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     v5_final_assessment_contract_merged: Literal[True]
-    v5_final_heldout_calibration_assessment_authored: Literal[False]
+    v5_final_heldout_calibration_assessment_authored: bool
+    final_heldout_calibration_assessment_sha256: str | None = Field(
+        default=None, pattern=r"^[a-f0-9]{64}$"
+    )
+    final_heldout_calibration_assessment_relative_path: (
+        Literal[
+            "evidence/heldout-calibration/v5-final-heldout-calibration-assessment-v1/result.json"
+        ]
+        | None
+    ) = None
+    final_heldout_calibration_status: (
+        Literal[
+            "PASSES_V5_CALIBRATION_ELIGIBILITY_GATE",
+            "CALIBRATOR_REGRESSION",
+            "RANKING_SAFETY_REGRESSION",
+            "INSUFFICIENT_HELD_OUT_COVERAGE",
+            "INVALID_PROVENANCE",
+            "INCOMPLETE_GATE_EVIDENCE",
+            "WRITE_ONCE_DESTINATION_EXISTS",
+        ]
+        | None
+    ) = None
     observation_budget: CalibrationSuccessorV5ObservationBudget
     families: tuple[CalibrationSuccessorV5ScenarioFamilyRecord, ...] = Field(
         min_length=10,
@@ -296,6 +318,8 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         "v5-final-evaluation-mixed-reliability-contrast-fixtures",
         "v5-final-evaluation-manifest-freeze",
         "v5-final-heldout-calibration-assessment",
+        "v5-calibrated-causal-load-aware-policy-foundation",
+        "v5-calibration-remediation-decision",
     ]
 
     @model_validator(mode="after")
@@ -314,6 +338,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 "final_workload_variation_authored",
                 "final_mixed_reliability_contrast_authored",
                 "final_evaluation_manifest_frozen",
+                "final_heldout_calibration_assessed",
             )
             and self.v5_calibration_manifest_authored
         ):
@@ -325,6 +350,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_workload_variation_authored",
             "final_mixed_reliability_contrast_authored",
             "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ):
             if not self.v5_calibration_artifact_authored:
                 raise ValueError("V5 fit diagnostics stage requires a frozen calibration artifact")
@@ -341,13 +367,23 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             or self.frozen_calibration_fit_diagnostics_sha256 is not None
         ):
             raise ValueError("pre-fit V5 stages must not claim calibration artifact evidence")
-        if (
-            self.v5_final_evaluation_manifest_authored
-            and self.registry_status != "final_evaluation_manifest_frozen"
+        if self.v5_final_evaluation_manifest_authored and self.registry_status not in (
+            "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ):
             raise ValueError("only the V5 final-manifest stage may claim final manifest evidence")
+        assessment_fields = (
+            self.final_heldout_calibration_assessment_sha256,
+            self.final_heldout_calibration_assessment_relative_path,
+            self.final_heldout_calibration_status,
+        )
         if self.v5_final_heldout_calibration_assessment_authored:
-            raise ValueError("V5-3b does not author a final held-out assessment")
+            if self.registry_status != "final_heldout_calibration_assessed":
+                raise ValueError("V5 assessment evidence requires the assessed registry stage")
+            if any(field is None for field in assessment_fields):
+                raise ValueError("V5 assessment evidence requires complete result provenance")
+        elif any(field is not None for field in assessment_fields):
+            raise ValueError("pre-assessment V5 stages must not claim assessment provenance")
 
         family_ids = tuple(family.scenario_family_id for family in self.families)
         if len(set(family_ids)) != len(family_ids) or set(family_ids) != _V5_EXPECTED_FAMILY_IDS:
@@ -392,9 +428,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             for family in self.families
             if family.scenario_family_id == "CSV5-CAL-CURVE-COVERAGE"
         )
-        base_exclusions = {
-            "No V5 scheduler, baseline comparison, capacity profile, utility scorer, "
-            "or runtime control is authorized.",
+        durable_exclusions = {
             "No historical data-bearing evidence influenced V5 fixture reservations.",
             "V5 final-evaluation and adversarial reservations remain quarantined.",
             (
@@ -402,8 +436,14 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
                 "or assessment execution."
             ),
         }
-        if not base_exclusions.issubset(set(self.explicit_exclusions)):
+        if not durable_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("V5 registry must retain its durable stage exclusions")
+        if self.registry_status != "final_heldout_calibration_assessed":
+            if (
+                "No V5 scheduler, baseline comparison, capacity profile, utility scorer, "
+                "or runtime control is authorized." not in self.explicit_exclusions
+            ):
+                raise ValueError("pre-assessment V5 must retain the no-control exclusion")
         pre_fit_exclusions = {
             "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
             "No V5 fitter, threshold selection, or parameter mutation is authorized.",
@@ -415,6 +455,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_workload_variation_authored",
             "final_mixed_reliability_contrast_authored",
             "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ) and not pre_fit_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("pre-fit V5 stages must retain no-artifact exclusions")
         if self.registry_status not in (
@@ -425,6 +466,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_workload_variation_authored",
             "final_mixed_reliability_contrast_authored",
             "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ) and (
             "No V5 calibration or final-evaluation manifest is present."
             not in self.explicit_exclusions
@@ -641,6 +683,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             "final_workload_variation_authored",
             "final_mixed_reliability_contrast_authored",
             "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ):
             raise ValueError("V5 registry status is not authorised")
         if not self.v5_calibration_manifest_authored:
@@ -694,12 +737,15 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             raise ValueError("V5 final curve-coverage family must be marked authored")
         if not self.v5_final_evaluation_runtime_or_outcome_assets_authored:
             raise ValueError("V5 final authoring stages require final-evaluation case assets")
-        if (
-            self.v5_final_evaluation_manifest_authored
-            and self.registry_status != "final_evaluation_manifest_frozen"
+        if self.v5_final_evaluation_manifest_authored and self.registry_status not in (
+            "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
         ):
             raise ValueError("V5 final fixture stages must not claim a final-evaluation manifest")
-        if self.v5_final_heldout_calibration_assessment_authored:
+        if (
+            self.v5_final_heldout_calibration_assessment_authored
+            and self.registry_status != "final_heldout_calibration_assessed"
+        ):
             raise ValueError("V5 final fixture stages must not claim a held-out assessment")
 
         if self.registry_status == "final_curve_coverage_authored":
@@ -785,6 +831,51 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             if not expected_final_workload_exclusions.issubset(set(self.explicit_exclusions)):
                 raise ValueError(
                     "V5 final workload stage must retain its held-out quarantine exclusions"
+                )
+            return self
+
+        if self.registry_status == "final_heldout_calibration_assessed":
+            if final_position_family.authoring_status != "final_position_spread_authored":
+                raise ValueError("V5 assessed stage must retain position spread as authored")
+            if final_workload_family.authoring_status != "final_workload_variation_authored":
+                raise ValueError("V5 assessed stage must retain workload variation as authored")
+            if (
+                final_mixed_reliability_family.authoring_status
+                != "final_mixed_reliability_contrast_authored"
+            ):
+                raise ValueError("V5 assessed stage must retain mixed reliability as authored")
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in adversarial_families
+            ):
+                raise ValueError("V5 assessed stage must retain adversarial reservations")
+            if not self.v5_final_evaluation_manifest_authored:
+                raise ValueError("V5 assessed stage requires frozen final-manifest evidence")
+            if self.frozen_final_evaluation_manifest_sha256 is None:
+                raise ValueError("V5 assessed stage requires final-manifest provenance")
+            if self.final_evidence_index_sha256 is None:
+                raise ValueError("V5 assessed stage requires final evidence-index provenance")
+            if not self.v5_final_heldout_calibration_assessment_authored:
+                raise ValueError("V5 assessed stage requires immutable assessment evidence")
+            if self.final_heldout_calibration_status == "PASSES_V5_CALIBRATION_ELIGIBILITY_GATE":
+                expected_next = "v5-calibrated-causal-load-aware-policy-foundation"
+            else:
+                expected_next = "v5-calibration-remediation-decision"
+            if self.next_authorized_artifact != expected_next:
+                raise ValueError(
+                    "V5 assessed stage must authorize the status-governed next artifact"
+                )
+            expected_assessed_exclusions = {
+                "V5 held-out calibration assessment is write-once evidence.",
+                (
+                    "V5 held-out calibration evidence is synthetic and does not establish "
+                    "production performance."
+                ),
+                "No V5 runtime control is authorized.",
+            }
+            if not expected_assessed_exclusions.issubset(set(self.explicit_exclusions)):
+                raise ValueError(
+                    "V5 assessed stage must retain evidence and runtime-control exclusions"
                 )
             return self
 
@@ -963,7 +1054,10 @@ def load_calibration_successor_v5_scenario_family_registry(
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
     if allow_final_evaluation_manifest_assets:
-        if registry.registry_status != "final_evaluation_manifest_frozen":
+        if registry.registry_status not in (
+            "final_evaluation_manifest_frozen",
+            "final_heldout_calibration_assessed",
+        ):
             raise CalibrationSuccessorV5RegistryLoadError(
                 CalibrationSuccessorV5RegistryViolationCode.FINAL_EVALUATION_MANIFEST_BOUNDARY_VIOLATION,
                 "V5 registry has not reached the immutable final-evaluation manifest boundary",
