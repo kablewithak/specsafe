@@ -1,6 +1,6 @@
 """V5 governed fixture registry and staged evidence-root boundaries.
 
-The V5 programme starts with one fresh calibration-only family. This module keeps the
+The V5 programme authors calibration evidence family by family. This module keeps the
 final and adversarial reservations quarantined and rejects manifests, fit artefacts,
 policy work, and final evidence until their separately authorised stages.
 """
@@ -108,6 +108,9 @@ class CalibrationSuccessorV5RegistryViolationCode(StrEnum):
     CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION = (
         "calibration_successor_v5_calibration_curve_coverage_boundary_violation"
     )
+    CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION = (
+        "calibration_successor_v5_calibration_position_spread_boundary_violation"
+    )
 
 
 class CalibrationSuccessorV5RegistryLoadError(ValueError):
@@ -157,6 +160,7 @@ class CalibrationSuccessorV5ScenarioFamilyRecord(StrictContract):
     authoring_status: Literal[
         "reserved_for_v5_case_authoring",
         "calibration_curve_coverage_authored",
+        "calibration_position_spread_authored",
     ]
 
     @field_validator("reserved_case_ids")
@@ -205,7 +209,11 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
     """V5 registry with a fail-closed progression from schema-only to curve coverage."""
 
     schema_version: Literal["calibration-successor-v5-scenario-family-registry-v1"]
-    registry_status: Literal["schema_only", "calibration_curve_coverage_authored"]
+    registry_status: Literal[
+        "schema_only",
+        "calibration_curve_coverage_authored",
+        "calibration_position_spread_authored",
+    ]
     fixture_set_id: Literal["synthetic-calibration-successor-v5"]
     fixture_set_version: Literal["1.0.0"]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -232,6 +240,7 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
     next_authorized_artifact: Literal[
         "v5-calibration-curve-coverage-fixtures",
         "v5-calibration-position-spread-fixtures",
+        "v5-calibration-workload-variation-fixtures",
     ]
 
     @model_validator(mode="after")
@@ -296,9 +305,6 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             family for family in self.families
             if family.scenario_family_id == "CSV5-CAL-CURVE-COVERAGE"
         )
-        other_families = tuple(
-            family for family in self.families if family is not curve_family
-        )
         base_exclusions = {
             "No V5 calibration or final-evaluation manifest is present.",
             "No V5 calibration artifact, fit diagnostic, or final assessment result is present.",
@@ -315,14 +321,27 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
         if not base_exclusions.issubset(set(self.explicit_exclusions)):
             raise ValueError("V5 registry must retain its stage exclusions")
 
+        position_family = next(
+            family
+            for family in self.families
+            if family.scenario_family_id == "CSV5-CAL-POSITION-SPREAD"
+        )
+        remaining_families = tuple(
+            family
+            for family in self.families
+            if family not in (curve_family, position_family)
+        )
+
         if self.registry_status == "schema_only":
             if self.v5_runtime_or_outcome_assets_authored:
                 raise ValueError("schema-only V5 cannot claim authored case assets")
             if curve_family.authoring_status != "reserved_for_v5_case_authoring":
                 raise ValueError("schema-only V5 must retain curve coverage as reserved")
+            if position_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("schema-only V5 must retain position spread as reserved")
             if any(
                 family.authoring_status != "reserved_for_v5_case_authoring"
-                for family in other_families
+                for family in remaining_families
             ):
                 raise ValueError("schema-only V5 cannot claim any authored family")
             if self.next_authorized_artifact != "v5-calibration-curve-coverage-fixtures":
@@ -335,22 +354,43 @@ class CalibrationSuccessorV5ScenarioFamilyRegistry(StrictContract):
             return self
 
         if not self.v5_runtime_or_outcome_assets_authored:
-            raise ValueError("curve-coverage stage requires authored case pairs")
+            raise ValueError("authored V5 stages require runtime and outcome case pairs")
         if curve_family.authoring_status != "calibration_curve_coverage_authored":
-            raise ValueError("curve-coverage family must be marked authored")
+            raise ValueError("curve-coverage family must remain marked authored")
+
+        if self.registry_status == "calibration_curve_coverage_authored":
+            if position_family.authoring_status != "reserved_for_v5_case_authoring":
+                raise ValueError("V5-3b must retain position spread as reserved")
+            if any(
+                family.authoring_status != "reserved_for_v5_case_authoring"
+                for family in remaining_families
+            ):
+                raise ValueError("only curve-coverage may be authored at V5-3b")
+            if self.next_authorized_artifact != "v5-calibration-position-spread-fixtures":
+                raise ValueError("V5-3b must authorize position-spread fixtures next")
+            if (
+                "Only CSV5-101..CSV5-112 runtime-input and expected-outcome case pairs "
+                "are authored."
+                not in self.explicit_exclusions
+            ):
+                raise ValueError("V5-3b must state its exact authored-case boundary")
+            return self
+
+        if position_family.authoring_status != "calibration_position_spread_authored":
+            raise ValueError("position-spread family must be marked authored at V5-3c")
         if any(
             family.authoring_status != "reserved_for_v5_case_authoring"
-            for family in other_families
+            for family in remaining_families
         ):
-            raise ValueError("only curve-coverage may be authored at V5-3b")
-        if self.next_authorized_artifact != "v5-calibration-position-spread-fixtures":
-            raise ValueError("V5-3b must authorize position-spread fixtures next")
+            raise ValueError("only curve coverage and position spread may be authored at V5-3c")
+        if self.next_authorized_artifact != "v5-calibration-workload-variation-fixtures":
+            raise ValueError("V5-3c must authorize workload-variation fixtures next")
         if (
-            "Only CSV5-101..CSV5-112 runtime-input and expected-outcome case pairs "
+            "Only CSV5-101..CSV5-124 runtime-input and expected-outcome case pairs "
             "are authored."
             not in self.explicit_exclusions
         ):
-            raise ValueError("V5-3b must state its exact authored-case boundary")
+            raise ValueError("V5-3c must state its exact authored-case boundary")
         return self
 
 
@@ -358,11 +398,23 @@ def load_calibration_successor_v5_scenario_family_registry(
     path: Path,
     *,
     allow_calibration_curve_coverage_assets: bool = False,
+    allow_calibration_position_spread_assets: bool = False,
 ) -> CalibrationSuccessorV5ScenarioFamilyRegistry:
-    """Load the V5 registry only through one explicit active evidence boundary."""
+    """Load V5 registry only through one explicit active evidence boundary."""
+
+    if (
+        allow_calibration_curve_coverage_assets
+        and allow_calibration_position_spread_assets
+    ):
+        raise CalibrationSuccessorV5RegistryLoadError(
+            CalibrationSuccessorV5RegistryViolationCode.REGISTRY_PROVENANCE_MISMATCH,
+            "V5 registry loading must select exactly one authored evidence boundary",
+        )
 
     root = path.parent.resolve()
-    if allow_calibration_curve_coverage_assets:
+    if allow_calibration_position_spread_assets:
+        assert_calibration_successor_v5_calibration_position_spread_fixture_root(root)
+    elif allow_calibration_curve_coverage_assets:
         assert_calibration_successor_v5_calibration_curve_coverage_fixture_root(root)
     else:
         assert_calibration_successor_v5_schema_only_fixture_root(root)
@@ -393,15 +445,30 @@ def load_calibration_successor_v5_scenario_family_registry(
             CalibrationSuccessorV5RegistryViolationCode.REGISTRY_SCHEMA_ERROR,
             f"V5 scenario-family registry validation failed: {error}",
         ) from error
-    if not allow_calibration_curve_coverage_assets:
-        raise CalibrationSuccessorV5RegistryLoadError(
-            (
-                CalibrationSuccessorV5RegistryViolationCode
-                .CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
-            ),
-            "V5 registry has advanced beyond the schema-only boundary",
-        )
-    return registry
+    if allow_calibration_position_spread_assets:
+        if registry.registry_status != "calibration_position_spread_authored":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                (
+                    CalibrationSuccessorV5RegistryViolationCode
+                    .CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+                ),
+                "V5 registry has not reached the position-spread evidence boundary",
+            )
+        return registry
+    if allow_calibration_curve_coverage_assets:
+        if registry.registry_status != "calibration_curve_coverage_authored":
+            raise CalibrationSuccessorV5RegistryLoadError(
+                (
+                    CalibrationSuccessorV5RegistryViolationCode
+                    .CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
+                ),
+                "V5 registry has advanced beyond the curve-coverage evidence boundary",
+            )
+        return registry
+    raise CalibrationSuccessorV5RegistryLoadError(
+        CalibrationSuccessorV5RegistryViolationCode.SCHEMA_ONLY_BOUNDARY_VIOLATION,
+        "V5 registry has advanced beyond the schema-only boundary",
+    )
 
 
 def assert_calibration_successor_v5_schema_only_fixture_root(root: Path) -> None:
@@ -430,6 +497,26 @@ def assert_calibration_successor_v5_calibration_curve_coverage_fixture_root(
             .CALIBRATION_CURVE_COVERAGE_BOUNDARY_VIOLATION
         ),
         boundary_name="calibration curve coverage",
+    )
+
+
+def assert_calibration_successor_v5_calibration_position_spread_fixture_root(
+    root: Path,
+) -> None:
+    """Validate the first twenty-four V5 calibration case pairs and no later assets."""
+
+    _assert_root_layout(
+        root,
+        allowed_root_names=_V5_ROOT_METADATA_FILENAMES,
+        expected_case_ids=(
+            *_V5_CALIBRATION_CURVE_COVERAGE_CASE_IDS,
+            *_V5_CALIBRATION_POSITION_SPREAD_CASE_IDS,
+        ),
+        violation_code=(
+            CalibrationSuccessorV5RegistryViolationCode
+            .CALIBRATION_POSITION_SPREAD_BOUNDARY_VIOLATION
+        ),
+        boundary_name="calibration position spread",
     )
 
 

@@ -1,8 +1,8 @@
-"""Typed V5 calibration curve-coverage case contracts and loaders.
+"""Typed V5 calibration case contracts and staged loaders.
 
-Only CSV5-101 through CSV5-112 are authorised at V5-3b. Runtime inputs and
-post-hoc outcomes stay physically separate. This boundary does not fit calibration,
-freeze a manifest, load final evidence, or execute a scheduler.
+V5-3c authorises only CSV5-101 through CSV5-124. Runtime inputs and post-hoc
+outcomes stay physically separate. This boundary does not fit calibration, freeze a
+manifest, load final evidence, or execute a scheduler.
 """
 
 from __future__ import annotations
@@ -29,12 +29,26 @@ from specsafe.traces.calibration_successor_v5 import (
     load_calibration_successor_v5_scenario_family_registry,
 )
 
-_V5_CURVE_COVERAGE_CASE_IDS = tuple(f"CSV5-{number:03d}" for number in range(101, 113))
+_V5_CURVE_COVERAGE_CASE_IDS = tuple(
+    f"CSV5-{number:03d}" for number in range(101, 113)
+)
+_V5_POSITION_SPREAD_CASE_IDS = tuple(
+    f"CSV5-{number:03d}" for number in range(113, 125)
+)
 _V5_CURVE_COVERAGE_FAMILY_ID = "CSV5-CAL-CURVE-COVERAGE"
+_V5_POSITION_SPREAD_FAMILY_ID = "CSV5-CAL-POSITION-SPREAD"
+_V5_CASE_IDS_BY_FAMILY = {
+    _V5_CURVE_COVERAGE_FAMILY_ID: _V5_CURVE_COVERAGE_CASE_IDS,
+    _V5_POSITION_SPREAD_FAMILY_ID: _V5_POSITION_SPREAD_CASE_IDS,
+}
+_V5_AUTHORED_STATUS_BY_FAMILY = {
+    _V5_CURVE_COVERAGE_FAMILY_ID: "calibration_curve_coverage_authored",
+    _V5_POSITION_SPREAD_FAMILY_ID: "calibration_position_spread_authored",
+}
 
 
 class CalibrationSuccessorV5CaseViolationCode(StrEnum):
-    """Machine-readable reasons a V5-3b case cannot cross this boundary."""
+    """Machine-readable reasons a V5-3c case cannot cross this boundary."""
 
     RUNTIME_SCHEMA_ERROR = "calibration_successor_v5_runtime_schema_error"
     OUTCOME_SCHEMA_ERROR = "calibration_successor_v5_outcome_schema_error"
@@ -48,7 +62,7 @@ class CalibrationSuccessorV5CaseViolationCode(StrEnum):
 
 
 class CalibrationSuccessorV5CaseContractError(ValueError):
-    """Raised when one V5 curve-coverage case pair is malformed or unauthorised."""
+    """Raised when one V5 calibration case pair is malformed or unauthorised."""
 
     def __init__(self, code: CalibrationSuccessorV5CaseViolationCode, message: str) -> None:
         super().__init__(message)
@@ -56,7 +70,7 @@ class CalibrationSuccessorV5CaseContractError(ValueError):
 
 
 class CalibrationSuccessorV5RuntimeInput(StrictContract):
-    """Scheduler-visible inputs for one V5 calibration-only curve-coverage case."""
+    """Scheduler-visible inputs for one V5 calibration-only case."""
 
     schema_version: Literal["calibration-successor-v5-case-v1"]
     fixture_set_id: Literal["synthetic-calibration-successor-v5"]
@@ -65,7 +79,10 @@ class CalibrationSuccessorV5RuntimeInput(StrictContract):
     case_id: str = Field(pattern=r"^CSV5-[0-9]{3}$")
     trace_id: str = Field(min_length=1, max_length=128)
     request_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CSV5-CAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CSV5-CAL-CURVE-COVERAGE",
+        "CSV5-CAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -97,7 +114,10 @@ class CalibrationSuccessorV5ExpectedOutcomes(StrictContract):
     fixture_id: str = Field(min_length=1, max_length=128)
     case_id: str = Field(pattern=r"^CSV5-[0-9]{3}$")
     trace_id: str = Field(min_length=1, max_length=128)
-    scenario_family_id: Literal["CSV5-CAL-CURVE-COVERAGE"]
+    scenario_family_id: Literal[
+        "CSV5-CAL-CURVE-COVERAGE",
+        "CSV5-CAL-POSITION-SPREAD",
+    ]
     split: Literal[TraceSplit.CALIBRATION]
     data_role: Literal[TraceDataRole.CALIBRATION]
     source_type: Literal[TraceSourceType.SYNTHETIC]
@@ -171,7 +191,7 @@ def validate_calibration_successor_v5_replay_case_membership(
     replay_case: CalibrationSuccessorV5ReplayCase,
     registry: CalibrationSuccessorV5ScenarioFamilyRegistry,
 ) -> None:
-    """Verify a pair belongs only to the active V5 curve-coverage family."""
+    """Verify one case belongs to an authorised V5-3c calibration family."""
 
     if type(registry) is not CalibrationSuccessorV5ScenarioFamilyRegistry:
         raise CalibrationSuccessorV5CaseContractError(
@@ -179,24 +199,27 @@ def validate_calibration_successor_v5_replay_case_membership(
             "V5 case membership requires the exact V5 scenario-family registry",
         )
     runtime = replay_case.runtime_input
-    if runtime.scenario_family_id != _V5_CURVE_COVERAGE_FAMILY_ID:
+    allowed_case_ids = _V5_CASE_IDS_BY_FAMILY.get(runtime.scenario_family_id)
+    expected_status = _V5_AUTHORED_STATUS_BY_FAMILY.get(runtime.scenario_family_id)
+    if allowed_case_ids is None or expected_status is None:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5-3b loads only the calibration curve-coverage family",
+            "V5-3c loads only curve-coverage and position-spread calibration families",
         )
     family = next(
-        item for item in registry.families
-        if item.scenario_family_id == _V5_CURVE_COVERAGE_FAMILY_ID
+        item
+        for item in registry.families
+        if item.scenario_family_id == runtime.scenario_family_id
     )
-    if family.authoring_status != "calibration_curve_coverage_authored":
+    if family.authoring_status != expected_status:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5 curve-coverage family is not authorised for loading",
+            "V5 case family is not authorised for loading at the current stage",
         )
-    if runtime.case_id not in _V5_CURVE_COVERAGE_CASE_IDS:
+    if runtime.case_id not in allowed_case_ids:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.REGISTRY_MEMBERSHIP_ERROR,
-            "V5 case ID is outside the active curve-coverage reservation",
+            "V5 case ID is outside its active family reservation",
         )
 
 
@@ -204,25 +227,48 @@ def load_calibration_successor_v5_curve_coverage_replay_case(
     root: Path,
     case_id: str,
 ) -> CalibrationSuccessorV5ReplayCase:
-    """Load one authorised V5-3b calibration curve-coverage case pair."""
+    """Load one retained curve-coverage case through the V5-3c root."""
 
     if case_id not in _V5_CURVE_COVERAGE_CASE_IDS:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
-            "V5-3b case loading requires a CSV5-101 through CSV5-112 identifier",
+            "curve-coverage loading requires a CSV5-101 through CSV5-112 identifier",
         )
+    return _load_calibration_successor_v5_replay_case(root, case_id)
+
+
+def load_calibration_successor_v5_position_spread_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationSuccessorV5ReplayCase:
+    """Load one V5-3c position-spread calibration case pair."""
+
+    if case_id not in _V5_POSITION_SPREAD_CASE_IDS:
+        raise CalibrationSuccessorV5CaseContractError(
+            CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
+            "position-spread loading requires a CSV5-113 through CSV5-124 identifier",
+        )
+    return _load_calibration_successor_v5_replay_case(root, case_id)
+
+
+def _load_calibration_successor_v5_replay_case(
+    root: Path,
+    case_id: str,
+) -> CalibrationSuccessorV5ReplayCase:
     resolved_root = root.resolve()
     try:
         registry = load_calibration_successor_v5_scenario_family_registry(
             resolved_root / "scenario_family_registry.json",
-            allow_calibration_curve_coverage_assets=True,
+            allow_calibration_position_spread_assets=True,
         )
     except CalibrationSuccessorV5RegistryLoadError as error:
         raise CalibrationSuccessorV5CaseContractError(
             CalibrationSuccessorV5CaseViolationCode.CASE_ASSET_LAYOUT_ERROR,
             f"V5 case asset root is not authorised for loading: {error}",
         ) from error
-    runtime_payload = _read_json_asset(resolved_root / "inputs" / "cases" / f"{case_id}.json")
+    runtime_payload = _read_json_asset(
+        resolved_root / "inputs" / "cases" / f"{case_id}.json"
+    )
     outcomes_payload = _read_json_asset(
         resolved_root / "expected_outcomes" / "cases" / f"{case_id}.json"
     )
@@ -254,7 +300,6 @@ def load_calibration_successor_v5_curve_coverage_replay_case(
         ) from error
     validate_calibration_successor_v5_replay_case_membership(replay_case, registry)
     return replay_case
-
 
 def _read_json_asset(path: Path) -> Mapping[str, Any]:
     try:
