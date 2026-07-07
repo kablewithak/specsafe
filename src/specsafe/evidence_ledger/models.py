@@ -9,15 +9,13 @@ from pydantic import Field, model_validator
 
 from specsafe.contracts import CausalSafetyStatus, TraceSplit
 from specsafe.contracts.models import StrictContract
-from specsafe.scheduling import FixedLengthPolicyConfig, StaticThresholdPolicyConfig
+from specsafe.scheduling import (
+    BaselinePolicyDescriptor,
+    BaselinePolicyKind,
+    FixedLengthPolicyConfig,
+    StaticThresholdPolicyConfig,
+)
 from specsafe.trace_replay import ValidPolicyReplayResult
-
-
-class BaselinePolicyKind(StrEnum):
-    """Supported causal baseline-policy families for the Phase 2 ledger."""
-
-    FIXED_LENGTH = "fixed_length"
-    STATIC_THRESHOLD = "static_threshold"
 
 
 class LedgerEvidenceClass(StrEnum):
@@ -45,19 +43,47 @@ class LedgerBuildErrorCode(StrEnum):
 
 
 class FixedLengthPolicyLedgerDescriptor(StrictContract):
-    """Immutable fixed-length configuration retained with every ledger run."""
+    """Normalized fixed-length provenance retained with every ledger run."""
 
-    policy_kind: Literal[BaselinePolicyKind.FIXED_LENGTH] = BaselinePolicyKind.FIXED_LENGTH
+    policy_descriptor: BaselinePolicyDescriptor
     config: FixedLengthPolicyConfig
+
+    @model_validator(mode="after")
+    def validate_fixed_length_descriptor(self) -> FixedLengthPolicyLedgerDescriptor:
+        """Require the standardized descriptor to match the exact fixed-length config."""
+
+        descriptor = self.policy_descriptor
+        if descriptor.policy_kind is not BaselinePolicyKind.FIXED_LENGTH:
+            raise ValueError("fixed-length ledger descriptor must use policy_kind=fixed_length")
+        if descriptor.policy_id != self.config.policy_id:
+            raise ValueError("fixed-length ledger descriptor policy_id must match config")
+        if descriptor.configuration_sha256 != self.config.configuration_sha256():
+            raise ValueError("fixed-length ledger descriptor configuration hash must match config")
+        return self
 
 
 class StaticThresholdPolicyLedgerDescriptor(StrictContract):
-    """Immutable static-threshold configuration retained with every ledger run."""
+    """Normalized static-threshold provenance retained with every ledger run."""
 
-    policy_kind: Literal[BaselinePolicyKind.STATIC_THRESHOLD] = (
-        BaselinePolicyKind.STATIC_THRESHOLD
-    )
+    policy_descriptor: BaselinePolicyDescriptor
     config: StaticThresholdPolicyConfig
+
+    @model_validator(mode="after")
+    def validate_static_threshold_descriptor(self) -> StaticThresholdPolicyLedgerDescriptor:
+        """Require the standardized descriptor to match the exact threshold config."""
+
+        descriptor = self.policy_descriptor
+        if descriptor.policy_kind is not BaselinePolicyKind.STATIC_THRESHOLD:
+            raise ValueError(
+                "static-threshold ledger descriptor must use policy_kind=static_threshold"
+            )
+        if descriptor.policy_id != self.config.policy_id:
+            raise ValueError("static-threshold ledger descriptor policy_id must match config")
+        if descriptor.configuration_sha256 != self.config.configuration_sha256():
+            raise ValueError(
+                "static-threshold ledger descriptor configuration hash must match config"
+            )
+        return self
 
 
 BaselinePolicyLedgerDescriptor = (
@@ -96,7 +122,8 @@ class BaselineReplayEvidenceLedger(StrictContract):
     """Versioned, descriptive-only ledger for valid baseline replays.
 
     The ledger intentionally has no utility, ranking, score, or winner field. It preserves
-    raw causal replay summaries for later governed comparison work only.
+    raw causal replay summaries and normalized configuration provenance for later governed
+    comparison work only.
     """
 
     schema_version: Literal["baseline-replay-ledger-v1"] = "baseline-replay-ledger-v1"
@@ -124,8 +151,7 @@ class BaselineReplayEvidenceLedger(StrictContract):
         }
         if set(self.included_splits) != allowed_splits:
             raise ValueError(
-                "baseline ledger must include exactly development and adversarial_regression "
-                "splits"
+                "baseline ledger must include exactly development and adversarial_regression splits"
             )
         if len(set(self.included_splits)) != len(self.included_splits):
             raise ValueError("included_splits must not contain duplicates")
@@ -134,13 +160,8 @@ class BaselineReplayEvidenceLedger(StrictContract):
         if len(set(policy_ids)) != len(policy_ids):
             raise ValueError("ledger policies must have unique policy_id values")
 
-        case_keys = {
-            (entry.case_id, entry.trace_id, entry.split) for entry in self.entries
-        }
-        selected_cases = {
-            (entry.case_id, entry.trace_id, entry.split)
-            for entry in self.entries
-        }
+        case_keys = {(entry.case_id, entry.trace_id, entry.split) for entry in self.entries}
+        selected_cases = {(entry.case_id, entry.trace_id, entry.split) for entry in self.entries}
         if any(split not in allowed_splits for _, _, split in case_keys):
             raise ValueError("baseline ledger entries may not include calibration or final splits")
 
@@ -150,8 +171,7 @@ class BaselineReplayEvidenceLedger(StrictContract):
             for case_id, trace_id, split in selected_cases
         }
         actual_entry_keys = {
-            (entry.policy_id, entry.case_id, entry.trace_id, entry.split)
-            for entry in self.entries
+            (entry.policy_id, entry.case_id, entry.trace_id, entry.split) for entry in self.entries
         }
         if len(actual_entry_keys) != len(self.entries):
             raise ValueError("baseline ledger must not repeat a policy/case replay entry")

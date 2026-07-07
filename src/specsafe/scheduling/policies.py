@@ -4,6 +4,10 @@ Valid policies accept an object only so the existing causal gate can reject acci
 non-causal inputs. After the gate passes, they use the exact CausalSchedulerContext and
 never consume replay outcomes, sampled candidate tokens, or later decision state.
 
+The two valid baselines are intentionally capacity-blind. They retain normalized
+configuration provenance so later capacity-aware comparison work can prove which rules
+were compared without making either baseline adaptive.
+
 The unsafe policy is intentionally isolated: it accepts only the test-only
 RetrospectiveEvaluationContext, marks every decision as causally invalid, and must never
 be used by a valid replay or promotion path.
@@ -24,6 +28,11 @@ from specsafe.contracts import (
     VerificationDecision,
 )
 from specsafe.contracts.models import StrictContract
+from specsafe.scheduling.models import (
+    BaselinePolicyDescriptor,
+    BaselinePolicyKind,
+    configuration_sha256,
+)
 
 
 class FixedLengthPolicyConfig(StrictContract):
@@ -32,12 +41,22 @@ class FixedLengthPolicyConfig(StrictContract):
     policy_id: str = Field(default="fixed-length-v1", min_length=1, max_length=128)
     maximum_verification_length: int = Field(ge=1)
 
+    def configuration_sha256(self) -> str:
+        """Return a stable hash for this immutable baseline configuration."""
+
+        return configuration_sha256(self)
+
 
 class StaticThresholdPolicyConfig(StrictContract):
     """Configuration for the causal but capacity-blind threshold baseline."""
 
     policy_id: str = Field(default="static-threshold-v1", min_length=1, max_length=128)
     minimum_conditional_survival_confidence: float = Field(ge=0.0, le=1.0)
+
+    def configuration_sha256(self) -> str:
+        """Return a stable hash for this immutable baseline configuration."""
+
+        return configuration_sha256(self)
 
 
 class UnsafeRetrospectivePolicyConfig(StrictContract):
@@ -62,6 +81,16 @@ class FixedLengthVerificationPolicy:
         """Return the immutable policy configuration for evidence retention."""
 
         return self._config
+
+    @property
+    def descriptor(self) -> BaselinePolicyDescriptor:
+        """Return normalized provenance without changing the capacity-blind rule."""
+
+        return BaselinePolicyDescriptor(
+            policy_id=self._config.policy_id,
+            policy_kind=BaselinePolicyKind.FIXED_LENGTH,
+            configuration_sha256=self._config.configuration_sha256(),
+        )
 
     def decide(self, context: object) -> VerificationDecision:
         """Make a causal fixed-budget decision from the exact runtime contract."""
@@ -93,6 +122,16 @@ class StaticThresholdVerificationPolicy:
         """Return the immutable policy configuration for evidence retention."""
 
         return self._config
+
+    @property
+    def descriptor(self) -> BaselinePolicyDescriptor:
+        """Return normalized provenance without changing the capacity-blind rule."""
+
+        return BaselinePolicyDescriptor(
+            policy_id=self._config.policy_id,
+            policy_kind=BaselinePolicyKind.STATIC_THRESHOLD,
+            configuration_sha256=self._config.configuration_sha256(),
+        )
 
     def decide(self, context: object) -> VerificationDecision:
         """Make a causal threshold decision without looking at capacity or outcomes."""
@@ -153,9 +192,7 @@ class UnsafeRetrospectiveLookaheadPolicy:
         next_outcome = context.future_acceptance_outcomes[0]
         action = VerificationAction.ADMIT if next_outcome else VerificationAction.STOP
         reason_code = (
-            "unsafe_future_outcome_admit"
-            if next_outcome
-            else "unsafe_future_outcome_stop"
+            "unsafe_future_outcome_admit" if next_outcome else "unsafe_future_outcome_stop"
         )
         return _unsafe_decision(
             policy_id=self._config.policy_id,
