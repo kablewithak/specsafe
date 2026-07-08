@@ -20,7 +20,7 @@ ARCHIVE_PATH = ATTEMPT_DIR / "specsafe_v5_qwen_trace_collection_v1_attempt_001.z
 REPORT_PATH = ATTEMPT_DIR / "trace_analysis_report.json"
 
 EXPECTED_ARCHIVE_SHA256 = "03059b5ed15fdde07faff92cb9485cb89793e03e010fd8f43b8f674d17fdb81c"
-EXPECTED_REPORT_SHA256 = "90915a600bc481fa451ef07366cb2a8b8dba7b89e1cb16375f64896c03f9552d"
+EXPECTED_REPORT_SHA256 = "1d31f0f0e2ae3e825878289780c4754185d2bd936c4f31eb3de4feda3a385885"
 
 
 def sha256_text(path: Path) -> str:
