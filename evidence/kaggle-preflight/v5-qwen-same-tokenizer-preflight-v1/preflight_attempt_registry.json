@@ -1,0 +1,46 @@
+{
+  "schema_version": "specsafe-kaggle-preflight-attempt-registry-v1",
+  "preflight_id": "v5-qwen-same-tokenizer-preflight-v1",
+  "attempts": [
+    {
+      "attempt_id": "attempt-001-p100",
+      "artifact_path": "evidence/kaggle-preflight/v5-qwen-same-tokenizer-preflight-v1/attempt-001-p100-result.json",
+      "artifact_sha256": "9f9bcf256e54c1eb8d2f704441b8a7530177d5cae6ae1d8fde4aa88a71b21eb6",
+      "preflight_status": "fails_kaggle_preflight",
+      "trace_collection_performed": false,
+      "summary": "Tesla P100 environment; first observed notebook compatibility failure retained."
+    },
+    {
+      "attempt_id": "attempt-002-t4",
+      "artifact_path": "evidence/kaggle-preflight/v5-qwen-same-tokenizer-preflight-v1/attempt-002-t4-result.json",
+      "artifact_sha256": "6cd612788603c02c9d2a21a0ea7b11fddb5576093badded0fc1f70b05bce1dc8",
+      "preflight_status": "fails_kaggle_preflight",
+      "trace_collection_performed": false,
+      "summary": "Tesla T4 environment; tokenizer compatibility passed and the old logits rule failed."
+    },
+    {
+      "attempt_id": "attempt-003-t4-pass",
+      "artifact_path": "evidence/kaggle-preflight/v5-qwen-same-tokenizer-preflight-v1/attempt-003-t4-pass-result.json",
+      "artifact_sha256": "4b2e096ecf57e7c729918a83a6b84434ab0dc9dac094f6b9eadff40f84e7d9dd",
+      "preflight_status": "passes_kaggle_preflight",
+      "source_commit_sha": "061f58cba075cafbfbc4ed5d0afe9e817997a877",
+      "trace_collection_allowed": true,
+      "trace_collection_performed": false,
+      "summary": "Tesla T4 qualification pass: exact tokenizer compatibility and finite logits passed for both approved Qwen models."
+    }
+  ],
+  "authorization": {
+    "governed_trace_collection_notebook_implementation_authorized": true,
+    "governed_trace_collection_execution_authorized": false,
+    "public_dataset_authorized": false,
+    "public_replay_release_authorized": false,
+    "policy_evaluation_authorized": false,
+    "runtime_control_eligible": false
+  },
+  "non_claims": [
+    "No trace corpus has been collected.",
+    "No throughput, latency, or serving-capacity measurement has been made.",
+    "No public dataset or replay release is authorized.",
+    "No production readiness claim is supported."
+  ]
+}
