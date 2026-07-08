@@ -1,0 +1,121 @@
+{
+  "draft_logits_access": {
+    "dtype": "torch.bfloat16",
+    "finite_logits": true,
+    "logits_shape": [
+      1,
+      10,
+      151936
+    ],
+    "maximum_probe_token_id": 87856,
+    "model_config_vocabulary_size": 151936,
+    "model_id": "Qwen/Qwen2.5-0.5B",
+    "observed_logits_vocabulary_size": 151936,
+    "passed": true,
+    "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+    "tokenizer_vocabulary_size": 151665
+  },
+  "draft_model": {
+    "license": "apache-2.0",
+    "model_id": "Qwen/Qwen2.5-0.5B",
+    "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987"
+  },
+  "environment": {
+    "cuda_available": true,
+    "cuda_version": "12.8",
+    "gpu_architecture": "sm_75",
+    "gpu_name": "Tesla T4",
+    "huggingface_hub_version": "1.11.0",
+    "kaggle_kernel_run_type": "Interactive",
+    "kaggle_url_base": "https://www.kaggle.com",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "python_version": "3.12.13",
+    "torch_supported_gpu_architectures": [
+      "sm_100",
+      "sm_120",
+      "sm_70",
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90"
+    ],
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "5.0.0"
+  },
+  "failure": null,
+  "preflight_id": "v5-qwen-same-tokenizer-preflight-v1",
+  "preflight_status": "passes_kaggle_preflight",
+  "schema_version": "specsafe-kaggle-preflight-result-v1",
+  "source_commit_sha": "061f58cba075cafbfbc4ed5d0afe9e817997a877",
+  "target_logits_access": {
+    "dtype": "torch.bfloat16",
+    "finite_logits": true,
+    "logits_shape": [
+      1,
+      10,
+      151936
+    ],
+    "maximum_probe_token_id": 87856,
+    "model_config_vocabulary_size": 151936,
+    "model_id": "Qwen/Qwen2.5-1.5B",
+    "observed_logits_vocabulary_size": 151936,
+    "passed": true,
+    "revision": "8faed761d45a263340a0528343f099c05c9a4323",
+    "tokenizer_vocabulary_size": 151665
+  },
+  "target_model": {
+    "license": "apache-2.0",
+    "model_id": "Qwen/Qwen2.5-1.5B",
+    "revision": "8faed761d45a263340a0528343f099c05c9a4323"
+  },
+  "timestamp_utc": "2026-07-08T00:14:21.447794+00:00",
+  "tokenizer_compatibility": {
+    "checks": {
+      "probe_token_ids_match": true,
+      "special_token_id_match": true,
+      "special_token_map_match": true,
+      "token_to_id_mapping_match": true,
+      "tokenizer_class_match": true,
+      "vocabulary_size_match": true
+    },
+    "draft_tokenizer_class": "Qwen2Tokenizer",
+    "draft_vocabulary_size": 151665,
+    "passed": true,
+    "probe_results": [
+      {
+        "probe_sha256": "a0e18a5b4cdb0c521c29863e30edbdaa9e63400b5e9e30d313db2a812cf365c8",
+        "token_count": 10,
+        "token_ids_match": true
+      },
+      {
+        "probe_sha256": "e8245e5e95ec446c0cbd677d6db4dc53dbb4f508a12a468b17868ce7c0a834ea",
+        "token_count": 11,
+        "token_ids_match": true
+      },
+      {
+        "probe_sha256": "5e42091aa24d131cfd799e4152662cc61cf99b4df642410292e7e053c389f0e0",
+        "token_count": 8,
+        "token_ids_match": true
+      },
+      {
+        "probe_sha256": "77928d7f3bd0f4f6a630b55fdaac258296d4b335349c4730b909493e3a6afd03",
+        "token_count": 17,
+        "token_ids_match": true
+      },
+      {
+        "probe_sha256": "ad95f0247f5812cdb2dbd4ff6850d34ca1decfc0e2ac60a377a236e489def494",
+        "token_count": 13,
+        "token_ids_match": true
+      },
+      {
+        "probe_sha256": "375b5f4527508f7b37633a6ff2cd460b807081c5ca11a882199f6ef4ca0e3b82",
+        "token_count": 12,
+        "token_ids_match": true
+      }
+    ],
+    "target_tokenizer_class": "Qwen2Tokenizer",
+    "target_vocabulary_size": 151665
+  },
+  "trace_collection_allowed": true,
+  "trace_collection_performed": false
+}
