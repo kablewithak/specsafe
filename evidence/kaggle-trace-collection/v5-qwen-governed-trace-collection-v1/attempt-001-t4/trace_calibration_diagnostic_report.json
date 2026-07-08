@@ -1,0 +1,93 @@
+{
+  "schema_version": "specsafe-kaggle-trace-calibration-diagnostic-report-v1",
+  "diagnostic_id": "v5-kaggle-trace-calibration-diagnostic-v1",
+  "collection_id": "v5-qwen-governed-trace-collection-v1",
+  "collection_attempt_id": "attempt-001-t4",
+  "source_commit_sha": "cff5905075044770010653c637d3c52c4ccb6fbe",
+  "preflight_attempt_id": "attempt-003-t4-pass",
+  "archive_sha256": "03059b5ed15fdde07faff92cb9485cb89793e03e010fd8f43b8f674d17fdb81c",
+  "trace_analysis_report_sha256": "1d31f0f0e2ae3e825878289780c4754185d2bd936c4f31eb3de4feda3a385885",
+  "trace_replay_report_sha256": "52f16b5a504d69e61b7ec3f64b008ae81ac0b4ed8b1cadb349f51bbd113eee7d",
+  "runtime_record_count": 24,
+  "expected_outcome_record_count": 24,
+  "target_argmax_match_count": 15,
+  "target_argmax_nonmatch_count": 9,
+  "raw_draft_probability_brier_diagnostic": 0.13062574344890066,
+  "fixed_bin_expected_calibration_error": 0.11310045979917047,
+  "fixed_bin_maximum_calibration_error": 0.2314736247062683,
+  "fixed_probability_bins": [
+    {
+      "bin_id": "raw_prob_0.0_0.2",
+      "lower_inclusive": 0.0,
+      "upper_exclusive": 0.2,
+      "record_count": 4,
+      "match_count": 1,
+      "observed_match_rate": 0.25,
+      "mean_raw_draft_probability": 0.10837483406066895,
+      "absolute_calibration_gap": 0.14162516593933105
+    },
+    {
+      "bin_id": "raw_prob_0.2_0.4",
+      "lower_inclusive": 0.2,
+      "upper_exclusive": 0.4,
+      "record_count": 5,
+      "match_count": 1,
+      "observed_match_rate": 0.2,
+      "mean_raw_draft_probability": 0.2501769572496414,
+      "absolute_calibration_gap": 0.050176957249641385
+    },
+    {
+      "bin_id": "raw_prob_0.4_0.6",
+      "lower_inclusive": 0.4,
+      "upper_exclusive": 0.6,
+      "record_count": 6,
+      "match_count": 4,
+      "observed_match_rate": 0.6666666666666666,
+      "mean_raw_draft_probability": 0.5045346319675446,
+      "absolute_calibration_gap": 0.16213203469912207
+    },
+    {
+      "bin_id": "raw_prob_0.6_0.8",
+      "lower_inclusive": 0.6,
+      "upper_exclusive": 0.8,
+      "record_count": 1,
+      "match_count": 1,
+      "observed_match_rate": 1.0,
+      "mean_raw_draft_probability": 0.7685263752937317,
+      "absolute_calibration_gap": 0.2314736247062683
+    },
+    {
+      "bin_id": "raw_prob_0.8_1.0",
+      "lower_inclusive": 0.8,
+      "upper_exclusive": 1.000000000001,
+      "record_count": 8,
+      "match_count": 8,
+      "observed_match_rate": 1.0,
+      "mean_raw_draft_probability": 0.913405030965805,
+      "absolute_calibration_gap": 0.08659496903419495
+    }
+  ],
+  "readiness_gate": {
+    "minimum_record_count_for_calibration_fit": 100,
+    "minimum_positive_count_for_calibration_fit": 30,
+    "minimum_negative_count_for_calibration_fit": 30,
+    "observed_record_count": 24,
+    "observed_positive_count": 15,
+    "observed_negative_count": 9,
+    "signal_diagnostic_passed": true,
+    "calibration_fit_readiness_status": "insufficient_sample_for_calibration_fit_signal_supportive",
+    "next_authorized_step": "expand_trace_corpus_before_calibration_fit"
+  },
+  "interpretation_boundary": {
+    "calibration_scope": "retained_archive_calibration_diagnostic",
+    "runtime_signal": "raw_draft_probability",
+    "target_label": "target_argmax_matches_candidate",
+    "calibration_fit_performed": false,
+    "calibration_model_retained": false,
+    "threshold_policy_selected": false,
+    "policy_utility_promotion_authorized": false,
+    "throughput_or_latency_measurement_performed": false,
+    "public_dataset_release_authorized": false,
+    "production_readiness_claimed": false
+  }
+}
