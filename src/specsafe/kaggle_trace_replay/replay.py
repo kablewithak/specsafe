@@ -148,10 +148,11 @@ def build_trace_replay_report(
 
 
 def write_trace_replay_report(report: KaggleTraceReplayReport, output_path: Path) -> None:
-    """Write a replay report in canonical JSON form."""
+    """Write a replay report with deterministic LF line endings."""
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         report.model_dump_json(indent=2) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
