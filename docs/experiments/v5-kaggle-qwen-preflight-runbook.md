@@ -10,15 +10,18 @@ notebooks/kaggle/specsafe_v5_qwen_preflight.ipynb
 
 It qualifies a model pair. It does not collect traces.
 
-## Retained failed attempt
+## Retained failed attempts
 
-Attempt 001 was retained before this remediation:
+Two failed qualification attempts are retained:
 
 ```text
 evidence/kaggle-preflight/v5-qwen-same-tokenizer-preflight-v1/attempt-001-p100-result.json
+evidence/kaggle-preflight/v5-qwen-same-tokenizer-preflight-v1/attempt-002-t4-result.json
 ```
 
-It used a Tesla P100 (`sm_60`) that the Kaggle PyTorch build could not support and exposed a legacy special-token API assumption. No traces were collected. Do not rerun the older notebook.
+Attempt 001 used a Tesla P100 (`sm_60`) unsupported by the Kaggle PyTorch build and exposed a legacy special-token API assumption.
+
+Attempt 002 used a compatible Tesla T4 (`sm_75`) and passed exact tokenizer qualification. It stopped at a too-strict logits vocabulary equality rule. No traces were collected in either attempt.
 
 ## Before opening Kaggle
 
@@ -34,10 +37,9 @@ Copy that full SHA. It will be placed in the notebook configuration cell as `SOU
 
 ## Kaggle setup
 
-1. Sign in to Kaggle and create a new Python notebook.
-2. Upload the updated `specsafe_v5_qwen_preflight.ipynb`.
-3. In Notebook Settings, enable **Internet** and select **GPU T4 x2**.
-4. Replace only this notebook configuration value:
+1. Create a **fresh Kaggle Python notebook** and upload the updated `specsafe_v5_qwen_preflight.ipynb`.
+2. In Notebook Settings, enable **Internet** and select **GPU T4 x2**.
+3. Replace only this notebook configuration value:
 
 ```python
 SOURCE_COMMIT_SHA = "RECORD_MAIN_COMMIT_SHA_AFTER_PR_MERGE"
@@ -45,7 +47,7 @@ SOURCE_COMMIT_SHA = "RECORD_MAIN_COMMIT_SHA_AFTER_PR_MERGE"
 
 with the exact full SHA from the local command above.
 
-5. Run every cell in order.
+4. Run every cell in order.
 
 Do not add a Hugging Face token, Kaggle secret, customer data, private prompt, or private dataset.
 

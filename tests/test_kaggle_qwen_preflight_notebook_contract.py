@@ -14,6 +14,13 @@ _P100_FAILURE_PATH = (
     / "v5-qwen-same-tokenizer-preflight-v1"
     / "attempt-001-p100-result.json"
 )
+_T4_FAILURE_PATH = (
+    _PROJECT_ROOT
+    / "evidence"
+    / "kaggle-preflight"
+    / "v5-qwen-same-tokenizer-preflight-v1"
+    / "attempt-002-t4-result.json"
+)
 
 
 def _notebook_source() -> str:
@@ -55,14 +62,32 @@ def test_notebook_pins_revisions_and_proves_tokenizer_compatibility() -> None:
     assert "trust_remote_code=False" in source
 
 
-def test_notebook_rejects_unsupported_gpu_architecture_before_hub_access() -> None:
+def test_notebook_runs_gpu_architecture_gate_before_hub_access() -> None:
     source = _notebook_source()
 
-    assert "require_supported_gpu_architecture()" in source
     assert '"gpu_architecture_unsupported"' in source
     assert "torch.cuda.get_device_capability(0)" in source
     assert "torch.cuda.get_arch_list()" in source
     assert source.index("require_supported_gpu_architecture()") < source.index("api = HfApi()")
+
+
+def test_notebook_uses_padded_vocabulary_safe_logits_qualification() -> None:
+    source = _notebook_source()
+
+    assert "dtype=dtype" in source
+    assert "torch_dtype=dtype" not in source
+    assert "model.config.vocab_size" in source
+    assert "model_config_vocabulary_size" in source
+    assert "observed_logits_vocabulary_size" in source
+    assert "tokenizer_vocabulary_size" in source
+    assert "maximum_probe_token_id" in source
+    assert "finite_logits" in source
+    assert '"logits_non_finite"' in source
+    assert '"model_output_vocabulary_mismatch"' in source
+    assert '"tokenizer_vocabulary_exceeds_model_output"' in source
+    assert '"probe_token_outside_model_output"' in source
+    assert "observed_logits_vocabulary_size != model_config_vocabulary_size" in source
+    assert "tokenizer_vocabulary_size > model_config_vocabulary_size" in source
 
 
 def test_notebook_requires_bounded_failure_record_and_finite_logits() -> None:
@@ -86,6 +111,20 @@ def test_first_p100_attempt_is_retained_without_trace_collection() -> None:
     assert result["failure"]["code"] == "unexpected_preflight_failure"
     assert "additional_special_tokens_ids" in result["failure"]["message"]
     assert result["environment"]["gpu_name"] == "Tesla P100-PCIE-16GB"
+    assert result["draft_logits_access"] is None
+    assert result["target_logits_access"] is None
+
+
+def test_second_t4_attempt_retains_tokenizer_success_and_logits_failure() -> None:
+    result = json.loads(_T4_FAILURE_PATH.read_text(encoding="utf-8"))
+
+    assert result["preflight_status"] == "fails_kaggle_preflight"
+    assert result["trace_collection_allowed"] is False
+    assert result["trace_collection_performed"] is False
+    assert result["failure"]["code"] == "logits_access_failed"
+    assert result["environment"]["gpu_name"] == "Tesla T4"
+    assert result["environment"]["gpu_architecture"] == "sm_75"
+    assert result["tokenizer_compatibility"]["passed"] is True
     assert result["draft_logits_access"] is None
     assert result["target_logits_access"] is None
 
