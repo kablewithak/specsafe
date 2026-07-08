@@ -1,0 +1,189 @@
+{
+  "archive_sha256": "03059b5ed15fdde07faff92cb9485cb89793e03e010fd8f43b8f674d17fdb81c",
+  "by_block_position_index": {
+    "1": {
+      "mean_raw_draft_entropy": 3.6702038844426474,
+      "mean_raw_draft_probability": 0.30409107108910877,
+      "record_count": 6,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.3333333333333333
+    },
+    "2": {
+      "mean_raw_draft_entropy": 2.256030092636744,
+      "mean_raw_draft_probability": 0.5874956349531809,
+      "record_count": 6,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 0.6666666666666666
+    },
+    "3": {
+      "mean_raw_draft_entropy": 1.9491723055640857,
+      "mean_raw_draft_probability": 0.6255324532588323,
+      "record_count": 6,
+      "target_argmax_match_count": 5,
+      "target_argmax_match_rate": 0.8333333333333334
+    },
+    "4": {
+      "mean_raw_draft_entropy": 1.3919498572746913,
+      "mean_raw_draft_probability": 0.6141072635849317,
+      "record_count": 6,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 0.6666666666666666
+    }
+  },
+  "by_case_id": {
+    "KTC5-001": {
+      "mean_raw_draft_entropy": 2.545811315998435,
+      "mean_raw_draft_probability": 0.565739881247282,
+      "record_count": 4,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.5
+    },
+    "KTC5-002": {
+      "mean_raw_draft_entropy": 1.751574682071805,
+      "mean_raw_draft_probability": 0.6991728879511356,
+      "record_count": 4,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.75
+    },
+    "KTC5-003": {
+      "mean_raw_draft_entropy": 0.7053353749215603,
+      "mean_raw_draft_probability": 0.7906971201300621,
+      "record_count": 4,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 1.0
+    },
+    "KTC5-004": {
+      "mean_raw_draft_entropy": 2.0662600100040436,
+      "mean_raw_draft_probability": 0.5047698020935059,
+      "record_count": 4,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.75
+    },
+    "KTC5-005": {
+      "mean_raw_draft_entropy": 2.9011035561561584,
+      "mean_raw_draft_probability": 0.4319380186498165,
+      "record_count": 4,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.5
+    },
+    "KTC5-006": {
+      "mean_raw_draft_entropy": 3.9309492707252502,
+      "mean_raw_draft_probability": 0.20452192425727844,
+      "record_count": 4,
+      "target_argmax_match_count": 1,
+      "target_argmax_match_rate": 0.25
+    }
+  },
+  "by_workload_type": {
+    "code": {
+      "mean_raw_draft_entropy": 1.385797692462802,
+      "mean_raw_draft_probability": 0.647733461111784,
+      "record_count": 8,
+      "target_argmax_match_count": 7,
+      "target_argmax_match_rate": 0.875
+    },
+    "open_ended_chat": {
+      "mean_raw_draft_entropy": 3.4160264134407043,
+      "mean_raw_draft_probability": 0.3182299714535475,
+      "record_count": 8,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.375
+    },
+    "structured_text": {
+      "mean_raw_draft_entropy": 2.14869299903512,
+      "mean_raw_draft_probability": 0.6324563845992088,
+      "record_count": 8,
+      "target_argmax_match_count": 5,
+      "target_argmax_match_rate": 0.625
+    }
+  },
+  "case_count": 6,
+  "collection_attempt_id": "attempt-001-t4",
+  "collection_id": "v5-qwen-governed-trace-collection-v1",
+  "expected_outcome_record_count": 24,
+  "interpretation_boundary": {
+    "calibration_fit_performed": false,
+    "finding_status": "first_small_trace_summary_not_policy_claim",
+    "policy_utility_evaluation_performed": false,
+    "public_dataset_release_authorized": false,
+    "throughput_or_latency_measurement_performed": false
+  },
+  "matched_candidate_stats": {
+    "max_raw_draft_probability": 0.9927328824996948,
+    "mean_raw_draft_entropy": 1.3891208976507188,
+    "mean_raw_draft_probability": 0.70337240199248,
+    "mean_target_entropy": 1.548857851450642,
+    "mean_target_probability": 0.683448655406634,
+    "median_raw_draft_probability": 0.8019253015518188,
+    "min_raw_draft_probability": 0.18021279573440552,
+    "record_count": 15
+  },
+  "nonmatched_candidate_stats": {
+    "max_raw_draft_probability": 0.5491656064987183,
+    "mean_raw_draft_entropy": 3.863035930527581,
+    "mean_raw_draft_probability": 0.24853027860323587,
+    "mean_target_entropy": 3.977086557282342,
+    "mean_target_probability": 0.2409138921648264,
+    "median_raw_draft_probability": 0.21381868422031403,
+    "min_raw_draft_probability": 0.03814901411533356,
+    "record_count": 9
+  },
+  "preflight_attempt_id": "attempt-003-t4-pass",
+  "raw_draft_probability_threshold_sensitivity": [
+    {
+      "raw_draft_probability_threshold": 0.1,
+      "selected_match_count": 15,
+      "selected_match_rate": 0.6521739130434783,
+      "selected_nonmatch_count": 8,
+      "selected_record_count": 23
+    },
+    {
+      "raw_draft_probability_threshold": 0.2,
+      "selected_match_count": 14,
+      "selected_match_rate": 0.7,
+      "selected_nonmatch_count": 6,
+      "selected_record_count": 20
+    },
+    {
+      "raw_draft_probability_threshold": 0.3,
+      "selected_match_count": 13,
+      "selected_match_rate": 0.8125,
+      "selected_nonmatch_count": 3,
+      "selected_record_count": 16
+    },
+    {
+      "raw_draft_probability_threshold": 0.5,
+      "selected_match_count": 12,
+      "selected_match_rate": 0.9230769230769231,
+      "selected_nonmatch_count": 1,
+      "selected_record_count": 13
+    },
+    {
+      "raw_draft_probability_threshold": 0.7,
+      "selected_match_count": 9,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_record_count": 9
+    },
+    {
+      "raw_draft_probability_threshold": 0.8,
+      "selected_match_count": 8,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_record_count": 8
+    },
+    {
+      "raw_draft_probability_threshold": 0.9,
+      "selected_match_count": 5,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_record_count": 5
+    }
+  ],
+  "runtime_record_count": 24,
+  "schema_version": "specsafe-kaggle-trace-summary-v1",
+  "source_commit_sha": "cff5905075044770010653c637d3c52c4ccb6fbe",
+  "target_argmax_match_count": 15,
+  "target_argmax_match_rate": 0.625,
+  "target_argmax_nonmatch_count": 9
+}

@@ -1,0 +1,61 @@
+{
+  "archive": {
+    "byte_count": 4275,
+    "contains_expected_files": true,
+    "relative_path": "specsafe_v5_qwen_trace_collection_v1_attempt_001.zip",
+    "sha256": "03059b5ed15fdde07faff92cb9485cb89793e03e010fd8f43b8f674d17fdb81c"
+  },
+  "collection_attempt_id": "attempt-001-t4",
+  "collection_id": "v5-qwen-governed-trace-collection-v1",
+  "evidence_status": "archive_retained_terminal_result_json_not_retained",
+  "inner_files": [
+    {
+      "byte_count": 25892,
+      "record_count": 24,
+      "relative_path": "runtime_records.jsonl",
+      "sha256": "19f9b35ad6d5bec552a92e835cdf92ee1cabfff26f4e502722389402e9f216b9"
+    },
+    {
+      "byte_count": 8532,
+      "record_count": 24,
+      "relative_path": "expected_outcomes.jsonl",
+      "sha256": "f42cb4222dbdfe27af4b5ca10dc9b59ba705b559c14362c019f707c6edee8060"
+    },
+    {
+      "byte_count": 2290,
+      "record_count": null,
+      "relative_path": "manifest.json",
+      "sha256": "550f6a370ecd8a914738634cef7c9d5e3af48867bb8c92c19d60202a82024a62"
+    }
+  ],
+  "preflight_attempt_id": "attempt-003-t4-pass",
+  "preflight_result_sha256": "4b2e096ecf57e7c729918a83a6b84434ab0dc9dac094f6b9eadff40f84e7d9dd",
+  "promotion_authorization": {
+    "calibration_refit_authorized": false,
+    "local_trace_analysis_authorized": true,
+    "policy_promotion_authorized": false,
+    "public_release_authorized": false
+  },
+  "schema_version": "specsafe-kaggle-trace-archive-retention-v1",
+  "screenshot_evidence": {
+    "observed_archive_created": true,
+    "observed_failure_code": null,
+    "observed_result_sha256": "b5dd7fc06a5d5a2374bdce37519fb37e3a65ca5cc2b59defd75edde2ae7fb8b7",
+    "observed_status": "passes_governed_trace_collection",
+    "observed_trace_collection_performed": true,
+    "retained_in_chat": true
+  },
+  "source_commit_sha": "cff5905075044770010653c637d3c52c4ccb6fbe",
+  "terminal_result_json": {
+    "absence_reason": "Kaggle browser/session refresh removed /kaggle/working outputs before download.",
+    "expected_kaggle_path": "/kaggle/working/specsafe_v5_qwen_trace_collection_result_attempt_001.json",
+    "manual_recreation_allowed": false,
+    "rerun_to_recreate_allowed": false,
+    "retained": false
+  },
+  "validated_counts": {
+    "case_count": 6,
+    "expected_outcome_record_count": 24,
+    "runtime_record_count": 24
+  }
+}
