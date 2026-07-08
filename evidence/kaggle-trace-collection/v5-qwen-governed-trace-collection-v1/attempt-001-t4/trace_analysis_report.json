@@ -1,0 +1,207 @@
+{
+  "schema_version": "specsafe-kaggle-trace-analysis-report-v1",
+  "collection_id": "v5-qwen-governed-trace-collection-v1",
+  "collection_attempt_id": "attempt-001-t4",
+  "source_commit_sha": "cff5905075044770010653c637d3c52c4ccb6fbe",
+  "preflight_attempt_id": "attempt-003-t4-pass",
+  "archive_sha256": "03059b5ed15fdde07faff92cb9485cb89793e03e010fd8f43b8f674d17fdb81c",
+  "manifest_sha256": "550f6a370ecd8a914738634cef7c9d5e3af48867bb8c92c19d60202a82024a62",
+  "runtime_records_sha256": "19f9b35ad6d5bec552a92e835cdf92ee1cabfff26f4e502722389402e9f216b9",
+  "expected_outcomes_sha256": "f42cb4222dbdfe27af4b5ca10dc9b59ba705b559c14362c019f707c6edee8060",
+  "case_count": 6,
+  "runtime_record_count": 24,
+  "expected_outcome_record_count": 24,
+  "target_argmax_match_count": 15,
+  "target_argmax_nonmatch_count": 9,
+  "target_argmax_match_rate": 0.625,
+  "matched_candidate_stats": {
+    "record_count": 15,
+    "mean_raw_draft_probability": 0.70337240199248,
+    "median_raw_draft_probability": 0.8019253015518188,
+    "min_raw_draft_probability": 0.18021279573440552,
+    "max_raw_draft_probability": 0.9927328824996948,
+    "mean_raw_draft_entropy": 1.3891208976507188,
+    "mean_target_probability": 0.683448655406634,
+    "mean_target_entropy": 1.548857851450642
+  },
+  "nonmatched_candidate_stats": {
+    "record_count": 9,
+    "mean_raw_draft_probability": 0.24853027860323587,
+    "median_raw_draft_probability": 0.21381868422031403,
+    "min_raw_draft_probability": 0.03814901411533356,
+    "max_raw_draft_probability": 0.5491656064987183,
+    "mean_raw_draft_entropy": 3.863035930527581,
+    "mean_target_probability": 0.2409138921648264,
+    "mean_target_entropy": 3.977086557282342
+  },
+  "signal_diagnostics": {
+    "raw_draft_probability_pairwise_separation_rate": 0.9037037037037037,
+    "raw_draft_entropy_pairwise_lower_for_match_rate": 0.9111111111111111,
+    "raw_draft_probability_brier_diagnostic": 0.13062574344890066,
+    "support_interpretation": "directionally_supportive_small_sample_not_calibration_claim"
+  },
+  "by_workload_type": {
+    "code": {
+      "record_count": 8,
+      "target_argmax_match_count": 7,
+      "target_argmax_match_rate": 0.875,
+      "mean_raw_draft_probability": 0.647733461111784,
+      "mean_raw_draft_entropy": 1.385797692462802
+    },
+    "open_ended_chat": {
+      "record_count": 8,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.375,
+      "mean_raw_draft_probability": 0.3182299714535475,
+      "mean_raw_draft_entropy": 3.4160264134407043
+    },
+    "structured_text": {
+      "record_count": 8,
+      "target_argmax_match_count": 5,
+      "target_argmax_match_rate": 0.625,
+      "mean_raw_draft_probability": 0.6324563845992088,
+      "mean_raw_draft_entropy": 2.14869299903512
+    }
+  },
+  "by_case_id": {
+    "KTC5-001": {
+      "record_count": 4,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.5,
+      "mean_raw_draft_probability": 0.565739881247282,
+      "mean_raw_draft_entropy": 2.545811315998435
+    },
+    "KTC5-002": {
+      "record_count": 4,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.75,
+      "mean_raw_draft_probability": 0.6991728879511356,
+      "mean_raw_draft_entropy": 1.751574682071805
+    },
+    "KTC5-003": {
+      "record_count": 4,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 1.0,
+      "mean_raw_draft_probability": 0.7906971201300621,
+      "mean_raw_draft_entropy": 0.7053353749215603
+    },
+    "KTC5-004": {
+      "record_count": 4,
+      "target_argmax_match_count": 3,
+      "target_argmax_match_rate": 0.75,
+      "mean_raw_draft_probability": 0.5047698020935059,
+      "mean_raw_draft_entropy": 2.0662600100040436
+    },
+    "KTC5-005": {
+      "record_count": 4,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.5,
+      "mean_raw_draft_probability": 0.4319380186498165,
+      "mean_raw_draft_entropy": 2.9011035561561584
+    },
+    "KTC5-006": {
+      "record_count": 4,
+      "target_argmax_match_count": 1,
+      "target_argmax_match_rate": 0.25,
+      "mean_raw_draft_probability": 0.20452192425727844,
+      "mean_raw_draft_entropy": 3.9309492707252502
+    }
+  },
+  "by_block_position_index": {
+    "1": {
+      "record_count": 6,
+      "target_argmax_match_count": 2,
+      "target_argmax_match_rate": 0.3333333333333333,
+      "mean_raw_draft_probability": 0.30409107108910877,
+      "mean_raw_draft_entropy": 3.6702038844426474
+    },
+    "2": {
+      "record_count": 6,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 0.6666666666666666,
+      "mean_raw_draft_probability": 0.5874956349531809,
+      "mean_raw_draft_entropy": 2.256030092636744
+    },
+    "3": {
+      "record_count": 6,
+      "target_argmax_match_count": 5,
+      "target_argmax_match_rate": 0.8333333333333334,
+      "mean_raw_draft_probability": 0.6255324532588323,
+      "mean_raw_draft_entropy": 1.9491723055640857
+    },
+    "4": {
+      "record_count": 6,
+      "target_argmax_match_count": 4,
+      "target_argmax_match_rate": 0.6666666666666666,
+      "mean_raw_draft_probability": 0.6141072635849317,
+      "mean_raw_draft_entropy": 1.3919498572746913
+    }
+  },
+  "raw_draft_probability_threshold_sensitivity": [
+    {
+      "raw_draft_probability_threshold": 0.1,
+      "selected_record_count": 23,
+      "selected_match_count": 15,
+      "selected_nonmatch_count": 8,
+      "selected_match_rate": 0.6521739130434783,
+      "retained_candidate_fraction": 0.9583333333333334
+    },
+    {
+      "raw_draft_probability_threshold": 0.2,
+      "selected_record_count": 20,
+      "selected_match_count": 14,
+      "selected_nonmatch_count": 6,
+      "selected_match_rate": 0.7,
+      "retained_candidate_fraction": 0.8333333333333334
+    },
+    {
+      "raw_draft_probability_threshold": 0.3,
+      "selected_record_count": 16,
+      "selected_match_count": 13,
+      "selected_nonmatch_count": 3,
+      "selected_match_rate": 0.8125,
+      "retained_candidate_fraction": 0.6666666666666666
+    },
+    {
+      "raw_draft_probability_threshold": 0.5,
+      "selected_record_count": 13,
+      "selected_match_count": 12,
+      "selected_nonmatch_count": 1,
+      "selected_match_rate": 0.9230769230769231,
+      "retained_candidate_fraction": 0.5416666666666666
+    },
+    {
+      "raw_draft_probability_threshold": 0.7,
+      "selected_record_count": 9,
+      "selected_match_count": 9,
+      "selected_nonmatch_count": 0,
+      "selected_match_rate": 1.0,
+      "retained_candidate_fraction": 0.375
+    },
+    {
+      "raw_draft_probability_threshold": 0.8,
+      "selected_record_count": 8,
+      "selected_match_count": 8,
+      "selected_nonmatch_count": 0,
+      "selected_match_rate": 1.0,
+      "retained_candidate_fraction": 0.3333333333333333
+    },
+    {
+      "raw_draft_probability_threshold": 0.9,
+      "selected_record_count": 5,
+      "selected_match_count": 5,
+      "selected_nonmatch_count": 0,
+      "selected_match_rate": 1.0,
+      "retained_candidate_fraction": 0.20833333333333334
+    }
+  ],
+  "interpretation_boundary": {
+    "analysis_scope": "local_retained_archive_diagnostics",
+    "calibration_fit_performed": false,
+    "policy_threshold_selected": false,
+    "policy_utility_evaluation_performed": false,
+    "throughput_or_latency_measurement_performed": false,
+    "public_dataset_release_authorized": false,
+    "production_readiness_claimed": false
+  }
+}

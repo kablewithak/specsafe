@@ -8,6 +8,8 @@ from specsafe.kaggle_trace_collection import (
     KaggleTraceCollectionExpectedOutcomeRecord,
     KaggleTraceCollectionFailure,
     KaggleTraceCollectionFailureCode,
+    KaggleTraceCollectionManifest,
+    KaggleTraceCollectionManifestFile,
     KaggleTraceCollectionResult,
     KaggleTraceCollectionRuntimeRecord,
     KaggleTraceCollectionStatus,
@@ -37,6 +39,48 @@ def make_runtime_record() -> KaggleTraceCollectionRuntimeRecord:
         raw_draft_probability=0.5,
         raw_draft_entropy=1.0,
         conditional_survival_confidence=0.5,
+    )
+
+
+def make_manifest() -> KaggleTraceCollectionManifest:
+    model_identity = KaggleModelIdentity(model_id="Qwen/example", revision="1" * 40)
+    return KaggleTraceCollectionManifest(
+        schema_version="specsafe-kaggle-trace-collection-manifest-v1",
+        collection_id="v5-qwen-governed-trace-collection-v1",
+        collection_attempt_id="attempt-001-t4",
+        source_commit_sha="c" * 40,
+        preflight_attempt_id="attempt-003-t4-pass",
+        preflight_source_commit_sha="a" * 40,
+        preflight_result_sha256="b" * 64,
+        prompt_corpus_id="kaggle-trace-collection-v1",
+        prompt_corpus_sha256="d" * 64,
+        data_role="trace_collection",
+        collection_partition="unassigned",
+        source_type="kaggle_export",
+        model_pair_id="qwen2.5-0.5b-to-1.5b",
+        draft_model=model_identity,
+        target_model=model_identity,
+        tokenizer_source_model=model_identity,
+        seed=17,
+        decoding_configuration_id="greedy-next-token-block-4-v1",
+        case_count=6,
+        runtime_record_count=24,
+        expected_outcome_record_count=24,
+        environment={"gpu_name": "Tesla T4", "cuda_available": True},
+        files=(
+            KaggleTraceCollectionManifestFile(
+                relative_path="runtime_records.jsonl",
+                sha256="e" * 64,
+                byte_count=1,
+                record_count=24,
+            ),
+            KaggleTraceCollectionManifestFile(
+                relative_path="expected_outcomes.jsonl",
+                sha256="f" * 64,
+                byte_count=1,
+                record_count=24,
+            ),
+        ),
     )
 
 
@@ -72,6 +116,19 @@ def test_expected_outcome_record_keeps_candidate_and_target_fields_out_of_runtim
 
     assert record.candidate_token_id == 42
     assert record.target_argmax_matches_candidate is True
+
+
+def test_manifest_requires_preflight_provenance_fields() -> None:
+    manifest = make_manifest()
+
+    assert manifest.preflight_attempt_id == "attempt-003-t4-pass"
+    assert manifest.preflight_source_commit_sha == "a" * 40
+
+    payload = manifest.model_dump()
+    del payload["preflight_attempt_id"]
+
+    with pytest.raises(ValidationError, match="preflight_attempt_id"):
+        KaggleTraceCollectionManifest.model_validate(payload)
 
 
 def test_passing_result_requires_archive_and_hashes() -> None:
