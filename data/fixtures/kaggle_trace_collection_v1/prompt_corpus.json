@@ -1,0 +1,39 @@
+{
+  "case_count": 6,
+  "cases": [
+    {
+      "case_id": "KTC5-001",
+      "prompt": "Complete the checklist title: Safety review requires evidence, scope, and",
+      "workload_type": "structured_text"
+    },
+    {
+      "case_id": "KTC5-002",
+      "prompt": "Write the next item in a short numbered plan for testing a small program:",
+      "workload_type": "structured_text"
+    },
+    {
+      "case_id": "KTC5-003",
+      "prompt": "def multiply(left, right):\n    return",
+      "workload_type": "code"
+    },
+    {
+      "case_id": "KTC5-004",
+      "prompt": "for item in values:\n    if item > limit:\n        ",
+      "workload_type": "code"
+    },
+    {
+      "case_id": "KTC5-005",
+      "prompt": "A traveler reached a quiet coastal town at dusk and noticed",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "case_id": "KTC5-006",
+      "prompt": "Explain, in two short sentences, why a careful experiment records",
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "corpus_id": "v5-qwen-self-authored-trace-corpus-v1",
+  "data_role": "trace_collection",
+  "schema_version": "specsafe-kaggle-trace-prompt-corpus-v1",
+  "source_type": "self_authored_public_safe"
+}
