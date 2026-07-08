@@ -103,6 +103,8 @@ class KaggleTraceCollectionManifest(StrictContract):
     collection_id: str = Field(min_length=1, max_length=128)
     collection_attempt_id: str = Field(min_length=1, max_length=128)
     source_commit_sha: str = Field(min_length=7, max_length=128)
+    preflight_attempt_id: str = Field(min_length=1, max_length=128)
+    preflight_source_commit_sha: str = Field(min_length=7, max_length=128)
     preflight_result_sha256: str = Field(min_length=64, max_length=64)
     prompt_corpus_id: str = Field(min_length=1, max_length=128)
     prompt_corpus_sha256: str = Field(min_length=64, max_length=64)
