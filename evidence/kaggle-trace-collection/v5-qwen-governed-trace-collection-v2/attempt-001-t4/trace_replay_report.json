@@ -1,0 +1,359 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "collection_id": "v5-qwen-governed-trace-collection-v2",
+  "data_role": "post_collection_diagnostic_replay",
+  "diagnostic_findings": {
+    "replay_signal_status": "directionally_supportive_not_promoted",
+    "threshold_0_0_selected_count": 120,
+    "threshold_0_3_selected_count": 84,
+    "threshold_0_3_selected_match_count": 76,
+    "threshold_0_3_selected_nonmatch_count": 8,
+    "threshold_0_4_selected_count": 73,
+    "threshold_0_4_selected_match_count": 72,
+    "threshold_0_4_selected_nonmatch_count": 1,
+    "threshold_0_5_selected_count": 64,
+    "threshold_0_5_selected_match_count": 64,
+    "threshold_0_5_selected_nonmatch_count": 0,
+    "threshold_0_8_selected_count": 40,
+    "threshold_0_8_selected_match_count": 40,
+    "threshold_0_8_selected_nonmatch_count": 0
+  },
+  "evidence_class": "kaggle_environment_measured",
+  "input_file_hashes": {
+    "environment_report.json": "2af6f1b1fc587f2fa2746bde1d8e93d782998ec41ee0428f560ee189f2d8638e",
+    "expected_outcome_records.jsonl": "79e436dcc415597c208208cec888544ef2a3a059c13d5891325b82ca9fc896e3",
+    "retention_manifest.json": "1dbbc420c8977921e7faf17dc41d155e1fbf66922198d9119a95a10ecebdbf74",
+    "runtime_records.jsonl": "d82229e07cc32da8b6e73b26190b92b8b802326b2eb816b509ed55967e49f804",
+    "timing_records.jsonl": "a0d6ac911e55fe4437d5df69487bc7e9dd56754d76be5048efd8660cc0149946",
+    "trace_analysis_report.json": "cbbd489f769e1240cad458cd00e3c360870ce36fc2e0e4cfc907b2d61a347e8e",
+    "trace_summary.json": "c7e9d8de5eb95ad28b46150fca29156ab1d29cd32d061a503d5301425c71c1dc"
+  },
+  "manifest_hash_status": {
+    "environment_report.json": true,
+    "expected_outcome_records.jsonl": true,
+    "runtime_records.jsonl": true,
+    "timing_records.jsonl": true,
+    "trace_summary.json": true
+  },
+  "next_safe_gate": "v2_calibration_diagnostic_readiness_gate",
+  "nonclaim_boundaries": {
+    "calibration_fit_status": "not_authorized_by_replay",
+    "production_claim_status": "not_authorized",
+    "public_release_status": "not_authorized_by_replay",
+    "scheduler_promotion_status": "not_authorized_by_replay",
+    "threshold_promotion_status": "not_authorized_by_replay"
+  },
+  "record_counts": {
+    "case_count": 30,
+    "expected_outcome_record_count": 120,
+    "joined_record_count": 120,
+    "runtime_record_count": 120,
+    "timing_record_count": 120
+  },
+  "replay_status": "diagnostic_replay_only",
+  "report_id": "v5_qwen_trace_collection_v2_attempt_001_replay",
+  "runtime_outcome_join_status": {
+    "joined_record_count": 120,
+    "one_to_one_join_passed": true,
+    "runtime_forbidden_fields_present": []
+  },
+  "source_analysis_report_id": "v5_qwen_trace_collection_v2_attempt_001_analysis",
+  "source_trace_summary": {
+    "target_argmax_match_count": 97,
+    "target_argmax_match_rate": 0.8083333333333333,
+    "target_argmax_nonmatch_count": 23
+  },
+  "threshold_replay": {
+    "diagnostic_threshold_for_stratification": 0.5,
+    "frontier_summary": {
+      "first_zero_nonmatch_threshold": 0.5,
+      "interpretation": "diagnostic_frontier_only_not_a_policy_selection",
+      "threshold_promotion_status": "not_authorized_by_replay",
+      "threshold_with_maximum_selected_match_rate": null,
+      "zero_nonmatch_thresholds": [
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9,
+        0.95
+      ]
+    },
+    "stratified_at_diagnostic_threshold": {
+      "by_block_position_index": {
+        "1": {
+          "record_count": 30,
+          "selected_coverage_rate": 0.1,
+          "selected_match_count": 3,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 3
+        },
+        "2": {
+          "record_count": 30,
+          "selected_coverage_rate": 0.6,
+          "selected_match_count": 18,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 18
+        },
+        "3": {
+          "record_count": 30,
+          "selected_coverage_rate": 0.9,
+          "selected_match_count": 27,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 27
+        },
+        "4": {
+          "record_count": 30,
+          "selected_coverage_rate": 0.5333333333333333,
+          "selected_match_count": 16,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 16
+        }
+      },
+      "by_split": {
+        "adversarial_regression": {
+          "record_count": 12,
+          "selected_coverage_rate": 0.75,
+          "selected_match_count": 9,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 9
+        },
+        "calibration": {
+          "record_count": 36,
+          "selected_coverage_rate": 0.6111111111111112,
+          "selected_match_count": 22,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 22
+        },
+        "development": {
+          "record_count": 36,
+          "selected_coverage_rate": 0.5277777777777778,
+          "selected_match_count": 19,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 19
+        },
+        "final_evaluation": {
+          "record_count": 36,
+          "selected_coverage_rate": 0.3888888888888889,
+          "selected_match_count": 14,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 14
+        }
+      },
+      "by_workload_type": {
+        "code": {
+          "record_count": 40,
+          "selected_coverage_rate": 0.5,
+          "selected_match_count": 20,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 20
+        },
+        "open_ended_chat": {
+          "record_count": 40,
+          "selected_coverage_rate": 0.675,
+          "selected_match_count": 27,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 27
+        },
+        "structured_text": {
+          "record_count": 40,
+          "selected_coverage_rate": 0.425,
+          "selected_match_count": 17,
+          "selected_match_rate": 1.0,
+          "selected_nonmatch_count": 0,
+          "selected_record_count": 17
+        }
+      }
+    },
+    "threshold_reports": [
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.5613443261012435,
+        "selected_coverage_rate": 1.0,
+        "selected_match_count": 97,
+        "selected_match_rate": 0.8083333333333333,
+        "selected_nonmatch_count": 23,
+        "selected_nonmatch_rate": 0.19166666666666668,
+        "selected_record_count": 120,
+        "skipped_match_count": 0,
+        "skipped_match_rate": null,
+        "skipped_nonmatch_count": 0,
+        "skipped_record_count": 0,
+        "threshold": 0.0
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.5820950302092925,
+        "selected_coverage_rate": 0.9583333333333334,
+        "selected_match_count": 95,
+        "selected_match_rate": 0.8260869565217391,
+        "selected_nonmatch_count": 20,
+        "selected_nonmatch_rate": 0.17391304347826086,
+        "selected_record_count": 115,
+        "skipped_match_count": 2,
+        "skipped_match_rate": 0.4,
+        "skipped_nonmatch_count": 3,
+        "skipped_record_count": 5,
+        "threshold": 0.1
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.6655470609354476,
+        "selected_coverage_rate": 0.8,
+        "selected_match_count": 84,
+        "selected_match_rate": 0.875,
+        "selected_nonmatch_count": 12,
+        "selected_nonmatch_rate": 0.125,
+        "selected_record_count": 96,
+        "skipped_match_count": 13,
+        "skipped_match_rate": 0.5416666666666666,
+        "skipped_nonmatch_count": 11,
+        "skipped_record_count": 24,
+        "threshold": 0.2
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.7236482132048834,
+        "selected_coverage_rate": 0.7,
+        "selected_match_count": 76,
+        "selected_match_rate": 0.9047619047619048,
+        "selected_nonmatch_count": 8,
+        "selected_nonmatch_rate": 0.09523809523809523,
+        "selected_record_count": 84,
+        "skipped_match_count": 21,
+        "skipped_match_rate": 0.5833333333333334,
+        "skipped_nonmatch_count": 15,
+        "skipped_record_count": 36,
+        "threshold": 0.3
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.7807185339601073,
+        "selected_coverage_rate": 0.6083333333333333,
+        "selected_match_count": 72,
+        "selected_match_rate": 0.9863013698630136,
+        "selected_nonmatch_count": 1,
+        "selected_nonmatch_rate": 0.0136986301369863,
+        "selected_record_count": 73,
+        "skipped_match_count": 25,
+        "skipped_match_rate": 0.5319148936170213,
+        "skipped_nonmatch_count": 22,
+        "skipped_record_count": 47,
+        "threshold": 0.4
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.8261110009625554,
+        "selected_coverage_rate": 0.5333333333333333,
+        "selected_match_count": 64,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 64,
+        "skipped_match_count": 33,
+        "skipped_match_rate": 0.5892857142857143,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 56,
+        "threshold": 0.5
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.8602795705460665,
+        "selected_coverage_rate": 0.475,
+        "selected_match_count": 57,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 57,
+        "skipped_match_count": 40,
+        "skipped_match_rate": 0.6349206349206349,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 63,
+        "threshold": 0.6
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.898600373417139,
+        "selected_coverage_rate": 0.4,
+        "selected_match_count": 48,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 48,
+        "skipped_match_count": 49,
+        "skipped_match_rate": 0.6805555555555556,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 72,
+        "threshold": 0.7
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.9263299345970154,
+        "selected_coverage_rate": 0.3333333333333333,
+        "selected_match_count": 40,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 40,
+        "skipped_match_count": 57,
+        "skipped_match_rate": 0.7125,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 80,
+        "threshold": 0.8
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.9692922028211447,
+        "selected_coverage_rate": 0.21666666666666667,
+        "selected_match_count": 26,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 26,
+        "skipped_match_count": 71,
+        "skipped_match_rate": 0.7553191489361702,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 94,
+        "threshold": 0.9
+      },
+      {
+        "diagnostic_only": true,
+        "mean_selected_raw_confidence": 0.9812425553798676,
+        "selected_coverage_rate": 0.16666666666666666,
+        "selected_match_count": 20,
+        "selected_match_rate": 1.0,
+        "selected_nonmatch_count": 0,
+        "selected_nonmatch_rate": 0.0,
+        "selected_record_count": 20,
+        "skipped_match_count": 77,
+        "skipped_match_rate": 0.77,
+        "skipped_nonmatch_count": 23,
+        "skipped_record_count": 100,
+        "threshold": 0.95
+      }
+    ],
+    "thresholds": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      0.95
+    ]
+  }
+}
