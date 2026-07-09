@@ -1,0 +1,23 @@
+{
+  "corpus_id": "kaggle_trace_corpus_expansion_v1",
+  "corpus_path": "data/fixtures/kaggle_trace_corpus_expansion_v1/prompt_corpus.json",
+  "forbidden_claims": [
+    "kaggle_calibration_fit_complete",
+    "threshold_policy_promoted",
+    "scheduler_utility_promoted",
+    "production_speedup",
+    "production_serving_readiness"
+  ],
+  "manifest_id": "kaggle_trace_corpus_expansion_v1_manifest",
+  "planned_runtime_records": 120,
+  "prompt_corpus_sha256": "bc6dee060c4da77796f8c45c3a131bd49d9198432f9588c95096aaefdd0a8466",
+  "prompt_count": 30,
+  "schema_version": "specsafe.kaggle_prompt_corpus_manifest.v1",
+  "split_unit": "prompt_family",
+  "status": "planned_pre_collection_not_model_evidence",
+  "workload_types": [
+    "structured_text",
+    "code",
+    "open_ended_chat"
+  ]
+}
