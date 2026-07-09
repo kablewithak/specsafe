@@ -1,0 +1,31 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized",
+  "case_count": 30,
+  "collection_id": "v5-qwen-governed-trace-collection-v2",
+  "data_role": "trace_collection",
+  "evidence_class": "kaggle_environment_measured",
+  "expected_outcome_record_count": 120,
+  "file_hashes": {
+    "environment_report.json": "2af6f1b1fc587f2fa2746bde1d8e93d782998ec41ee0428f560ee189f2d8638e",
+    "expected_outcome_records.jsonl": "79e436dcc415597c208208cec888544ef2a3a059c13d5891325b82ca9fc896e3",
+    "runtime_records.jsonl": "d82229e07cc32da8b6e73b26190b92b8b802326b2eb816b509ed55967e49f804",
+    "timing_records.jsonl": "a0d6ac911e55fe4437d5df69487bc7e9dd56754d76be5048efd8660cc0149946",
+    "trace_summary.json": "c7e9d8de5eb95ad28b46150fca29156ab1d29cd32d061a503d5301425c71c1dc"
+  },
+  "forbidden_downstream_actions": [
+    "fit_kaggle_derived_calibrator_from_this_archive_without_local_diagnostic_gate",
+    "promote_threshold_policy_from_this_archive",
+    "claim_production_speedup_or_serving_readiness",
+    "publish_without_public_safety_review"
+  ],
+  "pre_collection_manifest_sha256": "7824c46308cad791289b3dad955a142228b4d30a91350992813fc3901ac123c7",
+  "production_claim_status": "not_authorized",
+  "raw_prompt_text_retained": false,
+  "readiness_bundle_sha256": "8d3f84611780d34a2f5f2b0bd0070f386be530a741975f069845ed96c7c8102a",
+  "runtime_record_count": 120,
+  "scheduler_promotion_status": "not_authorized",
+  "source_commit": "0dfd5118a471adeec92a609d817d06d698f783a7",
+  "source_corpus_sha256": "bc6dee060c4da77796f8c45c3a131bd49d9198432f9588c95096aaefdd0a8466",
+  "threshold_promotion_status": "not_authorized"
+}
