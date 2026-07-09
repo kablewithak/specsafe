@@ -1,0 +1,358 @@
+{
+  "calibration_fit_status": "not_authorized",
+  "collection_status": "pre_collection_ready",
+  "corpus_id": "kaggle_trace_corpus_expansion_v1",
+  "data_role": "trace_collection",
+  "evidence_class": "kaggle_environment_planned",
+  "forbidden_downstream_actions": [
+    "fit_kaggle_derived_calibrator_from_planned_corpus",
+    "promote_threshold_policy_from_planned_corpus",
+    "promote_scheduler_utility_from_planned_corpus",
+    "publish_public_dataset_from_planned_corpus_without_public_safety_review",
+    "claim_production_speedup_or_serving_readiness"
+  ],
+  "manifest_id": "v5-qwen-governed-trace-collection-v2-precollection",
+  "model_execution_status": "not_started",
+  "next_authorized_step": "run_second_kaggle_trace_collection_against_this_manifest",
+  "pre_collection_gates": {
+    "no_calibration_fit": "passed",
+    "no_outcome_labels": "passed",
+    "no_threshold_promotion": "passed",
+    "planned_record_count_minimum": "passed",
+    "prompt_family_split_isolation": "passed",
+    "public_safe_source_policy": "passed"
+  },
+  "prompt_family_assignments": [
+    {
+      "family_id": "family-chat-adv-001",
+      "prompt_ids": [
+        "KCEV1-OC-010"
+      ],
+      "split": "adversarial_regression",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-cal-001",
+      "prompt_ids": [
+        "KCEV1-OC-004"
+      ],
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-cal-002",
+      "prompt_ids": [
+        "KCEV1-OC-005"
+      ],
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-cal-003",
+      "prompt_ids": [
+        "KCEV1-OC-006"
+      ],
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-dev-001",
+      "prompt_ids": [
+        "KCEV1-OC-001"
+      ],
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-dev-002",
+      "prompt_ids": [
+        "KCEV1-OC-002"
+      ],
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-dev-003",
+      "prompt_ids": [
+        "KCEV1-OC-003"
+      ],
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-eval-001",
+      "prompt_ids": [
+        "KCEV1-OC-007"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-eval-002",
+      "prompt_ids": [
+        "KCEV1-OC-008"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-chat-eval-003",
+      "prompt_ids": [
+        "KCEV1-OC-009"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "family-code-adv-001",
+      "prompt_ids": [
+        "KCEV1-CD-010"
+      ],
+      "split": "adversarial_regression",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-cal-001",
+      "prompt_ids": [
+        "KCEV1-CD-004"
+      ],
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-cal-002",
+      "prompt_ids": [
+        "KCEV1-CD-005"
+      ],
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-cal-003",
+      "prompt_ids": [
+        "KCEV1-CD-006"
+      ],
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-dev-001",
+      "prompt_ids": [
+        "KCEV1-CD-001"
+      ],
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-dev-002",
+      "prompt_ids": [
+        "KCEV1-CD-002"
+      ],
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-dev-003",
+      "prompt_ids": [
+        "KCEV1-CD-003"
+      ],
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-eval-001",
+      "prompt_ids": [
+        "KCEV1-CD-007"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-eval-002",
+      "prompt_ids": [
+        "KCEV1-CD-008"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-code-eval-003",
+      "prompt_ids": [
+        "KCEV1-CD-009"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "family-st-adv-001",
+      "prompt_ids": [
+        "KCEV1-ST-010"
+      ],
+      "split": "adversarial_regression",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-cal-001",
+      "prompt_ids": [
+        "KCEV1-ST-004"
+      ],
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-cal-002",
+      "prompt_ids": [
+        "KCEV1-ST-005"
+      ],
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-cal-003",
+      "prompt_ids": [
+        "KCEV1-ST-006"
+      ],
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-dev-001",
+      "prompt_ids": [
+        "KCEV1-ST-001"
+      ],
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-dev-002",
+      "prompt_ids": [
+        "KCEV1-ST-002"
+      ],
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-dev-003",
+      "prompt_ids": [
+        "KCEV1-ST-003"
+      ],
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-eval-001",
+      "prompt_ids": [
+        "KCEV1-ST-007"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-eval-002",
+      "prompt_ids": [
+        "KCEV1-ST-008"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "family-st-eval-003",
+      "prompt_ids": [
+        "KCEV1-ST-009"
+      ],
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    }
+  ],
+  "record_plan": {
+    "minimum_negative_count_for_calibration_fit": 30,
+    "minimum_positive_count_for_calibration_fit": 30,
+    "minimum_record_count_for_calibration_fit": 100,
+    "next_gate": "collect_second_archive_then_run_deterministic_analysis_replay_and_calibration_diagnostic",
+    "planned_candidate_positions_per_prompt": 4,
+    "planned_prompt_count": 30,
+    "planned_runtime_records": 120,
+    "positive_negative_balance_status": "cannot_be_known_before_model_execution"
+  },
+  "schema_version": "specsafe.kaggle_precollection_manifest.v1",
+  "source_corpus_path": "data/fixtures/kaggle_trace_corpus_expansion_v1/prompt_corpus.json",
+  "source_corpus_sha256": "bc6dee060c4da77796f8c45c3a131bd49d9198432f9588c95096aaefdd0a8466",
+  "split_summary": [
+    {
+      "planned_runtime_records": 12,
+      "prompt_count": 3,
+      "split": "adversarial_regression",
+      "workload_counts": {
+        "code": 1,
+        "open_ended_chat": 1,
+        "structured_text": 1
+      }
+    },
+    {
+      "planned_runtime_records": 36,
+      "prompt_count": 9,
+      "split": "calibration",
+      "workload_counts": {
+        "code": 3,
+        "open_ended_chat": 3,
+        "structured_text": 3
+      }
+    },
+    {
+      "planned_runtime_records": 36,
+      "prompt_count": 9,
+      "split": "development",
+      "workload_counts": {
+        "code": 3,
+        "open_ended_chat": 3,
+        "structured_text": 3
+      }
+    },
+    {
+      "planned_runtime_records": 36,
+      "prompt_count": 9,
+      "split": "final_evaluation",
+      "workload_counts": {
+        "code": 3,
+        "open_ended_chat": 3,
+        "structured_text": 3
+      }
+    }
+  ],
+  "threshold_promotion_status": "not_authorized",
+  "workload_summary": [
+    {
+      "planned_runtime_records": 40,
+      "prompt_count": 10,
+      "split_counts": {
+        "adversarial_regression": 1,
+        "calibration": 3,
+        "development": 3,
+        "final_evaluation": 3
+      },
+      "workload_type": "code"
+    },
+    {
+      "planned_runtime_records": 40,
+      "prompt_count": 10,
+      "split_counts": {
+        "adversarial_regression": 1,
+        "calibration": 3,
+        "development": 3,
+        "final_evaluation": 3
+      },
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "planned_runtime_records": 40,
+      "prompt_count": 10,
+      "split_counts": {
+        "adversarial_regression": 1,
+        "calibration": 3,
+        "development": 3,
+        "final_evaluation": 3
+      },
+      "workload_type": "structured_text"
+    }
+  ]
+}
