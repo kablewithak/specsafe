@@ -1,0 +1,214 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "calibration_diagnostics": {
+    "fixed_bin_expected_calibration_error": 0.2469890072320898,
+    "fixed_bin_maximum_calibration_error": 0.44021765887737274,
+    "fixed_bin_reports": [
+      {
+        "bin": "[0.0, 0.2)",
+        "calibration_gap": 0.39713327990223957,
+        "lower": 0.0,
+        "match_count": 13,
+        "mean_confidence": 0.14453338676442704,
+        "nonmatch_count": 11,
+        "observed_match_rate": 0.5416666666666666,
+        "record_count": 24,
+        "upper": 0.2
+      },
+      {
+        "bin": "[0.2, 0.4)",
+        "calibration_gap": 0.22173630996890686,
+        "lower": 0.2,
+        "match_count": 12,
+        "mean_confidence": 0.30000282046587573,
+        "nonmatch_count": 11,
+        "observed_match_rate": 0.5217391304347826,
+        "record_count": 23,
+        "upper": 0.4
+      },
+      {
+        "bin": "[0.4, 0.6)",
+        "calibration_gap": 0.44021765887737274,
+        "lower": 0.4,
+        "match_count": 15,
+        "mean_confidence": 0.49728234112262726,
+        "nonmatch_count": 1,
+        "observed_match_rate": 0.9375,
+        "record_count": 16,
+        "upper": 0.6
+      },
+      {
+        "bin": "[0.6, 0.8)",
+        "calibration_gap": 0.2951330507502836,
+        "lower": 0.6,
+        "match_count": 17,
+        "mean_confidence": 0.7048669492497164,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 17,
+        "upper": 0.8
+      },
+      {
+        "bin": "[0.8, 1.0]",
+        "calibration_gap": 0.0736700654029846,
+        "lower": 0.8,
+        "match_count": 40,
+        "mean_confidence": 0.9263299345970154,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 40,
+        "upper": 1.0
+      }
+    ],
+    "minimum_signal_roc_auc_diagnostic": 0.75,
+    "raw_confidence_roc_auc_diagnostic": 0.8655311519497983,
+    "raw_draft_probability_brier_diagnostic": 0.18776377614415718,
+    "signal_diagnostic_passed": true,
+    "stratified_counts": {
+      "by_block_position_index": {
+        "1": {
+          "match_count": 23,
+          "match_rate": 0.7666666666666667,
+          "mean_raw_confidence": 0.25646507665514945,
+          "nonmatch_count": 7,
+          "record_count": 30
+        },
+        "2": {
+          "match_count": 21,
+          "match_rate": 0.7,
+          "mean_raw_confidence": 0.615546710540851,
+          "nonmatch_count": 9,
+          "record_count": 30
+        },
+        "3": {
+          "match_count": 29,
+          "match_rate": 0.9666666666666667,
+          "mean_raw_confidence": 0.7664862021803855,
+          "nonmatch_count": 1,
+          "record_count": 30
+        },
+        "4": {
+          "match_count": 24,
+          "match_rate": 0.8,
+          "mean_raw_confidence": 0.6068793150285879,
+          "nonmatch_count": 6,
+          "record_count": 30
+        }
+      },
+      "by_split": {
+        "adversarial_regression": {
+          "match_count": 12,
+          "match_rate": 1.0,
+          "mean_raw_confidence": 0.6989301765958468,
+          "nonmatch_count": 0,
+          "record_count": 12
+        },
+        "calibration": {
+          "match_count": 29,
+          "match_rate": 0.8055555555555556,
+          "mean_raw_confidence": 0.6207233710835377,
+          "nonmatch_count": 7,
+          "record_count": 36
+        },
+        "development": {
+          "match_count": 31,
+          "match_rate": 0.8611111111111112,
+          "mean_raw_confidence": 0.5675552559809552,
+          "nonmatch_count": 5,
+          "record_count": 36
+        },
+        "final_evaluation": {
+          "match_count": 25,
+          "match_rate": 0.6944444444444444,
+          "mean_raw_confidence": 0.44989240107436973,
+          "nonmatch_count": 11,
+          "record_count": 36
+        }
+      },
+      "by_workload_type": {
+        "code": {
+          "match_count": 32,
+          "match_rate": 0.8,
+          "mean_raw_confidence": 0.5511992296203971,
+          "nonmatch_count": 8,
+          "record_count": 40
+        },
+        "open_ended_chat": {
+          "match_count": 35,
+          "match_rate": 0.875,
+          "mean_raw_confidence": 0.635275398939848,
+          "nonmatch_count": 5,
+          "record_count": 40
+        },
+        "structured_text": {
+          "match_count": 30,
+          "match_rate": 0.75,
+          "mean_raw_confidence": 0.49755834974348545,
+          "nonmatch_count": 10,
+          "record_count": 40
+        }
+      }
+    }
+  },
+  "calibration_fit_readiness": {
+    "calibration_fit_authorized": false,
+    "calibration_fit_readiness_status": "insufficient_negative_count_for_calibration_fit_signal_supportive",
+    "calibration_fit_status": "not_authorized_by_diagnostic",
+    "minimum_negative_count_for_calibration_fit": 30,
+    "minimum_positive_count_for_calibration_fit": 30,
+    "minimum_record_count_for_calibration_fit": 100,
+    "next_authorized_step": "expand_negative_case_coverage_before_calibration_fit",
+    "observed_negative_count": 23,
+    "observed_positive_count": 97,
+    "observed_record_count": 120
+  },
+  "collection_id": "v5-qwen-governed-trace-collection-v2",
+  "data_role": "post_collection_calibration_readiness_diagnostic",
+  "diagnostic_status": "calibration_readiness_diagnostic_only",
+  "evidence_class": "kaggle_environment_measured",
+  "input_file_hashes": {
+    "environment_report.json": "2af6f1b1fc587f2fa2746bde1d8e93d782998ec41ee0428f560ee189f2d8638e",
+    "expected_outcome_records.jsonl": "79e436dcc415597c208208cec888544ef2a3a059c13d5891325b82ca9fc896e3",
+    "retention_manifest.json": "1dbbc420c8977921e7faf17dc41d155e1fbf66922198d9119a95a10ecebdbf74",
+    "runtime_records.jsonl": "d82229e07cc32da8b6e73b26190b92b8b802326b2eb816b509ed55967e49f804",
+    "timing_records.jsonl": "a0d6ac911e55fe4437d5df69487bc7e9dd56754d76be5048efd8660cc0149946",
+    "trace_analysis_report.json": "cbbd489f769e1240cad458cd00e3c360870ce36fc2e0e4cfc907b2d61a347e8e",
+    "trace_replay_report.json": "6f13e2d939e813fa32c474e89dd0774aa0b80d06030bc586e4c409fb7041cff2",
+    "trace_summary.json": "c7e9d8de5eb95ad28b46150fca29156ab1d29cd32d061a503d5301425c71c1dc"
+  },
+  "interpretation": {
+    "diagnostic_only": true,
+    "stronger_claims_blocked": true,
+    "summary": "The v2 archive shows directionally supportive confidence ranking, but the negative class remains below the calibration-fit minimum."
+  },
+  "manifest_hash_status": {
+    "environment_report.json": true,
+    "expected_outcome_records.jsonl": true,
+    "runtime_records.jsonl": true,
+    "timing_records.jsonl": true,
+    "trace_summary.json": true
+  },
+  "non_authorization": {
+    "production_claim_status": "not_authorized_by_calibration_diagnostic",
+    "public_release_status": "not_authorized_by_calibration_diagnostic",
+    "scheduler_promotion_status": "not_authorized_by_calibration_diagnostic",
+    "threshold_promotion_status": "not_authorized_by_calibration_diagnostic"
+  },
+  "record_counts": {
+    "case_count": 30,
+    "expected_outcome_record_count": 120,
+    "joined_record_count": 120,
+    "runtime_record_count": 120,
+    "target_argmax_match_count": 97,
+    "target_argmax_nonmatch_count": 23,
+    "timing_record_count": 120
+  },
+  "report_id": "v5_qwen_trace_collection_v2_attempt_001_calibration_diagnostic",
+  "runtime_outcome_join_status": {
+    "joined_record_count": 120,
+    "one_to_one_join_passed": true,
+    "runtime_forbidden_fields_present": []
+  },
+  "source_analysis_report_id": "v5_qwen_trace_collection_v2_attempt_001_analysis",
+  "source_replay_report_id": "v5_qwen_trace_collection_v2_attempt_001_replay"
+}
