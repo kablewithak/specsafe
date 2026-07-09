@@ -1,0 +1,564 @@
+{
+  "calibration_fit_status": "not_authorized",
+  "corpus_id": "kaggle_trace_corpus_expansion_v1",
+  "corpus_status": "planned_pre_collection",
+  "data_role": "trace_collection",
+  "evidence_class": "kaggle_environment_planned",
+  "forbidden_downstream_actions": [
+    "fit_kaggle_derived_calibrator_from_planned_corpus",
+    "promote_threshold_policy_from_planned_corpus",
+    "promote_scheduler_utility_from_planned_corpus",
+    "publish_public_dataset_from_planned_corpus_without_public_safety_review",
+    "claim_production_speedup_or_serving_readiness"
+  ],
+  "model_execution_status": "not_started",
+  "prompts": [
+    {
+      "diagnostic_intent": "predictable checklist structure",
+      "family_id": "family-st-dev-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-001",
+      "prompt_text": "Write a four item checklist for preparing a small project demo.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "ordered agenda structure",
+      "family_id": "family-st-dev-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-002",
+      "prompt_text": "Draft a short meeting agenda for reviewing a software test report.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "compact release-note structure",
+      "family_id": "family-st-dev-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-003",
+      "prompt_text": "Create a concise release note for a bug fix in a command line tool.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "enumerated acceptance criteria",
+      "family_id": "family-st-cal-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-004",
+      "prompt_text": "List five acceptance criteria for a documentation-only pull request.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "tabular risk phrasing",
+      "family_id": "family-st-cal-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-005",
+      "prompt_text": "Write a short risk register for a local data-processing script.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "procedural rollback sequence",
+      "family_id": "family-st-cal-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-006",
+      "prompt_text": "Create a three step rollback plan for a failed configuration change.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "bounded status-summary style",
+      "family_id": "family-st-eval-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-007",
+      "prompt_text": "Write a concise status update for a completed validation run.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "manifest field enumeration",
+      "family_id": "family-st-eval-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-008",
+      "prompt_text": "List four fields that belong in an experiment manifest.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "evidence boundary phrasing",
+      "family_id": "family-st-eval-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-009",
+      "prompt_text": "Create a short evidence boundary note for a replay-only demo.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "split-leakage regression prompt",
+      "family_id": "family-st-adv-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-ST-010",
+      "prompt_text": "Write a checklist that separates observed results from future planned work.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "adversarial_regression",
+      "workload_type": "structured_text"
+    },
+    {
+      "diagnostic_intent": "code-like deterministic syntax",
+      "family_id": "family-code-dev-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-001",
+      "prompt_text": "Write a Python function signature for validating a JSON manifest path.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "testing explanation",
+      "family_id": "family-code-dev-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-002",
+      "prompt_text": "Explain how a pytest fixture can load a small local JSON file.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "simple algorithmic structure",
+      "family_id": "family-code-dev-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-003",
+      "prompt_text": "Write pseudocode for checking that all IDs in a list are unique.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "typed object outline",
+      "family_id": "family-code-cal-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-004",
+      "prompt_text": "Create a Python dataclass outline for a replay configuration object.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "schema validation wording",
+      "family_id": "family-code-cal-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-005",
+      "prompt_text": "Describe a small function that rejects unknown keys in a dictionary.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "grouping algorithm structure",
+      "family_id": "family-code-cal-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-006",
+      "prompt_text": "Write pseudocode for grouping records by workload type.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "artifact hashing explanation",
+      "family_id": "family-code-eval-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-007",
+      "prompt_text": "Explain how to compute a SHA-256 hash for a local artifact file.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "test assertion phrasing",
+      "family_id": "family-code-eval-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-008",
+      "prompt_text": "Write a minimal pytest assertion for a planned record count.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "leakage control algorithm",
+      "family_id": "family-code-eval-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-009",
+      "prompt_text": "Create pseudocode for validating prompt-level split isolation.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "future-information regression prompt",
+      "family_id": "family-code-adv-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-CD-010",
+      "prompt_text": "Explain why a test should not read target labels when constructing runtime input.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "adversarial_regression",
+      "workload_type": "code"
+    },
+    {
+      "diagnostic_intent": "open explanatory generation",
+      "family_id": "family-chat-dev-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-001",
+      "prompt_text": "Give a simple analogy for why evidence should be separated from claims.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "reasoning with uncertainty",
+      "family_id": "family-chat-dev-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-002",
+      "prompt_text": "Write a short reflection on why small samples can be misleading.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "scope boundary explanation",
+      "family_id": "family-chat-dev-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-003",
+      "prompt_text": "Explain why a demo should not pretend to be a production system.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "development",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "confidence explanation",
+      "family_id": "family-chat-cal-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-004",
+      "prompt_text": "Describe how confidence can feel high while still being wrong.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "fallback explanation",
+      "family_id": "family-chat-cal-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-005",
+      "prompt_text": "Write a plain-language explanation of a conservative fallback.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "negative evidence explanation",
+      "family_id": "family-chat-cal-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-006",
+      "prompt_text": "Explain why a model evaluation needs both wins and losses.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "calibration",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "public non-claim phrasing",
+      "family_id": "family-chat-eval-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-007",
+      "prompt_text": "Write a brief note explaining that a replay lab is not live inference.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "tuning leakage explanation",
+      "family_id": "family-chat-eval-002",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-008",
+      "prompt_text": "Explain why a threshold should not be chosen after seeing final results.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "split discipline explanation",
+      "family_id": "family-chat-eval-003",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-009",
+      "prompt_text": "Write a concise explanation of prompt-level split discipline.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "final_evaluation",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "diagnostic_intent": "causal non-anticipation regression prompt",
+      "family_id": "family-chat-adv-001",
+      "language": "en",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "KCEV1-OC-010",
+      "prompt_text": "Explain why future outcomes must not influence an earlier decision.",
+      "public_safe_rationale": "Self-authored generic prompt with no personal data, secrets, client content, private code, or proprietary source text.",
+      "source_type": "self_authored_public_safe",
+      "split": "adversarial_regression",
+      "workload_type": "open_ended_chat"
+    }
+  ],
+  "record_planning": {
+    "minimum_negative_count_for_calibration_fit": 30,
+    "minimum_positive_count_for_calibration_fit": 30,
+    "minimum_record_count_for_calibration_fit": 100,
+    "next_gate": "collect_second_archive_then_run_deterministic_analysis_replay_and_calibration_diagnostic",
+    "planned_candidate_positions_per_prompt": 4,
+    "planned_prompt_count": 30,
+    "planned_runtime_records": 120,
+    "positive_negative_balance_status": "cannot_be_known_before_model_execution"
+  },
+  "schema_version": "specsafe.kaggle_prompt_corpus.v1",
+  "source_policy": {
+    "allowed_sources": [
+      "self_authored_public_safe"
+    ],
+    "prohibited_sources": [
+      "client_prompts",
+      "private_documents",
+      "private_source_code",
+      "personal_data",
+      "secrets",
+      "credentials",
+      "raw_sensitive_model_payloads"
+    ]
+  },
+  "split_policy": {
+    "allowed_splits": [
+      "development",
+      "calibration",
+      "final_evaluation",
+      "adversarial_regression"
+    ],
+    "final_evaluation_may_influence_before_final_report": false,
+    "split_unit": "prompt_family",
+    "threshold_tuning_from_final_evaluation": false
+  },
+  "threshold_promotion_status": "not_authorized"
+}
