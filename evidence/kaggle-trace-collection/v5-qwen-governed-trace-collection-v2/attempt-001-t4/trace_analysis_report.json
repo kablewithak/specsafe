@@ -1,0 +1,239 @@
+{
+  "analysis_status": "diagnostic_analysis_only",
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized_by_analysis",
+  "collection_id": "v5-qwen-governed-trace-collection-v2",
+  "data_role": "post_collection_analysis",
+  "evidence_class": "kaggle_environment_measured",
+  "input_file_hashes": {
+    "environment_report.json": "2af6f1b1fc587f2fa2746bde1d8e93d782998ec41ee0428f560ee189f2d8638e",
+    "expected_outcome_records.jsonl": "79e436dcc415597c208208cec888544ef2a3a059c13d5891325b82ca9fc896e3",
+    "retention_manifest.json": "1dbbc420c8977921e7faf17dc41d155e1fbf66922198d9119a95a10ecebdbf74",
+    "runtime_records.jsonl": "d82229e07cc32da8b6e73b26190b92b8b802326b2eb816b509ed55967e49f804",
+    "timing_records.jsonl": "a0d6ac911e55fe4437d5df69487bc7e9dd56754d76be5048efd8660cc0149946",
+    "trace_summary.json": "c7e9d8de5eb95ad28b46150fca29156ab1d29cd32d061a503d5301425c71c1dc"
+  },
+  "manifest_hash_status": {
+    "environment_report.json": true,
+    "expected_outcome_records.jsonl": true,
+    "runtime_records.jsonl": true,
+    "timing_records.jsonl": true,
+    "trace_summary.json": true
+  },
+  "model_pair_id": "qwen-qwen2.5-0.5b-draft-qwen-qwen2.5-1.5b-target",
+  "nonclaim_boundaries": {
+    "production_claim_status": "not_authorized",
+    "scheduler_promotion_status": "not_authorized",
+    "threshold_promotion_status": "not_authorized"
+  },
+  "record_counts": {
+    "case_count": 30,
+    "expected_outcome_record_count": 120,
+    "runtime_record_count": 120,
+    "timing_record_count": 120
+  },
+  "report_id": "v5_qwen_trace_collection_v2_attempt_001_analysis",
+  "runtime_outcome_join_status": {
+    "joined_record_count": 120,
+    "one_to_one_join_passed": true,
+    "runtime_forbidden_fields_present": []
+  },
+  "signal_diagnostics": {
+    "draft_entropy_by_acceptance": {
+      "matches": {
+        "count": 97,
+        "max": 5.700197696685791,
+        "mean": 1.8441315958487619,
+        "median": 1.4804080724716187,
+        "min": 0.019899625331163406
+      },
+      "nonmatches": {
+        "count": 23,
+        "max": 5.752275466918945,
+        "mean": 3.7787872190060825,
+        "median": 3.8591623306274414,
+        "min": 1.925107479095459
+      }
+    },
+    "fixed_bin_expected_calibration_error": 0.2469890072320898,
+    "fixed_bin_maximum_calibration_error": 0.44021765887737274,
+    "fixed_probability_bins": [
+      {
+        "bin": "[0.0, 0.2)",
+        "calibration_gap": 0.39713327990223957,
+        "lower": 0.0,
+        "match_count": 13,
+        "mean_confidence": 0.14453338676442704,
+        "nonmatch_count": 11,
+        "observed_match_rate": 0.5416666666666666,
+        "record_count": 24,
+        "upper": 0.2
+      },
+      {
+        "bin": "[0.2, 0.4)",
+        "calibration_gap": 0.22173630996890686,
+        "lower": 0.2,
+        "match_count": 12,
+        "mean_confidence": 0.30000282046587573,
+        "nonmatch_count": 11,
+        "observed_match_rate": 0.5217391304347826,
+        "record_count": 23,
+        "upper": 0.4
+      },
+      {
+        "bin": "[0.4, 0.6)",
+        "calibration_gap": 0.44021765887737274,
+        "lower": 0.4,
+        "match_count": 15,
+        "mean_confidence": 0.49728234112262726,
+        "nonmatch_count": 1,
+        "observed_match_rate": 0.9375,
+        "record_count": 16,
+        "upper": 0.6
+      },
+      {
+        "bin": "[0.6, 0.8)",
+        "calibration_gap": 0.2951330507502836,
+        "lower": 0.6,
+        "match_count": 17,
+        "mean_confidence": 0.7048669492497164,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 17,
+        "upper": 0.8
+      },
+      {
+        "bin": "[0.8, 1.0]",
+        "calibration_gap": 0.0736700654029846,
+        "lower": 0.8,
+        "match_count": 40,
+        "mean_confidence": 0.9263299345970154,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 40,
+        "upper": 1.0
+      }
+    ],
+    "raw_confidence_brier_diagnostic": 0.18776377614415718,
+    "raw_confidence_by_acceptance": {
+      "all_records": {
+        "count": 120,
+        "max": 0.9976441264152527,
+        "mean": 0.5613443261012435,
+        "median": 0.5512193143367767,
+        "min": 0.07661797851324081
+      },
+      "matches": {
+        "count": 97,
+        "max": 0.9976441264152527,
+        "mean": 0.6399255032391892,
+        "median": 0.6966601014137268,
+        "min": 0.08462599664926529
+      },
+      "nonmatches": {
+        "count": 23,
+        "max": 0.49433717131614685,
+        "mean": 0.22993675295425497,
+        "median": 0.20047901570796967,
+        "min": 0.07661797851324081
+      }
+    },
+    "raw_confidence_roc_auc_diagnostic": 0.8655311519497983,
+    "target_argmax_match_count": 97,
+    "target_argmax_match_rate": 0.8083333333333333,
+    "target_argmax_nonmatch_count": 23
+  },
+  "source_archive_boundary": {
+    "archive_sha256": "b8803ea500378a6b91af6b0a5206fc4359d9b3f8bf1888a01907ded6f11e0e7a",
+    "raw_prompt_text_retained": false,
+    "secrets_printed": false,
+    "source_commit": "0dfd5118a471adeec92a609d817d06d698f783a7"
+  },
+  "stratification": {
+    "position_match_rates": {
+      "1": {
+        "match_count": 23,
+        "match_rate": 0.7666666666666667,
+        "nonmatch_count": 7,
+        "record_count": 30
+      },
+      "2": {
+        "match_count": 21,
+        "match_rate": 0.7,
+        "nonmatch_count": 9,
+        "record_count": 30
+      },
+      "3": {
+        "match_count": 29,
+        "match_rate": 0.9666666666666667,
+        "nonmatch_count": 1,
+        "record_count": 30
+      },
+      "4": {
+        "match_count": 24,
+        "match_rate": 0.8,
+        "nonmatch_count": 6,
+        "record_count": 30
+      }
+    },
+    "split_match_rates": {
+      "adversarial_regression": {
+        "match_count": 12,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 12
+      },
+      "calibration": {
+        "match_count": 29,
+        "match_rate": 0.8055555555555556,
+        "nonmatch_count": 7,
+        "record_count": 36
+      },
+      "development": {
+        "match_count": 31,
+        "match_rate": 0.8611111111111112,
+        "nonmatch_count": 5,
+        "record_count": 36
+      },
+      "final_evaluation": {
+        "match_count": 25,
+        "match_rate": 0.6944444444444444,
+        "nonmatch_count": 11,
+        "record_count": 36
+      }
+    },
+    "split_record_counts": {
+      "adversarial_regression": 12,
+      "calibration": 36,
+      "development": 36,
+      "final_evaluation": 36
+    },
+    "workload_match_rates": {
+      "code": {
+        "match_count": 32,
+        "match_rate": 0.8,
+        "nonmatch_count": 8,
+        "record_count": 40
+      },
+      "open_ended_chat": {
+        "match_count": 35,
+        "match_rate": 0.875,
+        "nonmatch_count": 5,
+        "record_count": 40
+      },
+      "structured_text": {
+        "match_count": 30,
+        "match_rate": 0.75,
+        "nonmatch_count": 10,
+        "record_count": 40
+      }
+    },
+    "workload_record_counts": {
+      "code": 40,
+      "open_ended_chat": 40,
+      "structured_text": 40
+    }
+  },
+  "threshold_promotion_status": "not_authorized_by_analysis",
+  "trace_schema_version": "kaggle_trace_collection_v2"
+}
