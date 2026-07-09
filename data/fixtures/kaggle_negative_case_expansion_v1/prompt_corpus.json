@@ -1,0 +1,287 @@
+{
+  "corpus_id": "kaggle_negative_case_expansion_v1",
+  "data_role": "negative_case_trace_collection_planning",
+  "forbidden_downstream_actions": [
+    "fit_kaggle_derived_calibrator_from_planned_corpus",
+    "promote_threshold_policy_from_planned_corpus",
+    "promote_scheduler_utility_from_planned_corpus",
+    "claim_production_speedup_or_serving_readiness",
+    "publish_without_public_safety_review"
+  ],
+  "planning": {
+    "minimum_additional_negative_records_needed": 7,
+    "negative_case_expansion_intent": "increase_nonmatch_observations_without_tuning_thresholds",
+    "planned_candidate_positions_per_prompt": 4,
+    "planned_prompt_count": 16,
+    "planned_runtime_records": 64,
+    "positive_negative_balance_status": "cannot_be_known_before_model_execution"
+  },
+  "prior_diagnostic_summary": {
+    "calibration_fit_authorized": false,
+    "minimum_negative_count_for_calibration_fit": 30,
+    "readiness_status": "insufficient_negative_count_for_calibration_fit_signal_supportive",
+    "v2_observed_negative_count": 23,
+    "v2_observed_positive_count": 97,
+    "v2_observed_record_count": 120
+  },
+  "privacy_controls": {
+    "client_data_allowed": false,
+    "pii_allowed": false,
+    "public_release_authorized": false,
+    "raw_private_prompts_allowed": false,
+    "secrets_allowed": false
+  },
+  "prompts": [
+    {
+      "family_id": "neg-open-ended-ambiguous-plan",
+      "negative_case_intent": "ambiguous_user_goal",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-001",
+      "prompt_text": "Draft three plausible next steps for a vague product idea when the user has not chosen a buyer, budget, or launch channel.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-open-ended-conflicting-tone",
+      "negative_case_intent": "conflicting_style_constraints",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-002",
+      "prompt_text": "Write a reply that is extremely warm, strictly formal, playful, and legally cautious, all in one short paragraph.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-open-ended-missing-context",
+      "negative_case_intent": "underspecified_context",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-003",
+      "prompt_text": "Continue the assistant response after the user says only: I tried that already and it made things worse.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-open-ended-creative-branching",
+      "negative_case_intent": "many_valid_continuations",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-004",
+      "prompt_text": "Begin a surreal product launch story where the main object might be a clock, a shoe, or a weather report.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-open-ended-conditional-advice",
+      "negative_case_intent": "conditional_branching",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-005",
+      "prompt_text": "Give advice that changes depending on whether the reader values speed, accuracy, privacy, or long term maintainability.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-open-ended-counterfactual",
+      "negative_case_intent": "counterfactual_reasoning",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-006",
+      "prompt_text": "Explain what changes if a small team optimizes for fewer decisions instead of faster decisions during a launch week.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "open_ended_chat"
+    },
+    {
+      "family_id": "neg-code-incomplete-function",
+      "negative_case_intent": "incomplete_code_context",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-007",
+      "prompt_text": "Complete a Python function named score_record when the caller might pass strings, floats, missing keys, or nested dictionaries.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-code-edge-case-parser",
+      "negative_case_intent": "edge_case_handling",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-008",
+      "prompt_text": "Write a parser rule for a command language where quoted text, escaped spaces, and repeated flags are all possible.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-code-ambiguous-api",
+      "negative_case_intent": "ambiguous_interface_choice",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-009",
+      "prompt_text": "Design a small API for recording events when callers may batch events, retry events, or send partial updates.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-code-test-oracle-gap",
+      "negative_case_intent": "unclear_test_oracle",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-010",
+      "prompt_text": "Create unit tests for a ranking function when ties, missing scores, and unstable input order are all allowed.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-code-state-machine",
+      "negative_case_intent": "state_transition_branching",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-011",
+      "prompt_text": "Sketch a state machine for a job runner with queued, running, paused, retrying, failed, and cancelled states.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-code-validation-policy",
+      "negative_case_intent": "validation_policy_choice",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-012",
+      "prompt_text": "Write validation rules for a report format where unknown fields may be errors, warnings, or forward-compatible extensions.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "code"
+    },
+    {
+      "family_id": "neg-structured-ambiguous-table",
+      "negative_case_intent": "schema_branching",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-013",
+      "prompt_text": "Create a compact table comparing three implementation options when cost, risk, evidence, and reversibility may conflict.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "neg-structured-policy-exception",
+      "negative_case_intent": "exception_handling",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-014",
+      "prompt_text": "Write a decision checklist for approving an exception when safety, speed, customer pressure, and audit evidence disagree.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "neg-structured-prioritization",
+      "negative_case_intent": "ranking_ambiguity",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-015",
+      "prompt_text": "Rank five project risks where the evidence is incomplete and every option has a different kind of downside.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_calibration_candidate",
+      "workload_type": "structured_text"
+    },
+    {
+      "family_id": "neg-structured-conflict-resolution",
+      "negative_case_intent": "tradeoff_resolution",
+      "planned_candidate_positions": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "prompt_id": "neg-case-016",
+      "prompt_text": "Produce a structured recommendation when reliability, privacy, user experience, and delivery time point in different directions.",
+      "source_type": "self_authored_public_safe",
+      "split": "negative_probe_holdout",
+      "workload_type": "structured_text"
+    }
+  ],
+  "purpose": "increase negative and low-confidence cases after v2 calibration diagnostic blocked fitting",
+  "source_policy": "self_authored_public_safe_prompts_only",
+  "split_policy": {
+    "calibration_fit_from_planned_corpus": false,
+    "post_collection_role_requires_diagnostic_gate": true,
+    "prompt_family_may_cross_splits": false,
+    "split_unit": "prompt_family",
+    "threshold_tuning_from_this_corpus": false,
+    "v2_final_evidence_may_influence_prompt_authoring": false
+  },
+  "status": "planned_pre_collection_not_model_evidence"
+}

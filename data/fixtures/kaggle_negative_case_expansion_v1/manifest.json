@@ -1,0 +1,18 @@
+{
+  "calibration_fit_status": "not_authorized",
+  "corpus_id": "kaggle_negative_case_expansion_v1",
+  "corpus_path": "data/fixtures/kaggle_negative_case_expansion_v1/prompt_corpus.json",
+  "data_role": "negative_case_trace_collection_planning",
+  "manifest_id": "kaggle_negative_case_expansion_v1_manifest",
+  "minimum_additional_negative_records_needed": 7,
+  "planned_candidate_positions_per_prompt": 4,
+  "planned_prompt_count": 16,
+  "planned_runtime_records": 64,
+  "production_claim_status": "not_authorized",
+  "prompt_corpus_sha256": "95ad9a491bebeb84b235407cdc83dedb19acaba778e2f3a8c49547fcc62dc109",
+  "public_release_status": "not_authorized",
+  "scheduler_promotion_status": "not_authorized",
+  "source_corpus_sha256": "95ad9a491bebeb84b235407cdc83dedb19acaba778e2f3a8c49547fcc62dc109",
+  "status": "planned_pre_collection_not_model_evidence",
+  "threshold_promotion_status": "not_authorized"
+}
