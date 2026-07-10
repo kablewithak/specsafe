@@ -1,0 +1,222 @@
+{
+  "calibrated_brier_in_sample_diagnostic": 0.11977357092886376,
+  "calibrated_fixed_bin_ece_in_sample_diagnostic": 0.052728144595367316,
+  "calibrated_fixed_bin_mce_in_sample_diagnostic": 0.14523589269195192,
+  "calibration_evidence_id": "v5-qwen-combined-v2-negative-case",
+  "calibration_fit_authorized_by_combined_diagnostic": true,
+  "calibrator_blocks": [
+    {
+      "calibrated_probability": 0.5227272727272727,
+      "lower_bound": 0.0,
+      "match_count": 22,
+      "nonmatch_count": 20,
+      "record_count": 42,
+      "source_bin_indexes": [
+        0
+      ],
+      "upper_bound": 0.2
+    },
+    {
+      "calibrated_probability": 0.6808510638297872,
+      "lower_bound": 0.2,
+      "match_count": 31,
+      "nonmatch_count": 14,
+      "record_count": 45,
+      "source_bin_indexes": [
+        1,
+        2
+      ],
+      "upper_bound": 0.4
+    },
+    {
+      "calibrated_probability": 0.8333333333333334,
+      "lower_bound": 0.4,
+      "match_count": 14,
+      "nonmatch_count": 2,
+      "record_count": 16,
+      "source_bin_indexes": [
+        3
+      ],
+      "upper_bound": 0.5
+    },
+    {
+      "calibrated_probability": 0.8888888888888888,
+      "lower_bound": 0.5,
+      "match_count": 7,
+      "nonmatch_count": 0,
+      "record_count": 7,
+      "source_bin_indexes": [
+        4
+      ],
+      "upper_bound": 0.6
+    },
+    {
+      "calibrated_probability": 0.967741935483871,
+      "lower_bound": 0.6,
+      "match_count": 29,
+      "nonmatch_count": 0,
+      "record_count": 29,
+      "source_bin_indexes": [
+        5
+      ],
+      "upper_bound": 0.8
+    },
+    {
+      "calibrated_probability": 0.9787234042553191,
+      "lower_bound": 0.8,
+      "match_count": 45,
+      "nonmatch_count": 0,
+      "record_count": 45,
+      "source_bin_indexes": [
+        6
+      ],
+      "upper_bound": 1.000000001
+    }
+  ],
+  "calibrator_fit_status": "fit_retained",
+  "calibrator_model_id": "v5-qwen-combined-fixed-bin-isotonic-calibrator-v1",
+  "calibrator_model_sha256": "e799e4c1e5db8798120b73e0c7e33b86e0f4f220b6360ad010cd0a5feb55ec36",
+  "calibrator_promotion_status": "not_authorized",
+  "calibrator_type": "fixed_bin_laplace_isotonic_v1",
+  "fit_negative_count": 36,
+  "fit_positive_count": 148,
+  "fit_record_count": 184,
+  "fit_report_schema_version": "kaggle_calibrator_fit_report_v1",
+  "fixed_bin_summaries": [
+    {
+      "empirical_acceptance_rate": 0.5238095238095238,
+      "laplace_acceptance_rate": 0.5227272727272727,
+      "lower_bound": 0.0,
+      "match_count": 22,
+      "mean_raw_confidence": 0.14267654229132903,
+      "nonmatch_count": 20,
+      "record_count": 42,
+      "upper_bound": 0.2
+    },
+    {
+      "empirical_acceptance_rate": 0.8260869565217391,
+      "laplace_acceptance_rate": 0.8,
+      "lower_bound": 0.2,
+      "match_count": 19,
+      "mean_raw_confidence": 0.2554769924153452,
+      "nonmatch_count": 4,
+      "record_count": 23,
+      "upper_bound": 0.3
+    },
+    {
+      "empirical_acceptance_rate": 0.5454545454545454,
+      "laplace_acceptance_rate": 0.5416666666666666,
+      "lower_bound": 0.3,
+      "match_count": 12,
+      "mean_raw_confidence": 0.3455968986858021,
+      "nonmatch_count": 10,
+      "record_count": 22,
+      "upper_bound": 0.4
+    },
+    {
+      "empirical_acceptance_rate": 0.875,
+      "laplace_acceptance_rate": 0.8333333333333334,
+      "lower_bound": 0.4,
+      "match_count": 14,
+      "mean_raw_confidence": 0.4532414097338915,
+      "nonmatch_count": 2,
+      "record_count": 16,
+      "upper_bound": 0.5
+    },
+    {
+      "empirical_acceptance_rate": 1.0,
+      "laplace_acceptance_rate": 0.8888888888888888,
+      "lower_bound": 0.5,
+      "match_count": 7,
+      "mean_raw_confidence": 0.5478812200682504,
+      "nonmatch_count": 0,
+      "record_count": 7,
+      "upper_bound": 0.6
+    },
+    {
+      "empirical_acceptance_rate": 1.0,
+      "laplace_acceptance_rate": 0.967741935483871,
+      "lower_bound": 0.6,
+      "match_count": 29,
+      "mean_raw_confidence": 0.698046980233028,
+      "nonmatch_count": 0,
+      "record_count": 29,
+      "upper_bound": 0.8
+    },
+    {
+      "empirical_acceptance_rate": 1.0,
+      "laplace_acceptance_rate": 0.9787234042553191,
+      "lower_bound": 0.8,
+      "match_count": 45,
+      "mean_raw_confidence": 0.9205828189849854,
+      "nonmatch_count": 0,
+      "record_count": 45,
+      "upper_bound": 1.000000001
+    }
+  ],
+  "in_sample_brier_delta": 0.11179820763887022,
+  "in_sample_ece_delta": 0.2503798024145317,
+  "next_authorized_step": "holdout_or_replay_diagnostic_for_candidate_calibrator",
+  "non_claims": [
+    "does_not_promote_calibrator",
+    "does_not_tune_or_promote_thresholds",
+    "does_not_promote_scheduler_utility",
+    "does_not_publish_public_artifacts",
+    "does_not_claim_production_speedup_or_readiness"
+  ],
+  "production_claim_status": "not_authorized",
+  "public_release_status": "not_authorized",
+  "raw_brier_diagnostic": 0.23157177856773398,
+  "raw_fixed_bin_ece_diagnostic": 0.30310794700989907,
+  "raw_fixed_bin_mce_diagnostic": 0.570609964106394,
+  "report_id": "v5-qwen-combined-v2-negative-case-calibrator-fit-v1",
+  "scheduler_promotion_status": "not_authorized",
+  "source_archive_summaries": {
+    "v5-qwen-governed-trace-collection-v2/attempt-001-t4": {
+      "match_count": 97,
+      "nonmatch_count": 23,
+      "record_count": 120,
+      "split_counts": {
+        "adversarial_regression": 12,
+        "calibration": 36,
+        "development": 36,
+        "final_evaluation": 36
+      },
+      "workload_counts": {
+        "code": 40,
+        "open_ended_chat": 40,
+        "structured_text": 40
+      }
+    },
+    "v5-qwen-negative-case-expansion-v1/attempt-001-t4": {
+      "match_count": 51,
+      "nonmatch_count": 13,
+      "record_count": 64,
+      "split_counts": {
+        "negative_probe_calibration_candidate": 32,
+        "negative_probe_holdout": 32
+      },
+      "workload_counts": {
+        "code": 24,
+        "open_ended_chat": 24,
+        "structured_text": 16
+      }
+    }
+  },
+  "source_combined_diagnostic_report": "evidence/kaggle-trace-calibration/v5-qwen-combined-v2-negative-case/combined_calibration_diagnostic_report.json",
+  "source_combined_diagnostic_sha256": "13d5ed9dbe87f0203ddac8c6a8abd7279175efe594a6b42e917aab1ab05ea570",
+  "split_counts": {
+    "adversarial_regression": 12,
+    "calibration": 36,
+    "development": 36,
+    "final_evaluation": 36,
+    "negative_probe_calibration_candidate": 32,
+    "negative_probe_holdout": 32
+  },
+  "threshold_promotion_status": "not_authorized",
+  "workload_counts": {
+    "code": 64,
+    "open_ended_chat": 64,
+    "structured_text": 56
+  }
+}
