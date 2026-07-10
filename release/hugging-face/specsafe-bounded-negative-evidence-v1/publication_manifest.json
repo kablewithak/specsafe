@@ -1,0 +1,105 @@
+{
+  "candidate_id": "specsafe-bounded-negative-evidence-hf-candidate-v1",
+  "entries": [
+    {
+      "byte_count": 844,
+      "derivation": "governance_generated",
+      "relative_path": "ATTRIBUTION.md",
+      "sha256": "738543559f774c1f1375c9a5dda5d6b7a3f810ff00b2115c9590c7564997b97e"
+    },
+    {
+      "byte_count": 872,
+      "derivation": "governance_generated",
+      "relative_path": "LICENSE.md",
+      "sha256": "cdc0049740d46ff125ef50d5274dc64e807fa918e2eaa4c67371864294ed5d59"
+    },
+    {
+      "byte_count": 3187,
+      "derivation": "reviewed_source_with_hub_metadata",
+      "relative_path": "README.md",
+      "sha256": "068764747dcb25a90190237f1230d5965a97c33ab13b0398104a5cd4aa6c74f4"
+    },
+    {
+      "byte_count": 1611,
+      "derivation": "governance_generated",
+      "relative_path": "ROLLBACK.md",
+      "sha256": "96d901ae36bc50e6d5265cbbad7b3ad45c880a85601395d70a9d9dbe839fc1a3"
+    },
+    {
+      "byte_count": 1577,
+      "derivation": "reviewed_source_copy",
+      "relative_path": "evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4470,
+      "derivation": "reviewed_source_copy",
+      "relative_path": "release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    },
+    {
+      "byte_count": 1278,
+      "derivation": "governance_generated",
+      "relative_path": "sanitization_report.json",
+      "sha256": "863666570e1fcc4d6113bf5943812bb72b4d32862c727d7fd49cc73ad57c8c5c"
+    },
+    {
+      "byte_count": 975,
+      "derivation": "reviewed_source_copy",
+      "relative_path": "source_release_manifest.json",
+      "sha256": "10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b"
+    }
+  ],
+  "file_count": 8,
+  "gate_checks": {
+    "attribution_present": true,
+    "claim_boundary_passed": true,
+    "final_sanitization_passed": true,
+    "hub_metadata_applied": true,
+    "license_material_present": true,
+    "public_upload_performed": false,
+    "readiness_decision_verified": true,
+    "reviewed_pack_verified": true,
+    "rollback_runbook_present": true,
+    "source_hashes_retained": true
+  },
+  "license_identifier": "cc-by-4.0",
+  "license_scope": "sanitized_release_pack_original_materials_only",
+  "manifest_scope": "all_candidate_files_except_manifest_itself",
+  "next_authorized_step": "explicit_publication_authorization_decision",
+  "public_upload_authorized": false,
+  "publication_status": "local_candidate_upload_not_authorized",
+  "release_id": "specsafe-bounded-negative-evidence-v1",
+  "repository_name": "specsafe-bounded-negative-evidence-v1",
+  "repository_type": "dataset",
+  "reviewed_source_files": [
+    {
+      "byte_count": 3008,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/README.md",
+      "sha256": "79906e66d11eb3d5c2c396167a441be669e6105b47edd335f0325a0815c8689f"
+    },
+    {
+      "byte_count": 1577,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4470,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    }
+  ],
+  "schema_version": "specsafe_hugging_face_publication_candidate_manifest_v1",
+  "source_commit": "38b2993",
+  "source_readiness_decision": {
+    "byte_count": 4563,
+    "relative_path": "evidence/release-governance/specsafe-bounded-negative-evidence-v1/publication_readiness_decision.json",
+    "sha256": "51cf44163f1656a62035475ad217271046bc0cf6c8f21d12bff22f65a5341790"
+  },
+  "source_release_manifest": {
+    "byte_count": 975,
+    "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_manifest.json",
+    "sha256": "10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b"
+  },
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}

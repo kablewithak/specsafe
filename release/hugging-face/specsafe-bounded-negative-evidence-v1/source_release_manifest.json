@@ -1,0 +1,29 @@
+{
+  "canonical_build_passed": true,
+  "claims_boundary_passed": true,
+  "entries": [
+    {
+      "byte_count": 3008,
+      "relative_path": "README.md",
+      "sha256": "79906e66d11eb3d5c2c396167a441be669e6105b47edd335f0325a0815c8689f"
+    },
+    {
+      "byte_count": 1577,
+      "relative_path": "evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4470,
+      "relative_path": "release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    }
+  ],
+  "file_count": 3,
+  "manifest_scope": "all_release_files_except_manifest_itself",
+  "publication_status": "local_pack_only",
+  "release_id": "specsafe-bounded-negative-evidence-v1",
+  "sanitization_passed": true,
+  "schema_version": "specsafe_bounded_negative_evidence_release_manifest_v1",
+  "source_integrity_passed": true,
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}
