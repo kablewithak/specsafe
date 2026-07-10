@@ -1,0 +1,95 @@
+name: Publish Hugging Face Dataset
+
+on:
+  workflow_dispatch:
+    inputs:
+      namespace:
+        description: Exact authorized Hugging Face namespace
+        required: true
+        default: KaboKableMolefe
+        type: string
+      confirmation:
+        description: Type PUBLISH_EXACT_DATASET to authorize this one publication run
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: specsafe-hugging-face-dataset-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    environment: hugging-face-publication
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      REQUESTED_NAMESPACE: ${{ inputs.namespace }}
+      PUBLICATION_CONFIRMATION: ${{ inputs.confirmation }}
+      RECEIPT_PATH: evidence/publication-receipts/specsafe-bounded-negative-evidence-v1/hugging_face_dataset_publication_receipt.json
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      HF_HUB_DISABLE_UPDATE_CHECK: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+
+    steps:
+      - name: Check out exact repository state
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install publication dependencies
+        run: python -m pip install -e ".[dev,publish]"
+
+      - name: Validate manual publication gate
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python scripts/validate_hugging_face_publication_dispatch.py
+
+      - name: Validate exact local candidate and authorization
+        run: |
+          python scripts/build_hugging_face_publication_candidate.py --check
+          python scripts/authorize_hugging_face_dataset_publication.py --check
+          python scripts/publish_hugging_face_dataset.py --check-local
+          python -m pytest tests/test_hugging_face_dataset_publication.py
+          python -m pytest tests/test_hugging_face_dataset_publication_workflow.py
+
+      - name: Run no-write Hugging Face preflight
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python scripts/publish_hugging_face_dataset.py \
+            --preflight \
+            --namespace "$REQUESTED_NAMESPACE"
+
+      - name: Publish and verify exact Dataset
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python scripts/publish_hugging_face_dataset.py \
+            --publish \
+            --namespace "$REQUESTED_NAMESPACE"
+
+      - name: Validate publication receipt
+        run: |
+          test -f "$RECEIPT_PATH"
+          python -m json.tool "$RECEIPT_PATH" > /dev/null
+
+      - name: Retain publication receipt for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: specsafe-hf-dataset-publication-receipt-${{ github.run_id }}
+          path: ${{ env.RECEIPT_PATH }}
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: false
