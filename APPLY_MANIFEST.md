@@ -1,66 +1,51 @@
-# Apply Manifest — Bounded Negative-Evidence Release Pack
+# Apply Manifest
 
-## Branch
+## Slice
 
 ```text
-feat/bounded-negative-evidence-release-pack
+branch=feat/bounded-negative-evidence-publication-readiness
+commit=feat: review bounded evidence publication readiness
 ```
 
-## Files to add
+## Add
 
 ```text
-src/specsafe/bounded_negative_evidence/__init__.py
-src/specsafe/bounded_negative_evidence/models.py
-src/specsafe/bounded_negative_evidence/builder.py
-scripts/build_bounded_negative_evidence_release.py
-tests/test_bounded_negative_evidence_release.py
-release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/README.md
-release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/evidence_boundary.md
-release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_summary.json
-release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_manifest.json
-docs/experiments/bounded-negative-evidence-release-result.md
+src/specsafe/publication_readiness/__init__.py
+src/specsafe/publication_readiness/models.py
+src/specsafe/publication_readiness/review.py
+scripts/review_bounded_negative_evidence_publication.py
+tests/test_bounded_negative_evidence_publication_readiness.py
+evidence/release-governance/specsafe-bounded-negative-evidence-v1/publication_readiness_decision.json
+docs/adr/ADR-0044-bounded-negative-evidence-publication-readiness-and-license.md
+docs/experiments/bounded-negative-evidence-publication-readiness-review.md
+```
+
+## Replace
+
+```text
 APPLY_MANIFEST.md
 ```
 
 ## Source boundary
 
-The builder consumes only these retained committed artifacts:
-
 ```text
-evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_holdout_replay_report.json
-evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_promotion_closeout_decision.json
+source_commit=60755d1
+reviewed_release_manifest_sha256=10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b
+reviewed_release_manifest_byte_count=975
 ```
 
-Expected source hashes:
+## Decision boundary
 
 ```text
-candidate_calibrator_holdout_replay_report.json
-402df4475b05eead800a5ba7f6b4ae96587fd5bfbe83f20966ac180888e1467f
-
-candidate_calibrator_promotion_closeout_decision.json
-e91047e78f8992e252d3f313943ff8e86aafd2c1c77b3683058d2406a29266bc
+license_identifier=cc-by-4.0
+license_scope=sanitized_release_pack_original_materials_only
+decision_outcome=READY_FOR_PUBLICATION_CANDIDATE_ASSEMBLY
+publication_candidate_assembly_authorized=true
+public_upload_authorized=false
 ```
 
-## Retained release status
+## Next branch
 
 ```text
-release_id=specsafe-bounded-negative-evidence-v1
-validity_marker=CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY
-publication_status=local_pack_only
-candidate_not_promoted=true
-threshold_promotion_authorized=false
-scheduler_promotion_authorized=false
-production_claim_authorized=false
+feat/hugging-face-publication-candidate
 ```
-
-## Local pre-delivery validation
-
-```text
-8 focused tests passed in an isolated repository replica
-Ruff lint passed with Ruff 0.15.20
-Ruff format check passed with Ruff 0.15.20
-canonical release-pack check passed
-```
-
-The authoritative full-suite result is the user's local repository validation after applying this
-slice.

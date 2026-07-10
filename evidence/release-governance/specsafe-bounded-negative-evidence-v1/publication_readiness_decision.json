@@ -1,0 +1,107 @@
+{
+  "blocked_actions": [
+    "upload_to_hugging_face_in_this_slice",
+    "change_reviewed_metrics_or_claim_boundaries",
+    "include_raw_archives_traces_prompts_or_model_payloads",
+    "apply_cc_by_4_0_to_the_entire_specsafe_repository",
+    "represent_the_candidate_as_promoted_or_production_ready"
+  ],
+  "created_at": "2026-07-10T20:35:14Z",
+  "decision_id": "specsafe-bounded-negative-evidence-publication-readiness-v1",
+  "decision_outcome": "READY_FOR_PUBLICATION_CANDIDATE_ASSEMBLY",
+  "gate_checks": {
+    "claims_boundary_retained": true,
+    "exact_file_allowlist_passed": true,
+    "hub_metadata_draft_prepared": true,
+    "license_scope_bounded": true,
+    "license_selected": true,
+    "non_promotion_prominent": true,
+    "public_upload_performed": false,
+    "release_entries_verified": true,
+    "release_identity_alignment_passed": true,
+    "release_manifest_hash_verified": true,
+    "release_manifest_schema_valid": true,
+    "release_summary_schema_valid": true,
+    "rollback_plan_required": true,
+    "sanitization_retained": true,
+    "validity_marker_prominent": true
+  },
+  "hugging_face_metadata_draft": {
+    "card_metadata_status": "prepared_not_applied",
+    "dataset_viewer_status": "not_required_no_row_level_dataset",
+    "gated": false,
+    "license": "cc-by-4.0",
+    "live_inference": false,
+    "pretty_name": "SpecSafe Bounded Negative-Evidence Release v1",
+    "repository_name": "specsafe-bounded-negative-evidence-v1",
+    "repository_type": "dataset",
+    "tags": [
+      "ai-reliability",
+      "calibration",
+      "evaluation",
+      "negative-results",
+      "governance"
+    ],
+    "user_input_collection": false,
+    "visibility": "public"
+  },
+  "license_decision": {
+    "attribution_notice": "SpecSafe Bounded Negative-Evidence Release v1 \u00a9 2026 Kabo Molefe, licensed under CC BY 4.0.",
+    "copyright_year": 2026,
+    "excluded_scope": [
+      "specsafe_source_code_repository",
+      "retained_kaggle_archives",
+      "raw_trace_or_prompt_records",
+      "candidate_calibrator_artifact",
+      "upstream_models_and_their_outputs"
+    ],
+    "legal_review_status": "engineering_distribution_choice_not_legal_advice",
+    "license_identifier": "cc-by-4.0",
+    "license_name": "Creative Commons Attribution 4.0 International",
+    "license_reference_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_scope": "sanitized_release_pack_original_materials_only",
+    "license_selection_status": "selected_for_publication_candidate",
+    "licensor": "Kabo Molefe"
+  },
+  "next_authorized_step": "assemble_exact_hugging_face_publication_candidate_without_upload",
+  "public_upload_authorized": false,
+  "publication_candidate_assembly_authorized": true,
+  "publication_status": "review_passed_upload_not_authorized",
+  "release_directory": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1",
+  "release_files": [
+    {
+      "byte_count": 3008,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/README.md",
+      "sha256": "79906e66d11eb3d5c2c396167a441be669e6105b47edd335f0325a0815c8689f"
+    },
+    {
+      "byte_count": 1577,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4470,
+      "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    }
+  ],
+  "release_id": "specsafe-bounded-negative-evidence-v1",
+  "release_manifest": {
+    "byte_count": 975,
+    "relative_path": "release/bounded-negative-evidence/specsafe-bounded-negative-evidence-v1/release_manifest.json",
+    "sha256": "10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b"
+  },
+  "release_type": "bounded_negative_evidence",
+  "required_next_controls": [
+    "derive_publication_candidate_from_exact_reviewed_pack",
+    "apply_reviewed_hugging_face_yaml_metadata",
+    "add_cc_by_4_0_license_and_attribution_files",
+    "retain_source_pack_hashes_in_publication_manifest",
+    "add_rollback_and_unpublish_runbook",
+    "run_final_secret_sanitization_and_claim_review",
+    "require_explicit_user_authorization_before_upload"
+  ],
+  "schema_version": "specsafe_bounded_negative_evidence_publication_readiness_decision_v1",
+  "source_commit": "60755d1",
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}
