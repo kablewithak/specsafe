@@ -1,0 +1,213 @@
+{
+  "calibrated_block_replay": [
+    {
+      "absolute_calibration_gap": 0.0010822510822511289,
+      "calibrated_probability": 0.5227272727272727,
+      "empirical_acceptance_rate": 0.5238095238095238,
+      "lower_bound": 0.0,
+      "match_count": 22,
+      "nonmatch_count": 20,
+      "record_count": 42,
+      "source_bin_indexes": [
+        0
+      ],
+      "upper_bound": 0.2
+    },
+    {
+      "absolute_calibration_gap": 0.008037825059101666,
+      "calibrated_probability": 0.6808510638297872,
+      "empirical_acceptance_rate": 0.6888888888888889,
+      "lower_bound": 0.2,
+      "match_count": 31,
+      "nonmatch_count": 14,
+      "record_count": 45,
+      "source_bin_indexes": [
+        1,
+        2
+      ],
+      "upper_bound": 0.4
+    },
+    {
+      "absolute_calibration_gap": 0.04166666666666663,
+      "calibrated_probability": 0.8333333333333334,
+      "empirical_acceptance_rate": 0.875,
+      "lower_bound": 0.4,
+      "match_count": 14,
+      "nonmatch_count": 2,
+      "record_count": 16,
+      "source_bin_indexes": [
+        3
+      ],
+      "upper_bound": 0.5
+    },
+    {
+      "absolute_calibration_gap": 0.11111111111111116,
+      "calibrated_probability": 0.8888888888888888,
+      "empirical_acceptance_rate": 1.0,
+      "lower_bound": 0.5,
+      "match_count": 7,
+      "nonmatch_count": 0,
+      "record_count": 7,
+      "source_bin_indexes": [
+        4
+      ],
+      "upper_bound": 0.6
+    },
+    {
+      "absolute_calibration_gap": 0.032258064516129004,
+      "calibrated_probability": 0.967741935483871,
+      "empirical_acceptance_rate": 1.0,
+      "lower_bound": 0.6,
+      "match_count": 29,
+      "nonmatch_count": 0,
+      "record_count": 29,
+      "source_bin_indexes": [
+        5
+      ],
+      "upper_bound": 0.8
+    },
+    {
+      "absolute_calibration_gap": 0.021276595744680882,
+      "calibrated_probability": 0.9787234042553191,
+      "empirical_acceptance_rate": 1.0,
+      "lower_bound": 0.8,
+      "match_count": 45,
+      "nonmatch_count": 0,
+      "record_count": 45,
+      "source_bin_indexes": [
+        6
+      ],
+      "upper_bound": 1.000000001
+    }
+  ],
+  "calibrated_brier_fit_pool_replay_diagnostic": 0.11977357092886388,
+  "calibrated_threshold_replay": [
+    {
+      "coverage_rate": 1.0,
+      "selected_acceptance_rate": 0.8043478260869565,
+      "selected_count": 184,
+      "selected_match_count": 148,
+      "selected_nonmatch_count": 36,
+      "threshold": 0.5
+    },
+    {
+      "coverage_rate": 0.7717391304347826,
+      "selected_acceptance_rate": 0.8873239436619719,
+      "selected_count": 142,
+      "selected_match_count": 126,
+      "selected_nonmatch_count": 16,
+      "threshold": 0.6
+    },
+    {
+      "coverage_rate": 0.5271739130434783,
+      "selected_acceptance_rate": 0.979381443298969,
+      "selected_count": 97,
+      "selected_match_count": 95,
+      "selected_nonmatch_count": 2,
+      "threshold": 0.7
+    },
+    {
+      "coverage_rate": 0.5271739130434783,
+      "selected_acceptance_rate": 0.979381443298969,
+      "selected_count": 97,
+      "selected_match_count": 95,
+      "selected_nonmatch_count": 2,
+      "threshold": 0.8
+    },
+    {
+      "coverage_rate": 0.40217391304347827,
+      "selected_acceptance_rate": 1.0,
+      "selected_count": 74,
+      "selected_match_count": 74,
+      "selected_nonmatch_count": 0,
+      "threshold": 0.9
+    },
+    {
+      "coverage_rate": 0.40217391304347827,
+      "selected_acceptance_rate": 1.0,
+      "selected_count": 74,
+      "selected_match_count": 74,
+      "selected_nonmatch_count": 0,
+      "threshold": 0.95
+    }
+  ],
+  "calibration_evidence_id": "v5-qwen-combined-v2-negative-case",
+  "calibrator_model_id": "v5-qwen-combined-fixed-bin-isotonic-calibrator-v1",
+  "calibrator_model_sha256": "e799e4c1e5db8798120b73e0c7e33b86e0f4f220b6360ad010cd0a5feb55ec36",
+  "calibrator_promotion_status": "not_authorized_no_holdout",
+  "calibrator_replay_status": "fit_pool_replay_passed",
+  "fit_pool_brier_delta": 0.1117982076388702,
+  "fit_pool_replay_negative_count": 36,
+  "fit_pool_replay_positive_count": 148,
+  "fit_pool_replay_record_count": 184,
+  "holdout_status": "not_available_fit_pool_replay_only",
+  "next_authorized_step": "holdout_or_promotion_governance_decision",
+  "non_claims": [
+    "does_not_promote_calibrator",
+    "does_not_tune_or_promote_thresholds",
+    "does_not_promote_scheduler_utility",
+    "does_not_publish_public_artifacts",
+    "does_not_claim_production_speedup_or_readiness"
+  ],
+  "production_claim_status": "not_authorized",
+  "public_release_status": "not_authorized",
+  "raw_brier_diagnostic": 0.2315717785677341,
+  "replay_report_schema_version": "kaggle_calibrator_replay_report_v1",
+  "report_id": "v5-qwen-combined-v2-negative-case-calibrator-replay-v1",
+  "scheduler_promotion_status": "not_authorized",
+  "source_archive_replay_summaries": {
+    "v5-qwen-governed-trace-collection-v2/attempt-001-t4": {
+      "calibrated_brier_fit_pool_replay_diagnostic": 0.11106032183102417,
+      "fit_pool_brier_delta": 0.07670345431313301,
+      "match_count": 97,
+      "nonmatch_count": 23,
+      "raw_brier_diagnostic": 0.18776377614415718,
+      "record_count": 120,
+      "split_counts": {
+        "adversarial_regression": 12,
+        "calibration": 36,
+        "development": 36,
+        "final_evaluation": 36
+      },
+      "workload_counts": {
+        "code": 40,
+        "open_ended_chat": 40,
+        "structured_text": 40
+      }
+    },
+    "v5-qwen-negative-case-expansion-v1/attempt-001-t4": {
+      "calibrated_brier_fit_pool_replay_diagnostic": 0.13611091298731334,
+      "fit_pool_brier_delta": 0.17760087012462747,
+      "match_count": 51,
+      "nonmatch_count": 13,
+      "raw_brier_diagnostic": 0.3137117831119408,
+      "record_count": 64,
+      "split_counts": {
+        "negative_probe_calibration_candidate": 32,
+        "negative_probe_holdout": 32
+      },
+      "workload_counts": {
+        "code": 24,
+        "open_ended_chat": 24,
+        "structured_text": 16
+      }
+    }
+  },
+  "source_calibrator_fit_report": "evidence/kaggle-trace-calibration/v5-qwen-combined-v2-negative-case/calibrator_fit_report.json",
+  "source_calibrator_fit_report_sha256": "f6ade7b55e3e602bae8104779c2529be66ca988958e6a89b7dd9f6da6be8b08e",
+  "source_calibrator_model": "evidence/kaggle-trace-calibration/v5-qwen-combined-v2-negative-case/calibrator_model.json",
+  "split_counts": {
+    "adversarial_regression": 12,
+    "calibration": 36,
+    "development": 36,
+    "final_evaluation": 36,
+    "negative_probe_calibration_candidate": 32,
+    "negative_probe_holdout": 32
+  },
+  "threshold_promotion_status": "not_authorized",
+  "workload_counts": {
+    "code": 64,
+    "open_ended_chat": 64,
+    "structured_text": 56
+  }
+}
