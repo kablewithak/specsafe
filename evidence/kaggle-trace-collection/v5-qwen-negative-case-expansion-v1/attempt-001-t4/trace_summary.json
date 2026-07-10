@@ -1,0 +1,31 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized",
+  "case_count": 16,
+  "collection_finished_at": "2026-07-09T23:56:47.152916+00:00",
+  "collection_id": "v5-qwen-negative-case-expansion-v1",
+  "collection_started_at": "2026-07-09T23:56:41.227524+00:00",
+  "data_role": "trace_collection",
+  "evidence_class": "kaggle_environment_measured",
+  "expected_outcome_record_count": 64,
+  "planned_runtime_records": 64,
+  "production_claim_status": "not_authorized",
+  "raw_prompt_text_retained": false,
+  "run_started_at": "2026-07-09T23:55:55.046065+00:00",
+  "runtime_record_count": 64,
+  "scheduler_promotion_status": "not_authorized",
+  "split_record_counts": {
+    "negative_probe_calibration_candidate": 32,
+    "negative_probe_holdout": 32
+  },
+  "target_argmax_match_count": 51,
+  "target_argmax_match_rate": 0.796875,
+  "target_argmax_nonmatch_count": 13,
+  "threshold_promotion_status": "not_authorized",
+  "trace_schema_version": "kaggle_trace_collection_v2",
+  "workload_record_counts": {
+    "code": 24,
+    "open_ended_chat": 24,
+    "structured_text": 16
+  }
+}
