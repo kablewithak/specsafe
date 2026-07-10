@@ -1,0 +1,338 @@
+{
+  "analysis_status": "diagnostic_analysis_only",
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized_by_analysis",
+  "collection_id": "v5-qwen-negative-case-expansion-v1",
+  "combined_raw_count_implication": {
+    "calibration_fit_authorized_by_this_report": false,
+    "combined_match_count": 148,
+    "combined_nonmatch_count": 36,
+    "combined_record_count": 184,
+    "minimum_negative_count_for_calibration_fit": 30,
+    "negative_case_match_count": 51,
+    "negative_case_nonmatch_count": 13,
+    "negative_case_record_count": 64,
+    "negative_count_floor_crossed_on_raw_count": true,
+    "negative_count_shortfall_after_collection": 0,
+    "v2_match_count": 97,
+    "v2_nonmatch_count": 23,
+    "v2_record_count": 120
+  },
+  "data_role": "post_collection_analysis",
+  "evidence_class": "kaggle_environment_measured",
+  "input_file_hashes": {
+    "environment_report.json": "b984abd6a02c388109145bedef2f9c90c8a77832ddf341f8f64692ad6ca64668",
+    "expected_outcome_records.jsonl": "e7dc7a24bd056d9677cb9afc226e12c8b9bbc0ae8face0afdcf72790f9265ae6",
+    "retention_manifest.json": "c5ec3c8993e3e8c978497083c3165efadc0f8bea3256a6c5c575a85b658d58d3",
+    "runtime_records.jsonl": "b782c8d00c32895909f498ce75f7c494e60a97e5b2f73d43b2bada4956e563c2",
+    "timing_records.jsonl": "c493127c32af0a037ebd45d2eac3e670a84b6f6f739e3a41da3254aa4aa6cabc",
+    "trace_summary.json": "2bc86954d2c42f098a1313073266417529fdc2589db4fff48905df06a134bb6c"
+  },
+  "manifest_hash_status": {
+    "environment_report.json": true,
+    "expected_outcome_records.jsonl": true,
+    "runtime_records.jsonl": true,
+    "timing_records.jsonl": true,
+    "trace_summary.json": true
+  },
+  "model_pair_id": "qwen-qwen2.5-0.5b-draft-qwen-qwen2.5-1.5b-target",
+  "nonclaim_boundaries": {
+    "production_claim_status": "not_authorized",
+    "scheduler_promotion_status": "not_authorized",
+    "threshold_promotion_status": "not_authorized"
+  },
+  "record_counts": {
+    "case_count": 16,
+    "expected_outcome_record_count": 64,
+    "runtime_record_count": 64,
+    "timing_record_count": 64
+  },
+  "report_id": "v5_qwen_negative_case_expansion_v1_attempt_001_analysis",
+  "runtime_outcome_join_status": {
+    "joined_record_count": 64,
+    "one_to_one_join_passed": true,
+    "runtime_forbidden_fields_present": []
+  },
+  "signal_diagnostics": {
+    "draft_entropy_by_acceptance": {
+      "matches": {
+        "count": 51,
+        "max": 5.863617420196533,
+        "mean": 2.9756482623371423,
+        "median": 2.9736337661743164,
+        "min": 0.3480640947818756
+      },
+      "nonmatches": {
+        "count": 13,
+        "max": 4.934078216552734,
+        "mean": 3.976880348645724,
+        "median": 4.335568904876709,
+        "min": 2.5349082946777344
+      }
+    },
+    "fixed_bin_expected_calibration_error": 0.4083309590932913,
+    "fixed_bin_maximum_calibration_error": 0.5645891942761161,
+    "fixed_probability_bins": [
+      {
+        "bin": "[0.0, 0.2)",
+        "calibration_gap": 0.35979925033946836,
+        "lower": 0.0,
+        "match_count": 9,
+        "mean_confidence": 0.14020074966053167,
+        "nonmatch_count": 9,
+        "observed_match_rate": 0.5,
+        "record_count": 18,
+        "upper": 0.2
+      },
+      {
+        "bin": "[0.2, 0.4)",
+        "calibration_gap": 0.5645891942761161,
+        "lower": 0.2,
+        "match_count": 19,
+        "mean_confidence": 0.2990471693602475,
+        "nonmatch_count": 3,
+        "observed_match_rate": 0.8636363636363636,
+        "record_count": 22,
+        "upper": 0.4
+      },
+      {
+        "bin": "[0.4, 0.6)",
+        "calibration_gap": 0.40992662310600275,
+        "lower": 0.4,
+        "match_count": 6,
+        "mean_confidence": 0.44721623403685434,
+        "nonmatch_count": 1,
+        "observed_match_rate": 0.8571428571428571,
+        "record_count": 7,
+        "upper": 0.6
+      },
+      {
+        "bin": "[0.6, 0.8)",
+        "calibration_gap": 0.3116146425406138,
+        "lower": 0.6,
+        "match_count": 12,
+        "mean_confidence": 0.6883853574593862,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 12,
+        "upper": 0.8
+      },
+      {
+        "bin": "[0.8, 1.0]",
+        "calibration_gap": 0.12539410591125488,
+        "lower": 0.8,
+        "match_count": 5,
+        "mean_confidence": 0.8746058940887451,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 5,
+        "upper": 1.0
+      }
+    ],
+    "raw_confidence_brier_diagnostic": 0.3137117831119408,
+    "raw_confidence_by_acceptance": {
+      "all_records": {
+        "count": 64,
+        "max": 0.9559487700462341,
+        "mean": 0.3885440409067087,
+        "median": 0.3212548643350601,
+        "min": 0.0624653659760952
+      },
+      "matches": {
+        "count": 51,
+        "max": 0.9559487700462341,
+        "mean": 0.43474915419139115,
+        "median": 0.3772643804550171,
+        "min": 0.08551687747240067
+      },
+      "nonmatches": {
+        "count": 13,
+        "max": 0.4562980532646179,
+        "mean": 0.207277827251416,
+        "median": 0.17136944830417633,
+        "min": 0.0624653659760952
+      }
+    },
+    "raw_confidence_roc_auc_diagnostic": 0.7918552036199095,
+    "target_argmax_match_count": 51,
+    "target_argmax_match_rate": 0.796875,
+    "target_argmax_nonmatch_count": 13
+  },
+  "source_archive_boundary": {
+    "archive_sha256": "557c7519aa6012c4770d9e24df1e15815a3295447f3eac2080b1b28c511c601e",
+    "raw_prompt_text_retained": false,
+    "secrets_printed": false,
+    "source_commit": "cd238e3e84391585be01e635ce74c4d400ba2dce"
+  },
+  "stratification": {
+    "negative_case_intent_match_rates": {
+      "ambiguous_interface_choice": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "ambiguous_user_goal": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "conditional_branching": {
+        "match_count": 3,
+        "match_rate": 0.75,
+        "nonmatch_count": 1,
+        "record_count": 4
+      },
+      "conflicting_style_constraints": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "counterfactual_reasoning": {
+        "match_count": 2,
+        "match_rate": 0.5,
+        "nonmatch_count": 2,
+        "record_count": 4
+      },
+      "edge_case_handling": {
+        "match_count": 3,
+        "match_rate": 0.75,
+        "nonmatch_count": 1,
+        "record_count": 4
+      },
+      "exception_handling": {
+        "match_count": 3,
+        "match_rate": 0.75,
+        "nonmatch_count": 1,
+        "record_count": 4
+      },
+      "incomplete_code_context": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "many_valid_continuations": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "ranking_ambiguity": {
+        "match_count": 2,
+        "match_rate": 0.5,
+        "nonmatch_count": 2,
+        "record_count": 4
+      },
+      "schema_branching": {
+        "match_count": 2,
+        "match_rate": 0.5,
+        "nonmatch_count": 2,
+        "record_count": 4
+      },
+      "state_transition_branching": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "tradeoff_resolution": {
+        "match_count": 4,
+        "match_rate": 1.0,
+        "nonmatch_count": 0,
+        "record_count": 4
+      },
+      "unclear_test_oracle": {
+        "match_count": 3,
+        "match_rate": 0.75,
+        "nonmatch_count": 1,
+        "record_count": 4
+      },
+      "underspecified_context": {
+        "match_count": 2,
+        "match_rate": 0.5,
+        "nonmatch_count": 2,
+        "record_count": 4
+      },
+      "validation_policy_choice": {
+        "match_count": 3,
+        "match_rate": 0.75,
+        "nonmatch_count": 1,
+        "record_count": 4
+      }
+    },
+    "position_match_rates": {
+      "1": {
+        "match_count": 12,
+        "match_rate": 0.75,
+        "nonmatch_count": 4,
+        "record_count": 16
+      },
+      "2": {
+        "match_count": 14,
+        "match_rate": 0.875,
+        "nonmatch_count": 2,
+        "record_count": 16
+      },
+      "3": {
+        "match_count": 12,
+        "match_rate": 0.75,
+        "nonmatch_count": 4,
+        "record_count": 16
+      },
+      "4": {
+        "match_count": 13,
+        "match_rate": 0.8125,
+        "nonmatch_count": 3,
+        "record_count": 16
+      }
+    },
+    "split_match_rates": {
+      "negative_probe_calibration_candidate": {
+        "match_count": 25,
+        "match_rate": 0.78125,
+        "nonmatch_count": 7,
+        "record_count": 32
+      },
+      "negative_probe_holdout": {
+        "match_count": 26,
+        "match_rate": 0.8125,
+        "nonmatch_count": 6,
+        "record_count": 32
+      }
+    },
+    "split_record_counts": {
+      "negative_probe_calibration_candidate": 32,
+      "negative_probe_holdout": 32
+    },
+    "workload_match_rates": {
+      "code": {
+        "match_count": 21,
+        "match_rate": 0.875,
+        "nonmatch_count": 3,
+        "record_count": 24
+      },
+      "open_ended_chat": {
+        "match_count": 19,
+        "match_rate": 0.7916666666666666,
+        "nonmatch_count": 5,
+        "record_count": 24
+      },
+      "structured_text": {
+        "match_count": 11,
+        "match_rate": 0.6875,
+        "nonmatch_count": 5,
+        "record_count": 16
+      }
+    },
+    "workload_record_counts": {
+      "code": 24,
+      "open_ended_chat": 24,
+      "structured_text": 16
+    }
+  },
+  "threshold_promotion_status": "not_authorized_by_analysis",
+  "trace_schema_version": "kaggle_trace_collection_v2"
+}
