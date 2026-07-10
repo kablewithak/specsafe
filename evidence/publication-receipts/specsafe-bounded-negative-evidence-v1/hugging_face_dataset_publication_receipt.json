@@ -1,0 +1,80 @@
+{
+  "anonymous_public_verification_passed": true,
+  "authenticated_namespace_verified": true,
+  "candidate_non_promotion_verified": true,
+  "final_visibility": "public",
+  "gated": false,
+  "license_metadata_verified": true,
+  "namespace": "KaboKableMolefe",
+  "negative_evidence_marker_verified": true,
+  "private_stage_verified": true,
+  "publication_id": "specsafe-bounded-negative-evidence-hf-publication-v1",
+  "publication_manifest_sha256": "6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6",
+  "published_at": "2026-07-10T22:46:44.611965Z",
+  "published_file_hashes": [
+    {
+      "byte_count": 844,
+      "relative_path": "ATTRIBUTION.md",
+      "sha256": "738543559f774c1f1375c9a5dda5d6b7a3f810ff00b2115c9590c7564997b97e"
+    },
+    {
+      "byte_count": 872,
+      "relative_path": "LICENSE.md",
+      "sha256": "cdc0049740d46ff125ef50d5274dc64e807fa918e2eaa4c67371864294ed5d59"
+    },
+    {
+      "byte_count": 3187,
+      "relative_path": "README.md",
+      "sha256": "068764747dcb25a90190237f1230d5965a97c33ab13b0398104a5cd4aa6c74f4"
+    },
+    {
+      "byte_count": 1611,
+      "relative_path": "ROLLBACK.md",
+      "sha256": "96d901ae36bc50e6d5265cbbad7b3ad45c880a85601395d70a9d9dbe839fc1a3"
+    },
+    {
+      "byte_count": 1577,
+      "relative_path": "evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4135,
+      "relative_path": "publication_manifest.json",
+      "sha256": "6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6"
+    },
+    {
+      "byte_count": 4470,
+      "relative_path": "release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    },
+    {
+      "byte_count": 1278,
+      "relative_path": "sanitization_report.json",
+      "sha256": "863666570e1fcc4d6113bf5943812bb72b4d32862c727d7fd49cc73ad57c8c5c"
+    },
+    {
+      "byte_count": 975,
+      "relative_path": "source_release_manifest.json",
+      "sha256": "10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b"
+    }
+  ],
+  "published_revision": "1ff151fc0646102f6e7b107d1bceb9a18e50098a",
+  "remote_file_count": 9,
+  "remote_files": [
+    "ATTRIBUTION.md",
+    "LICENSE.md",
+    "README.md",
+    "ROLLBACK.md",
+    "evidence_boundary.md",
+    "publication_manifest.json",
+    "release_summary.json",
+    "sanitization_report.json",
+    "source_release_manifest.json"
+  ],
+  "repository_id": "KaboKableMolefe/specsafe-bounded-negative-evidence-v1",
+  "repository_name": "specsafe-bounded-negative-evidence-v1",
+  "repository_type": "dataset",
+  "repository_url": "https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1",
+  "rollback_triggered": false,
+  "schema_version": "specsafe_hugging_face_dataset_publication_receipt_v1"
+}
