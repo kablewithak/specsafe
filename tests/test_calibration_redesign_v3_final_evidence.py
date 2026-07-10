@@ -13,15 +13,22 @@ from specsafe.traces.calibration_redesign_v3_final_evidence import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_ROOT = PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+FROZEN_CALIBRATION_EVIDENCE_ROOT = (
+    PROJECT_ROOT / "evidence" / "calibration" / "quantile-isotonic-calibration-v1"
+)
 
 
 def _copy_project_root(tmp_path: Path) -> tuple[Path, Path]:
+    """Copy only the governed V3 assets required by these mutation tests."""
+
     project_root = tmp_path / "project"
-    shutil.copytree(PROJECT_ROOT, project_root)
-    return (
-        project_root,
-        project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3",
+    fixture_root = project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+    calibration_evidence_root = (
+        project_root / "evidence" / "calibration" / "quantile-isotonic-calibration-v1"
     )
+    shutil.copytree(FIXTURE_ROOT, fixture_root)
+    shutil.copytree(FROZEN_CALIBRATION_EVIDENCE_ROOT, calibration_evidence_root)
+    return project_root, fixture_root
 
 
 def test_final_evidence_index_preserves_frozen_calibration_provenance() -> None:

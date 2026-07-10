@@ -15,15 +15,22 @@ from specsafe.traces.calibration_redesign_v3_final_manifest import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_ROOT = PROJECT_ROOT / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+FROZEN_CALIBRATION_EVIDENCE_ROOT = (
+    PROJECT_ROOT / "evidence" / "calibration" / "quantile-isotonic-calibration-v1"
+)
 
 
 def _copy_project_root(tmp_path: Path) -> tuple[Path, Path]:
+    """Copy only the governed V3 assets required by these mutation tests."""
+
     project_root = tmp_path / "project"
-    shutil.copytree(PROJECT_ROOT, project_root)
-    return (
-        project_root,
-        project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3",
+    fixture_root = project_root / "data" / "fixtures" / "synthetic_calibration_redesign_v3"
+    calibration_evidence_root = (
+        project_root / "evidence" / "calibration" / "quantile-isotonic-calibration-v1"
     )
+    shutil.copytree(FIXTURE_ROOT, fixture_root)
+    shutil.copytree(FROZEN_CALIBRATION_EVIDENCE_ROOT, calibration_evidence_root)
+    return project_root, fixture_root
 
 
 def test_v3_final_manifest_verifies_complete_frozen_held_out_corpus() -> None:
@@ -69,7 +76,9 @@ def test_v3_final_manifest_rejects_tampered_runtime_case_bytes(tmp_path: Path) -
     )
 
 
-def test_v3_final_manifest_rejects_changed_final_evidence_index_bytes(tmp_path: Path) -> None:
+def test_v3_final_manifest_rejects_changed_final_evidence_index_bytes(
+    tmp_path: Path,
+) -> None:
     _, fixture_root = _copy_project_root(tmp_path)
     index_path = fixture_root / "final_evidence_index.json"
     payload = json.loads(index_path.read_text(encoding="utf-8"))
