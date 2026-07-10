@@ -1,0 +1,324 @@
+{
+  "attempt_ids": [
+    "attempt-001-t4"
+  ],
+  "calibration_diagnostics": {
+    "fixed_bin_expected_calibration_error": 0.303107947009899,
+    "fixed_bin_maximum_calibration_error": 0.430998647990434,
+    "fixed_bin_reports": [
+      {
+        "bin": "[0.0, 0.2)",
+        "calibration_gap": 0.3811329815181948,
+        "lower": 0.0,
+        "match_count": 22,
+        "mean_confidence": 0.14267654229132903,
+        "nonmatch_count": 20,
+        "observed_match_rate": 0.5238095238095238,
+        "record_count": 42,
+        "upper": 0.2
+      },
+      {
+        "bin": "[0.2, 0.4)",
+        "calibration_gap": 0.38935327563020916,
+        "lower": 0.2,
+        "match_count": 31,
+        "mean_confidence": 0.2995356132586797,
+        "nonmatch_count": 14,
+        "observed_match_rate": 0.6888888888888889,
+        "record_count": 45,
+        "upper": 0.4
+      },
+      {
+        "bin": "[0.4, 0.6)",
+        "calibration_gap": 0.430998647990434,
+        "lower": 0.4,
+        "match_count": 21,
+        "mean_confidence": 0.4820448302704355,
+        "nonmatch_count": 2,
+        "observed_match_rate": 0.9130434782608695,
+        "record_count": 23,
+        "upper": 0.6
+      },
+      {
+        "bin": "[0.6, 0.8)",
+        "calibration_gap": 0.301953019766972,
+        "lower": 0.6,
+        "match_count": 29,
+        "mean_confidence": 0.698046980233028,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 29,
+        "upper": 0.8
+      },
+      {
+        "bin": "[0.8, 1.0]",
+        "calibration_gap": 0.0794171810150146,
+        "lower": 0.8,
+        "match_count": 45,
+        "mean_confidence": 0.9205828189849854,
+        "nonmatch_count": 0,
+        "observed_match_rate": 1.0,
+        "record_count": 45,
+        "upper": 1.0
+      }
+    ],
+    "minimum_signal_roc_auc_diagnostic": 0.75,
+    "raw_confidence_roc_auc_diagnostic": 0.8363363363363363,
+    "raw_draft_probability_brier_diagnostic": 0.2315717785677341,
+    "signal_diagnostic_passed": true,
+    "stratified_counts": {
+      "by_block_position_index": {
+        "1": {
+          "match_count": 35,
+          "match_rate": 0.7608695652173914,
+          "mean_raw_confidence": 0.2395259863494531,
+          "nonmatch_count": 11,
+          "record_count": 46
+        },
+        "2": {
+          "match_count": 35,
+          "match_rate": 0.7608695652173914,
+          "mean_raw_confidence": 0.5355647271094115,
+          "nonmatch_count": 11,
+          "record_count": 46
+        },
+        "3": {
+          "match_count": 41,
+          "match_rate": 0.8913043478260869,
+          "mean_raw_confidence": 0.7103742500362189,
+          "nonmatch_count": 5,
+          "record_count": 46
+        },
+        "4": {
+          "match_count": 37,
+          "match_rate": 0.8043478260869565,
+          "mean_raw_confidence": 0.5194945528131464,
+          "nonmatch_count": 9,
+          "record_count": 46
+        }
+      },
+      "by_source_id": {
+        "negative_case_expansion": {
+          "match_count": 51,
+          "match_rate": 0.796875,
+          "mean_raw_confidence": 0.3885440409067087,
+          "nonmatch_count": 13,
+          "record_count": 64
+        },
+        "v2_trace_collection": {
+          "match_count": 97,
+          "match_rate": 0.8083333333333333,
+          "mean_raw_confidence": 0.5613443261012435,
+          "nonmatch_count": 23,
+          "record_count": 120
+        }
+      },
+      "by_split": {
+        "adversarial_regression": {
+          "match_count": 12,
+          "match_rate": 1.0,
+          "mean_raw_confidence": 0.6989301765958468,
+          "nonmatch_count": 0,
+          "record_count": 12
+        },
+        "calibration": {
+          "match_count": 29,
+          "match_rate": 0.8055555555555556,
+          "mean_raw_confidence": 0.6207233710835377,
+          "nonmatch_count": 7,
+          "record_count": 36
+        },
+        "development": {
+          "match_count": 31,
+          "match_rate": 0.8611111111111112,
+          "mean_raw_confidence": 0.5675552559809552,
+          "nonmatch_count": 5,
+          "record_count": 36
+        },
+        "final_evaluation": {
+          "match_count": 25,
+          "match_rate": 0.6944444444444444,
+          "mean_raw_confidence": 0.44989240107436973,
+          "nonmatch_count": 11,
+          "record_count": 36
+        },
+        "negative_probe_calibration_candidate": {
+          "match_count": 25,
+          "match_rate": 0.78125,
+          "mean_raw_confidence": 0.3754385686479509,
+          "nonmatch_count": 7,
+          "record_count": 32
+        },
+        "negative_probe_holdout": {
+          "match_count": 26,
+          "match_rate": 0.8125,
+          "mean_raw_confidence": 0.4016495131654665,
+          "nonmatch_count": 6,
+          "record_count": 32
+        }
+      },
+      "by_workload_type": {
+        "code": {
+          "match_count": 53,
+          "match_rate": 0.828125,
+          "mean_raw_confidence": 0.519844388240017,
+          "nonmatch_count": 11,
+          "record_count": 64
+        },
+        "open_ended_chat": {
+          "match_count": 54,
+          "match_rate": 0.84375,
+          "mean_raw_confidence": 0.5347547007841058,
+          "nonmatch_count": 10,
+          "record_count": 64
+        },
+        "structured_text": {
+          "match_count": 41,
+          "match_rate": 0.7321428571428571,
+          "mean_raw_confidence": 0.4416749295113342,
+          "nonmatch_count": 15,
+          "record_count": 56
+        }
+      }
+    }
+  },
+  "calibration_fit_readiness": {
+    "calibration_fit_authorized": true,
+    "calibration_fit_execution_status": "not_started",
+    "calibration_fit_readiness_status": "sample_and_signal_ready_for_calibration_fit",
+    "minimum_negative_count_for_calibration_fit": 30,
+    "minimum_positive_count_for_calibration_fit": 30,
+    "minimum_record_count_for_calibration_fit": 100,
+    "negative_count_floor_crossed": true,
+    "next_authorized_step": "fit_kaggle_derived_calibrator_under_separate_gate",
+    "observed_negative_count": 36,
+    "observed_positive_count": 148,
+    "observed_record_count": 184
+  },
+  "collection_id": "v5-qwen-combined-v2-negative-case-calibration",
+  "data_role": "combined_post_collection_calibration_readiness_diagnostic",
+  "diagnostic_status": "combined_calibration_readiness_diagnostic_only",
+  "evidence_class": "kaggle_environment_measured_combined_diagnostic",
+  "input_hashes": {
+    "negative_case_expansion": {
+      "environment_report.json": "b984abd6a02c388109145bedef2f9c90c8a77832ddf341f8f64692ad6ca64668",
+      "expected_outcome_records.jsonl": "e7dc7a24bd056d9677cb9afc226e12c8b9bbc0ae8face0afdcf72790f9265ae6",
+      "retention_manifest.json": "c5ec3c8993e3e8c978497083c3165efadc0f8bea3256a6c5c575a85b658d58d3",
+      "runtime_records.jsonl": "b782c8d00c32895909f498ce75f7c494e60a97e5b2f73d43b2bada4956e563c2",
+      "timing_records.jsonl": "c493127c32af0a037ebd45d2eac3e670a84b6f6f739e3a41da3254aa4aa6cabc",
+      "trace_analysis_report.json": "fe868d7aae60a4d6d7e0e085c43ff1b1da4e0047d0488903d1bd7e0529a127d6",
+      "trace_replay_report.json": "fe072e96d0be5359c569704c49bc1177e1790bbf43d96df326809df060457cf8",
+      "trace_summary.json": "2bc86954d2c42f098a1313073266417529fdc2589db4fff48905df06a134bb6c"
+    },
+    "v2_trace_collection": {
+      "environment_report.json": "2af6f1b1fc587f2fa2746bde1d8e93d782998ec41ee0428f560ee189f2d8638e",
+      "expected_outcome_records.jsonl": "79e436dcc415597c208208cec888544ef2a3a059c13d5891325b82ca9fc896e3",
+      "retention_manifest.json": "1dbbc420c8977921e7faf17dc41d155e1fbf66922198d9119a95a10ecebdbf74",
+      "runtime_records.jsonl": "d82229e07cc32da8b6e73b26190b92b8b802326b2eb816b509ed55967e49f804",
+      "timing_records.jsonl": "a0d6ac911e55fe4437d5df69487bc7e9dd56754d76be5048efd8660cc0149946",
+      "trace_analysis_report.json": "cbbd489f769e1240cad458cd00e3c360870ce36fc2e0e4cfc907b2d61a347e8e",
+      "trace_calibration_diagnostic_report.json": "12e5bfbeaa92bd2cfaa58173a2ef2a861b613fe4c820aa923c03adc543034795",
+      "trace_replay_report.json": "6f13e2d939e813fa32c474e89dd0774aa0b80d06030bc586e4c409fb7041cff2",
+      "trace_summary.json": "c7e9d8de5eb95ad28b46150fca29156ab1d29cd32d061a503d5301425c71c1dc"
+    }
+  },
+  "interpretation": {
+    "calibration_fitting_may_start_next_gate": true,
+    "diagnostic_only": true,
+    "stronger_claims_blocked": true,
+    "summary": "The combined v2 plus negative-case evidence pool crosses the record, positive-count, negative-count, and ranking-signal floors for a separate calibrator fitting attempt. Raw confidence remains miscalibrated, so this report authorizes only the next fitting gate, not calibrator promotion or threshold promotion."
+  },
+  "manifest_hash_status": {
+    "negative_case_expansion": {
+      "environment_report.json": true,
+      "expected_outcome_records.jsonl": true,
+      "runtime_records.jsonl": true,
+      "timing_records.jsonl": true,
+      "trace_summary.json": true
+    },
+    "v2_trace_collection": {
+      "environment_report.json": true,
+      "expected_outcome_records.jsonl": true,
+      "runtime_records.jsonl": true,
+      "timing_records.jsonl": true,
+      "trace_summary.json": true
+    }
+  },
+  "non_authorization": {
+    "calibrator_promotion_status": "not_authorized_by_combined_diagnostic",
+    "production_claim_status": "not_authorized_by_combined_diagnostic",
+    "public_release_status": "not_authorized_by_combined_diagnostic",
+    "scheduler_promotion_status": "not_authorized_by_combined_diagnostic",
+    "threshold_promotion_status": "not_authorized_by_combined_diagnostic"
+  },
+  "proposed_fit_boundary": {
+    "authorized_only_if_calibration_fit_authorized": true,
+    "candidate_fit_splits": [
+      "v2_trace_collection:calibration",
+      "negative_case_expansion:negative_probe_calibration_candidate"
+    ],
+    "fit_must_be_separate_pr": true,
+    "holdout_or_final_evaluation_splits": [
+      "v2_trace_collection:final_evaluation",
+      "v2_trace_collection:adversarial_regression",
+      "negative_case_expansion:negative_probe_holdout"
+    ],
+    "scheduler_promotion_allowed_from_this_report": false,
+    "threshold_promotion_allowed_from_this_report": false
+  },
+  "record_counts": {
+    "expected_outcome_record_count": 184,
+    "joined_record_count": 184,
+    "runtime_record_count": 184,
+    "source_count": 2,
+    "target_argmax_match_count": 148,
+    "target_argmax_match_rate": 0.8043478260869565,
+    "target_argmax_nonmatch_count": 36
+  },
+  "report_id": "v5_qwen_combined_v2_negative_case_calibration_diagnostic",
+  "runtime_outcome_join_status": {
+    "combined_trace_id_strategy": "source_id_double_colon_trace_id",
+    "joined_record_count": 184,
+    "one_to_one_join_passed": true,
+    "runtime_forbidden_fields_present": []
+  },
+  "source_summaries": [
+    {
+      "attempt_id": "attempt-001-t4",
+      "case_count": 30,
+      "collection_id": "v5-qwen-governed-trace-collection-v2",
+      "expected_outcome_record_count": 120,
+      "joined_record_count": 120,
+      "runtime_record_count": 120,
+      "source_commit": "0dfd5118a471adeec92a609d817d06d698f783a7",
+      "source_id": "v2_trace_collection",
+      "source_report_ids": {
+        "analysis_report_id": "v5_qwen_trace_collection_v2_attempt_001_analysis",
+        "calibration_diagnostic_report_id": "v5_qwen_trace_collection_v2_attempt_001_calibration_diagnostic",
+        "replay_report_id": "v5_qwen_trace_collection_v2_attempt_001_replay"
+      },
+      "target_argmax_match_count": 97,
+      "target_argmax_match_rate": 0.8083333333333333,
+      "target_argmax_nonmatch_count": 23,
+      "timing_record_count": 120
+    },
+    {
+      "attempt_id": "attempt-001-t4",
+      "case_count": 16,
+      "collection_id": "v5-qwen-negative-case-expansion-v1",
+      "expected_outcome_record_count": 64,
+      "joined_record_count": 64,
+      "runtime_record_count": 64,
+      "source_commit": "cd238e3e84391585be01e635ce74c4d400ba2dce",
+      "source_id": "negative_case_expansion",
+      "source_report_ids": {
+        "analysis_report_id": "v5_qwen_negative_case_expansion_v1_attempt_001_analysis",
+        "replay_report_id": "v5_qwen_negative_case_expansion_v1_attempt_001_replay"
+      },
+      "target_argmax_match_count": 51,
+      "target_argmax_match_rate": 0.796875,
+      "target_argmax_nonmatch_count": 13,
+      "timing_record_count": 64
+    }
+  ]
+}
