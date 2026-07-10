@@ -1,0 +1,270 @@
+{
+  "auroc_delta": -0.024356617647058765,
+  "brier_delta": 0.03811936896716564,
+  "calibrated_metrics": {
+    "auroc": 0.8574711134453782,
+    "brier_score": 0.1493586832216793,
+    "fixed_bin_ece": 0.09985063544389214
+  },
+  "calibrator_artifact_hash": "e799e4c1e5db8798120b73e0c7e33b86e0f4f220b6360ad010cd0a5feb55ec36",
+  "calibrator_artifact_id": "v5-qwen-combined-fixed-bin-isotonic-calibrator-v1",
+  "calibrator_block_replay": [
+    {
+      "absolute_calibration_gap": 0.2618577075098814,
+      "calibrated_probability": 0.5227272727272727,
+      "empirical_acceptance_rate": 0.2608695652173913,
+      "lower_bound": 0.0,
+      "negative_count": 34,
+      "positive_count": 12,
+      "record_count": 46,
+      "upper_bound": 0.2
+    },
+    {
+      "absolute_calibration_gap": 0.019148936170212738,
+      "calibrated_probability": 0.6808510638297872,
+      "empirical_acceptance_rate": 0.7,
+      "lower_bound": 0.2,
+      "negative_count": 15,
+      "positive_count": 35,
+      "record_count": 50,
+      "upper_bound": 0.4
+    },
+    {
+      "absolute_calibration_gap": 0.07575757575757569,
+      "calibrated_probability": 0.8333333333333334,
+      "empirical_acceptance_rate": 0.9090909090909091,
+      "lower_bound": 0.4,
+      "negative_count": 1,
+      "positive_count": 10,
+      "record_count": 11,
+      "upper_bound": 0.5
+    },
+    {
+      "absolute_calibration_gap": 0.2525252525252525,
+      "calibrated_probability": 0.8888888888888888,
+      "empirical_acceptance_rate": 0.6363636363636364,
+      "lower_bound": 0.5,
+      "negative_count": 4,
+      "positive_count": 7,
+      "record_count": 11,
+      "upper_bound": 0.6
+    },
+    {
+      "absolute_calibration_gap": 0.07300509337860783,
+      "calibrated_probability": 0.967741935483871,
+      "empirical_acceptance_rate": 0.8947368421052632,
+      "lower_bound": 0.6,
+      "negative_count": 2,
+      "positive_count": 17,
+      "record_count": 19,
+      "upper_bound": 0.8
+    },
+    {
+      "absolute_calibration_gap": 0.021276595744680882,
+      "calibrated_probability": 0.9787234042553191,
+      "empirical_acceptance_rate": 1.0,
+      "lower_bound": 0.8,
+      "negative_count": 0,
+      "positive_count": 55,
+      "record_count": 55,
+      "upper_bound": 1.000000001
+    }
+  ],
+  "calibrator_fit_pool_archive_ids": [
+    "v5-qwen-governed-trace-collection-v2/attempt-001-t4",
+    "v5-qwen-negative-case-expansion-v1/attempt-001-t4"
+  ],
+  "calibrator_promotion_status": "not_authorized_ranking_safety_regression",
+  "claims_forbidden": [
+    "The candidate calibrator is promoted.",
+    "Any calibrated threshold is promoted.",
+    "Any scheduler or adaptive-policy utility claim is authorized.",
+    "Hugging Face final proof packaging is authorized.",
+    "Production speed, latency, throughput, cost, or serving readiness is proven."
+  ],
+  "claims_permitted": [
+    "The retained candidate calibrator was replayed without refit on the independent holdout.",
+    "The candidate improved aggregate holdout Brier score and fixed-bin ECE.",
+    "The candidate regressed holdout ranking safety beyond the declared tolerance.",
+    "The candidate remains retained diagnostic evidence and is not promoted."
+  ],
+  "coverage_by_position": {
+    "1": {
+      "brier_improvement": 0.027270851002824503,
+      "calibrated_brier_score": 0.20399674081274796,
+      "negative_count": 26,
+      "positive_count": 22,
+      "raw_brier_score": 0.23126759181557247,
+      "record_count": 48
+    },
+    "2": {
+      "brier_improvement": -0.0004209857787699778,
+      "calibrated_brier_score": 0.16512317060273698,
+      "negative_count": 13,
+      "positive_count": 35,
+      "raw_brier_score": 0.164702184823967,
+      "record_count": 48
+    },
+    "3": {
+      "brier_improvement": 0.03712367210458725,
+      "calibrated_brier_score": 0.07643753115678233,
+      "negative_count": 7,
+      "positive_count": 41,
+      "raw_brier_score": 0.11356120326136958,
+      "record_count": 48
+    },
+    "4": {
+      "brier_improvement": 0.08850393854002073,
+      "calibrated_brier_score": 0.15187729031444996,
+      "negative_count": 10,
+      "positive_count": 38,
+      "raw_brier_score": 0.2403812288544707,
+      "record_count": 48
+    }
+  },
+  "coverage_by_workload": {
+    "code": {
+      "brier_improvement": 0.08854991761358175,
+      "calibrated_brier_score": 0.11266880565607762,
+      "negative_count": 9,
+      "positive_count": 55,
+      "raw_brier_score": 0.20121872326965937,
+      "record_count": 64
+    },
+    "open_ended_chat": {
+      "brier_improvement": 0.0012756681973059847,
+      "calibrated_brier_score": 0.13942336350841136,
+      "negative_count": 19,
+      "positive_count": 45,
+      "raw_brier_score": 0.14069903170571735,
+      "record_count": 64
+    },
+    "structured_text": {
+      "brier_improvement": 0.02453252109060919,
+      "calibrated_brier_score": 0.1959838805005489,
+      "negative_count": 28,
+      "positive_count": 36,
+      "raw_brier_score": 0.2205164015911581,
+      "record_count": 64
+    }
+  },
+  "created_at": "2026-07-10T19:33:42Z",
+  "failure_labels": [
+    "ranking_safety_regression"
+  ],
+  "fixed_bin_ece_delta": 0.10713044469407718,
+  "gate_checks": {
+    "analysis_replay_ready": true,
+    "bounded_claims_passed": true,
+    "brier_improvement_passed": true,
+    "candidate_artifact_integrity_passed": true,
+    "fixed_bin_ece_improvement_passed": true,
+    "holdout_independence_documented": true,
+    "holdout_negative_coverage_sufficient": true,
+    "holdout_provenance_complete": true,
+    "holdout_record_coverage_sufficient": true,
+    "manifest_hashes_match": true,
+    "no_refit_passed": true,
+    "ranking_safety_passed": false,
+    "threshold_preview_support_passed": true
+  },
+  "holdout_analysis_report_hash": "5a72fadb998ab726899be07a297d383a5481bf72ed82d02b12c85b767b92c665",
+  "holdout_analysis_report_id": "v5-qwen-candidate-calibrator-independent-holdout-analysis-v1",
+  "holdout_negative_count": 56,
+  "holdout_positive_count": 136,
+  "holdout_record_count": 192,
+  "holdout_replay_status": "completed_with_ranking_safety_regression",
+  "holdout_trace_archive_hash": "3ab63ecd516be39ead9901ccc99d1d7a90f09bb2dcde5ca01bd5e258dfa03279",
+  "holdout_trace_archive_id": "v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4",
+  "next_authorized_step": "candidate_calibrator_promotion_closeout_decision",
+  "production_claim_status": "not_authorized",
+  "promotion_recommendation": "KEEP_DIAGNOSTIC_ONLY",
+  "protocol": {
+    "expected_calibrator_artifact_sha256": "e799e4c1e5db8798120b73e0c7e33b86e0f4f220b6360ad010cd0a5feb55ec36",
+    "expected_holdout_attempt_id": "attempt-001-t4",
+    "expected_holdout_collection_id": "v5-qwen-candidate-calibrator-independent-holdout-v1",
+    "maximum_auroc_degradation": 0.001,
+    "minimum_brier_improvement": 0.005,
+    "minimum_fixed_bin_ece_improvement": 0.01,
+    "minimum_holdout_negative_count": 30,
+    "minimum_holdout_record_count": 160,
+    "minimum_threshold_preview_selected_count": 30,
+    "protocol_id": "candidate-calibrator-independent-holdout-promotion-protocol-v1",
+    "threshold_preview_values": [
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      0.95
+    ]
+  },
+  "public_release_status": "not_authorized",
+  "raw_metrics": {
+    "auroc": 0.881827731092437,
+    "brier_score": 0.18747805218884495,
+    "fixed_bin_ece": 0.20698108013796931
+  },
+  "report_id": "v5-qwen-candidate-calibrator-independent-holdout-replay-v1",
+  "run_id": "v5-qwen-candidate-calibrator-independent-holdout-replay-run-001",
+  "scheduler_promotion_status": "not_authorized",
+  "schema_version": "candidate_calibrator_independent_holdout_replay_report_v1",
+  "source_commit": "8b0b81b",
+  "threshold_preview": [
+    {
+      "coverage_warning": false,
+      "match_count": 136,
+      "nonmatch_count": 56,
+      "nonmatch_rate": 0.2916666666666667,
+      "selected_count": 192,
+      "selection_rate": 1.0,
+      "threshold": 0.5
+    },
+    {
+      "coverage_warning": false,
+      "match_count": 124,
+      "nonmatch_count": 22,
+      "nonmatch_rate": 0.1506849315068493,
+      "selected_count": 146,
+      "selection_rate": 0.7604166666666666,
+      "threshold": 0.6
+    },
+    {
+      "coverage_warning": false,
+      "match_count": 89,
+      "nonmatch_count": 7,
+      "nonmatch_rate": 0.07291666666666667,
+      "selected_count": 96,
+      "selection_rate": 0.5,
+      "threshold": 0.7
+    },
+    {
+      "coverage_warning": false,
+      "match_count": 89,
+      "nonmatch_count": 7,
+      "nonmatch_rate": 0.07291666666666667,
+      "selected_count": 96,
+      "selection_rate": 0.5,
+      "threshold": 0.8
+    },
+    {
+      "coverage_warning": false,
+      "match_count": 72,
+      "nonmatch_count": 2,
+      "nonmatch_rate": 0.02702702702702703,
+      "selected_count": 74,
+      "selection_rate": 0.3854166666666667,
+      "threshold": 0.9
+    },
+    {
+      "coverage_warning": false,
+      "match_count": 72,
+      "nonmatch_count": 2,
+      "nonmatch_rate": 0.02702702702702703,
+      "selected_count": 74,
+      "selection_rate": 0.3854166666666667,
+      "threshold": 0.95
+    }
+  ],
+  "threshold_promotion_status": "not_authorized"
+}
