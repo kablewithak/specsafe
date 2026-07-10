@@ -1,0 +1,68 @@
+{
+  "archive_byte_count": 31800,
+  "archive_filename": "specsafe_v5_qwen_candidate_calibrator_holdout_attempt_001_t4.zip",
+  "archive_sha256": "3ab63ecd516be39ead9901ccc99d1d7a90f09bb2dcde5ca01bd5e258dfa03279",
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized",
+  "calibrator_promotion_status": "not_authorized_pending_independent_holdout_replay",
+  "case_count": 48,
+  "collection_id": "v5-qwen-candidate-calibrator-independent-holdout-v1",
+  "data_role": "independent_holdout_trace_collection",
+  "evidence_class": "kaggle_environment_measured",
+  "expected_outcome_record_count": 192,
+  "file_hashes": {
+    "environment_report.json": {
+      "byte_count": 1545,
+      "sha256": "6def008efe9986defdad3e3687f91743488cbb7c0fba776fabda08df1760d8bb"
+    },
+    "expected_outcome_records.jsonl": {
+      "byte_count": 225447,
+      "sha256": "bf11b53d0401c4e7ae4ca644c5ea5ffd3c20907712a326f44a0d7557849c9c2e"
+    },
+    "retention_manifest.json": {
+      "byte_count": 1921,
+      "sha256": "859adc8304299dfbfe05f4365cc2753be0ad73ad514e56346329fbcb8d71049a"
+    },
+    "runtime_records.jsonl": {
+      "byte_count": 280472,
+      "sha256": "055f6233294609c8a7126cf88d574cdf5a6103bade97b21b2b5ed37758373de7"
+    },
+    "timing_records.jsonl": {
+      "byte_count": 34145,
+      "sha256": "5c32aa8e6b3ba75f795162185df8bf3de2ce4761ba65035f25882063c6e94f77"
+    },
+    "trace_summary.json": {
+      "byte_count": 1212,
+      "sha256": "07da589ec90300869bc22578de0ebfb368011b94aefa8b7da6a996a3d599e075"
+    }
+  },
+  "forbidden_downstream_actions": [
+    "refit_candidate_calibrator_from_holdout_archive",
+    "tune_thresholds_from_holdout_archive",
+    "tune_scheduler_from_holdout_archive",
+    "merge_holdout_into_fit_pool_before_promotion_decision",
+    "claim_production_speedup_or_serving_readiness",
+    "publish_final_hugging_face_proof_before_holdout_decision"
+  ],
+  "production_claim_status": "not_authorized",
+  "raw_prompt_text_retained": false,
+  "report_id": "v5-qwen-candidate-calibrator-independent-holdout-retention-v1",
+  "retained_file_count": 7,
+  "runtime_record_count": 192,
+  "scheduler_promotion_status": "not_authorized",
+  "source_commit_note": "44663c8 Merge pull request #123 from kablewithak/docs/calibrator-promotion-holdout-governance",
+  "source_corpus_sha256": "8ca11c0717c45552211cf7b85994caf59a0f5f101735064d28b9fbd98043c56f",
+  "split_record_counts": {
+    "independent_holdout_candidate_calibrator_v1": 192
+  },
+  "target_argmax_match_count": 136,
+  "target_argmax_match_rate": 0.7083333333333334,
+  "target_argmax_nonmatch_count": 56,
+  "threshold_promotion_status": "not_authorized",
+  "timing_record_count": 192,
+  "workload_record_counts": {
+    "code": 64,
+    "open_ended_chat": 64,
+    "structured_text": 64
+  }
+}

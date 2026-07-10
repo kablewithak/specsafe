@@ -1,0 +1,34 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized",
+  "calibrator_promotion_status": "not_authorized_pending_independent_holdout_replay",
+  "case_count": 48,
+  "collection_id": "v5-qwen-candidate-calibrator-independent-holdout-v1",
+  "data_role": "independent_holdout_trace_collection",
+  "evidence_class": "kaggle_environment_measured",
+  "expected_outcome_record_count": 192,
+  "file_hashes": {
+    "environment_report.json": "6def008efe9986defdad3e3687f91743488cbb7c0fba776fabda08df1760d8bb",
+    "expected_outcome_records.jsonl": "bf11b53d0401c4e7ae4ca644c5ea5ffd3c20907712a326f44a0d7557849c9c2e",
+    "runtime_records.jsonl": "055f6233294609c8a7126cf88d574cdf5a6103bade97b21b2b5ed37758373de7",
+    "timing_records.jsonl": "5c32aa8e6b3ba75f795162185df8bf3de2ce4761ba65035f25882063c6e94f77",
+    "trace_summary.json": "07da589ec90300869bc22578de0ebfb368011b94aefa8b7da6a996a3d599e075"
+  },
+  "forbidden_downstream_actions": [
+    "refit_candidate_calibrator_from_holdout_archive",
+    "tune_thresholds_from_holdout_archive",
+    "tune_scheduler_from_holdout_archive",
+    "merge_holdout_into_fit_pool_before_promotion_decision",
+    "claim_production_speedup_or_serving_readiness",
+    "publish_final_hugging_face_proof_before_holdout_decision"
+  ],
+  "pre_collection_manifest_sha256": "431bd2fdfb9007bbbf4b91f0e109cb9871b12fa292cc3720b3ecd1465c304af2",
+  "production_claim_status": "not_authorized",
+  "raw_prompt_text_retained": false,
+  "runtime_record_count": 192,
+  "scheduler_promotion_status": "not_authorized",
+  "source_commit_note": "44663c8 Merge pull request #123 from kablewithak/docs/calibrator-promotion-holdout-governance",
+  "source_corpus_sha256": "8ca11c0717c45552211cf7b85994caf59a0f5f101735064d28b9fbd98043c56f",
+  "threshold_promotion_status": "not_authorized",
+  "upload_bundle_manifest_sha256": "b9407fc1ea74145e6e020bc2b2d16db176cc1f1dcf389c758b05b4d3f36a76d7"
+}
