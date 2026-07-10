@@ -1,32 +1,33 @@
-# Apply Manifest — Independent Holdout Candidate-Calibrator Replay
+# Apply Manifest — Candidate-Calibrator Promotion Closeout
 
 ## Slice
 
 ```text
-branch=feat/independent-holdout-candidate-calibrator-replay
-commit=feat: replay candidate calibrator on independent holdout
-base_main=8b0b81b
+branch=feat/candidate-calibrator-promotion-closeout
+commit=feat: close candidate calibrator promotion
+base_main=cd1780f
 ```
 
 ## Files
 
 ```text
-src/specsafe/independent_holdout_replay/__init__.py
-src/specsafe/independent_holdout_replay/models.py
-src/specsafe/independent_holdout_replay/replay.py
-scripts/replay_candidate_calibrator_on_independent_holdout.py
-tests/test_independent_holdout_candidate_calibrator_replay.py
-evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_holdout_replay_report.json
-docs/experiments/v5-kaggle-candidate-calibrator-independent-holdout-replay.md
+src/specsafe/candidate_calibrator_closeout/__init__.py
+src/specsafe/candidate_calibrator_closeout/models.py
+src/specsafe/candidate_calibrator_closeout/decision.py
+scripts/close_candidate_calibrator_promotion.py
+tests/test_candidate_calibrator_promotion_closeout.py
+evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_promotion_closeout_decision.json
+docs/adr/ADR-0042-close-candidate-calibrator-promotion.md
+docs/experiments/v5-kaggle-candidate-calibrator-promotion-closeout.md
 APPLY_MANIFEST.md
 ```
 
 ## Boundary
 
 ```text
-candidate_calibrator_refit=false
-threshold_tuning=false
-scheduler_execution=false
-promotion_recommendation=KEEP_DIAGNOSTIC_ONLY
-calibrator_promotion_status=not_authorized_ranking_safety_regression
+decision_outcome=KEEP_DIAGNOSTIC_ONLY
+promotion_attempt_status=closed_not_promoted
+candidate_disposition=retained_diagnostic_negative_evidence
+automated_scheduling_confidence_status=unfit_use_conservative_fallback
+holdout_reuse=blocked
 ```
