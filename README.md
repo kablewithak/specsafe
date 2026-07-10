@@ -15,89 +15,96 @@ throughput improvement.
 > compute more intelligently than blunt fixed rules, without using forbidden future information
 > or breaking its correctness guarantee.
 
-## Repository scope
+## What exists
 
-SpecSafe contains and will extend:
+SpecSafe now contains:
 
-- typed trace, confidence, capacity, and scheduling contracts;
-- strict causal-safety validation and an isolated unsafe retrospective control;
-- versioned synthetic trace fixtures with separate runtime inputs and post-hoc outcomes;
+- strict typed trace, confidence, capacity, scheduling, and report contracts;
+- deterministic causal-safety validation and an isolated retrospective unsafe control;
+- immutable synthetic runtime inputs with physically separate post-hoc outcomes;
 - fixed-length and static-threshold causal baselines;
-- deterministic synthetic policy replay and descriptive baseline evidence ledgers;
-- governed calibration and held-out assessment protocols;
-- future causal load-aware scheduling, capacity profiles, policy comparison, reports, optional
-  small-model Kaggle evidence, and a public replay demonstration only when their gates permit.
+- governed synthetic calibration, capacity profiles, utility scoring, and matched replay;
+- a research-only causal load-aware policy with conservative fallback;
+- a controlled synthetic adaptive-versus-baseline comparison and Phase 5 report;
+- governed Kaggle Qwen trace collection, retained archives, diagnostics, and provenance;
+- a retained Kaggle-derived candidate calibrator and fit-pool replay;
+- an independent no-refit holdout replay;
+- a formal promotion closeout that rejected the candidate after a ranking-safety regression.
 
 SpecSafe does not contain in v1:
 
 - a DSpark reimplementation or trained DSpark drafter;
 - custom CUDA kernels or a production serving engine;
-- live-traffic or production-throughput claims;
-- private prompts, client data, secrets, or raw model payloads in public artifacts.
+- a promoted Kaggle-derived calibrator, threshold, or scheduler;
+- live-traffic or production-throughput evidence;
+- private prompts, client data, secrets, or raw sensitive model payloads in public artifacts.
 
 ## Governing documents
 
 - [Product Requirements Document](docs/PRD.md)
+- [Current PRD status reconciliation](docs/PRD_STATUS_RECONCILIATION_2026-07-10.md)
 - [Project constitution](docs/PROJECT_CONSTITUTION.md)
 - [Architecture decisions](docs/adr/)
-- [Synthetic trace fixture contract](docs/architecture/synthetic-trace-fixture-contract.md)
-- [Synthetic policy baselines](docs/architecture/synthetic-policy-baselines.md)
-- [Deterministic synthetic policy replay](docs/architecture/deterministic-synthetic-policy-replay.md)
-- [Baseline replay evidence ledger](docs/architecture/baseline-replay-evidence-ledger.md)
-- [Calibration split and raw-confidence fitness](docs/architecture/calibration-split-and-confidence-fitness.md)
-- [Frozen calibrator contract](docs/architecture/frozen-calibrator-contract.md)
-- [Held-out calibration fitness and promotion gate](docs/architecture/heldout-calibration-fitness.md)
-- [Post-V4 north-star reconciliation](docs/adr/ADR-0017-project-north-star-reconciliation-after-v4.md)
-- [V5 bounded calibration eligibility charter](docs/adr/ADR-0018-v5-bounded-monotone-beta-calibration-eligibility-charter.md)
+- [Controlled synthetic Phase 5 report](docs/reports/v5-controlled-synthetic-policy-comparison.md)
+- [Candidate-calibrator promotion closeout](docs/adr/ADR-0042-close-candidate-calibrator-promotion.md)
+- [Bounded negative-evidence publication route](docs/adr/ADR-0043-bounded-negative-evidence-publication-route.md)
 
-The PRD is the governing product and experiment contract. When sources conflict, it takes
-precedence over ADRs, committed implementation evidence, session notes, and earlier discussion.
+The PRD remains the governing product and experiment contract. The dated status reconciliation
+updates repository facts and phase status without weakening the PRD's causal, evidence, privacy,
+or publication requirements.
 
 ## Delivery status
 
 | Milestone | Status | Evidence boundary |
 |---|---|---|
-| Repository and project constitution | Complete | Repository identity, package scaffold, and project scope exist. |
-| Causal-information boundary | Complete | Strict runtime contract and deterministic rejection of retrospective contexts. |
-| PRD adoption and post-V4 reconciliation | Complete | Governing contract is adopted and reconciled against audited repository state. |
-| Synthetic trace fixture foundation | Complete | Versioned runtime inputs, separate expected outcomes, manifests, and deterministic fixture validation are committed. |
-| Synthetic policy baselines | Complete | Fixed-length and static-threshold baselines plus an isolated unsafe retrospective control are committed. |
-| Deterministic synthetic policy replay | Complete | Typed sequential replay retains decisions before post-hoc labels and separates valid from causally invalid replay results. |
-| Baseline replay evidence ledger | Complete | Typed descriptive ledger covers fixed and threshold baseline replay on development and adversarial cases only; it carries no winner claim. |
-| Calibration programmes | V1–V4 historical; V5 chartered pre-fixture | V4 remains immutable negative evidence. ADR-0018 fixes V5’s fresh namespace, bounded monotone-beta method, complete held-out gate, and hard stop rule before any V5 data exists. |
-| Causal load-aware scheduler | Not implemented | No causal adaptive scheduler has been evidenced in source. |
-| Capacity profiles and shared policy utility | Not implemented | Capacity exists only as typed snapshot/fixture metadata; no standalone profile package or shared scorer exists. |
-| Valid cross-policy comparison and reports | Not implemented | No adaptive-versus-baseline comparison on identical frozen inputs has been retained. |
-| Kaggle evidence and public replay release | Not started | These amplify, but do not replace, the local evidence harness. |
+| Repository and project constitution | Complete | Repository identity, package scaffold, scope ceiling, and governing documents are retained. |
+| Causal-information boundary | Complete | Runtime policy inputs exclude retrospective and future-derived information. |
+| Synthetic trace and baseline foundation | Complete | Versioned fixtures, fixed policies, unsafe control, and deterministic replay are retained. |
+| Synthetic calibration and confidence fitness | Complete for V5 | The bounded monotone-beta calibrator passed its frozen synthetic held-out gate. |
+| Synthetic causal load-aware policy | Complete for controlled research | The policy is causally guarded, capacity-aware, and supports conservative fallback. |
+| Controlled synthetic policy comparison | Complete | Same-input adaptive-versus-baseline evidence and a Phase 5 gate are retained. |
+| Kaggle small-model evidence | Complete for the current candidate path | Qwen traces, fit evidence, independent holdout replay, and closeout evidence are retained. |
+| Kaggle candidate-calibrator promotion | Closed, not promoted | Brier and fixed-bin ECE improved, but ranking safety regressed beyond tolerance. |
+| Threshold and scheduler promotion from Kaggle evidence | Not authorized | The current candidate is unfit for probability-driven automation. |
+| Bounded public negative-evidence pack | Next | Local deterministic packaging only; actual publication remains a later explicit gate. |
+| Hugging Face Dataset and Space publication | Not started | Requires a sanitized pack, license decision, publication review, and explicit evidence labels. |
+| Production validation | Out of scope | No live serving, operational load, production latency, throughput, or cost evidence exists. |
 
 ## Current maturity
 
-**Contracts enforced; synthetic-fixture validated; held-out calibration assessed as a retained
-negative result.**
+**Controlled synthetic policy comparison complete; Kaggle environment evaluated; current Kaggle
+candidate closed as diagnostic negative evidence.**
 
-The repository has a reusable causal and replay foundation, but it has not reached
-`held-out replay evaluated`. V4 is closed: it must not be refit, tuned, rerun, used for V4 policy
-comparison, or treated as a runtime-control candidate.
+The controlled synthetic harness demonstrates reproducible causal policy comparison under declared
+fixtures and capacity profiles. The Kaggle evidence layer demonstrates a stronger reliability
+behavior: a candidate that improved aggregate Brier score and fixed-bin ECE was still rejected
+because its independent holdout AUROC degradation breached the predeclared ranking-safety limit.
 
-No causal adaptive-policy result, cross-policy winner claim, Kaggle model experiment, public
-replay demo, throughput result, losslessness result, or production-readiness claim exists yet.
+```text
+candidate=v5-qwen-combined-fixed-bin-isotonic-calibrator-v1
+decision=KEEP_DIAGNOSTIC_ONLY
+promotion_attempt_status=closed_not_promoted
+automated_scheduling_confidence_status=unfit_use_conservative_fallback
+public_release_status=bounded_negative_evidence_only
+```
+
+This is not a production-readiness claim. The current candidate may not drive automated scheduling,
+threshold promotion, scheduler promotion, or adaptive-policy utility claims.
 
 ## Next governed route
 
-V5 is chartered but has no fixtures, fitted artifact, final result, scheduler, or policy claim.
-
 ```text
-V5 typed artifact and final-assessment contracts
-  -> non-final complete-gate regression harness
-  -> V5 calibration fixtures and frozen calibration artifact
-  -> V5 final fixtures and one write-once held-out eligibility assessment
-  -> capacity, causal adaptive-policy, shared-score, and comparison contracts only if V5 passes
-  -> supplemental Kaggle evidence
-  -> public replay proof
+post-closeout repository reconciliation
+  -> deterministic bounded negative-evidence release pack
+  -> publication-readiness review and license decision
+  -> optional Hugging Face Dataset / CPU-only precomputed replay surface
+  -> final project reconciliation and handover
 ```
 
-The project must not start V5 fixture authoring before its typed contract and non-final gate tests
-exist. It must not start a V4 remediation or immediate scheduler slice.
+A new calibrator is not an automatic next step. Any successor requires a separate predeclared
+method-and-evidence charter, fresh fit evidence, and fresh independent promotion evidence. The
+consumed holdout may not be reused for fitting, threshold tuning, scheduler tuning, or repeated
+method selection.
 
 ## Local development
 
@@ -109,10 +116,11 @@ python -m venv .venv
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 python -m pytest
-python -m ruff check src tests
+python -m ruff check .
 python -m ruff format --check .
 ```
 
 ## License
 
-A license will be selected before the first public artifact release.
+A license must be selected before the first public artifact is published. The local bounded
+negative-evidence pack may be prepared before that decision, but publication remains blocked.
