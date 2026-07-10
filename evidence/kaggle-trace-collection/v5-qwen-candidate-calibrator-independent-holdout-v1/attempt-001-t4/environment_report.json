@@ -1,0 +1,29 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "collection_id": "v5-qwen-candidate-calibrator-independent-holdout-v1",
+  "corpus_path": "/kaggle/input/datasets/kabomolefe/specsafe-v5-holdout-upload-bundle/v5_candidate_calibrator_holdout_prompt_corpus.jsonl",
+  "cuda_available": true,
+  "cuda_device_count": 2,
+  "cuda_devices": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "decoding_configuration_id": "greedy_argmax_4_positions_v1",
+  "draft_model_id": "Qwen/Qwen2.5-0.5B",
+  "draft_model_revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "input_root": "/kaggle/input/datasets/kabomolefe/specsafe-v5-holdout-upload-bundle",
+  "internet_required_for_model_download": true,
+  "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+  "pre_collection_manifest_path": "/kaggle/input/datasets/kabomolefe/specsafe-v5-holdout-upload-bundle/v5_candidate_calibrator_holdout_precollection_manifest.json",
+  "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "secrets_printed": false,
+  "seed": 20260710,
+  "source_commit_note": "44663c8 Merge pull request #123 from kablewithak/docs/calibrator-promotion-holdout-governance",
+  "target_model_id": "Qwen/Qwen2.5-1.5B",
+  "target_model_revision": "8faed761d45a263340a0528343f099c05c9a4323",
+  "tokenizer_id": "Qwen/Qwen2.5-1.5B",
+  "tokenizer_revision": "8faed761d45a263340a0528343f099c05c9a4323",
+  "torch_version": "2.10.0+cu128",
+  "transformers_version": "5.0.0",
+  "upload_manifest_path": "/kaggle/input/datasets/kabomolefe/specsafe-v5-holdout-upload-bundle/UPLOAD_BUNDLE_MANIFEST.json"
+}
