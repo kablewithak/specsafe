@@ -1,0 +1,144 @@
+{
+  "attempt_id": "attempt-001-t4",
+  "calibration_fit_status": "not_authorized_by_replay",
+  "collection_id": "v5-qwen-negative-case-expansion-v1",
+  "combined_raw_count_implication": {
+    "calibration_fit_authorized_by_this_report": false,
+    "combined_match_count": 148,
+    "combined_nonmatch_count": 36,
+    "combined_record_count": 184,
+    "minimum_negative_count_for_calibration_fit": 30,
+    "negative_case_match_count": 51,
+    "negative_case_nonmatch_count": 13,
+    "negative_case_record_count": 64,
+    "negative_count_floor_crossed_on_raw_count": true,
+    "negative_count_shortfall_after_collection": 0,
+    "v2_match_count": 97,
+    "v2_nonmatch_count": 23,
+    "v2_record_count": 120
+  },
+  "data_role": "post_collection_diagnostic_replay",
+  "evidence_class": "kaggle_environment_measured",
+  "nonclaim_boundaries": {
+    "production_claim_status": "not_authorized",
+    "public_release_status": "not_authorized",
+    "scheduler_promotion_status": "not_authorized",
+    "threshold_promotion_status": "not_authorized"
+  },
+  "record_counts": {
+    "expected_outcome_record_count": 64,
+    "runtime_record_count": 64
+  },
+  "replay_status": "diagnostic_replay_only",
+  "report_id": "v5_qwen_negative_case_expansion_v1_attempt_001_replay",
+  "source_archive_boundary": {
+    "archive_sha256": "557c7519aa6012c4770d9e24df1e15815a3295447f3eac2080b1b28c511c601e",
+    "raw_prompt_text_retained": false,
+    "secrets_printed": false,
+    "source_commit": "cd238e3e84391585be01e635ce74c4d400ba2dce"
+  },
+  "threshold_diagnostics": [
+    {
+      "selected_count": 64,
+      "selected_fraction": 1.0,
+      "selected_match_count": 51,
+      "selected_match_rate": 0.796875,
+      "selected_nonmatch_count": 13,
+      "selected_nonmatch_rate": 0.203125,
+      "threshold": "0.0",
+      "threshold_value": 0.0
+    },
+    {
+      "selected_count": 60,
+      "selected_fraction": 0.9375,
+      "selected_match_count": 50,
+      "selected_match_rate": 0.8333333333333334,
+      "selected_nonmatch_count": 10,
+      "selected_nonmatch_rate": 0.16666666666666666,
+      "threshold": "0.1",
+      "threshold_value": 0.1
+    },
+    {
+      "selected_count": 46,
+      "selected_fraction": 0.71875,
+      "selected_match_count": 42,
+      "selected_match_rate": 0.9130434782608695,
+      "selected_nonmatch_count": 4,
+      "selected_nonmatch_rate": 0.08695652173913043,
+      "threshold": "0.2",
+      "threshold_value": 0.2
+    },
+    {
+      "selected_count": 35,
+      "selected_fraction": 0.546875,
+      "selected_match_count": 31,
+      "selected_match_rate": 0.8857142857142857,
+      "selected_nonmatch_count": 4,
+      "selected_nonmatch_rate": 0.11428571428571428,
+      "threshold": "0.3",
+      "threshold_value": 0.3
+    },
+    {
+      "selected_count": 24,
+      "selected_fraction": 0.375,
+      "selected_match_count": 23,
+      "selected_match_rate": 0.9583333333333334,
+      "selected_nonmatch_count": 1,
+      "selected_nonmatch_rate": 0.041666666666666664,
+      "threshold": "0.4",
+      "threshold_value": 0.4
+    },
+    {
+      "selected_count": 17,
+      "selected_fraction": 0.265625,
+      "selected_match_count": 17,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_nonmatch_rate": 0.0,
+      "threshold": "0.5",
+      "threshold_value": 0.5
+    },
+    {
+      "selected_count": 17,
+      "selected_fraction": 0.265625,
+      "selected_match_count": 17,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_nonmatch_rate": 0.0,
+      "threshold": "0.6",
+      "threshold_value": 0.6
+    },
+    {
+      "selected_count": 10,
+      "selected_fraction": 0.15625,
+      "selected_match_count": 10,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_nonmatch_rate": 0.0,
+      "threshold": "0.7",
+      "threshold_value": 0.7
+    },
+    {
+      "selected_count": 5,
+      "selected_fraction": 0.078125,
+      "selected_match_count": 5,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_nonmatch_rate": 0.0,
+      "threshold": "0.8",
+      "threshold_value": 0.8
+    },
+    {
+      "selected_count": 1,
+      "selected_fraction": 0.015625,
+      "selected_match_count": 1,
+      "selected_match_rate": 1.0,
+      "selected_nonmatch_count": 0,
+      "selected_nonmatch_rate": 0.0,
+      "threshold": "0.9",
+      "threshold_value": 0.9
+    }
+  ],
+  "threshold_promotion_status": "not_authorized_by_replay",
+  "trace_schema_version": "kaggle_trace_collection_v2"
+}
