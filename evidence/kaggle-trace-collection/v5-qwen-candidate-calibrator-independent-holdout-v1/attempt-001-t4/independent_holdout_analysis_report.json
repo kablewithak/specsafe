@@ -1,0 +1,140 @@
+{
+  "analysis_status": "replay_ready",
+  "attempt_id": "attempt-001-t4",
+  "calibrator_promotion_status": "not_authorized_pending_independent_holdout_replay",
+  "case_count": 48,
+  "claims_forbidden": [
+    "The candidate calibrator passed independent holdout replay.",
+    "The candidate calibrator is promoted.",
+    "Any threshold or scheduler is promoted.",
+    "Production speed, latency, throughput, cost, or serving readiness is proven."
+  ],
+  "claims_permitted": [
+    "The retained independent holdout records are aligned for no-refit replay.",
+    "The archive contains sufficient positive and negative diagnostic labels for replay analysis."
+  ],
+  "collection_id": "v5-qwen-candidate-calibrator-independent-holdout-v1",
+  "coverage_by_position": {
+    "1": {
+      "mean_raw_confidence": 0.21529808322278163,
+      "negative_count": 26,
+      "positive_count": 22,
+      "positive_rate": 0.4583333333333333,
+      "record_count": 48
+    },
+    "2": {
+      "mean_raw_confidence": 0.5942916704031328,
+      "negative_count": 13,
+      "positive_count": 35,
+      "positive_rate": 0.7291666666666666,
+      "record_count": 48
+    },
+    "3": {
+      "mean_raw_confidence": 0.6958039292755226,
+      "negative_count": 7,
+      "positive_count": 41,
+      "positive_rate": 0.8541666666666666,
+      "record_count": 48
+    },
+    "4": {
+      "mean_raw_confidence": 0.5000153298800191,
+      "negative_count": 10,
+      "positive_count": 38,
+      "positive_rate": 0.7916666666666666,
+      "record_count": 48
+    }
+  },
+  "coverage_by_workload": {
+    "code": {
+      "mean_raw_confidence": 0.5969283755403012,
+      "negative_count": 9,
+      "positive_count": 55,
+      "positive_rate": 0.859375,
+      "record_count": 64
+    },
+    "open_ended_chat": {
+      "mean_raw_confidence": 0.5757913861307316,
+      "negative_count": 19,
+      "positive_count": 45,
+      "positive_rate": 0.703125,
+      "record_count": 64
+    },
+    "structured_text": {
+      "mean_raw_confidence": 0.33133699791505933,
+      "negative_count": 28,
+      "positive_count": 36,
+      "positive_rate": 0.5625,
+      "record_count": 64
+    }
+  },
+  "data_role": "independent_holdout_trace_collection",
+  "duplicate_join_key_count": 0,
+  "evidence_class": "kaggle_environment_measured",
+  "expected_outcome_record_count": 192,
+  "joined_record_count": 192,
+  "missing_runtime_outcome_count": 0,
+  "missing_runtime_timing_count": 0,
+  "raw_brier_diagnostic": 0.18747805218884495,
+  "raw_confidence_max": 0.9997324347496033,
+  "raw_confidence_min": 0.05801498889923096,
+  "raw_discrimination_auc": 0.881827731092437,
+  "raw_prompt_text_retained": false,
+  "replay_blockers": [],
+  "replay_field_map": {
+    "calibrator_input_field": "raw_confidence",
+    "diagnostic_label_field": "observed_acceptance",
+    "forbidden_fit_actions": [
+      "refit_candidate_calibrator_from_holdout_archive",
+      "tune_thresholds_from_holdout_archive",
+      "tune_scheduler_from_holdout_archive"
+    ],
+    "join_key": [
+      "trace_id",
+      "decode_round",
+      "block_position_index"
+    ],
+    "position_field": "block_position_index",
+    "provenance_fields": [
+      "collection_id",
+      "attempt_id",
+      "trace_schema_version",
+      "model_pair_id",
+      "draft_model_revision",
+      "target_model_revision",
+      "tokenizer_revision",
+      "split"
+    ],
+    "workload_field": "workload_type"
+  },
+  "report_id": "v5-qwen-candidate-calibrator-independent-holdout-analysis-v1",
+  "required_outcome_fields_present": [
+    "trace_id",
+    "case_id",
+    "decode_round",
+    "block_position_index",
+    "observed_acceptance",
+    "workload_type",
+    "collection_id",
+    "attempt_id",
+    "trace_schema_version"
+  ],
+  "required_runtime_fields_present": [
+    "trace_id",
+    "case_id",
+    "decode_round",
+    "block_position_index",
+    "raw_confidence",
+    "workload_type",
+    "collection_id",
+    "attempt_id",
+    "trace_schema_version"
+  ],
+  "runtime_record_count": 192,
+  "scheduler_promotion_status": "not_authorized",
+  "schema_version": "independent_holdout_analysis_report_v1",
+  "source_commit": "9b03855",
+  "threshold_promotion_status": "not_authorized",
+  "timing_record_count": 192,
+  "trace_schema_version": "kaggle_trace_collection_v2",
+  "unique_trace_count": 192
+}
