@@ -1,25 +1,28 @@
-# Apply Manifest — V5 Candidate Calibrator Independent Holdout Precollection
+# Apply Manifest — V5 Candidate Calibrator Holdout Upload/Run Bundle
 
 ## Files
 
 ```text
-data/kaggle_holdout/v5_candidate_calibrator_holdout_prompt_corpus.jsonl
-data/kaggle_holdout/v5_candidate_calibrator_holdout_precollection_manifest.json
-notebooks/kaggle/v5_candidate_calibrator_holdout_collection_readme.md
-docs/experiments/v5-kaggle-calibrator-independent-holdout-precollection.md
-```
-
-## Hashes
-
-```text
-prompt_corpus_sha256=8ca11c0717c45552211cf7b85994caf59a0f5f101735064d28b9fbd98043c56f
-precollection_manifest_sha256=431bd2fdfb9007bbbf4b91f0e109cb9871b12fa292cc3720b3ecd1465c304af2
+scripts/prepare_kaggle_holdout_upload_bundle.py
+tests/test_prepare_kaggle_holdout_upload_bundle.py
+docs/experiments/v5-kaggle-calibrator-holdout-upload-run-bundle.md
+notebooks/kaggle/v5_candidate_calibrator_holdout_upload_run_readme.md
 ```
 
 ## Validation
 
 ```powershell
-python -m json.tool .\data\kaggle_holdout\v5_candidate_calibrator_holdout_precollection_manifest.json | Out-Null
-Get-Content .\data\kaggle_holdout\v5_candidate_calibrator_holdout_prompt_corpus.jsonl | ForEach-Object { $_ | ConvertFrom-Json | Out-Null }
+$output = Join-Path $env:TEMP "specsafe_candidate_calibrator_holdout_upload_bundle"
+Remove-Item $output -Recurse -Force -ErrorAction SilentlyContinue
+python .\scripts\prepare_kaggle_holdout_upload_bundle.py --output-dir $output
+python -m pytest .	ests	est_prepare_kaggle_holdout_upload_bundle.py
+python -m ruff check .
+python -m ruff format --check .\scripts\prepare_kaggle_holdout_upload_bundle.py .	ests	est_prepare_kaggle_holdout_upload_bundle.py
 git diff --check
 ```
+
+## Boundary
+
+This slice prepares a private Kaggle upload bundle. It does not collect holdout traces,
+replay the candidate calibrator, promote the calibrator, tune thresholds, tune scheduler
+policy, or authorize public Hugging Face final proof packaging.
