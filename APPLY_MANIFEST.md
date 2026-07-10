@@ -1,33 +1,49 @@
-# Apply Manifest — Candidate-Calibrator Promotion Closeout
+# Apply Manifest — Post-Closeout Repository Reconciliation
 
 ## Slice
 
 ```text
-branch=feat/candidate-calibrator-promotion-closeout
-commit=feat: close candidate calibrator promotion
-base_main=cd1780f
+branch=docs/post-closeout-publication-route-reconciliation
+commit=docs: reconcile post-closeout publication route
+base_commit=54227a0
+scope=docs-only
 ```
 
 ## Files
 
 ```text
-src/specsafe/candidate_calibrator_closeout/__init__.py
-src/specsafe/candidate_calibrator_closeout/models.py
-src/specsafe/candidate_calibrator_closeout/decision.py
-scripts/close_candidate_calibrator_promotion.py
-tests/test_candidate_calibrator_promotion_closeout.py
-evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_promotion_closeout_decision.json
-docs/adr/ADR-0042-close-candidate-calibrator-promotion.md
-docs/experiments/v5-kaggle-candidate-calibrator-promotion-closeout.md
+README.md
+docs/PRD_STATUS_RECONCILIATION_2026-07-10.md
+docs/adr/ADR-0043-bounded-negative-evidence-publication-route.md
+docs/experiments/bounded-negative-evidence-release-plan.md
 APPLY_MANIFEST.md
 ```
 
-## Boundary
+## Purpose
+
+- update stale repository status statements after the completed synthetic and Kaggle evidence work;
+- preserve the governing PRD requirements while reconciling current phase facts;
+- select bounded negative-evidence packaging as the next route;
+- defer automatic calibrator redesign;
+- define the local release-pack boundary before implementation;
+- keep actual Hugging Face publication and license selection as later explicit gates.
+
+## Validation
+
+Docs-only validation:
+
+```powershell
+Test-Path ".\README.md"
+Test-Path ".\docs\PRD_STATUS_RECONCILIATION_2026-07-10.md"
+Test-Path ".\docs\adr\ADR-0043-bounded-negative-evidence-publication-route.md"
+Test-Path ".\docs\experiments\bounded-negative-evidence-release-plan.md"
+Test-Path ".\APPLY_MANIFEST.md"
+
+git diff --check
+```
+
+## Next authorized branch
 
 ```text
-decision_outcome=KEEP_DIAGNOSTIC_ONLY
-promotion_attempt_status=closed_not_promoted
-candidate_disposition=retained_diagnostic_negative_evidence
-automated_scheduling_confidence_status=unfit_use_conservative_fallback
-holdout_reuse=blocked
+feat/bounded-negative-evidence-release-pack
 ```
