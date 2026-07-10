@@ -1,0 +1,59 @@
+{
+  "allowed_uses": [
+    "collect independent holdout traces",
+    "analyze independent holdout trace quality",
+    "replay retained candidate calibrator without refit",
+    "decide candidate calibrator promotion status"
+  ],
+  "collection_requirements": {
+    "environment_rule": "record_kaggle_hardware_package_versions_model_revisions_tokenizer_revision_seed_and_notebook_revision",
+    "if_negative_floor_not_met": "retain_result_as_holdout_attempt_and_open_a_new_governed_expansion_decision_without refitting the calibrator",
+    "minimum_nonmatch_count_target": 30,
+    "minimum_runtime_records_target": 160,
+    "model_pair_rule": "reuse_the_same_governed_qwen_model_pair_and_tokenizer_boundary_from_the_latest_retained_kaggle_collection_manifest_before_running_collection",
+    "trace_schema_rule": "export the existing governed Kaggle trace schema used by the combined calibrator pipeline"
+  },
+  "corpus_id": "v5-qwen-candidate-calibrator-independent-holdout-prompts-v1",
+  "created_utc": "2026-07-10T00:00:00Z",
+  "data_role": "independent_holdout_precollection",
+  "evidence_class": "kaggle_environment_candidate_holdout_planning",
+  "failure_labels": [
+    "holdout_manifest_mismatch",
+    "holdout_prompt_duplicate_or_related_to_fit_pool",
+    "calibrator_refit_detected",
+    "threshold_tuning_detected",
+    "insufficient_holdout_negative_count",
+    "unsupported_promotion_claim"
+  ],
+  "forbidden_uses": [
+    "refit candidate calibrator",
+    "tune thresholds",
+    "tune scheduler policy",
+    "merge holdout into fit pool before promotion decision",
+    "claim production speedup_latency_cost_or_serving_readiness",
+    "build final Hugging Face proof as if promotion already passed"
+  ],
+  "latest_main_commit_at_user_report": "44663c8 Merge pull request #123 from kablewithak/docs/calibrator-promotion-holdout-governance",
+  "manifest_id": "v5-qwen-candidate-calibrator-independent-holdout-precollection-manifest-v1",
+  "manifest_version": "1.0",
+  "primary_branch_at_authoring": "main",
+  "prompt_corpus_path": "data/kaggle_holdout/v5_candidate_calibrator_holdout_prompt_corpus.jsonl",
+  "prompt_corpus_sha256": "8ca11c0717c45552211cf7b85994caf59a0f5f101735064d28b9fbd98043c56f",
+  "prompt_record_count": 48,
+  "repository": "kablewithak/specsafe",
+  "required_decision_outputs_after_collection": [
+    "PROMOTE_CANDIDATE_CALIBRATOR",
+    "KEEP_CANDIDATE_CALIBRATOR_DIAGNOSTIC_ONLY",
+    "REQUIRE_ADDITIONAL_HOLDOUT_EVIDENCE"
+  ],
+  "source_policy": {
+    "prompt_text_retention": "allowed_for_public_safe_holdout_collection_review",
+    "public_safety": "no_pii_no_secrets_no_private_prompts_no_customer_data",
+    "source_type": "self_authored"
+  },
+  "workload_counts": {
+    "code": 16,
+    "open_ended_chat": 16,
+    "structured_text": 16
+  }
+}
