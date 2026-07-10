@@ -1,0 +1,98 @@
+{
+  "automated_scheduling_confidence_status": "unfit_use_conservative_fallback",
+  "calibrator_promotion_status": "not_authorized_closed_ranking_safety_regression",
+  "candidate_artifact_hash": "e799e4c1e5db8798120b73e0c7e33b86e0f4f220b6360ad010cd0a5feb55ec36",
+  "candidate_artifact_id": "v5-qwen-combined-fixed-bin-isotonic-calibrator-v1",
+  "candidate_disposition": "retained_diagnostic_negative_evidence",
+  "candidate_not_promoted": true,
+  "claims_forbidden": [
+    "The current candidate calibrator is promoted.",
+    "The current calibrated probabilities are fit for automated scheduling.",
+    "Any threshold or scheduler is promoted from the current holdout.",
+    "Adaptive-policy utility improvement is proven.",
+    "Public artifacts demonstrate positive promotion proof.",
+    "Production speed, latency, throughput, cost, or serving readiness is proven."
+  ],
+  "claims_permitted": [
+    "The candidate completed independent holdout replay without refit.",
+    "The candidate improved aggregate Brier score and fixed-bin ECE on holdout.",
+    "The candidate regressed ranking safety beyond the declared tolerance.",
+    "The promotion attempt is closed and the candidate is not promoted.",
+    "The retained result is diagnostic negative evidence."
+  ],
+  "decision_outcome": "KEEP_DIAGNOSTIC_ONLY",
+  "failure_labels": [
+    "ranking_safety_regression"
+  ],
+  "gate_checks": {
+    "canonical_build_passed": true,
+    "claims_boundary_passed": true,
+    "conservative_fallback_retained": true,
+    "no_refit_boundary_passed": true,
+    "non_promotion_boundary_passed": true,
+    "ranking_safety_failure_retained": true,
+    "sanitization_passed": true,
+    "source_identity_alignment_passed": true,
+    "source_integrity_passed": true,
+    "source_schema_validation_passed": true
+  },
+  "holdout_negative_count": 56,
+  "holdout_positive_count": 136,
+  "holdout_record_count": 192,
+  "holdout_reuse_policy": [
+    "do_not_refit_current_candidate_from_holdout",
+    "do_not_tune_thresholds_from_holdout",
+    "do_not_merge_holdout_into_future_fit_pool",
+    "preserve_holdout_as_consumed_promotion_evidence"
+  ],
+  "holdout_trace_archive_hash": "3ab63ecd516be39ead9901ccc99d1d7a90f09bb2dcde5ca01bd5e258dfa03279",
+  "holdout_trace_archive_id": "v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4",
+  "metrics": {
+    "auroc_delta": -0.024356617647058765,
+    "brier_improvement": 0.03811936896716564,
+    "calibrated_auroc": 0.8574711134453782,
+    "calibrated_brier_score": 0.1493586832216793,
+    "calibrated_fixed_bin_ece": 0.09985063544389214,
+    "fixed_bin_ece_improvement": 0.10713044469407718,
+    "maximum_allowed_auroc_degradation": 0.001,
+    "raw_auroc": 0.881827731092437,
+    "raw_brier_score": 0.18747805218884495,
+    "raw_fixed_bin_ece": 0.20698108013796931
+  },
+  "next_authorized_step": "publication_readiness_review_and_license_decision",
+  "privacy_controls": [
+    "aggregate_metrics_only",
+    "no_prompt_content",
+    "no_private_or_customer_data",
+    "no_secrets_or_credentials",
+    "no_raw_logs_or_environment_dumps",
+    "no_user_input_collection",
+    "no_live_inference"
+  ],
+  "production_claim_authorized": false,
+  "promotion_attempt_status": "closed_not_promoted",
+  "publication_controls": [
+    "local_pack_only",
+    "license_selection_pending",
+    "final_hash_review_required",
+    "dataset_card_review_required",
+    "explicit_publication_authorization_required",
+    "rollback_or_unpublish_procedure_required"
+  ],
+  "publication_status": "local_pack_only",
+  "release_id": "specsafe-bounded-negative-evidence-v1",
+  "release_type": "bounded_negative_evidence",
+  "scheduler_promotion_authorized": false,
+  "schema_version": "specsafe_bounded_negative_evidence_release_summary_v1",
+  "source_closeout_decision": {
+    "relative_path": "evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_promotion_closeout_decision.json",
+    "sha256": "e91047e78f8992e252d3f313943ff8e86aafd2c1c77b3683058d2406a29266bc"
+  },
+  "source_commit": "8e3c176",
+  "source_replay_report": {
+    "relative_path": "evidence/kaggle-trace-collection/v5-qwen-candidate-calibrator-independent-holdout-v1/attempt-001-t4/candidate_calibrator_holdout_replay_report.json",
+    "sha256": "402df4475b05eead800a5ba7f6b4ae96587fd5bfbe83f20966ac180888e1467f"
+  },
+  "threshold_promotion_authorized": false,
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}
