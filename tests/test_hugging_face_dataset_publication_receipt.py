@@ -69,7 +69,9 @@ def test_receipt_identity_drift_is_rejected_by_integrity_gate(tmp_path: Path) ->
     project = _copy_minimal_project(tmp_path)
     receipt_path = project / RECEIPT_RELATIVE_PATH
     value = json.loads(receipt_path.read_text(encoding="utf-8"))
-    value["namespace"] = "OtherNamespace"
+    replacement_namespace = "OtherNameSpace1"
+    assert len(replacement_namespace) == len(value["namespace"])
+    value["namespace"] = replacement_namespace
     receipt_path.write_text(
         json.dumps(value, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

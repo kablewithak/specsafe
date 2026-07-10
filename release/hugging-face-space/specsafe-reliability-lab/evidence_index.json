@@ -1,0 +1,235 @@
+{
+  "adaptive_vs_fixed": {
+    "adaptive_higher": 2,
+    "adaptive_lower": 1,
+    "neutral": 3
+  },
+  "adaptive_vs_threshold": {
+    "adaptive_higher": 3,
+    "adaptive_lower": 1,
+    "neutral": 2
+  },
+  "calibration_gate": {
+    "confidence_status": "unfit_use_conservative_fallback",
+    "decision_outcome": "KEEP_DIAGNOSTIC_ONLY",
+    "degradation_multiple_of_limit": 24.356617647058766,
+    "failure_label": "ranking_safety_regression",
+    "holdout_negative_count": 56,
+    "holdout_positive_count": 136,
+    "holdout_record_count": 192,
+    "maximum_allowed_auroc_degradation": 0.001,
+    "metrics": [
+      {
+        "calibrated_value": 0.1493586832216793,
+        "display_name": "Brier score",
+        "gate_result": "improved",
+        "lower_is_better": true,
+        "metric_key": "brier_score",
+        "movement": 0.03811936896716564,
+        "raw_value": 0.18747805218884495
+      },
+      {
+        "calibrated_value": 0.09985063544389214,
+        "display_name": "Calibration error",
+        "gate_result": "improved",
+        "lower_is_better": true,
+        "metric_key": "fixed_bin_ece",
+        "movement": 0.10713044469407718,
+        "raw_value": 0.20698108013796931
+      },
+      {
+        "calibrated_value": 0.8574711134453782,
+        "display_name": "Ranking safety",
+        "gate_result": "failed_ranking_safety",
+        "lower_is_better": false,
+        "metric_key": "auroc",
+        "movement": -0.024356617647058765,
+        "raw_value": 0.881827731092437
+      }
+    ],
+    "observed_auroc_delta": -0.024356617647058765,
+    "plain_language_result": "Probability estimates improved, but ranking quality worsened far beyond the allowed limit. SpecSafe therefore blocked automated use.",
+    "promotion_attempt_status": "closed_not_promoted"
+  },
+  "cases": [
+    {
+      "adaptive_utility": 3.6,
+      "adaptive_vs_fixed": "utility_neutral",
+      "adaptive_vs_threshold": "utility_neutral",
+      "capacity_profile": "flat_capacity_control",
+      "case_id": "MPC5-101",
+      "fixed_utility": 3.6,
+      "plain_language_result": "All three policies performed the same under flat capacity.",
+      "split": "development",
+      "threshold_utility": 3.6
+    },
+    {
+      "adaptive_utility": 3.6,
+      "adaptive_vs_fixed": "utility_neutral",
+      "adaptive_vs_threshold": "utility_neutral",
+      "capacity_profile": "light_load",
+      "case_id": "MPC5-102",
+      "fixed_utility": 3.6,
+      "plain_language_result": "All three policies performed the same under light load.",
+      "split": "development",
+      "threshold_utility": 3.6
+    },
+    {
+      "adaptive_utility": 0.0,
+      "adaptive_vs_fixed": "adaptive_lower_utility",
+      "adaptive_vs_threshold": "adaptive_lower_utility",
+      "capacity_profile": "moderate_load",
+      "case_id": "MPC5-103",
+      "fixed_utility": 1.0,
+      "plain_language_result": "The adaptive policy was too conservative under moderate load.",
+      "split": "development",
+      "threshold_utility": 1.0
+    },
+    {
+      "adaptive_utility": 0.0,
+      "adaptive_vs_fixed": "adaptive_higher_utility",
+      "adaptive_vs_threshold": "adaptive_higher_utility",
+      "capacity_profile": "saturated_load",
+      "case_id": "MPC5-104",
+      "fixed_utility": -13.0,
+      "plain_language_result": "The adaptive policy avoided large losses under saturated load.",
+      "split": "development",
+      "threshold_utility": -13.0
+    },
+    {
+      "adaptive_utility": 0.0,
+      "adaptive_vs_fixed": "adaptive_higher_utility",
+      "adaptive_vs_threshold": "adaptive_higher_utility",
+      "capacity_profile": "jagged_capacity",
+      "case_id": "MPC5-105",
+      "fixed_utility": -7.8,
+      "plain_language_result": "The adaptive policy avoided losses under jagged capacity.",
+      "split": "development",
+      "threshold_utility": -7.8
+    },
+    {
+      "adaptive_utility": 1.6,
+      "adaptive_vs_fixed": "utility_neutral",
+      "adaptive_vs_threshold": "adaptive_higher_utility",
+      "capacity_profile": "flat_capacity_control",
+      "case_id": "MPC5-106",
+      "fixed_utility": 1.6,
+      "plain_language_result": "The adaptive policy matched fixed length and beat the threshold baseline.",
+      "split": "adversarial_regression",
+      "threshold_utility": 0.0
+    }
+  ],
+  "dataset_publication": {
+    "anonymous_verification_passed": true,
+    "exact_file_count": 9,
+    "gated": false,
+    "public": true,
+    "publication_manifest_sha256": "6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6",
+    "published_revision": "1ff151fc0646102f6e7b107d1bceb9a18e50098a",
+    "repository_id": "KaboKableMolefe/specsafe-bounded-negative-evidence-v1",
+    "repository_url": "https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1"
+  },
+  "final_interpretation": "Adaptive scheduling can be useful, but it is not universally better. Its value depends on trustworthy confidence signals and hard activation gates.",
+  "live_inference": false,
+  "maturity_labels": [
+    "controlled synthetic policy evidence",
+    "small-model confidence evidence",
+    "not production serving evidence"
+  ],
+  "non_claims": [
+    "No global policy winner is established.",
+    "No scheduler or confidence candidate is promoted for runtime control.",
+    "No production throughput, latency, cost, or serving result is established."
+  ],
+  "policies": [
+    {
+      "capacity_aware": false,
+      "display_name": "Fixed length",
+      "plain_language_description": "Always verifies the same amount of work.",
+      "policy_key": "fixed_length"
+    },
+    {
+      "capacity_aware": false,
+      "display_name": "Static threshold",
+      "plain_language_description": "Uses one confidence cutoff in every condition.",
+      "policy_key": "static_threshold"
+    },
+    {
+      "capacity_aware": true,
+      "display_name": "Adaptive",
+      "plain_language_description": "Changes verification effort using calibrated confidence and available capacity.",
+      "policy_key": "adaptive"
+    }
+  ],
+  "quick_summary": "Adaptive verification helped under some conditions, was neutral under others, and lost in one. When the real confidence signal failed its safety gate, SpecSafe blocked activation.",
+  "read_only": true,
+  "schema_version": "specsafe_hugging_face_space_evidence_index_v1",
+  "sections": [
+    {
+      "purpose": "Explain the main result in under twenty seconds.",
+      "section_id": "overview",
+      "title": "Quick summary"
+    },
+    {
+      "purpose": "Introduce the three policies in plain language.",
+      "section_id": "what_was_tested",
+      "title": "What SpecSafe tested"
+    },
+    {
+      "purpose": "Show the mixed aggregate comparison without implying a global winner.",
+      "section_id": "policy_results",
+      "title": "Wins, draws, and losses"
+    },
+    {
+      "purpose": "Compare policy utility across each governed capacity condition.",
+      "section_id": "capacity_conditions",
+      "title": "Where adaptive scheduling helped"
+    },
+    {
+      "purpose": "Show the favorable calibration movement and failed ranking-safety gate.",
+      "section_id": "confidence_gate",
+      "title": "Why activation was blocked"
+    },
+    {
+      "purpose": "Translate the evidence into broader AI reliability behavior.",
+      "section_id": "what_it_means",
+      "title": "What this means"
+    },
+    {
+      "purpose": "Expose exact values, artifact identities, and reproduction details.",
+      "section_id": "evidence",
+      "title": "Explore the evidence"
+    }
+  ],
+  "short_description": "AI reliability case study on adaptive verification.",
+  "source_artifacts": [
+    {
+      "relative_path": "evidence/matched-policy-comparison/v5-controlled-synthetic-comparison-v1/result.json",
+      "sha256": "e82e21853526e687b068cd8a0b3abb4bb390da755be977bf5f3045148a7d17f4"
+    },
+    {
+      "relative_path": "release/hugging-face/specsafe-bounded-negative-evidence-v1/release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    },
+    {
+      "relative_path": "evidence/publication-receipts/specsafe-bounded-negative-evidence-v1/hugging_face_dataset_publication_receipt.json",
+      "sha256": "a63cd76cefa376fc4baa108f4d0fa06b66ed2c4561cea29f3ac2280837e525b7"
+    }
+  ],
+  "source_commit": "ec70bba",
+  "space_id": "specsafe-reliability-lab-v1",
+  "space_repository_name": "specsafe-reliability-lab",
+  "supported_claims": [
+    "The controlled synthetic corpus contains adaptive wins, neutral cases, and one loss.",
+    "Unsafe retrospective controls failed causal safety and were excluded.",
+    "Probability calibration improved on the independent holdout.",
+    "Ranking safety regressed beyond tolerance, so activation was blocked.",
+    "The public Dataset preserves the exact governed negative-evidence release."
+  ],
+  "tested_question": "Can an AI verification policy spend limited compute more intelligently than fixed rules without using forbidden future information?",
+  "title": "SpecSafe \u2014 When Should AI Spend More Compute?",
+  "unsafe_controls_failed_causal_safety": true,
+  "unsafe_retrospective_controls_excluded": 6,
+  "user_input_collection": false,
+  "valid_causal_comparisons": 6
+}
