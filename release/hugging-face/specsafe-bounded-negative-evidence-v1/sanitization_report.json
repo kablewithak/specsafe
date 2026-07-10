@@ -1,0 +1,37 @@
+{
+  "candidate_id": "specsafe-bounded-negative-evidence-hf-candidate-v1",
+  "checks": {
+    "exact_file_allowlist_passed": true,
+    "license_scope_bounded": true,
+    "no_archives_or_model_payloads": true,
+    "no_forbidden_extensions": true,
+    "no_local_absolute_paths": true,
+    "no_raw_prompt_or_trace_payloads": true,
+    "no_secret_markers": true,
+    "non_promotion_prominent": true,
+    "public_upload_authorization_absent": true,
+    "rollback_controls_present": true,
+    "validity_marker_prominent": true
+  },
+  "final_result": "PASS_LOCAL_CANDIDATE_ONLY",
+  "forbidden_marker_matches": 0,
+  "next_authorized_step": "explicit_publication_authorization_decision",
+  "public_upload_authorized": false,
+  "publication_status": "local_candidate_upload_not_authorized",
+  "review_date": "2026-07-10",
+  "scanned_file_count": 9,
+  "scanned_files": [
+    "ATTRIBUTION.md",
+    "LICENSE.md",
+    "README.md",
+    "ROLLBACK.md",
+    "evidence_boundary.md",
+    "publication_manifest.json",
+    "release_summary.json",
+    "sanitization_report.json",
+    "source_release_manifest.json"
+  ],
+  "schema_version": "specsafe_hugging_face_publication_candidate_sanitization_report_v1",
+  "source_commit": "38b2993",
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}
