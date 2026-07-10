@@ -1,0 +1,125 @@
+{
+  "authorization_revoked_by_candidate_drift": true,
+  "authorization_scope": "exact_candidate_bytes_only",
+  "authorized_files": [
+    {
+      "byte_count": 844,
+      "relative_path": "ATTRIBUTION.md",
+      "sha256": "738543559f774c1f1375c9a5dda5d6b7a3f810ff00b2115c9590c7564997b97e"
+    },
+    {
+      "byte_count": 872,
+      "relative_path": "LICENSE.md",
+      "sha256": "cdc0049740d46ff125ef50d5274dc64e807fa918e2eaa4c67371864294ed5d59"
+    },
+    {
+      "byte_count": 3187,
+      "relative_path": "README.md",
+      "sha256": "068764747dcb25a90190237f1230d5965a97c33ab13b0398104a5cd4aa6c74f4"
+    },
+    {
+      "byte_count": 1611,
+      "relative_path": "ROLLBACK.md",
+      "sha256": "96d901ae36bc50e6d5265cbbad7b3ad45c880a85601395d70a9d9dbe839fc1a3"
+    },
+    {
+      "byte_count": 1577,
+      "relative_path": "evidence_boundary.md",
+      "sha256": "8053d6c01a816280847b79d8bc036f14733dd7bc2d12f27bedf35934ef166967"
+    },
+    {
+      "byte_count": 4135,
+      "relative_path": "publication_manifest.json",
+      "sha256": "6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6"
+    },
+    {
+      "byte_count": 4470,
+      "relative_path": "release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    },
+    {
+      "byte_count": 1278,
+      "relative_path": "sanitization_report.json",
+      "sha256": "863666570e1fcc4d6113bf5943812bb72b4d32862c727d7fd49cc73ad57c8c5c"
+    },
+    {
+      "byte_count": 975,
+      "relative_path": "source_release_manifest.json",
+      "sha256": "10b02b3a67c726c321d5f20b4350c75925e6bca1485575181b4eee9b70243f3b"
+    }
+  ],
+  "blocked_actions": [
+    "upload_any_file_outside_the_exact_candidate_allowlist",
+    "modify_candidate_bytes_during_upload",
+    "publish_if_authenticated_namespace_is_not_confirmed",
+    "log_or_commit_hugging_face_credentials",
+    "claim_calibrator_scheduler_or_production_promotion",
+    "skip_remote_hash_and_visibility_verification"
+  ],
+  "candidate_id": "specsafe-bounded-negative-evidence-hf-candidate-v1",
+  "decision_date": "2026-07-10",
+  "decision_id": "specsafe-bounded-negative-evidence-publication-authorization-v1",
+  "decision_outcome": "AUTHORIZE_EXACT_PUBLICATION",
+  "gate_checks": {
+    "candidate_entries_verified": true,
+    "candidate_file_allowlist_passed": true,
+    "candidate_manifest_hash_verified": true,
+    "candidate_manifest_schema_valid": true,
+    "final_sanitization_passed": true,
+    "final_sanitization_schema_valid": true,
+    "license_scope_bounded": true,
+    "negative_evidence_boundary_retained": true,
+    "no_credentials_present": true,
+    "public_upload_performed": false,
+    "remote_repository_created": false,
+    "rollback_controls_present": true
+  },
+  "next_authorized_step": "controlled_hugging_face_dataset_publication_and_receipt",
+  "publication_authorized": true,
+  "publication_manifest": {
+    "byte_count": 4135,
+    "relative_path": "release/hugging-face/specsafe-bounded-negative-evidence-v1/publication_manifest.json",
+    "sha256": "6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6"
+  },
+  "publication_performed": false,
+  "release_id": "specsafe-bounded-negative-evidence-v1",
+  "required_receipt_fields": [
+    "repository_id",
+    "repository_url",
+    "namespace",
+    "published_revision",
+    "publication_manifest_sha256",
+    "published_file_hashes",
+    "published_at"
+  ],
+  "sanitization_report": {
+    "byte_count": 1278,
+    "relative_path": "release/hugging-face/specsafe-bounded-negative-evidence-v1/sanitization_report.json",
+    "sha256": "863666570e1fcc4d6113bf5943812bb72b4d32862c727d7fd49cc73ad57c8c5c"
+  },
+  "schema_version": "specsafe_exact_hugging_face_publication_authorization_v1",
+  "source_commit": "489ebb5",
+  "target": {
+    "credential_policy": "managed_credential_never_logged_or_committed",
+    "default_branch": "main",
+    "exact_candidate_file_count": 9,
+    "exact_candidate_files": [
+      "ATTRIBUTION.md",
+      "LICENSE.md",
+      "README.md",
+      "ROLLBACK.md",
+      "evidence_boundary.md",
+      "publication_manifest.json",
+      "release_summary.json",
+      "sanitization_report.json",
+      "source_release_manifest.json"
+    ],
+    "gated": false,
+    "license_identifier": "cc-by-4.0",
+    "namespace_policy": "authenticated_owner_or_explicit_organization",
+    "repository_name": "specsafe-bounded-negative-evidence-v1",
+    "repository_type": "dataset",
+    "visibility": "public"
+  },
+  "validity_marker": "CALIBRATION_UNFIT_FOR_ADAPTIVE_POLICY"
+}
