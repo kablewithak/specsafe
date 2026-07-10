@@ -1,0 +1,105 @@
+{
+  "bin_edges": [
+    0.0,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.8,
+    1.000000001
+  ],
+  "calibration_evidence_id": "v5-qwen-combined-v2-negative-case",
+  "calibrator_blocks": [
+    {
+      "calibrated_probability": 0.5227272727272727,
+      "lower_bound": 0.0,
+      "match_count": 22,
+      "nonmatch_count": 20,
+      "record_count": 42,
+      "source_bin_indexes": [
+        0
+      ],
+      "upper_bound": 0.2
+    },
+    {
+      "calibrated_probability": 0.6808510638297872,
+      "lower_bound": 0.2,
+      "match_count": 31,
+      "nonmatch_count": 14,
+      "record_count": 45,
+      "source_bin_indexes": [
+        1,
+        2
+      ],
+      "upper_bound": 0.4
+    },
+    {
+      "calibrated_probability": 0.8333333333333334,
+      "lower_bound": 0.4,
+      "match_count": 14,
+      "nonmatch_count": 2,
+      "record_count": 16,
+      "source_bin_indexes": [
+        3
+      ],
+      "upper_bound": 0.5
+    },
+    {
+      "calibrated_probability": 0.8888888888888888,
+      "lower_bound": 0.5,
+      "match_count": 7,
+      "nonmatch_count": 0,
+      "record_count": 7,
+      "source_bin_indexes": [
+        4
+      ],
+      "upper_bound": 0.6
+    },
+    {
+      "calibrated_probability": 0.967741935483871,
+      "lower_bound": 0.6,
+      "match_count": 29,
+      "nonmatch_count": 0,
+      "record_count": 29,
+      "source_bin_indexes": [
+        5
+      ],
+      "upper_bound": 0.8
+    },
+    {
+      "calibrated_probability": 0.9787234042553191,
+      "lower_bound": 0.8,
+      "match_count": 45,
+      "nonmatch_count": 0,
+      "record_count": 45,
+      "source_bin_indexes": [
+        6
+      ],
+      "upper_bound": 1.000000001
+    }
+  ],
+  "calibrator_fit_status": "fit_retained",
+  "calibrator_promotion_status": "not_authorized",
+  "calibrator_type": "fixed_bin_laplace_isotonic_v1",
+  "evidence_boundary": "Candidate calibrator fit only; no threshold, scheduler, public, or production promotion is authorized.",
+  "fit_negative_count": 36,
+  "fit_positive_count": 148,
+  "fit_record_count": 184,
+  "input_feature": "raw_confidence",
+  "laplace_alpha": 1.0,
+  "laplace_beta": 1.0,
+  "missing_or_out_of_range_input_policy": "fail_closed",
+  "model_id": "v5-qwen-combined-fixed-bin-isotonic-calibrator-v1",
+  "model_schema_version": "kaggle_calibrator_model_v1",
+  "output_feature": "calibrated_acceptance_probability",
+  "production_claim_status": "not_authorized",
+  "public_release_status": "not_authorized",
+  "scheduler_promotion_status": "not_authorized",
+  "source_archives": [
+    "v5-qwen-governed-trace-collection-v2/attempt-001-t4",
+    "v5-qwen-negative-case-expansion-v1/attempt-001-t4"
+  ],
+  "source_diagnostic_report": "evidence/kaggle-trace-calibration/v5-qwen-combined-v2-negative-case/combined_calibration_diagnostic_report.json",
+  "threshold_promotion_status": "not_authorized"
+}
