@@ -29,7 +29,9 @@ SpecSafe now contains:
 - governed Kaggle Qwen trace collection, retained archives, diagnostics, and provenance;
 - a retained Kaggle-derived candidate calibrator and fit-pool replay;
 - an independent no-refit holdout replay;
-- a formal promotion closeout that rejected the candidate after a ranking-safety regression.
+- a formal promotion closeout that rejected the candidate after a ranking-safety regression;
+- a public, hash-verified Hugging Face bounded negative-evidence Dataset; and
+- a frozen read-only evidence contract for the planned Hugging Face Space.
 
 SpecSafe does not contain in v1:
 
@@ -48,6 +50,7 @@ SpecSafe does not contain in v1:
 - [Controlled synthetic Phase 5 report](docs/reports/v5-controlled-synthetic-policy-comparison.md)
 - [Candidate-calibrator promotion closeout](docs/adr/ADR-0042-close-candidate-calibrator-promotion.md)
 - [Bounded negative-evidence publication route](docs/adr/ADR-0043-bounded-negative-evidence-publication-route.md)
+- [Hugging Face Dataset](https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1)
 
 The PRD remains the governing product and experiment contract. The dated status reconciliation
 updates repository facts and phase status without weakening the PRD's causal, evidence, privacy,
@@ -66,14 +69,15 @@ or publication requirements.
 | Kaggle small-model evidence | Complete for the current candidate path | Qwen traces, fit evidence, independent holdout replay, and closeout evidence are retained. |
 | Kaggle candidate-calibrator promotion | Closed, not promoted | Brier and fixed-bin ECE improved, but ranking safety regressed beyond tolerance. |
 | Threshold and scheduler promotion from Kaggle evidence | Not authorized | The current candidate is unfit for probability-driven automation. |
-| Bounded public negative-evidence pack | Next | Local deterministic packaging only; actual publication remains a later explicit gate. |
-| Hugging Face Dataset and Space publication | Not started | Requires a sanitized pack, license decision, publication review, and explicit evidence labels. |
+| Bounded public negative-evidence pack | Published and verified | The exact nine-file Dataset is public, ungated, hash-verified, and tied to a retained publication receipt. |
+| Hugging Face Space evidence index | Complete locally | A frozen read-only JSON contract retains the mixed policy result, failed confidence gate, and public Dataset identity. |
+| Hugging Face Space interface | Next | Requires the polished read-only React presentation, local UI tests, publication review, and controlled upload. |
 | Production validation | Out of scope | No live serving, operational load, production latency, throughput, or cost evidence exists. |
 
 ## Current maturity
 
 **Controlled synthetic policy comparison complete; Kaggle environment evaluated; current Kaggle
-candidate closed as diagnostic negative evidence.**
+candidate closed as diagnostic negative evidence; bounded public Dataset verified.**
 
 The controlled synthetic harness demonstrates reproducible causal policy comparison under declared
 fixtures and capacity profiles. The Kaggle evidence layer demonstrates a stronger reliability
@@ -85,7 +89,8 @@ candidate=v5-qwen-combined-fixed-bin-isotonic-calibrator-v1
 decision=KEEP_DIAGNOSTIC_ONLY
 promotion_attempt_status=closed_not_promoted
 automated_scheduling_confidence_status=unfit_use_conservative_fallback
-public_release_status=bounded_negative_evidence_only
+public_release_status=published_verified_bounded_negative_evidence
+hugging_face_space_status=frozen_evidence_index_ui_pending
 ```
 
 This is not a production-readiness claim. The current candidate may not drive automated scheduling,
@@ -94,10 +99,10 @@ threshold promotion, scheduler promotion, or adaptive-policy utility claims.
 ## Next governed route
 
 ```text
-post-closeout repository reconciliation
-  -> deterministic bounded negative-evidence release pack
-  -> publication-readiness review and license decision
-  -> optional Hugging Face Dataset / CPU-only precomputed replay surface
+verified Hugging Face Dataset and retained publication receipt
+  -> frozen read-only Space evidence index
+  -> visually polished local Space interface
+  -> Space publication candidate and controlled upload
   -> final project reconciliation and handover
 ```
 
@@ -122,5 +127,6 @@ python -m ruff format --check .
 
 ## License
 
-A license must be selected before the first public artifact is published. The local bounded
-negative-evidence pack may be prepared before that decision, but publication remains blocked.
+The bounded negative-evidence Dataset is published under CC BY 4.0 for the exact sanitized
+publication materials. That license does not apply to the SpecSafe source repository as a whole,
+retained archives, raw traces, the calibrator artifact, or upstream model materials.
