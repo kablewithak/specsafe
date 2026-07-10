@@ -1,123 +1,73 @@
 # Hugging Face Dataset Publication Runbook
 
-## Purpose
+## Current status
 
-Publish the exact authorized SpecSafe negative-evidence Dataset and retain proof that the public remote bytes match the local candidate.
-
-## Authorized target
+The initial Dataset publication completed successfully through GitHub Actions run `29128634332`.
 
 ```text
-namespace=KaboKableMolefe
-repository_name=specsafe-bounded-negative-evidence-v1
 repository_id=KaboKableMolefe/specsafe-bounded-negative-evidence-v1
 repository_type=dataset
 visibility=public
 gated=false
+published_revision=1ff151fc0646102f6e7b107d1bceb9a18e50098a
+publication_status=published_verified_receipt_retained
 ```
 
-## Primary route: GitHub Actions
-
-The workflow is:
-
-```text
-.github/workflows/publish-hugging-face-dataset.yml
-```
-
-It is manual only. It does not run on pushes or pull requests.
-
-### One-time GitHub setup
-
-In the SpecSafe GitHub repository:
-
-1. Open **Settings**.
-2. Open **Environments**.
-3. Create an environment named `hugging-face-publication`.
-4. Add an environment secret named `HF_TOKEN` containing a Hugging Face token with permission to create and update repositories under `KaboKableMolefe`.
-5. Optionally enable required reviewers for the environment.
-
-Do not add the token as a repository file, workflow input, command-line argument, issue comment, pull-request comment, or Actions output.
-
-### Manual publication
-
-After the workflow file is merged to `main`:
-
-1. Open **Actions**.
-2. Select **Publish Hugging Face Dataset**.
-3. Choose **Run workflow**.
-4. Keep the branch as `main`.
-5. Keep the namespace exactly as `KaboKableMolefe`.
-6. Enter the confirmation phrase exactly:
-
-```text
-PUBLISH_EXACT_DATASET
-```
-
-7. Run the workflow once.
-
-The workflow performs a no-write remote preflight before publication. It rejects an existing target repository rather than overwriting unknown remote content.
-
-### Successful result
-
-A successful run publishes and anonymously verifies:
+Public repository:
 
 ```text
 https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1
 ```
 
-It then uploads an Actions artifact named like:
-
-```text
-specsafe-hf-dataset-publication-receipt-<run-id>
-```
-
-The artifact contains:
+## Retained receipt
 
 ```text
 evidence/publication-receipts/specsafe-bounded-negative-evidence-v1/hugging_face_dataset_publication_receipt.json
 ```
 
-Download the artifact for the next receipt-review and repository-reconciliation pull request. Do not rerun a successful publication because the controlled publisher intentionally rejects an existing Dataset.
-
-## Local fallback
-
-Use the local path only if GitHub Actions is unavailable and the locally authenticated Hugging Face account is exactly `KaboKableMolefe`.
-
-### Local check
+Canonical local check:
 
 ```powershell
-python .\scripts\publish_hugging_face_dataset.py --check-local
+python .\scripts\verify_hugging_face_dataset_publication_receipt.py --check
 ```
 
-### Remote preflight
+The check verifies the exact receipt hash, strict schema, public repository identity, published
+revision, publication gates, nine-file allowlist, file hashes, and local-candidate alignment. It uses
+no Hugging Face credential and performs no remote mutation.
 
-```powershell
-python .\scripts\publish_hugging_face_dataset.py `
-  --preflight `
-  --namespace KaboKableMolefe
-```
+## Do not rerun publication
 
-### Controlled local publication
+Do not rerun `.github/workflows/publish-hugging-face-dataset.yml` for this release. The initial
+publication is complete, and the controlled publisher intentionally rejects an existing target
+repository.
 
-```powershell
-python .\scripts\publish_hugging_face_dataset.py `
-  --publish `
-  --namespace KaboKableMolefe
-```
+A future correction requires a new governed publication candidate, new authorization, and a new
+release identity. Do not overwrite or silently modify this retained release.
 
-The local route writes the receipt directly into the repository working tree. Review and commit it on a dedicated feature branch.
+## Credential handling
 
-## Stop conditions
+The GitHub environment secret `HF_TOKEN` remains outside repository history. It may be revoked after
+receipt retention if it is not needed for another explicitly authorized publication workflow.
 
-Stop and investigate if:
+Never add a token to a repository file, workflow input, command-line argument, issue, pull request,
+log, screenshot, or chat message.
 
-- authentication does not identify `KaboKableMolefe`;
-- the target Dataset already exists before the first authorized publication;
-- any local candidate byte has drifted;
-- any unexpected remote file appears;
-- any remote hash differs;
-- the public repository remains private or gated;
-- anonymous verification fails;
-- the publication receipt already exists; or
-- the workflow is not running from `main`.
+## Unpublish triggers
 
-Do not publish under another name or namespace merely to bypass a failed gate.
+Return the Dataset to private visibility or remove it when any of these conditions are confirmed:
+
+- public bytes differ from the retained receipt;
+- the negative-evidence or non-promotion labels disappear;
+- the license boundary is incorrect;
+- private data, credentials, raw prompts, traces, or model payloads are exposed;
+- publication occurred outside the authorized namespace or target; or
+- an unsupported promotion or production claim is introduced.
+
+Record the repository URL, published revision, publication-manifest SHA-256, reason, actor, and time
+before unpublishing. Rotate credentials if compromise or unauthorized use is suspected.
+
+## Next phase
+
+The next phase is a separate read-only Hugging Face Space. It will present the evidence as a polished,
+mobile-friendly visual case study without changing the Dataset, collecting user data, or running live
+model inference.

@@ -1,5 +1,10 @@
 from .hub_adapter import HuggingFaceHubGateway
 from .models import FileDigest, PublicationPlan, PublicationReceipt
+from .receipt_verification import (
+    PublicationReceiptVerificationError,
+    PublicationReceiptVerificationErrorCode,
+    check_committed_publication_receipt,
+)
 from .service import (
     DatasetPublicationError,
     DatasetPublicationErrorCode,
@@ -21,10 +26,13 @@ __all__ = [
     "HuggingFaceHubGateway",
     "PublicationPlan",
     "PublicationReceipt",
+    "PublicationReceiptVerificationError",
+    "PublicationReceiptVerificationErrorCode",
     "WorkflowPublicationGate",
     "WorkflowPublicationGateError",
     "WorkflowPublicationGateErrorCode",
     "build_publication_plan",
+    "check_committed_publication_receipt",
     "preflight_remote_publication",
     "publish_authorized_dataset",
     "validate_workflow_environment",
