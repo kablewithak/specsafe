@@ -3,63 +3,59 @@
 ## Slice
 
 ```text
-branch=feat/controlled-hugging-face-dataset-publisher
-commit_message=feat: add controlled hugging face dataset publisher
+branch=feat/github-actions-hugging-face-publication
+commit_message=feat: add manual hugging face publication workflow
 actual_publication=false
 ```
 
 ## Add
 
 ```text
-src/specsafe/hugging_face_dataset_publication/__init__.py
-src/specsafe/hugging_face_dataset_publication/models.py
-src/specsafe/hugging_face_dataset_publication/service.py
-src/specsafe/hugging_face_dataset_publication/hub_adapter.py
-scripts/publish_hugging_face_dataset.py
-tests/test_hugging_face_dataset_publication.py
-docs/adr/ADR-0046-controlled-hugging-face-dataset-publication.md
-docs/runbooks/hugging-face-dataset-publication.md
+.github/workflows/publish-hugging-face-dataset.yml
+src/specsafe/hugging_face_dataset_publication/workflow_gate.py
+scripts/validate_hugging_face_publication_dispatch.py
+tests/test_hugging_face_dataset_publication_workflow.py
+docs/adr/ADR-0047-manual-github-actions-hugging-face-publication.md
 ```
 
 ## Replace
 
 ```text
-pyproject.toml
+src/specsafe/hugging_face_dataset_publication/__init__.py
+docs/runbooks/hugging-face-dataset-publication.md
 APPLY_MANIFEST.md
 ```
 
-## Governing authorization
+## Exact target
 
 ```text
-authorization_decision_sha256=bf96e015379f8ad955791c28b8ba75b123b3d748d2192943190b056eb5aadc46
-authorization_decision_byte_count=4528
-publication_manifest_sha256=6dbc1c200b936a6f04e7a757886b7bf6c62e5d28a5ba5214f10036ae135a45d6
-exact_candidate_file_count=9
+namespace=KaboKableMolefe
+repository_name=specsafe-bounded-negative-evidence-v1
+repository_id=KaboKableMolefe/specsafe-bounded-negative-evidence-v1
+workflow_trigger=manual_workflow_dispatch_only
+protected_environment=hugging-face-publication
+secret_name=HF_TOKEN
+actual_publication=false
 ```
 
-## Publisher behavior
+## Workflow boundary
 
 ```text
-remote_existing_repository_policy=reject
-stage_visibility=private
-final_visibility=public
-gated=false
-private_exact_byte_verification=true
-anonymous_exact_byte_verification=true
-credential_logging=false
-actual_publication=false
+source_ref=refs/heads/main
+confirmation=PUBLISH_EXACT_DATASET
+permissions=contents_read_only
+automatic_git_commit=false
+automatic_git_push=false
+receipt_retained_as_workflow_artifact=true
 ```
 
 ## Validation
 
 ```powershell
-python -m pip install -e ".[dev,publish]"
-python .\scripts\publish_hugging_face_dataset.py --check-local
+python -m pytest .\tests\test_hugging_face_dataset_publication_workflow.py
 python -m pytest .\tests\test_hugging_face_dataset_publication.py
-python -m pytest .\tests\test_hugging_face_publication_authorization.py
-python -m pytest .\tests\test_hugging_face_publication_candidate.py
 python -m pytest
 python -m ruff check .
-python -m ruff format --check .\src\specsafe\hugging_face_dataset_publication .\scripts\publish_hugging_face_dataset.py .\tests\test_hugging_face_dataset_publication.py
+python -m ruff format --check .\src\specsafe\hugging_face_dataset_publication .\scripts\validate_hugging_face_publication_dispatch.py .\tests\test_hugging_face_dataset_publication_workflow.py
 git diff --check
 ```
