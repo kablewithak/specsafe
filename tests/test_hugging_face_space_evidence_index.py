@@ -123,7 +123,8 @@ def test_repository_readme_reconciles_publication_status() -> None:
     readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
     assert "Bounded public negative-evidence pack | Published and verified" in readme
     assert "Hugging Face Space evidence index | Complete locally" in readme
-    assert "hugging_face_space_status=frozen_evidence_index_ui_pending" in readme
+    assert "Hugging Face Space interface | Implemented locally; publication pending" in readme
+    assert "hugging_face_space_status=local_visual_shell_publication_pending" in readme
 
 
 def test_source_drift_is_rejected(tmp_path: Path) -> None:
