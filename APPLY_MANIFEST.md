@@ -1,80 +1,64 @@
-# Apply Manifest
+# Apply Manifest — Hugging Face Space Publication Receipt Reconciliation
 
-## Slice
+## Slice purpose
 
-```text
-branch=feat/hugging-face-space-prebuilt-publication-executor
-commit_message=feat: bind space publication to prebuilt static assets
-base_commit=ffab071
-actual_space_publication=false
-remote_mutation=false
-```
+Retain the successful v2 Hugging Face Space publication receipt and reconcile it against the exact anonymous remote repository and application state.
 
-## Add
-
-```text
-docs/adr/ADR-0053-rebind-space-publication-to-prebuilt-static-assets.md
-docs/experiments/hugging-face-space-prebuilt-publication-executor-result.md
-```
-
-## Replace
-
-```text
-APPLY_MANIFEST.md
-docs/runbooks/hugging-face-space-publication.md
-scripts/publish_hugging_face_space.py
-src/specsafe/hugging_face_space_publication/hub_adapter.py
-src/specsafe/hugging_face_space_publication/models.py
-src/specsafe/hugging_face_space_publication/service.py
-tests/test_hugging_face_space_hub_adapter.py
-tests/test_hugging_face_space_publication.py
-```
-
-## Publication contract
+## Frozen publication evidence
 
 ```text
 repository_id=KaboKableMolefe/specsafe-reliability-lab
-repository_type=space
-sdk=static
-app_file=index.html
-app_build_command=absent
-source_candidate_file_count=35
-source_candidate_tree_sha256=041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb
-candidate_file_count=5
+published_revision=453481cc16518ba8d8b425813aca4cfc74c2d0e8
+published_from_git_sha=e456a7f1b8b8a1e3dddbbfc3a0f54ed3049f8b52
+candidate_manifest_sha256=d377f18aa189cec1529b6385483059acecb675bdfc74eda767fc005e631f07e3
 candidate_tree_sha256=4e1eb0f186ed629e2a2fa352cd8943da5a5771aa43198f51814bb5013cf71362
+source_candidate_manifest_sha256=63a28d28416f67b55f62019ff6c5905c923de791564f8de8fa6859a676356b8d
+source_candidate_tree_sha256=041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb
 evidence_index_sha256=de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e
+remote_file_count=5
 provider_side_build_required=false
-existing_repository_policy=reject
-upload_mode=private_stage_exact_commit_public_release
-confirmation=PUBLISH_EXACT_PREBUILT_SPACE
+rollback_triggered=false
 ```
 
-## Tooling-slice boundary
+## Files supplied
 
 ```text
-failed_private_space_mutated=false
-remote_repository_created=false
-remote_files_uploaded=false
-publication_receipt_written=false
-publication_allowed_from_feature_branch=false
-next_authorized_step=merge_executor_then_remove_failed_private_space_and_publish_from_clean_main
+src/specsafe/hugging_face_space_publication_receipt/__init__.py
+src/specsafe/hugging_face_space_publication_receipt/hub_adapter.py
+src/specsafe/hugging_face_space_publication_receipt/models.py
+src/specsafe/hugging_face_space_publication_receipt/service.py
+scripts/verify_hugging_face_space_publication_receipt.py
+tests/test_hugging_face_space_publication_receipt.py
+tests/test_hugging_face_space_publication_receipt_hub_adapter.py
+docs/adr/ADR-0054-retain-and-reconcile-space-publication-receipt.md
+docs/experiments/hugging-face-space-publication-receipt-reconciliation-result.md
+docs/runbooks/hugging-face-space-publication-receipt-verification.md
 ```
 
-## Validation
+## Generated evidence
 
-```powershell
-python .\scripts\build_hugging_face_space_prebuilt_candidate.py --check
-python .\scripts\publish_hugging_face_space.py --check-local
-python -m pytest .\tests\test_hugging_face_space_publication.py
-python -m pytest .\tests\test_hugging_face_space_hub_adapter.py
-python -m pytest .\tests\test_hugging_face_space_publication_git_gate.py
-python -m pytest
-python -m ruff check .
-python -m ruff format --check `
-    .\src\specsafe\hugging_face_space_publication `
-    .\scripts\publish_hugging_face_space.py `
-    .\tests\test_hugging_face_space_publication.py `
-    .\tests\test_hugging_face_space_hub_adapter.py
-git diff --check
-git status
+The remote reconciliation command writes:
+
+```text
+evidence/publication-receipts/specsafe-reliability-lab/
+hugging_face_space_publication_reconciliation.json
+```
+
+The successful publication receipt already exists locally and must be staged with the generated reconciliation record:
+
+```text
+evidence/publication-receipts/specsafe-reliability-lab/
+hugging_face_space_publication_receipt.json
+```
+
+## Boundaries
+
+```text
+remote_mutation=false
+credential_used=false
+anonymous_remote_verification=true
+receipt_overwrite=false
+reconciliation_overwrite=false
+live_inference=false
+user_input_collection=false
 ```
