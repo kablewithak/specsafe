@@ -1,0 +1,216 @@
+{
+  "actual_space_publication": false,
+  "candidate_root_relative_path": "release/hugging-face-space-publication/specsafe-reliability-lab/candidate/space",
+  "candidate_tree_sha256": "041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb",
+  "evidence_index_byte_count": 9206,
+  "evidence_index_relative_path": "public/evidence/evidence_index.json",
+  "evidence_index_sha256": "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e",
+  "exact_candidate_file_count": 35,
+  "files": [
+    {
+      "byte_count": 53,
+      "relative_path": ".gitignore",
+      "sha256": "3c3d8ee71c7cb202a6b724b6c42b8e104651dfa767292c29592ae5e4679befbe"
+    },
+    {
+      "byte_count": 75,
+      "relative_path": ".npmrc",
+      "sha256": "27bc72205631c71b21618ec6f4f8453eb32d019c992afce9b64abe5cedea856c"
+    },
+    {
+      "byte_count": 1341,
+      "relative_path": "README.md",
+      "sha256": "8f6c21aa0d7a1d610fe25695628c010a17bd724b3fb555e577d3c61c0c17d9d2"
+    },
+    {
+      "byte_count": 1220,
+      "relative_path": "eslint.config.js",
+      "sha256": "fa79c378af0c232c421fc546b06b87b966ec8a8534a15cf845bfe5e79837f668"
+    },
+    {
+      "byte_count": 547,
+      "relative_path": "index.html",
+      "sha256": "0a39455756ccae6d15b7268cbff8cc063d0c68fc972de0bd38c9476134821b28"
+    },
+    {
+      "byte_count": 215576,
+      "relative_path": "package-lock.json",
+      "sha256": "3eaf32ce6fbef87af05ed9801cf4ba812589a4b4e0d8f9a82adced9361eee8b5"
+    },
+    {
+      "byte_count": 1636,
+      "relative_path": "package.json",
+      "sha256": "d2d203f1aa84aeb05ea1cbe86be357a340d4749f9981fdde6ac7713b7120f229"
+    },
+    {
+      "byte_count": 915,
+      "relative_path": "playwright.config.ts",
+      "sha256": "62e31625679a08c698a1648c47fc55fb4b1c1ca0b199954468bca2d4a03e118e"
+    },
+    {
+      "byte_count": 81,
+      "relative_path": "postcss.config.js",
+      "sha256": "e32657baf631d7c5f4dc67b4b2ee0ec8e7d5b3c41860e09cddce7c0377cd80bc"
+    },
+    {
+      "byte_count": 9206,
+      "relative_path": "public/evidence/evidence_index.json",
+      "sha256": "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
+    },
+    {
+      "byte_count": 1024,
+      "relative_path": "scripts/verify-evidence.mjs",
+      "sha256": "b3dfb1e7a232d9dc18a7b4d241c7313418b220375bb06db54cb5a4dbafda8e44"
+    },
+    {
+      "byte_count": 3176,
+      "relative_path": "src/App.test.tsx",
+      "sha256": "8ca56f6b7abca629c941a7babe7dcf9f08793038da177779b1b5ce3db20d1fc2"
+    },
+    {
+      "byte_count": 36298,
+      "relative_path": "src/App.tsx",
+      "sha256": "1d8e41f9cd8dd6ed48478c9811f8cbd04310d4ea5645b7068ce70bae1ae90e04"
+    },
+    {
+      "byte_count": 2003,
+      "relative_path": "src/components/metric-card.tsx",
+      "sha256": "8be99ef83683f38d7a5adde4c6e0e8dfb5c2d03b19fe80b7b07c41751269bd65"
+    },
+    {
+      "byte_count": 1269,
+      "relative_path": "src/components/policy-case-matrix.test.tsx",
+      "sha256": "b4b4a899a2d5a8c73fa2b4e42deb970aa329befc1603361cc7d2110fbbf457d0"
+    },
+    {
+      "byte_count": 5803,
+      "relative_path": "src/components/policy-case-matrix.tsx",
+      "sha256": "fb6205b1bda3df1ec851bf86e6b781546838993baebaf08312dc65ddcd23670f"
+    },
+    {
+      "byte_count": 570,
+      "relative_path": "src/components/section-heading.tsx",
+      "sha256": "f1941d746d03f63b15d9429f9d11c4024467e11994820cd5ca3cf05298c2fad6"
+    },
+    {
+      "byte_count": 898,
+      "relative_path": "src/components/ui/badge.tsx",
+      "sha256": "bd9b7d17d1b548051ff9cfb3fe7d0e94a16605ab84b897c16917826a752dab67"
+    },
+    {
+      "byte_count": 683,
+      "relative_path": "src/components/ui/card.tsx",
+      "sha256": "e9599860c8ccc448b21ec2f543b2b7690a25a204163a742ac702d863348eefed"
+    },
+    {
+      "byte_count": 1701,
+      "relative_path": "src/components/ui/tabs.tsx",
+      "sha256": "044e4a9132f8c8d442e015689135391dd98554be61c977b531733b5958c27a80"
+    },
+    {
+      "byte_count": 954,
+      "relative_path": "src/components/ui/tooltip.tsx",
+      "sha256": "e35d1c1a7c9afbb93543ec0fc73287c28a785edf10f2630b10b8e699b5d04614"
+    },
+    {
+      "byte_count": 1498,
+      "relative_path": "src/index.css",
+      "sha256": "3cbc74e8a5809bdec60682303fa65bcf130375a39b21abb765c42692fb7fa366"
+    },
+    {
+      "byte_count": 1808,
+      "relative_path": "src/lib/evidence.test.ts",
+      "sha256": "6fa2125a64fe847b7bf4b3ec7931228654e0d079fc62a1463ba96d63a9661918"
+    },
+    {
+      "byte_count": 5524,
+      "relative_path": "src/lib/evidence.ts",
+      "sha256": "6b9a637cca2ef2b486bdafe9229e2a9f2aa3aebc7d66cf316a36a35df812eabd"
+    },
+    {
+      "byte_count": 641,
+      "relative_path": "src/lib/format.ts",
+      "sha256": "0ca6ef3c7c0603f6505003d230f1cb5ceca98e7c4cd24272b6f5443cc7b583a8"
+    },
+    {
+      "byte_count": 177,
+      "relative_path": "src/lib/utils.ts",
+      "sha256": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68"
+    },
+    {
+      "byte_count": 313,
+      "relative_path": "src/main.tsx",
+      "sha256": "6def0f54afa24a5e5f942ea57995a4a4af620e10b386622de197939e0c4ea4b4"
+    },
+    {
+      "byte_count": 419,
+      "relative_path": "src/test/setup.ts",
+      "sha256": "11ef7a42f611bfa6c67501ed46df199ac60c32b8f67daa3d25481020e6e46eb6"
+    },
+    {
+      "byte_count": 38,
+      "relative_path": "src/vite-env.d.ts",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "byte_count": 1015,
+      "relative_path": "tailwind.config.ts",
+      "sha256": "1e86096d9b8b3d9440290f3ba11d30b950d89a54d92c177e9ed09ce5069f80af"
+    },
+    {
+      "byte_count": 2014,
+      "relative_path": "tests/smoke.spec.ts",
+      "sha256": "eeae00b7c5f36abeebf395779394fab2d6d2466b31076b2ad7fb49764f480115"
+    },
+    {
+      "byte_count": 707,
+      "relative_path": "tsconfig.app.json",
+      "sha256": "9735e723ed65a979a6660951b27ac3cf69db51ee52d989eef3539cda9cf81bc2"
+    },
+    {
+      "byte_count": 119,
+      "relative_path": "tsconfig.json",
+      "sha256": "770b4140bbb581e2dfd9ea9946ffc9c75a1d86ba7d2db5f77c83e37cbdf9d808"
+    },
+    {
+      "byte_count": 483,
+      "relative_path": "tsconfig.node.json",
+      "sha256": "950f4a0282775c36fcbbd64c828de2d7f6cdedfbf73abce3d201b3266cd073ea"
+    },
+    {
+      "byte_count": 519,
+      "relative_path": "vite.config.ts",
+      "sha256": "c928fdf9823c6de0c527af70aceecc5a613e36adbda18bd653f1458bb65be103"
+    }
+  ],
+  "live_inference": false,
+  "metadata": {
+    "app_build_command": "npm run build",
+    "app_file": "dist/index.html",
+    "color_from": "yellow",
+    "color_to": "red",
+    "datasets": [
+      "KaboKableMolefe/specsafe-bounded-negative-evidence-v1"
+    ],
+    "emoji": "\ud83d\udee1\ufe0f",
+    "full_width": true,
+    "header": "mini",
+    "pinned": false,
+    "sdk": "static",
+    "short_description": "AI reliability case study on adaptive verification.",
+    "tags": [
+      "ai-evaluation",
+      "reliability",
+      "verification",
+      "calibration"
+    ],
+    "title": "SpecSafe - When Should AI Spend More Compute?"
+  },
+  "next_authorized_step": "controlled_remote_space_creation_and_upload",
+  "remote_mutation": false,
+  "schema_version": "specsafe_hugging_face_space_publication_candidate_manifest_v1",
+  "source_app_relative_path": "apps/specsafe-reliability-lab",
+  "source_commit": "2848e80",
+  "space_repository_name": "specsafe-reliability-lab",
+  "user_input_collection": false
+}
