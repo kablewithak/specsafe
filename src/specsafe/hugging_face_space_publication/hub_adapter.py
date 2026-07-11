@@ -5,9 +5,19 @@ import urllib.error
 import urllib.request
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 from .service import HubGateway
+
+_STATIC_SPACE_INITIAL_SCAFFOLD: Final = frozenset(
+    {
+        ".gitattributes",
+        "README.md",
+        "index.html",
+        "style.css",
+    }
+)
+_SERVICE_VISIBLE_INITIAL_FILES: Final = frozenset({".gitattributes"})
 
 
 class HuggingFaceSpaceHubGateway(HubGateway):
@@ -21,6 +31,7 @@ class HuggingFaceSpaceHubGateway(HubGateway):
                 "Install the publication dependency with: python -m pip install -e '.[publish]'"
             ) from error
         self._api = HfApi(token=token)
+        self._initial_scaffold_files: tuple[str, ...] = ()
 
     def identity(self) -> Mapping[str, object]:
         return self._api.whoami(cache=True)
@@ -45,13 +56,20 @@ class HuggingFaceSpaceHubGateway(HubGateway):
         revision: str | None,
         anonymous: bool,
     ) -> tuple[str, ...]:
-        files = self._api.list_repo_files(
-            repo_id,
-            repo_type="space",
-            revision=revision,
-            token=False if anonymous else None,
+        files = tuple(
+            sorted(
+                self._api.list_repo_files(
+                    repo_id,
+                    repo_type="space",
+                    revision=revision,
+                    token=False if anonymous else None,
+                )
+            )
         )
-        return tuple(sorted(files))
+        if revision is None and not anonymous:
+            self._initial_scaffold_files = files
+            return _normalize_initial_space_files(files)
+        return files
 
     def commit_exact_files(
         self,
@@ -62,25 +80,34 @@ class HuggingFaceSpaceHubGateway(HubGateway):
     ) -> str:
         from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
+        effective_delete_paths = _merge_initial_scaffold_deletions(
+            initial_files=self._initial_scaffold_files,
+            candidate_files=tuple(files),
+            requested_delete_paths=delete_paths,
+        )
         operations = [
             CommitOperationAdd(path_in_repo=name, path_or_fileobj=path)
             for name, path in sorted(files.items())
         ]
         operations.extend(
-            CommitOperationDelete(path_in_repo=path, is_folder=False) for path in delete_paths
+            CommitOperationDelete(path_in_repo=path, is_folder=False)
+            for path in effective_delete_paths
         )
-        result = self._api.create_commit(
-            repo_id,
-            operations=operations,
-            commit_message="Publish exact SpecSafe reliability Space",
-            commit_description=(
-                "Exact authorized static-Space candidate. Read-only evidence presentation; "
-                "no live inference, input collection, or production performance claim."
-            ),
-            repo_type="space",
-            revision="main",
-            create_pr=False,
-        )
+        try:
+            result = self._api.create_commit(
+                repo_id,
+                operations=operations,
+                commit_message="Publish exact SpecSafe reliability Space",
+                commit_description=(
+                    "Exact authorized static-Space candidate. Read-only evidence presentation; "
+                    "no live inference, input collection, or production performance claim."
+                ),
+                repo_type="space",
+                revision="main",
+                create_pr=False,
+            )
+        finally:
+            self._initial_scaffold_files = ()
         return result.oid
 
     def read_file(
@@ -187,6 +214,23 @@ class HuggingFaceSpaceHubGateway(HubGateway):
             "public Space application did not become ready before timeout; "
             f"last_state={_safe_state(last_state)}, last_error={last_error}"
         )
+
+
+def _normalize_initial_space_files(files: tuple[str, ...]) -> tuple[str, ...]:
+    actual = set(files)
+    if not actual.issubset(_STATIC_SPACE_INITIAL_SCAFFOLD):
+        return files
+    return tuple(sorted(actual & _SERVICE_VISIBLE_INITIAL_FILES))
+
+
+def _merge_initial_scaffold_deletions(
+    *,
+    initial_files: tuple[str, ...],
+    candidate_files: tuple[str, ...],
+    requested_delete_paths: tuple[str, ...],
+) -> tuple[str, ...]:
+    stale_scaffold = set(initial_files) - set(candidate_files)
+    return tuple(sorted(set(requested_delete_paths) | stale_scaffold))
 
 
 def _normalize_application_url(host: Any, subdomain: Any) -> str | None:
