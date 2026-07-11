@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { CapacityChart } from "@/components/capacity-chart";
 import { MetricCard } from "@/components/metric-card";
+import { PolicyCaseMatrix } from "@/components/policy-case-matrix";
 import { SectionHeading } from "@/components/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -28,20 +28,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { loadEvidence, type EvidenceCase, type EvidenceIndex } from "@/lib/evidence";
-import { formatDecimal, humanizeIdentifier, shortHash } from "@/lib/format";
-
-function outcomeVariant(result: EvidenceCase["adaptive_vs_fixed"]) {
-  if (result === "adaptive_higher_utility") return "success" as const;
-  if (result === "adaptive_lower_utility") return "danger" as const;
-  return "neutral" as const;
-}
-
-function outcomeLabel(result: EvidenceCase["adaptive_vs_fixed"]) {
-  if (result === "adaptive_higher_utility") return "Adaptive higher";
-  if (result === "adaptive_lower_utility") return "Adaptive lower";
-  return "Neutral";
-}
+import { loadEvidence, type EvidenceIndex } from "@/lib/evidence";
+import { formatDecimal, shortHash } from "@/lib/format";
 
 function LoadingState() {
   return (
@@ -70,9 +58,40 @@ function ErrorState({ message }: { message: string }) {
   );
 }
 
+function ResultCount({ label, value, tone }: { label: string; value: number; tone: "win" | "neutral" | "loss" }) {
+  const styles = {
+    win: "border-emerald-300/18 bg-emerald-400/[0.07] text-emerald-100",
+    neutral: "border-sky-200/18 bg-sky-200/[0.07] text-sky-100",
+    loss: "border-rose-300/18 bg-rose-400/[0.07] text-rose-100",
+  } as const;
+
+  return (
+    <div className={`rounded-2xl border p-4 text-center ${styles[tone]}`}>
+      <p className="text-3xl font-semibold">{value}</p>
+      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-white/48">{label}</p>
+    </div>
+  );
+}
+
 function AppContent({ evidence }: { evidence: EvidenceIndex }) {
-  const loss = evidence.cases.find((item) => item.adaptive_vs_fixed === "adaptive_lower_utility");
-  const wins = evidence.cases.filter((item) => item.adaptive_vs_fixed === "adaptive_higher_utility");
+  const fixedWins = evidence.cases.filter(
+    (item) => item.adaptive_vs_fixed === "adaptive_higher_utility",
+  );
+  const fixedNeutral = evidence.cases.filter(
+    (item) => item.adaptive_vs_fixed === "utility_neutral",
+  );
+  const fixedLosses = evidence.cases.filter(
+    (item) => item.adaptive_vs_fixed === "adaptive_lower_utility",
+  );
+  const thresholdWins = evidence.cases.filter(
+    (item) => item.adaptive_vs_threshold === "adaptive_higher_utility",
+  );
+  const thresholdNeutral = evidence.cases.filter(
+    (item) => item.adaptive_vs_threshold === "utility_neutral",
+  );
+  const thresholdLosses = evidence.cases.filter(
+    (item) => item.adaptive_vs_threshold === "adaptive_lower_utility",
+  );
 
   return (
     <TooltipProvider delayDuration={180}>
@@ -85,7 +104,10 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
       <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
         <header className="sticky top-0 z-40 border-b border-white/8 bg-background/78 backdrop-blur-xl">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-            <a href="#overview" className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
+            <a
+              href="#overview"
+              className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+            >
               <span className="grid h-9 w-9 place-items-center rounded-xl border border-amber-300/25 bg-amber-300/10 font-mono text-sm font-semibold text-amber-100">
                 SS
               </span>
@@ -94,7 +116,11 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                 <span className="hidden text-xs text-white/42 sm:block">Reliability evidence lab</span>
               </span>
             </a>
-            <nav aria-label="Primary navigation" className="hidden items-center gap-6 text-sm text-white/55 md:flex">
+            <nav
+              aria-label="Primary navigation"
+              className="hidden items-center gap-6 text-sm text-white/55 md:flex"
+            >
+              <a className="hover:text-white" href="#north-star">North star</a>
               <a className="hover:text-white" href="#policy-results">Results</a>
               <a className="hover:text-white" href="#confidence-gate">Safety gate</a>
               <a className="hover:text-white" href="#evidence">Evidence</a>
@@ -128,15 +154,18 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                     {evidence.tested_question}
                   </p>
                 </div>
-                <div className="max-w-3xl rounded-3xl border border-white/10 bg-white/[0.04] p-6 md:p-7">
-                  <p className="text-lg leading-8 text-white/82">{evidence.quick_summary}</p>
+                <div className="max-w-3xl rounded-3xl border border-amber-200/14 bg-amber-200/[0.04] p-6 md:p-7">
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-amber-200/70">
+                    Short answer
+                  </p>
+                  <p className="mt-3 text-lg leading-8 text-white/82">{evidence.quick_summary}</p>
                 </div>
                 <div className="flex flex-wrap gap-3 text-sm">
                   <a
-                    href="#policy-results"
+                    href="#north-star"
                     className="inline-flex items-center gap-2 rounded-xl bg-amber-200 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
-                    See the mixed result <ArrowRight className="h-4 w-4" />
+                    Start with the question <ArrowRight className="h-4 w-4" />
                   </a>
                   <a
                     href="#confidence-gate"
@@ -165,18 +194,24 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                       <p className="mt-2 text-5xl font-semibold tracking-tight text-rose-200">
                         {formatDecimal(evidence.calibration_gate.degradation_multiple_of_limit, 2)}×
                       </p>
-                      <p className="mt-2 text-xs uppercase tracking-[0.18em] text-white/42">the permitted degradation</p>
+                      <p className="mt-2 text-xs uppercase tracking-[0.18em] text-white/42">
+                        the permitted degradation
+                      </p>
                     </div>
                     <XCircle className="h-12 w-12 text-rose-300/80" aria-hidden="true" />
                   </div>
                   <div className="grid gap-3 border-t border-white/8 pt-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                     <div>
                       <p className="text-xs text-white/42">Decision</p>
-                      <p className="mt-1 font-mono text-sm text-white">{evidence.calibration_gate.decision_outcome}</p>
+                      <p className="mt-1 font-mono text-sm text-white">
+                        {evidence.calibration_gate.decision_outcome}
+                      </p>
                     </div>
                     <div>
                       <p className="text-xs text-white/42">Failure label</p>
-                      <p className="mt-1 font-mono text-sm text-rose-200">{evidence.calibration_gate.failure_label}</p>
+                      <p className="mt-1 font-mono text-sm text-rose-200">
+                        {evidence.calibration_gate.failure_label}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -184,29 +219,93 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
             </div>
           </section>
 
-          <section id="what-was-tested" className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+          <section id="north-star" className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
             <SectionHeading
-              eyebrow="01 / What was tested"
-              title="Three policies. One decision-time boundary."
-              description="Each policy was compared on the same governed cases. The adaptive policy could use current calibrated confidence and current capacity, but never future outcomes."
+              eyebrow="01 / North star"
+              title="Spend compute where it helps—without cheating."
+              description="SpecSafe was built to test one reliability question before any adaptive policy earns the right to control verification work."
             />
-            <div className="mt-10 grid gap-5 md:grid-cols-3">
-              {evidence.policies.map((policy, index) => (
-                <Card key={policy.policy_key} className={policy.capacity_aware ? "border-emerald-300/20 bg-emerald-950/10" : undefined}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono text-xs text-white/35">0{index + 1}</span>
-                      <Badge variant={policy.capacity_aware ? "success" : "neutral"}>
-                        {policy.capacity_aware ? "Capacity-aware" : "Fixed rule"}
-                      </Badge>
-                    </div>
-                    <h3 className="pt-8 text-2xl font-semibold text-white">{policy.display_name}</h3>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="leading-7 text-white/55">{policy.plain_language_description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              <Card className="border-amber-300/18 bg-amber-300/[0.04]">
+                <CardHeader>
+                  <Gauge className="h-6 w-6 text-amber-200" aria-hidden="true" />
+                  <p className="pt-5 font-mono text-xs uppercase tracking-[0.18em] text-amber-200/70">
+                    Question
+                  </p>
+                  <h2 className="text-2xl font-semibold text-white">
+                    Can adaptive verification spend compute more intelligently?
+                  </h2>
+                </CardHeader>
+                <CardContent>
+                  <p className="leading-7 text-white/58">
+                    It may use current calibrated confidence and current capacity, but never future outcomes or retrospective answers.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Scale className="h-6 w-6 text-sky-200" aria-hidden="true" />
+                  <p className="pt-5 font-mono text-xs uppercase tracking-[0.18em] text-sky-200/70">
+                    Method
+                  </p>
+                  <h2 className="text-2xl font-semibold text-white">
+                    Compare three policies on the same six governed cases.
+                  </h2>
+                </CardHeader>
+                <CardContent>
+                  <p className="leading-7 text-white/58">
+                    Fixed length, static threshold, and adaptive scheduling face identical conditions. Unsafe retrospective controls stay excluded.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-rose-300/18 bg-rose-400/[0.04]">
+                <CardHeader>
+                  <ShieldAlert className="h-6 w-6 text-rose-200" aria-hidden="true" />
+                  <p className="pt-5 font-mono text-xs uppercase tracking-[0.18em] text-rose-200/70">
+                    Answer
+                  </p>
+                  <h2 className="text-2xl font-semibold text-white">
+                    Sometimes useful. Not safe to activate.
+                  </h2>
+                </CardHeader>
+                <CardContent>
+                  <p className="leading-7 text-white/58">
+                    Adaptive scheduling helped in constrained conditions, stayed neutral in several cases, and lost once. The real confidence candidate then failed ranking safety.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="mt-16">
+              <div className="max-w-3xl">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/38">
+                  The three policies
+                </p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                  One decision-time boundary. Three ways to spend verification work.
+                </h2>
+              </div>
+              <div className="mt-8 grid gap-5 md:grid-cols-3">
+                {evidence.policies.map((policy, index) => (
+                  <Card
+                    key={policy.policy_key}
+                    className={policy.capacity_aware ? "border-emerald-300/20 bg-emerald-950/10" : undefined}
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-mono text-xs text-white/35">0{index + 1}</span>
+                        <Badge variant={policy.capacity_aware ? "success" : "neutral"}>
+                          {policy.capacity_aware ? "Capacity-aware" : "Fixed rule"}
+                        </Badge>
+                      </div>
+                      <h3 className="pt-8 text-2xl font-semibold text-white">{policy.display_name}</h3>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="leading-7 text-white/55">{policy.plain_language_description}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -215,85 +314,127 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
               <SectionHeading
                 eyebrow="02 / Policy results"
                 title="The adaptive policy was useful, not universal."
-                description="A trustworthy case study keeps the wins, the neutral cases, and the loss visible at the same time."
+                description="The result is mixed by design: wins, neutral cases, and the loss must all remain legible at the same time."
               />
 
-              <div className="mt-10 grid gap-5 lg:grid-cols-2">
+              <Card className="mt-10 overflow-hidden">
+                <CardHeader className="border-b border-white/8">
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-white/40">
+                    Outcome scoreboard
+                  </p>
+                  <h3 className="text-2xl font-semibold text-white">How adaptive scheduling compared</h3>
+                  <p className="max-w-3xl text-sm leading-6 text-white/52">
+                    Neutral is not missing data. It means the adaptive policy produced the same governed utility as the comparator.
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-6 pt-6">
+                  <div className="grid gap-4 lg:grid-cols-[1fr_1.35fr] lg:items-center">
+                    <div>
+                      <p className="text-sm text-white/48">Adaptive versus fixed length</p>
+                      <p className="mt-2 text-2xl font-semibold text-white">2 wins · 3 neutral · 1 loss</p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      <ResultCount label="Wins" value={evidence.adaptive_vs_fixed.adaptive_higher} tone="win" />
+                      <ResultCount label="Neutral" value={evidence.adaptive_vs_fixed.neutral} tone="neutral" />
+                      <ResultCount label="Loss" value={evidence.adaptive_vs_fixed.adaptive_lower} tone="loss" />
+                    </div>
+                  </div>
+                  <div className="h-px bg-white/8" />
+                  <div className="grid gap-4 lg:grid-cols-[1fr_1.35fr] lg:items-center">
+                    <div>
+                      <p className="text-sm text-white/48">Adaptive versus static threshold</p>
+                      <p className="mt-2 text-2xl font-semibold text-white">3 wins · 2 neutral · 1 loss</p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      <ResultCount label="Wins" value={evidence.adaptive_vs_threshold.adaptive_higher} tone="win" />
+                      <ResultCount label="Neutral" value={evidence.adaptive_vs_threshold.neutral} tone="neutral" />
+                      <ResultCount label="Loss" value={evidence.adaptive_vs_threshold.adaptive_lower} tone="loss" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="mt-6 grid gap-5 lg:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <p className="text-sm text-white/48">Adaptive versus fixed length</p>
-                    <h3 className="text-3xl font-semibold text-white">2 wins · 3 neutral · 1 loss</h3>
+                    <Badge>Against fixed length</Badge>
+                    <h3 className="pt-3 text-xl font-semibold text-white">Every case bucket, named explicitly</h3>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-6 gap-1" aria-label="Two wins, three neutral cases, and one loss">
-                      {Array.from({ length: 2 }).map((_, index) => <span key={`win-${index}`} className="h-3 rounded-full bg-emerald-300/75" />)}
-                      {Array.from({ length: 3 }).map((_, index) => <span key={`neutral-${index}`} className="h-3 rounded-full bg-white/18" />)}
-                      <span className="h-3 rounded-full bg-rose-300/75" />
-                    </div>
+                  <CardContent className="space-y-4 text-sm">
+                    <p className="leading-6 text-white/58">
+                      <span className="font-semibold text-emerald-200">Wins:</span>{" "}
+                      {fixedWins.map((item) => item.case_id).join(" · ")}
+                    </p>
+                    <p data-testid="fixed-neutral-cases" className="leading-6 text-white/58">
+                      <span className="font-semibold text-sky-200">Neutral:</span>{" "}
+                      {fixedNeutral.map((item) => item.case_id).join(" · ")}
+                    </p>
+                    <p className="leading-6 text-white/58">
+                      <span className="font-semibold text-rose-200">Loss:</span>{" "}
+                      {fixedLosses.map((item) => item.case_id).join(" · ")}
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
-                    <p className="text-sm text-white/48">Adaptive versus static threshold</p>
-                    <h3 className="text-3xl font-semibold text-white">3 wins · 2 neutral · 1 loss</h3>
+                    <Badge>Against static threshold</Badge>
+                    <h3 className="pt-3 text-xl font-semibold text-white">The adversarial case becomes an extra win</h3>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-6 gap-1" aria-label="Three wins, two neutral cases, and one loss">
-                      {Array.from({ length: 3 }).map((_, index) => <span key={`win-${index}`} className="h-3 rounded-full bg-emerald-300/75" />)}
-                      {Array.from({ length: 2 }).map((_, index) => <span key={`neutral-${index}`} className="h-3 rounded-full bg-white/18" />)}
-                      <span className="h-3 rounded-full bg-rose-300/75" />
-                    </div>
+                  <CardContent className="space-y-4 text-sm">
+                    <p className="leading-6 text-white/58">
+                      <span className="font-semibold text-emerald-200">Wins:</span>{" "}
+                      {thresholdWins.map((item) => item.case_id).join(" · ")}
+                    </p>
+                    <p className="leading-6 text-white/58">
+                      <span className="font-semibold text-sky-200">Neutral:</span>{" "}
+                      {thresholdNeutral.map((item) => item.case_id).join(" · ")}
+                    </p>
+                    <p className="leading-6 text-white/58">
+                      <span className="font-semibold text-rose-200">Loss:</span>{" "}
+                      {thresholdLosses.map((item) => item.case_id).join(" · ")}
+                    </p>
                   </CardContent>
                 </Card>
               </div>
 
-              <div className="mt-8 grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
-                <CapacityChart cases={evidence.cases} />
-                <div className="space-y-4">
-                  <Card className="border-rose-400/25 bg-rose-950/15">
-                    <CardHeader>
-                      <Badge variant="danger">The loss</Badge>
-                      <h3 className="text-xl font-semibold text-white">{loss?.case_id} · Moderate load</h3>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="leading-7 text-white/58">{loss?.plain_language_result}</p>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-emerald-400/18 bg-emerald-950/10">
-                    <CardHeader>
-                      <Badge variant="success">The clearest wins</Badge>
-                      <h3 className="text-xl font-semibold text-white">
-                        {wins.map((item) => item.case_id).join(" and ")}
-                      </h3>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {wins.map((item) => (
-                        <p key={item.case_id} className="text-sm leading-6 text-white/55">
-                          <span className="font-mono text-emerald-200">{item.case_id}</span> — {item.plain_language_result}
-                        </p>
-                      ))}
-                    </CardContent>
-                  </Card>
-                </div>
+              <div className="mt-8">
+                <PolicyCaseMatrix cases={evidence.cases} />
               </div>
 
-              <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {evidence.cases.map((item) => (
-                  <Card key={item.case_id} className="shadow-none">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="font-mono text-sm text-white/70">{item.case_id}</span>
-                        <Badge variant={outcomeVariant(item.adaptive_vs_fixed)}>
-                          {outcomeLabel(item.adaptive_vs_fixed)}
-                        </Badge>
-                      </div>
-                      <h3 className="pt-3 text-lg font-semibold text-white">{humanizeIdentifier(item.capacity_profile)}</h3>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm leading-6 text-white/52">{item.plain_language_result}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="mt-8 grid gap-5 md:grid-cols-3">
+                <Card className="border-sky-200/16 bg-sky-200/[0.035]">
+                  <CardHeader>
+                    <Badge variant="neutral">Why neutral matters</Badge>
+                    <h3 className="pt-3 text-xl font-semibold text-white">No forced winner</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/58">
+                      Three cases matched fixed length exactly. Keeping them visible prevents a few dramatic wins from becoming a universal claim.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="border-rose-400/25 bg-rose-950/15">
+                  <CardHeader>
+                    <Badge variant="danger">The loss</Badge>
+                    <h3 className="pt-3 text-xl font-semibold text-white">MPC5-103 · Moderate load</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/58">
+                      {fixedLosses[0]?.plain_language_result}
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="border-emerald-400/18 bg-emerald-950/10">
+                  <CardHeader>
+                    <Badge variant="success">The clearest wins</Badge>
+                    <h3 className="pt-3 text-xl font-semibold text-white">MPC5-104 and MPC5-105</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/58">
+                      Adaptive scheduling avoided the large losses produced by fixed rules under saturated and jagged capacity.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </section>
@@ -322,11 +463,15 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
                       <p className="text-xs text-white/42">Allowed degradation</p>
-                      <p className="mt-2 font-mono text-xl text-white">{evidence.calibration_gate.maximum_allowed_auroc_degradation}</p>
+                      <p className="mt-2 font-mono text-xl text-white">
+                        {evidence.calibration_gate.maximum_allowed_auroc_degradation}
+                      </p>
                     </div>
                     <div className="rounded-2xl border border-rose-300/15 bg-rose-400/[0.05] p-4">
                       <p className="text-xs text-white/42">Observed delta</p>
-                      <p className="mt-2 font-mono text-xl text-rose-200">{evidence.calibration_gate.observed_auroc_delta}</p>
+                      <p className="mt-2 font-mono text-xl text-rose-200">
+                        {evidence.calibration_gate.observed_auroc_delta}
+                      </p>
                     </div>
                   </div>
                   <div className="flex gap-3 rounded-2xl border border-rose-300/15 bg-rose-400/[0.06] p-4">
@@ -348,24 +493,39 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                 description={evidence.final_interpretation}
               />
               <div className="mt-10 grid gap-5 md:grid-cols-3">
-                {[
-                  [Scale, "Mixed evidence is still useful", "The adaptive policy earned real wins, but one loss prevents a global-winner claim."],
-                  [LockKeyhole, "Safety gates must be independent", "A model can improve calibration metrics and still become less safe for ranking-driven automation."],
-                  [FileCheck2, "Negative evidence is a deliverable", "Blocking activation is a successful reliability outcome when the promotion contract is breached."],
-                ].map(([Icon, title, text]) => {
-                  const IconComponent = Icon as typeof Scale;
-                  return (
-                    <Card key={String(title)}>
-                      <CardHeader>
-                        <IconComponent className="h-6 w-6 text-amber-200" aria-hidden="true" />
-                        <h3 className="pt-5 text-xl font-semibold text-white">{String(title)}</h3>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="leading-7 text-white/55">{String(text)}</p>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                <Card>
+                  <CardHeader>
+                    <Scale className="h-6 w-6 text-amber-200" aria-hidden="true" />
+                    <h3 className="pt-5 text-xl font-semibold text-white">Mixed evidence is still useful</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/55">
+                      The adaptive policy earned real wins, but one loss prevents a global-winner claim.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <LockKeyhole className="h-6 w-6 text-amber-200" aria-hidden="true" />
+                    <h3 className="pt-5 text-xl font-semibold text-white">Safety gates must be independent</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/55">
+                      A model can improve calibration metrics and still become less safe for ranking-driven automation.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <FileCheck2 className="h-6 w-6 text-amber-200" aria-hidden="true" />
+                    <h3 className="pt-5 text-xl font-semibold text-white">Negative evidence is a deliverable</h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-7 text-white/55">
+                      Blocking activation is a successful reliability outcome when the promotion contract is breached.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </section>
@@ -385,22 +545,31 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
               </TabsList>
               <TabsContent value="boundary">
                 <div className="grid gap-5 md:grid-cols-3">
-                  {[
-                    [Gauge, "Valid causal comparisons", String(evidence.valid_causal_comparisons)],
-                    [Ban, "Unsafe controls excluded", String(evidence.unsafe_retrospective_controls_excluded)],
-                    [Database, "User input collected", evidence.user_input_collection ? "Yes" : "No"],
-                  ].map(([Icon, label, value]) => {
-                    const IconComponent = Icon as typeof Gauge;
-                    return (
-                      <Card key={String(label)}>
-                        <CardHeader>
-                          <IconComponent className="h-5 w-5 text-amber-200" />
-                          <p className="pt-4 text-sm text-white/45">{String(label)}</p>
-                          <p className="text-4xl font-semibold text-white">{String(value)}</p>
-                        </CardHeader>
-                      </Card>
-                    );
-                  })}
+                  <Card>
+                    <CardHeader>
+                      <Gauge className="h-5 w-5 text-amber-200" />
+                      <p className="pt-4 text-sm text-white/45">Valid causal comparisons</p>
+                      <p className="text-4xl font-semibold text-white">{evidence.valid_causal_comparisons}</p>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <Ban className="h-5 w-5 text-amber-200" />
+                      <p className="pt-4 text-sm text-white/45">Unsafe controls excluded</p>
+                      <p className="text-4xl font-semibold text-white">
+                        {evidence.unsafe_retrospective_controls_excluded}
+                      </p>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <Database className="h-5 w-5 text-amber-200" />
+                      <p className="pt-4 text-sm text-white/45">User input collected</p>
+                      <p className="text-4xl font-semibold text-white">
+                        {evidence.user_input_collection ? "Yes" : "No"}
+                      </p>
+                    </CardHeader>
+                  </Card>
                 </div>
               </TabsContent>
               <TabsContent value="claims">
@@ -465,7 +634,10 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {evidence.source_artifacts.map((source) => (
-                      <div key={source.relative_path} className="grid gap-2 rounded-2xl border border-white/8 bg-black/20 p-4 md:grid-cols-[1fr_auto] md:items-center">
+                      <div
+                        key={source.relative_path}
+                        className="grid gap-2 rounded-2xl border border-white/8 bg-black/20 p-4 md:grid-cols-[1fr_auto] md:items-center"
+                      >
                         <code className="break-all text-xs text-white/62">{source.relative_path}</code>
                         <code className="text-xs text-amber-100/72">{shortHash(source.sha256)}</code>
                       </div>
@@ -485,8 +657,12 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
                       <Badge>Ungated</Badge>
                       <Badge>{evidence.dataset_publication.exact_file_count} exact files</Badge>
                     </div>
-                    <h3 className="pt-4 text-2xl font-semibold text-white">{evidence.dataset_publication.repository_id}</h3>
-                    <p className="text-white/52">Anonymous public verification passed against revision {evidence.dataset_publication.published_revision}.</p>
+                    <h3 className="pt-4 text-2xl font-semibold text-white">
+                      {evidence.dataset_publication.repository_id}
+                    </h3>
+                    <p className="text-white/52">
+                      Anonymous public verification passed against revision {evidence.dataset_publication.published_revision}.
+                    </p>
                   </CardHeader>
                   <CardContent>
                     <a

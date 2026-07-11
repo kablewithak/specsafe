@@ -3,12 +3,20 @@ import { expect, test } from "@playwright/test";
 const heroHeading = "When should AI spend more compute?";
 
 for (const route of ["/"]) {
-  test(`renders the governed visual shell at ${route}`, async ({ page }) => {
+  test(`renders the governed visual story at ${route}`, async ({ page }) => {
     await page.goto(route);
 
     await expect(page.getByRole("heading", { name: heroHeading })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Can adaptive verification spend compute more intelligently?",
+      }),
+    ).toBeVisible();
     await expect(page.getByText("Activation blocked").first()).toBeVisible();
     await expect(page.getByText("2 wins · 3 neutral · 1 loss")).toBeVisible();
+    await expect(page.getByTestId("fixed-neutral-cases")).toContainText(
+      "MPC5-101 · MPC5-102 · MPC5-106",
+    );
     await expect(
       page.getByRole("heading", { name: "MPC5-103 · Moderate load" }),
     ).toBeVisible();

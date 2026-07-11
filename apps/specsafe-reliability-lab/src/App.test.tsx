@@ -1,10 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-vi.mock("@/components/capacity-chart", () => ({
-  CapacityChart: () => <div aria-label="Utility comparison chart" />,
-}));
-
 import App from "./App";
 import evidenceJson from "../public/evidence/evidence_index.json";
 
@@ -23,18 +19,43 @@ afterEach(() => {
 });
 
 describe("SpecSafe visual shell", () => {
-  it("makes the blocked decision and mixed result visible", async () => {
+  it("frames the north star before presenting the mixed result", async () => {
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "When should AI spend more compute?" })).toBeVisible();
+    expect(
+      await screen.findByRole("heading", { name: "When should AI spend more compute?" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Can adaptive verification spend compute more intelligently?",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Compare three policies on the same six governed cases.",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Sometimes useful. Not safe to activate." }),
+    ).toBeVisible();
+  });
+
+  it("makes wins, neutral cases, the loss, and blocked activation explicit", async () => {
+    render(<App />);
+
+    await screen.findByRole("heading", { name: "When should AI spend more compute?" });
+
     expect(screen.getAllByText("Activation blocked").length).toBeGreaterThan(0);
     expect(screen.getByText("2 wins · 3 neutral · 1 loss")).toBeVisible();
     expect(screen.getByText("3 wins · 2 neutral · 1 loss")).toBeVisible();
+    expect(screen.getByTestId("fixed-neutral-cases")).toHaveTextContent(
+      "MPC5-101 · MPC5-102 · MPC5-106",
+    );
     expect(screen.getAllByText("KEEP_DIAGNOSTIC_ONLY").length).toBeGreaterThan(0);
     expect(screen.getAllByText("ranking_safety_regression").length).toBeGreaterThan(0);
   });
 
-  it("renders all six governed cases and preserves the important case identities", async () => {
+  it("renders all six governed cases and preserves the important identities", async () => {
     render(<App />);
     await screen.findByRole("heading", { name: "When should AI spend more compute?" });
 
