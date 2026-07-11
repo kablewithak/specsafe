@@ -1,0 +1,28 @@
+{
+  "evidence_frozen": true,
+  "exact_output_file_count": 2,
+  "generated_artifact": {
+    "byte_count": 9206,
+    "relative_path": "evidence_index.json",
+    "sha256": "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
+  },
+  "next_authorized_step": "build_visually_polished_read_only_space_shell",
+  "schema_version": "specsafe_hugging_face_space_evidence_manifest_v1",
+  "source_artifacts": [
+    {
+      "relative_path": "evidence/matched-policy-comparison/v5-controlled-synthetic-comparison-v1/result.json",
+      "sha256": "e82e21853526e687b068cd8a0b3abb4bb390da755be977bf5f3045148a7d17f4"
+    },
+    {
+      "relative_path": "release/hugging-face/specsafe-bounded-negative-evidence-v1/release_summary.json",
+      "sha256": "264886c6bb6d2490bb95b43a29506b04437972e5a42c6688db7dc7d124f8df90"
+    },
+    {
+      "relative_path": "evidence/publication-receipts/specsafe-bounded-negative-evidence-v1/hugging_face_dataset_publication_receipt.json",
+      "sha256": "a63cd76cefa376fc4baa108f4d0fa06b66ed2c4561cea29f3ac2280837e525b7"
+    }
+  ],
+  "source_commit": "ec70bba",
+  "space_id": "specsafe-reliability-lab-v1",
+  "ui_implementation_started": false
+}

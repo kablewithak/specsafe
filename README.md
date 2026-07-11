@@ -30,8 +30,9 @@ SpecSafe now contains:
 - a retained Kaggle-derived candidate calibrator and fit-pool replay;
 - an independent no-refit holdout replay;
 - a formal promotion closeout that rejected the candidate after a ranking-safety regression;
-- a public, hash-verified Hugging Face bounded negative-evidence Dataset; and
-- a frozen read-only evidence contract for the planned Hugging Face Space.
+- a public, hash-verified Hugging Face bounded negative-evidence Dataset;
+- a frozen read-only evidence contract for the planned Hugging Face Space; and
+- a local, responsive React visual shell that consumes the exact frozen evidence index.
 
 SpecSafe does not contain in v1:
 
@@ -50,6 +51,8 @@ SpecSafe does not contain in v1:
 - [Controlled synthetic Phase 5 report](docs/reports/v5-controlled-synthetic-policy-comparison.md)
 - [Candidate-calibrator promotion closeout](docs/adr/ADR-0042-close-candidate-calibrator-promotion.md)
 - [Bounded negative-evidence publication route](docs/adr/ADR-0043-bounded-negative-evidence-publication-route.md)
+- [Hugging Face Space evidence contract](docs/adr/ADR-0049-freeze-hugging-face-space-evidence-index.md)
+- [Hugging Face Space visual direction](docs/design/hugging-face-space-visual-direction.md)
 - [Hugging Face Dataset](https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1)
 
 The PRD remains the governing product and experiment contract. The dated status reconciliation
@@ -71,13 +74,14 @@ or publication requirements.
 | Threshold and scheduler promotion from Kaggle evidence | Not authorized | The current candidate is unfit for probability-driven automation. |
 | Bounded public negative-evidence pack | Published and verified | The exact nine-file Dataset is public, ungated, hash-verified, and tied to a retained publication receipt. |
 | Hugging Face Space evidence index | Complete locally | A frozen read-only JSON contract retains the mixed policy result, failed confidence gate, and public Dataset identity. |
-| Hugging Face Space interface | Next | Requires the polished read-only React presentation, local UI tests, publication review, and controlled upload. |
+| Hugging Face Space interface | Implemented locally; publication pending | A responsive React shell strictly parses the frozen index, displays all governed outcomes, and performs no live inference or input collection. |
 | Production validation | Out of scope | No live serving, operational load, production latency, throughput, or cost evidence exists. |
 
 ## Current maturity
 
 **Controlled synthetic policy comparison complete; Kaggle environment evaluated; current Kaggle
-candidate closed as diagnostic negative evidence; bounded public Dataset verified.**
+candidate closed as diagnostic negative evidence; bounded public Dataset verified; local Space
+visual shell implemented with publication still pending.**
 
 The controlled synthetic harness demonstrates reproducible causal policy comparison under declared
 fixtures and capacity profiles. The Kaggle evidence layer demonstrates a stronger reliability
@@ -90,7 +94,7 @@ decision=KEEP_DIAGNOSTIC_ONLY
 promotion_attempt_status=closed_not_promoted
 automated_scheduling_confidence_status=unfit_use_conservative_fallback
 public_release_status=published_verified_bounded_negative_evidence
-hugging_face_space_status=frozen_evidence_index_ui_pending
+hugging_face_space_status=local_visual_shell_publication_pending
 ```
 
 This is not a production-readiness claim. The current candidate may not drive automated scheduling,
@@ -113,7 +117,7 @@ method selection.
 
 ## Local development
 
-Requires Python 3.11 or newer.
+Python requires version 3.11 or newer.
 
 ```powershell
 python -m venv .venv
@@ -124,6 +128,17 @@ python -m pytest
 python -m ruff check .
 python -m ruff format --check .
 ```
+
+The local Space shell uses Node 20.19 or newer and npm 10 or newer.
+
+```powershell
+Push-Location .\apps\specsafe-reliability-lab
+npm ci
+npm run check
+Pop-Location
+```
+
+See [the local visual-shell runbook](docs/runbooks/hugging-face-space-local-visual-shell.md) for browser smoke tests and the manual visual-review gate.
 
 ## License
 
