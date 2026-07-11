@@ -126,16 +126,12 @@ def test_index_contract_rejects_unknown_fields() -> None:
 def test_repository_readme_reconciles_publication_status() -> None:
     readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
     assert "Bounded public negative-evidence pack | Published and verified" in readme
-    assert "Hugging Face Space evidence index | Complete locally" in readme
-    assert (
-        "Hugging Face Space interface | Implemented locally; publication pending"
-    ) in readme
-    assert (
-        "Hugging Face Space publication candidate | Frozen locally; upload pending"
-    ) in readme
-    assert (
-        "hugging_face_space_status=publication_candidate_frozen_remote_upload_pending"
-    ) in readme
+    assert "Hugging Face Space | Published and anonymously reconciled" in readme
+    assert "public_space_status=published_anonymously_reconciled" in readme
+    assert "highest_confirmed_evidence_level=public_replay_demo_released" in readme
+    assert "publication pending" not in readme
+    assert "upload pending" not in readme
+    assert "publication_candidate_frozen_remote_upload_pending" not in readme
 
 
 def test_source_drift_is_rejected(tmp_path: Path) -> None:
