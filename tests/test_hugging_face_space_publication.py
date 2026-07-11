@@ -18,6 +18,7 @@ from specsafe.hugging_face_space_publication import (
 from specsafe.hugging_face_space_publication.service import (
     CANDIDATE_MANIFEST_RELATIVE_PATH,
     CANDIDATE_ROOT_RELATIVE_PATH,
+    EXPECTED_CANDIDATE_PATHS,
     EXPECTED_CANDIDATE_TREE_SHA256,
 )
 
@@ -132,7 +133,7 @@ class FakeHubGateway:
         if self._invalid_application:
             body = b"<html>wrong application</html>"
         return {
-            "application_url": ("https://kabokablemolefe-specsafe-reliability-lab.hf.space"),
+            "application_url": ("https://kabokablemolefe-specsafe-reliability-lab.static.hf.space"),
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
             "body": body,
@@ -140,13 +141,28 @@ class FakeHubGateway:
         }
 
 
-def test_local_plan_is_bound_to_exact_candidate_manifest_and_files() -> None:
+def test_local_plan_is_bound_to_exact_prebuilt_candidate() -> None:
     plan = build_publication_plan(PROJECT_ROOT)
+
+    assert plan.schema_version == "specsafe_hugging_face_space_publication_plan_v2"
     assert plan.candidate_tree_sha256 == EXPECTED_CANDIDATE_TREE_SHA256
-    assert plan.candidate_file_count == 35
-    assert len(plan.files) == 35
+    assert plan.candidate_file_count == 5
+    assert len(plan.files) == 5
+    assert tuple(item.relative_path for item in plan.files) == EXPECTED_CANDIDATE_PATHS
+    assert plan.source_candidate_file_count == 35
+    assert plan.provider_side_build_required is False
+    assert plan.build_strategy == "local_validated_prebuilt_static_assets"
     assert plan.sdk == "static"
     assert plan.upload_mode == "private_stage_exact_commit_public_release"
+
+
+def test_prebuilt_readme_has_no_provider_side_build_command() -> None:
+    readme = (PROJECT_ROOT / CANDIDATE_ROOT_RELATIVE_PATH / "README.md").read_text(encoding="utf-8")
+
+    assert "sdk: static" in readme
+    assert "app_file: index.html" in readme
+    assert "provider_side_build_required=false" in readme
+    assert "app_build_command:" not in readme
 
 
 def test_remote_preflight_requires_exact_namespace() -> None:
@@ -164,7 +180,7 @@ def test_remote_preflight_rejects_existing_space() -> None:
         preflight_remote_publication(PROJECT_ROOT, "KaboKableMolefe", gateway)
 
 
-def test_publication_stages_privately_verifies_publicly_and_writes_receipt(
+def test_publication_stages_prebuilt_assets_and_writes_v2_receipt(
     tmp_path: Path,
 ) -> None:
     project = _copy_minimal_project(tmp_path)
@@ -187,10 +203,14 @@ def test_publication_stages_privately_verifies_publicly_and_writes_receipt(
     assert gateway.private is False
     assert gateway.deleted is False
     assert tuple(sorted(gateway._files)) == expected_files
+    assert receipt.schema_version == "specsafe_hugging_face_space_publication_receipt_v2"
     assert receipt.repository_id == "KaboKableMolefe/specsafe-reliability-lab"
     assert receipt.published_revision == FIXED_REVISION
     assert receipt.published_from_git_sha == FIXED_GIT_SHA
     assert receipt.published_at == FIXED_TIME
+    assert receipt.remote_file_count == 5
+    assert receipt.provider_side_build_required is False
+    assert receipt.prebuilt_static_assets_verified is True
     saved = json.loads(receipt_path.read_text(encoding="utf-8"))
     assert saved["anonymous_repository_verification_passed"] is True
     assert saved["anonymous_application_verification_passed"] is True
@@ -295,6 +315,28 @@ def test_candidate_drift_revokes_publication(tmp_path: Path) -> None:
     readme = project / CANDIDATE_ROOT_RELATIVE_PATH / "README.md"
     readme.write_bytes(readme.read_bytes() + b"drift")
     with pytest.raises(SpacePublicationError, match="candidate file drifted: README.md"):
+        build_publication_plan(project)
+
+
+def test_provider_side_build_flag_revokes_publication(tmp_path: Path) -> None:
+    project = _copy_minimal_project(tmp_path)
+    manifest_path = project / CANDIDATE_MANIFEST_RELATIVE_PATH
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["provider_side_build_required"] = True
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(SpacePublicationError, match="failed strict validation"):
+        build_publication_plan(project)
+
+
+def test_asset_path_drift_revokes_publication(tmp_path: Path) -> None:
+    project = _copy_minimal_project(tmp_path)
+    manifest_path = project / CANDIDATE_MANIFEST_RELATIVE_PATH
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"][1]["relative_path"] = "assets/index-Corrupt.css"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(SpacePublicationError, match="outside the authorized boundary"):
         build_publication_plan(project)
 
 

@@ -18,6 +18,13 @@ _STATIC_SPACE_INITIAL_SCAFFOLD: Final = frozenset(
     }
 )
 _SERVICE_VISIBLE_INITIAL_FILES: Final = frozenset({".gitattributes"})
+_TERMINAL_SPACE_STAGES: Final = frozenset(
+    {
+        "BUILD_ERROR",
+        "RUNTIME_ERROR",
+        "CONFIG_ERROR",
+    }
+)
 
 
 class HuggingFaceSpaceHubGateway(HubGateway):
@@ -97,10 +104,11 @@ class HuggingFaceSpaceHubGateway(HubGateway):
             result = self._api.create_commit(
                 repo_id,
                 operations=operations,
-                commit_message="Publish exact SpecSafe reliability Space",
+                commit_message="Publish exact prebuilt SpecSafe reliability Space",
                 commit_description=(
-                    "Exact authorized static-Space candidate. Read-only evidence presentation; "
-                    "no live inference, input collection, or production performance claim."
+                    "Exact authorized prebuilt static-Space candidate. Read-only evidence "
+                    "presentation; no provider-side build, live inference, input collection, "
+                    "or production performance claim."
                 ),
                 repo_type="space",
                 revision="main",
@@ -186,6 +194,9 @@ class HuggingFaceSpaceHubGateway(HubGateway):
         while time.monotonic() < deadline:
             try:
                 info = self._api.space_info(repo_id, token=False)
+            except Exception as error:
+                last_error = str(error)
+            else:
                 runtime = getattr(info, "runtime", None)
                 stage = getattr(runtime, "stage", None)
                 host = getattr(info, "host", None)
@@ -196,18 +207,22 @@ class HuggingFaceSpaceHubGateway(HubGateway):
                     "application_url": application_url,
                 }
 
-                if stage in {"BUILD_ERROR", "RUNTIME_ERROR", "CONFIG_ERROR"}:
+                if stage in _TERMINAL_SPACE_STAGES:
                     raise RuntimeError(f"Space entered terminal error stage: {stage}")
+
                 if application_url is not None:
-                    response = _fetch_application(application_url)
-                    last_state.update(response)
-                    if (
-                        response["status_code"] == 200
-                        and "text/html" in str(response["content_type"]).lower()
-                    ):
-                        return last_state
-            except Exception as error:
-                last_error = str(error)
+                    try:
+                        response = _fetch_application(application_url)
+                    except Exception as error:
+                        last_error = str(error)
+                    else:
+                        last_state.update(response)
+                        if (
+                            response["status_code"] == 200
+                            and "text/html" in str(response["content_type"]).lower()
+                        ):
+                            return last_state
+
             time.sleep(min(5.0, max(0.0, deadline - time.monotonic())))
 
         raise TimeoutError(

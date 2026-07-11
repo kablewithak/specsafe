@@ -11,18 +11,18 @@ from typing import Protocol
 
 from pydantic import ValidationError
 
-from specsafe.hugging_face_space_publication_candidate import (
-    HuggingFaceSpacePublicationCandidateManifest,
+from specsafe.hugging_face_space_prebuilt_candidate import (
+    HuggingFaceSpacePrebuiltCandidateManifest,
 )
 
 from .models import SpacePublicationPlan, SpacePublicationReceipt
 
 CANDIDATE_MANIFEST_RELATIVE_PATH = Path(
-    "release/hugging-face-space-publication/specsafe-reliability-lab/"
-    "publication_candidate_manifest.json"
+    "release/hugging-face-space-prebuilt-publication/specsafe-reliability-lab/"
+    "prebuilt_candidate_manifest.json"
 )
 CANDIDATE_ROOT_RELATIVE_PATH = Path(
-    "release/hugging-face-space-publication/specsafe-reliability-lab/candidate/space"
+    "release/hugging-face-space-prebuilt-publication/specsafe-reliability-lab/candidate/space"
 )
 RECEIPT_RELATIVE_PATH = Path(
     "evidence/publication-receipts/specsafe-reliability-lab/"
@@ -30,9 +30,31 @@ RECEIPT_RELATIVE_PATH = Path(
 )
 EXPECTED_NAMESPACE = "KaboKableMolefe"
 EXPECTED_REPOSITORY_NAME = "specsafe-reliability-lab"
-EXPECTED_CANDIDATE_TREE_SHA256 = "041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb"
+EXPECTED_SOURCE_CANDIDATE_MANIFEST_SHA256 = (
+    "63a28d28416f67b55f62019ff6c5905c923de791564f8de8fa6859a676356b8d"
+)
+EXPECTED_SOURCE_CANDIDATE_TREE_SHA256 = (
+    "041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb"
+)
+EXPECTED_SOURCE_CANDIDATE_FILE_COUNT = 35
+EXPECTED_CANDIDATE_TREE_SHA256 = "4e1eb0f186ed629e2a2fa352cd8943da5a5771aa43198f51814bb5013cf71362"
 EXPECTED_EVIDENCE_INDEX_SHA256 = "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
-EXPECTED_CANDIDATE_FILE_COUNT = 35
+EXPECTED_CANDIDATE_FILE_COUNT = 5
+EXPECTED_CANDIDATE_PATHS = (
+    "README.md",
+    "assets/index-ComhRJPm.css",
+    "assets/index-DBdnOm5m.js",
+    "evidence/evidence_index.json",
+    "index.html",
+)
+EXPECTED_BUILD_COMMANDS = (
+    "npm ci",
+    "npm run evidence:check",
+    "npm run lint",
+    "npm run test",
+    "npm run build",
+)
+EXPECTED_BUILD_STRATEGY = "local_validated_prebuilt_static_assets"
 _NAMESPACE_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _GIT_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 _FORBIDDEN_RECEIPT_MARKERS = (
@@ -127,8 +149,11 @@ def build_publication_plan(project_root: Path | str) -> SpacePublicationPlan:
     manifest_bytes, manifest = _load_candidate_manifest(root)
     _verify_candidate(root, manifest)
     return SpacePublicationPlan(
-        schema_version="specsafe_hugging_face_space_publication_plan_v1",
+        schema_version="specsafe_hugging_face_space_publication_plan_v2",
         candidate_manifest_sha256=_sha256_bytes(manifest_bytes),
+        source_candidate_manifest_sha256=EXPECTED_SOURCE_CANDIDATE_MANIFEST_SHA256,
+        source_candidate_tree_sha256=EXPECTED_SOURCE_CANDIDATE_TREE_SHA256,
+        source_candidate_file_count=EXPECTED_SOURCE_CANDIDATE_FILE_COUNT,
         candidate_tree_sha256=EXPECTED_CANDIDATE_TREE_SHA256,
         evidence_index_sha256=EXPECTED_EVIDENCE_INDEX_SHA256,
         candidate_file_count=EXPECTED_CANDIDATE_FILE_COUNT,
@@ -136,6 +161,8 @@ def build_publication_plan(project_root: Path | str) -> SpacePublicationPlan:
         repository_type="space",
         sdk="static",
         final_visibility="public",
+        build_strategy=EXPECTED_BUILD_STRATEGY,
+        provider_side_build_required=False,
         files=manifest.files,
         upload_mode="private_stage_exact_commit_public_release",
         remote_existing_repository_policy="reject",
@@ -237,8 +264,8 @@ def publish_authorized_space(
         )
         application_url = _verify_public_application(application)
         receipt = SpacePublicationReceipt(
-            schema_version="specsafe_hugging_face_space_publication_receipt_v1",
-            publication_id="specsafe-reliability-lab-hf-space-publication-v1",
+            schema_version="specsafe_hugging_face_space_publication_receipt_v2",
+            publication_id="specsafe-reliability-lab-hf-space-prebuilt-publication-v1",
             repository_id=repo_id,
             repository_url=repository_url,
             application_url=application_url,
@@ -247,9 +274,15 @@ def publish_authorized_space(
             repository_type="space",
             sdk="static",
             final_visibility="public",
+            build_strategy=EXPECTED_BUILD_STRATEGY,
+            provider_side_build_required=False,
+            prebuilt_static_assets_verified=True,
             published_revision=revision,
             published_from_git_sha=published_from_git_sha,
             candidate_manifest_sha256=plan.candidate_manifest_sha256,
+            source_candidate_manifest_sha256=plan.source_candidate_manifest_sha256,
+            source_candidate_tree_sha256=plan.source_candidate_tree_sha256,
+            source_candidate_file_count=plan.source_candidate_file_count,
             candidate_tree_sha256=plan.candidate_tree_sha256,
             evidence_index_sha256=plan.evidence_index_sha256,
             published_file_hashes=plan.files,
@@ -276,28 +309,38 @@ def publish_authorized_space(
 
 def _load_candidate_manifest(
     root: Path,
-) -> tuple[bytes, HuggingFaceSpacePublicationCandidateManifest]:
+) -> tuple[bytes, HuggingFaceSpacePrebuiltCandidateManifest]:
     path = root / CANDIDATE_MANIFEST_RELATIVE_PATH
     if not path.is_file():
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_MANIFEST_INVALID,
-            "committed Space publication candidate manifest is missing",
+            "committed prebuilt Space publication candidate manifest is missing",
         )
     payload = path.read_bytes()
     try:
-        manifest = HuggingFaceSpacePublicationCandidateManifest.model_validate_json(payload)
+        manifest = HuggingFaceSpacePrebuiltCandidateManifest.model_validate_json(payload)
     except ValidationError as error:
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_MANIFEST_INVALID,
-            f"Space publication candidate manifest failed strict validation: {error}",
+            f"prebuilt Space candidate manifest failed strict validation: {error}",
         ) from error
 
+    paths = tuple(item.relative_path for item in manifest.files)
     conditions = (
         manifest.space_repository_name == EXPECTED_REPOSITORY_NAME,
+        manifest.source_candidate_manifest_sha256 == EXPECTED_SOURCE_CANDIDATE_MANIFEST_SHA256,
+        manifest.source_candidate_tree_sha256 == EXPECTED_SOURCE_CANDIDATE_TREE_SHA256,
+        manifest.source_candidate_file_count == EXPECTED_SOURCE_CANDIDATE_FILE_COUNT,
         manifest.candidate_tree_sha256 == EXPECTED_CANDIDATE_TREE_SHA256,
         manifest.evidence_index_sha256 == EXPECTED_EVIDENCE_INDEX_SHA256,
         manifest.exact_candidate_file_count == EXPECTED_CANDIDATE_FILE_COUNT,
         len(manifest.files) == EXPECTED_CANDIDATE_FILE_COUNT,
+        paths == EXPECTED_CANDIDATE_PATHS,
+        manifest.metadata.sdk == "static",
+        manifest.metadata.app_file == "index.html",
+        manifest.build_strategy == EXPECTED_BUILD_STRATEGY,
+        tuple(manifest.build_commands) == EXPECTED_BUILD_COMMANDS,
+        manifest.provider_side_build_required is False,
         manifest.actual_space_publication is False,
         manifest.remote_mutation is False,
         manifest.live_inference is False,
@@ -306,20 +349,20 @@ def _load_candidate_manifest(
     if not all(conditions):
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_MANIFEST_INVALID,
-            "Space publication candidate manifest is outside the authorized boundary",
+            "prebuilt Space publication candidate is outside the authorized boundary",
         )
     return payload, manifest
 
 
 def _verify_candidate(
     root: Path,
-    manifest: HuggingFaceSpacePublicationCandidateManifest,
+    manifest: HuggingFaceSpacePrebuiltCandidateManifest,
 ) -> Mapping[str, Path]:
     candidate_root = root / CANDIDATE_ROOT_RELATIVE_PATH
     if not candidate_root.is_dir():
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_DRIFT,
-            "authorized Space publication candidate directory is missing",
+            "authorized prebuilt Space publication candidate directory is missing",
         )
 
     expected_paths = tuple(item.relative_path for item in manifest.files)
@@ -330,7 +373,7 @@ def _verify_candidate(
         if path.is_symlink():
             raise SpacePublicationError(
                 SpacePublicationErrorCode.CANDIDATE_DRIFT,
-                f"authorized Space candidate contains linked content: {relative}",
+                f"authorized prebuilt Space candidate contains linked content: {relative}",
             )
         if path.is_file():
             actual_paths.append(relative)
@@ -340,14 +383,14 @@ def _verify_candidate(
     if tuple(sorted(actual_paths)) != expected_paths:
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_DRIFT,
-            "authorized Space candidate file allowlist drifted",
+            "authorized prebuilt Space candidate file allowlist drifted",
         )
 
     expected_directories = _expected_directories(expected_paths)
     if actual_directories != expected_directories:
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_DRIFT,
-            "authorized Space candidate directory allowlist drifted",
+            "authorized prebuilt Space candidate directory allowlist drifted",
         )
 
     payloads: dict[str, bytes] = {}
@@ -357,7 +400,7 @@ def _verify_candidate(
         if len(payload) != item.byte_count or _sha256_bytes(payload) != item.sha256:
             raise SpacePublicationError(
                 SpacePublicationErrorCode.CANDIDATE_DRIFT,
-                f"authorized Space candidate file drifted: {item.relative_path}",
+                f"authorized prebuilt Space candidate file drifted: {item.relative_path}",
             )
         payloads[item.relative_path] = payload
 
@@ -365,7 +408,7 @@ def _verify_candidate(
     if tree_sha256 != EXPECTED_CANDIDATE_TREE_SHA256:
         raise SpacePublicationError(
             SpacePublicationErrorCode.CANDIDATE_DRIFT,
-            "authorized Space candidate aggregate tree hash drifted",
+            "authorized prebuilt Space candidate aggregate tree hash drifted",
         )
     return {name: candidate_root / name for name in expected_paths}
 
@@ -425,15 +468,20 @@ def _verify_remote_repository(
     readme = remote_payloads["README.md"].decode("utf-8")
     required_markers = (
         "sdk: static",
-        "app_build_command: npm run build",
-        "app_file: dist/index.html",
+        "app_file: index.html",
         "decision=KEEP_DIAGNOSTIC_ONLY",
         "failure_label=ranking_safety_regression",
         "live_inference=false",
         "user_input_collection=false",
+        "provider_side_build_required=false",
     )
     if any(marker not in readme for marker in required_markers):
         raise SpacePublicationError(error_code, "remote Space card lost a required boundary")
+    if "app_build_command:" in readme:
+        raise SpacePublicationError(
+            error_code,
+            "remote Space card reintroduced a provider-side build command",
+        )
 
 
 def _verify_public_application(application: Mapping[str, object]) -> str:

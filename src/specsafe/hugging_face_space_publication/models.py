@@ -13,20 +13,29 @@ class StrictSpacePublicationModel(BaseModel):
 
 
 class SpacePublicationPlan(StrictSpacePublicationModel):
-    schema_version: Literal["specsafe_hugging_face_space_publication_plan_v1"]
+    schema_version: Literal["specsafe_hugging_face_space_publication_plan_v2"]
     candidate_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    candidate_tree_sha256: Literal[
+    source_candidate_manifest_sha256: Literal[
+        "63a28d28416f67b55f62019ff6c5905c923de791564f8de8fa6859a676356b8d"
+    ]
+    source_candidate_tree_sha256: Literal[
         "041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb"
+    ]
+    source_candidate_file_count: Literal[35]
+    candidate_tree_sha256: Literal[
+        "4e1eb0f186ed629e2a2fa352cd8943da5a5771aa43198f51814bb5013cf71362"
     ]
     evidence_index_sha256: Literal[
         "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
     ]
-    candidate_file_count: Literal[35]
+    candidate_file_count: Literal[5]
     repository_name: Literal["specsafe-reliability-lab"]
     repository_type: Literal["space"]
     sdk: Literal["static"]
     final_visibility: Literal["public"]
-    files: tuple[CandidateFileDigest, ...] = Field(min_length=35, max_length=35)
+    build_strategy: Literal["local_validated_prebuilt_static_assets"]
+    provider_side_build_required: Literal[False]
+    files: tuple[CandidateFileDigest, ...] = Field(min_length=5, max_length=5)
     upload_mode: Literal["private_stage_exact_commit_public_release"]
     remote_existing_repository_policy: Literal["reject"]
     credential_policy: Literal["environment_token_never_logged_or_persisted"]
@@ -46,8 +55,8 @@ class SpacePublicationPlan(StrictSpacePublicationModel):
 
 
 class SpacePublicationReceipt(StrictSpacePublicationModel):
-    schema_version: Literal["specsafe_hugging_face_space_publication_receipt_v1"]
-    publication_id: Literal["specsafe-reliability-lab-hf-space-publication-v1"]
+    schema_version: Literal["specsafe_hugging_face_space_publication_receipt_v2"]
+    publication_id: Literal["specsafe-reliability-lab-hf-space-prebuilt-publication-v1"]
     repository_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*/specsafe-reliability-lab$")
     repository_url: str = Field(pattern=r"^https://huggingface\.co/spaces/")
     application_url: str = Field(pattern=r"^https://[A-Za-z0-9.-]+\.hf\.space/?$")
@@ -56,21 +65,31 @@ class SpacePublicationReceipt(StrictSpacePublicationModel):
     repository_type: Literal["space"]
     sdk: Literal["static"]
     final_visibility: Literal["public"]
+    build_strategy: Literal["local_validated_prebuilt_static_assets"]
+    provider_side_build_required: Literal[False]
+    prebuilt_static_assets_verified: Literal[True]
     published_revision: str = Field(pattern=r"^[0-9a-f]{40}$")
     published_from_git_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
     candidate_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    candidate_tree_sha256: Literal[
+    source_candidate_manifest_sha256: Literal[
+        "63a28d28416f67b55f62019ff6c5905c923de791564f8de8fa6859a676356b8d"
+    ]
+    source_candidate_tree_sha256: Literal[
         "041c8bafd573afbca5db9f55887a89007970d4a3d20b1f9486d879064897c4bb"
+    ]
+    source_candidate_file_count: Literal[35]
+    candidate_tree_sha256: Literal[
+        "4e1eb0f186ed629e2a2fa352cd8943da5a5771aa43198f51814bb5013cf71362"
     ]
     evidence_index_sha256: Literal[
         "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
     ]
     published_file_hashes: tuple[CandidateFileDigest, ...] = Field(
-        min_length=35,
-        max_length=35,
+        min_length=5,
+        max_length=5,
     )
-    remote_files: tuple[str, ...] = Field(min_length=35, max_length=35)
-    remote_file_count: Literal[35]
+    remote_files: tuple[str, ...] = Field(min_length=5, max_length=5)
+    remote_file_count: Literal[5]
     authenticated_namespace_verified: Literal[True]
     private_stage_verified: Literal[True]
     anonymous_repository_verification_passed: Literal[True]
