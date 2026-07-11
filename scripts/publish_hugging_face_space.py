@@ -14,7 +14,7 @@ from specsafe.hugging_face_space_publication import (
     validate_publication_git_state,
 )
 
-EXPECTED_CONFIRMATION = "PUBLISH_EXACT_SPACE"
+EXPECTED_CONFIRMATION = "PUBLISH_EXACT_PREBUILT_SPACE"
 
 
 def main() -> int:
@@ -34,7 +34,9 @@ def main() -> int:
     if args.check_local:
         plan = build_publication_plan(root)
         print(json.dumps(plan.model_dump(mode="json"), indent=2, sort_keys=True))
-        print("Local Space publication plan is canonical; no network action was performed.")
+        print(
+            "Local prebuilt Space publication plan is canonical; no network action was performed."
+        )
         return 0
 
     if not args.namespace:
@@ -62,7 +64,7 @@ def main() -> int:
         receipt_path=args.receipt_path,
         application_timeout_seconds=args.application_timeout_seconds,
     )
-    print(f"Published and verified Space: {receipt.repository_id}")
+    print(f"Published and verified prebuilt Space: {receipt.repository_id}")
     print(f"Published revision: {receipt.published_revision}")
     print(f"Public application: {receipt.application_url}")
     print("A sanitized publication receipt was written locally. No credential was logged.")
