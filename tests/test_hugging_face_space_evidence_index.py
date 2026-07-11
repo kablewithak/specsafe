@@ -105,8 +105,12 @@ def test_index_retains_failed_confidence_gate() -> None:
 
 def test_index_retains_verified_public_dataset_identity() -> None:
     publication = build_space_evidence_index(PROJECT_ROOT).dataset_publication
-    assert publication.repository_id == ("KaboKableMolefe/specsafe-bounded-negative-evidence-v1")
-    assert publication.published_revision == ("1ff151fc0646102f6e7b107d1bceb9a18e50098a")
+    assert publication.repository_id == (
+        "KaboKableMolefe/specsafe-bounded-negative-evidence-v1"
+    )
+    assert publication.published_revision == (
+        "1ff151fc0646102f6e7b107d1bceb9a18e50098a"
+    )
     assert publication.public is True
     assert publication.gated is False
     assert publication.anonymous_verification_passed is True
@@ -123,8 +127,15 @@ def test_repository_readme_reconciles_publication_status() -> None:
     readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
     assert "Bounded public negative-evidence pack | Published and verified" in readme
     assert "Hugging Face Space evidence index | Complete locally" in readme
-    assert "Hugging Face Space interface | Implemented locally; publication pending" in readme
-    assert "hugging_face_space_status=local_visual_shell_publication_pending" in readme
+    assert (
+        "Hugging Face Space interface | Implemented locally; publication pending"
+    ) in readme
+    assert (
+        "Hugging Face Space publication candidate | Frozen locally; upload pending"
+    ) in readme
+    assert (
+        "hugging_face_space_status=publication_candidate_frozen_remote_upload_pending"
+    ) in readme
 
 
 def test_source_drift_is_rejected(tmp_path: Path) -> None:

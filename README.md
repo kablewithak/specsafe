@@ -31,8 +31,9 @@ SpecSafe now contains:
 - an independent no-refit holdout replay;
 - a formal promotion closeout that rejected the candidate after a ranking-safety regression;
 - a public, hash-verified Hugging Face bounded negative-evidence Dataset;
-- a frozen read-only evidence contract for the planned Hugging Face Space; and
-- a local, responsive React visual shell that consumes the exact frozen evidence index.
+- a frozen read-only evidence contract for the planned Hugging Face Space;
+- a local, responsive React visual shell that consumes the exact frozen evidence index; and
+- a deterministic standalone Hugging Face Space publication candidate with exact file hashes.
 
 SpecSafe does not contain in v1:
 
@@ -52,6 +53,7 @@ SpecSafe does not contain in v1:
 - [Candidate-calibrator promotion closeout](docs/adr/ADR-0042-close-candidate-calibrator-promotion.md)
 - [Bounded negative-evidence publication route](docs/adr/ADR-0043-bounded-negative-evidence-publication-route.md)
 - [Hugging Face Space evidence contract](docs/adr/ADR-0049-freeze-hugging-face-space-evidence-index.md)
+- [Hugging Face Space publication candidate](docs/adr/ADR-0050-freeze-hugging-face-space-publication-candidate.md)
 - [Hugging Face Space visual direction](docs/design/hugging-face-space-visual-direction.md)
 - [Hugging Face Dataset](https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1)
 
@@ -75,13 +77,14 @@ or publication requirements.
 | Bounded public negative-evidence pack | Published and verified | The exact nine-file Dataset is public, ungated, hash-verified, and tied to a retained publication receipt. |
 | Hugging Face Space evidence index | Complete locally | A frozen read-only JSON contract retains the mixed policy result, failed confidence gate, and public Dataset identity. |
 | Hugging Face Space interface | Implemented locally; publication pending | A responsive React shell strictly parses the frozen index, displays all governed outcomes, and performs no live inference or input collection. |
+| Hugging Face Space publication candidate | Frozen locally; upload pending | An exact standalone static-Space tree and manifest retain every path, byte count, hash, metadata field, and release boundary. |
 | Production validation | Out of scope | No live serving, operational load, production latency, throughput, or cost evidence exists. |
 
 ## Current maturity
 
 **Controlled synthetic policy comparison complete; Kaggle environment evaluated; current Kaggle
 candidate closed as diagnostic negative evidence; bounded public Dataset verified; local Space
-visual shell implemented with publication still pending.**
+visual shell implemented; exact Space publication candidate frozen with remote upload pending.**
 
 The controlled synthetic harness demonstrates reproducible causal policy comparison under declared
 fixtures and capacity profiles. The Kaggle evidence layer demonstrates a stronger reliability
@@ -94,7 +97,7 @@ decision=KEEP_DIAGNOSTIC_ONLY
 promotion_attempt_status=closed_not_promoted
 automated_scheduling_confidence_status=unfit_use_conservative_fallback
 public_release_status=published_verified_bounded_negative_evidence
-hugging_face_space_status=local_visual_shell_publication_pending
+hugging_face_space_status=publication_candidate_frozen_remote_upload_pending
 ```
 
 This is not a production-readiness claim. The current candidate may not drive automated scheduling,
@@ -106,7 +109,8 @@ threshold promotion, scheduler promotion, or adaptive-policy utility claims.
 verified Hugging Face Dataset and retained publication receipt
   -> frozen read-only Space evidence index
   -> visually polished local Space interface
-  -> Space publication candidate and controlled upload
+  -> frozen standalone Space publication candidate
+  -> controlled upload and anonymous verification
   -> final project reconciliation and handover
 ```
 
@@ -138,7 +142,10 @@ npm run check
 Pop-Location
 ```
 
-See [the local visual-shell runbook](docs/runbooks/hugging-face-space-local-visual-shell.md) for browser smoke tests and the manual visual-review gate.
+See [the local visual-shell runbook](docs/runbooks/hugging-face-space-local-visual-shell.md) for
+browser smoke tests and the manual visual-review gate. See the
+[publication-candidate runbook](docs/runbooks/hugging-face-space-publication-candidate.md) for the
+standalone build and release gates.
 
 ## License
 

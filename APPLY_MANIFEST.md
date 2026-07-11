@@ -3,100 +3,119 @@
 ## Slice
 
 ```text
-branch=feat/hugging-face-space-story-clarity
-commit_message=refactor: clarify hugging face space evidence story
+branch=feat/hugging-face-space-publication-candidate
+commit_message=feat: freeze hugging face space publication candidate
+source_commit=2848e80
 actual_space_publication=false
-live_inference=false
-user_input_collection=false
-evidence_contract_changed=false
+remote_mutation=false
 ```
 
 ## Add
 
 ```text
-apps/specsafe-reliability-lab/src/components/policy-case-matrix.tsx
-apps/specsafe-reliability-lab/src/components/policy-case-matrix.test.tsx
+src/specsafe/hugging_face_space_publication_candidate/__init__.py
+src/specsafe/hugging_face_space_publication_candidate/models.py
+src/specsafe/hugging_face_space_publication_candidate/builder.py
+scripts/build_hugging_face_space_publication_candidate.py
+tests/test_hugging_face_space_publication_candidate.py
+docs/adr/ADR-0050-freeze-hugging-face-space-publication-candidate.md
+docs/experiments/hugging-face-space-publication-candidate-result.md
+docs/runbooks/hugging-face-space-publication-candidate.md
+release/hugging-face-space-publication/specsafe-reliability-lab/candidate/space/
+release/hugging-face-space-publication/specsafe-reliability-lab/publication_candidate_manifest.json
 ```
 
 ## Replace
 
 ```text
+README.md
+tests/test_hugging_face_space_evidence_index.py
 APPLY_MANIFEST.md
-apps/specsafe-reliability-lab/src/App.tsx
-apps/specsafe-reliability-lab/src/App.test.tsx
-apps/specsafe-reliability-lab/tests/smoke.spec.ts
-docs/design/hugging-face-space-visual-direction.md
-docs/runbooks/hugging-face-space-local-visual-shell.md
 ```
 
-## Delete
+## Namespace invariant
 
 ```text
-apps/specsafe-reliability-lab/src/components/capacity-chart.tsx
-apps/specsafe-reliability-lab/src/components/capacity-chart.test.tsx
+frozen_evidence_root=release/hugging-face-space/specsafe-reliability-lab
+publication_candidate_root=release/hugging-face-space-publication/specsafe-reliability-lab
+publication_candidate_nested_in_evidence_root=false
 ```
 
-## Story contract
+## Validation workspace invariant
 
 ```text
-reading_order=north_star_before_detailed_results
-north_star=question_method_answer
-policy_summary=count_scoreboard
-neutral_cases=explicit_and_visible
-case_comparison=exact_responsive_matrix
-grouped_bar_chart=removed
+committed_candidate_mutation=false
+committed_candidate_runtime_artifacts=false
+validation_workspace=$env:TEMP/specsafe-reliability-lab-validation
+validation_workspace_disposable=true
+candidate_replacement=staged_external_rotation
+candidate_recursive_deletion=false
+candidate_trash_root=<repository-parent>/.specsafe-publication-candidate-trash
+failed_trash_cleanup_blocks_candidate_write=false
 ```
 
-## Frozen evidence source
+## Candidate contract
 
 ```text
-canonical_index=release/hugging-face-space/specsafe-reliability-lab/evidence_index.json
-canonical_index_sha256=de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e
-canonical_index_byte_count=9206
-canonical_manifest=release/hugging-face-space/specsafe-reliability-lab/evidence_manifest.json
-frontend_parser=strict_zod_fail_closed
+space_repository_name=specsafe-reliability-lab
+sdk=static
+app_build_command=npm run build
+app_file=dist/index.html
+canonical_evidence_sha256=de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e
+canonical_evidence_byte_count=9206
+registry=https://registry.npmjs.org/
+actual_space_publication=false
+remote_mutation=false
+next_authorized_step=controlled_remote_space_creation_and_upload
 ```
 
-## Required visible outcomes
+## Generate
 
-```text
-adaptive_vs_fixed=2 wins / 3 neutral / 1 loss
-adaptive_vs_threshold=3 wins / 2 neutral / 1 loss
-neutral_vs_fixed=MPC5-101,MPC5-102,MPC5-106
-loss=MPC5-103
-wins=MPC5-104,MPC5-105
-decision=KEEP_DIAGNOSTIC_ONLY
-failure_label=ranking_safety_regression
-safety_breach_multiple=24.356617647058766
+```powershell
+python .\scripts\build_hugging_face_space_publication_candidate.py --write
+git status
 ```
 
 ## Validation
 
 ```powershell
-python .\scripts\build_hugging_face_space_evidence_index.py --check
+python .\scripts\build_hugging_face_space_publication_candidate.py --check
+python -m pytest .\tests\test_hugging_face_space_publication_candidate.py
+python -m pytest .\tests\test_hugging_face_space_evidence_index.py
 
-Push-Location .\apps\specsafe-reliability-lab
+$CandidateRoot = (Resolve-Path `
+    ".\release\hugging-face-space-publication\specsafe-reliability-lab\candidate\space"
+).Path
+$ValidationRoot = Join-Path $env:TEMP "specsafe-reliability-lab-validation"
+
+Remove-Item -LiteralPath $ValidationRoot -Recurse -Force -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Path $ValidationRoot | Out-Null
+
+Get-ChildItem -LiteralPath $CandidateRoot -Force |
+    ForEach-Object {
+        Copy-Item -LiteralPath $_.FullName -Destination $ValidationRoot -Recurse -Force
+    }
+
+Push-Location $ValidationRoot
 npm ci
 npm audit --audit-level=low
 npm run evidence:check
 npm run lint
 npm run test
 npm run build
+npm run test:e2e:install
 npm run test:e2e
 Pop-Location
 
+Remove-Item -LiteralPath $ValidationRoot -Recurse -Force
+
+python .\scripts\build_hugging_face_space_publication_candidate.py --check
 python -m pytest
 python -m ruff check .
+python -m ruff format --check `
+    .\src\specsafe\hugging_face_space_publication_candidate `
+    .\scripts\build_hugging_face_space_publication_candidate.py `
+    .\tests\test_hugging_face_space_publication_candidate.py `
+    .\tests\test_hugging_face_space_evidence_index.py
 git diff --check
-```
-
-## Manual review gate
-
-```text
-north_star_understood_before_results=true
-neutral_cases_visually_explicit=true
-exact_matrix_clearer_than_grouped_bars=true
-desktop_review=required
-mobile_review=required
-publication_authorized=false
 ```
