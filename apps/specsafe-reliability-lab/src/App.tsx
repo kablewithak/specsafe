@@ -1,5 +1,4 @@
 import {
-  ArrowRight,
   Ban,
   CheckCircle2,
   Database,
@@ -19,6 +18,7 @@ import { useEffect, useState } from "react";
 import { MetricCard } from "@/components/metric-card";
 import { PolicyCaseMatrix } from "@/components/policy-case-matrix";
 import { SectionHeading } from "@/components/section-heading";
+import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/tooltip";
 import { loadEvidence, type EvidenceIndex } from "@/lib/evidence";
 import { formatDecimal, shortHash } from "@/lib/format";
+import { HeroSection } from "@/sections/hero-section";
+import { WhyItMattersSection } from "@/sections/why-it-matters-section";
 
 function LoadingState() {
   return (
@@ -102,123 +104,11 @@ function AppContent({ evidence }: { evidence: EvidenceIndex }) {
         Skip to main content
       </a>
       <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
-        <header className="sticky top-0 z-40 border-b border-white/8 bg-background/78 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-            <a
-              href="#overview"
-              className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-            >
-              <span className="grid h-9 w-9 place-items-center rounded-xl border border-amber-300/25 bg-amber-300/10 font-mono text-sm font-semibold text-amber-100">
-                SS
-              </span>
-              <span>
-                <span className="block text-sm font-semibold text-white">SpecSafe</span>
-                <span className="hidden text-xs text-white/42 sm:block">Reliability evidence lab</span>
-              </span>
-            </a>
-            <nav
-              aria-label="Primary navigation"
-              className="hidden items-center gap-6 text-sm text-white/55 md:flex"
-            >
-              <a className="hover:text-white" href="#north-star">North star</a>
-              <a className="hover:text-white" href="#policy-results">Results</a>
-              <a className="hover:text-white" href="#confidence-gate">Safety gate</a>
-              <a className="hover:text-white" href="#evidence">Evidence</a>
-            </nav>
-            <Badge variant="danger" className="gap-2">
-              <Ban className="h-3.5 w-3.5" aria-hidden="true" />
-              Activation blocked
-            </Badge>
-          </div>
-        </header>
+        <SiteHeader />
 
         <main id="main-content">
-          <section id="overview" className="relative isolate overflow-hidden border-b border-white/8">
-            <div className="absolute inset-0 -z-10 bg-grid opacity-40" />
-            <div className="absolute left-1/2 top-0 -z-10 h-[620px] w-[900px] -translate-x-1/2 rounded-full bg-amber-300/[0.07] blur-3xl" />
-            <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-              <div className="space-y-8">
-                <div className="flex flex-wrap gap-2">
-                  {evidence.maturity_labels.map((label) => (
-                    <Badge key={label}>{label}</Badge>
-                  ))}
-                </div>
-                <div className="space-y-5">
-                  <p className="font-mono text-xs uppercase tracking-[0.24em] text-amber-200/80">
-                    Causal confidence-scheduled verification
-                  </p>
-                  <h1 className="max-w-5xl text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.045em] text-white md:text-7xl">
-                    When should AI spend more compute?
-                  </h1>
-                  <p className="max-w-3xl text-pretty text-lg leading-8 text-white/62 md:text-xl">
-                    {evidence.tested_question}
-                  </p>
-                </div>
-                <div className="max-w-3xl rounded-3xl border border-amber-200/14 bg-amber-200/[0.04] p-6 md:p-7">
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-amber-200/70">
-                    Short answer
-                  </p>
-                  <p className="mt-3 text-lg leading-8 text-white/82">{evidence.quick_summary}</p>
-                </div>
-                <div className="flex flex-wrap gap-3 text-sm">
-                  <a
-                    href="#north-star"
-                    className="inline-flex items-center gap-2 rounded-xl bg-amber-200 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    Start with the question <ArrowRight className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="#confidence-gate"
-                    className="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3 font-semibold text-white transition hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-                  >
-                    Why activation failed <ShieldAlert className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-
-              <Card className="overflow-hidden border-rose-400/30 bg-rose-950/20">
-                <CardHeader className="border-b border-rose-300/10 bg-rose-400/[0.05]">
-                  <div className="flex items-center justify-between gap-4">
-                    <Badge variant="danger">Hard gate</Badge>
-                    <LockKeyhole className="h-5 w-5 text-rose-200" aria-hidden="true" />
-                  </div>
-                  <h2 className="pt-4 text-3xl font-semibold tracking-tight text-white">Do not activate.</h2>
-                  <p className="text-sm leading-6 text-white/55">
-                    Better probability estimates were not enough. Ranking safety regressed beyond the declared limit.
-                  </p>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-sm text-white/48">Observed safety breach</p>
-                      <p className="mt-2 text-5xl font-semibold tracking-tight text-rose-200">
-                        {formatDecimal(evidence.calibration_gate.degradation_multiple_of_limit, 2)}×
-                      </p>
-                      <p className="mt-2 text-xs uppercase tracking-[0.18em] text-white/42">
-                        the permitted degradation
-                      </p>
-                    </div>
-                    <XCircle className="h-12 w-12 text-rose-300/80" aria-hidden="true" />
-                  </div>
-                  <div className="grid gap-3 border-t border-white/8 pt-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                    <div>
-                      <p className="text-xs text-white/42">Decision</p>
-                      <p className="mt-1 font-mono text-sm text-white">
-                        {evidence.calibration_gate.decision_outcome}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/42">Failure label</p>
-                      <p className="mt-1 font-mono text-sm text-rose-200">
-                        {evidence.calibration_gate.failure_label}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
+          <HeroSection evidence={evidence} />
+          <WhyItMattersSection />
           <section id="north-star" className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
             <SectionHeading
               eyebrow="01 / North star"
