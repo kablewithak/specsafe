@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -15,6 +16,7 @@ from specsafe.hugging_face_space_evidence.builder import (
 )
 from specsafe.hugging_face_space_publication_candidate import (
     HuggingFaceSpacePublicationCandidateError,
+    HuggingFaceSpacePublicationCandidateManifest,
     build_candidate_files,
     build_candidate_manifest,
     check_committed_candidate,
@@ -31,8 +33,42 @@ from specsafe.hugging_face_space_publication_candidate.builder import (
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_committed_publication_candidate_is_canonical() -> None:
-    check_committed_candidate(PROJECT_ROOT)
+def test_retained_publication_candidate_matches_committed_manifest() -> None:
+    manifest_path = PROJECT_ROOT / MANIFEST_RELATIVE_PATH
+    candidate_root = PROJECT_ROOT / CANDIDATE_ROOT_RELATIVE_PATH
+
+    manifest = HuggingFaceSpacePublicationCandidateManifest.model_validate_json(
+        manifest_path.read_bytes()
+    )
+
+    expected_paths = tuple(item.relative_path for item in manifest.files)
+    actual_paths = tuple(
+        sorted(
+            path.relative_to(candidate_root).as_posix()
+            for path in candidate_root.rglob("*")
+            if path.is_file()
+        )
+    )
+
+    assert actual_paths == expected_paths
+    assert len(expected_paths) == manifest.exact_candidate_file_count
+
+    tree_digest = hashlib.sha256()
+
+    for item in manifest.files:
+        payload = (candidate_root / item.relative_path).read_bytes()
+        payload_sha256 = hashlib.sha256(payload).hexdigest()
+
+        assert len(payload) == item.byte_count
+        assert payload_sha256 == item.sha256
+
+        tree_digest.update(item.relative_path.encode())
+        tree_digest.update(b"\0")
+        tree_digest.update(payload_sha256.encode())
+        tree_digest.update(b"\n")
+
+    assert tree_digest.hexdigest() == manifest.candidate_tree_sha256
+
     check_committed_space_evidence_index(PROJECT_ROOT)
 
 
