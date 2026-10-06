@@ -8,13 +8,18 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ evidence }: HeroSectionProps) {
+  const breachMagnitude = formatDecimal(
+    evidence.calibration_gate.degradation_multiple_of_limit,
+    2,
+  );
+
   return (
     <section
       id="overview"
       className="border-b border-black/10 bg-[#f2efe6] text-[#171714]"
     >
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24 lg:py-28">
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.65fr)] lg:items-end">
+        <div className="grid gap-14 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] lg:items-end">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-black/48">
               SpecSafe · Causal confidence-scheduled verification
@@ -56,40 +61,45 @@ export function HeroSection({ evidence }: HeroSectionProps) {
               </p>
             </div>
 
-            <p className="mt-5 text-2xl font-semibold tracking-[-0.025em] text-black">
-              Calibration improved.
-              <br />
-              Ranking safety did not.
+            <h2 className="mt-5 text-2xl font-semibold leading-tight tracking-[-0.025em] text-black md:text-[1.75rem]">
+              Calibration improved, but confidence ranking got worse.
+            </h2>
+
+            <p className="mt-5 text-[15px] leading-7 text-black/68">
+              The confidence signal became worse at ranking stronger predictions above
+              weaker ones. Because that property is required for automated scheduling,
+              SpecSafe blocked activation and kept the candidate for diagnostic use only.
             </p>
 
-            <p className="mt-4 text-sm leading-6 text-black/58">
-              {evidence.quick_summary}
-            </p>
+            <dl className="mt-8 divide-y divide-black/12 border-y border-black/12">
+              <div className="grid grid-cols-[110px_1fr] gap-5 py-4">
+                <dt className="text-xs font-medium text-black/48">Status</dt>
+                <dd className="text-right text-sm font-semibold text-black">
+                  Diagnostic only
+                </dd>
+              </div>
 
-            <dl className="mt-7 divide-y divide-black/10 border-y border-black/10">
-              <div className="flex items-baseline justify-between gap-6 py-3">
-                <dt className="text-xs text-black/45">Decision</dt>
-                <dd className="font-mono text-xs font-semibold text-black">
-                  {evidence.calibration_gate.decision_outcome}
+              <div className="grid grid-cols-[110px_1fr] gap-5 py-4">
+                <dt className="text-xs font-medium text-black/48">Why blocked</dt>
+                <dd className="text-right text-sm font-semibold text-rose-800">
+                  Ranking safety regressed
                 </dd>
               </div>
-              <div className="flex items-baseline justify-between gap-6 py-3">
-                <dt className="text-xs text-black/45">Gate failure</dt>
-                <dd className="font-mono text-right text-xs font-semibold text-rose-800">
-                  {evidence.calibration_gate.failure_label}
-                </dd>
-              </div>
-              <div className="flex items-baseline justify-between gap-6 py-3">
-                <dt className="text-xs text-black/45">Limit breach</dt>
-                <dd className="font-mono text-xs font-semibold text-rose-800">
-                  {formatDecimal(
-                    evidence.calibration_gate.degradation_multiple_of_limit,
-                    2,
-                  )}
-                  ×
+
+              <div className="grid grid-cols-[110px_1fr] gap-5 py-4">
+                <dt className="text-xs font-medium text-black/48">Observed breach</dt>
+                <dd className="text-right text-sm font-semibold text-rose-800">
+                  {breachMagnitude}× beyond allowed degradation
                 </dd>
               </div>
             </dl>
+
+            <p className="mt-4 text-xs leading-5 text-black/42">
+              Machine decision:{" "}
+              <span className="font-mono text-black/58">
+                {evidence.calibration_gate.decision_outcome}
+              </span>
+            </p>
           </aside>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import App from "./App";
@@ -41,16 +41,21 @@ describe("SpecSafe visual shell", () => {
   });
 
   it("makes wins, neutral cases, the loss, and blocked activation explicit", async () => {
+    const user = userEvent.setup();
+
     render(<App />);
 
     await screen.findByRole("heading", { name: "When should AI spend more compute?" });
 
     expect(screen.getAllByText("Activation blocked").length).toBeGreaterThan(0);
     expect(screen.getByText("2 wins · 3 neutral · 1 loss")).toBeVisible();
-    expect(screen.getByText("3 wins · 2 neutral · 1 loss")).toBeVisible();
     expect(screen.getByTestId("fixed-neutral-cases")).toHaveTextContent(
       "MPC5-101 · MPC5-102 · MPC5-106",
     );
+
+    await user.click(screen.getByRole("button", { name: "Static threshold" }));
+    expect(screen.getByText("3 wins · 2 neutral · 1 loss")).toBeVisible();
+
     expect(screen.getAllByText("KEEP_DIAGNOSTIC_ONLY").length).toBeGreaterThan(0);
     expect(screen.getAllByText("ranking_safety_regression").length).toBeGreaterThan(0);
   });
@@ -80,9 +85,14 @@ describe("SpecSafe visual shell", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("tab", { name: "Claims" }));
 
-    expect(await screen.findByText("No global policy winner is established.")).toBeVisible();
+    const claimsPanel = await screen.findByRole("tabpanel", { name: "Claims" });
+    const claims = within(claimsPanel);
+
+    expect(claims.getByText("No global policy winner is established.")).toBeVisible();
     expect(
-      screen.getByText("No production throughput, latency, cost, or serving result is established."),
+      claims.getByText(
+        "No production throughput, latency, cost, or serving result is established.",
+      ),
     ).toBeVisible();
   });
 });

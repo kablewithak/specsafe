@@ -12,7 +12,7 @@ export const primaryNavigation = [
   },
   {
     number: "02",
-    label: "Question",
+    label: "System",
     href: "#north-star",
   },
   {
@@ -27,7 +27,7 @@ export const primaryNavigation = [
   },
   {
     number: "05",
-    label: "Meaning",
+    label: "Findings",
     href: "#what-it-means",
   },
   {

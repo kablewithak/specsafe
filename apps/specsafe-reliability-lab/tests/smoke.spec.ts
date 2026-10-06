@@ -47,5 +47,10 @@ test("supports keyboard navigation to the evidence explorer", async ({ page }) =
   await claimsTab.focus();
   await expect(claimsTab).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page.getByText("No global policy winner is established.")).toBeVisible();
+
+  const claimsPanel = page.getByRole("tabpanel", { name: "Claims" });
+  await expect(claimsPanel).toBeVisible();
+  await expect(
+    claimsPanel.getByText("No global policy winner is established."),
+  ).toBeVisible();
 });
