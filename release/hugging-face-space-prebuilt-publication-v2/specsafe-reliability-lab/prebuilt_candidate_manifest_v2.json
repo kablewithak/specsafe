@@ -1,0 +1,78 @@
+{
+  "actual_space_publication": false,
+  "build_commands": [
+    "npm ci",
+    "npm run evidence:check",
+    "npm run lint",
+    "npm run test",
+    "npm run build"
+  ],
+  "build_strategy": "local_validated_prebuilt_static_assets",
+  "candidate_root_relative_path": "release/hugging-face-space-prebuilt-publication-v2/specsafe-reliability-lab/candidate/space",
+  "candidate_tree_sha256": "20a9847f98d9b0d353a37a2f035c61524c20c3a92b0298ec2076e9d9278773d0",
+  "evidence_index_byte_count": 9206,
+  "evidence_index_relative_path": "evidence/evidence_index.json",
+  "evidence_index_sha256": "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e",
+  "exact_candidate_file_count": 5,
+  "files": [
+    {
+      "byte_count": 1374,
+      "relative_path": "README.md",
+      "sha256": "526849a371bb69944c94317487172a00cd5b809edf408fd984407ce0a57a24a2"
+    },
+    {
+      "byte_count": 27033,
+      "relative_path": "assets/index-BeNBJrmc.css",
+      "sha256": "362d97e430da8766632a00e6413ac46f5c143156dc1650d6a80da4f033a1a5e5"
+    },
+    {
+      "byte_count": 353542,
+      "relative_path": "assets/index-CAsY5KRm.js",
+      "sha256": "6528d8e02c4819c2cee63f87c38fde586f92698bbf76465148d21596cda10835"
+    },
+    {
+      "byte_count": 9206,
+      "relative_path": "evidence/evidence_index.json",
+      "sha256": "de6af9e8263269b4c689f636739ca840b905d685852280e9b79f574ac4ffb57e"
+    },
+    {
+      "byte_count": 645,
+      "relative_path": "index.html",
+      "sha256": "09cbfa1a6cd3f39b7f5764a4318d0f57f032a2aaca418b2245e064cabcb06596"
+    }
+  ],
+  "lineage_version": "v2",
+  "live_inference": false,
+  "metadata": {
+    "app_file": "index.html",
+    "color_from": "yellow",
+    "color_to": "red",
+    "datasets": [
+      "KaboKableMolefe/specsafe-bounded-negative-evidence-v1"
+    ],
+    "emoji": "\ud83d\udee1\ufe0f",
+    "full_width": true,
+    "header": "mini",
+    "pinned": false,
+    "sdk": "static",
+    "short_description": "AI reliability case study on adaptive verification.",
+    "tags": [
+      "ai-evaluation",
+      "reliability",
+      "verification",
+      "calibration"
+    ],
+    "title": "SpecSafe - When Should AI Spend More Compute?"
+  },
+  "next_authorized_step": "rebind_controlled_publication_executor_to_prebuilt_candidate_v2",
+  "provider_side_build_required": false,
+  "remote_mutation": false,
+  "schema_version": "specsafe_hugging_face_space_prebuilt_candidate_manifest_v2",
+  "source_candidate_file_count": 58,
+  "source_candidate_manifest_relative_path": "release/hugging-face-space-publication-v2/specsafe-reliability-lab/publication_candidate_manifest_v2.json",
+  "source_candidate_manifest_sha256": "057b8f59dbcaa76ef9c51c2a72a26adb059510717b7af87966096dd0a1a510d0",
+  "source_candidate_tree_sha256": "462988e7a1b30bdcdf66e87a25933356f67a0a83b86beaadc5fe810f4734d7bc",
+  "source_commit": "19fac2747a4cd6b764f61a9d6f54fd2bfb5c71c9",
+  "space_repository_name": "specsafe-reliability-lab",
+  "user_input_collection": false
+}
