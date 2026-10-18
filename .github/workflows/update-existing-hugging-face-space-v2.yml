@@ -1,0 +1,166 @@
+name: Update Existing SpecSafe Space to V2
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type UPDATE_EXISTING_SPECSAFE_V2 to publish the frozen V2 files
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: specsafe-hf-space-v2-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    environment: hugging-face-publication
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Checkout frozen release from main
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Require deliberate manual confirmation
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: test "$CONFIRMATION" = "UPDATE_EXISTING_SPECSAFE_V2"
+
+      - name: Install existing publication dependencies
+        run: python -m pip install -e ".[dev,publish]"
+
+      - name: Verify frozen assets and existing V1 baseline
+        run: |
+          python -m pytest -q tests/test_hugging_face_space_update_plan_v2.py tests/test_hugging_face_space_publication_v2_readiness.py
+          python scripts/plan_hugging_face_space_update_v2.py --check-local
+          python scripts/qualify_hugging_face_space_publication_v2.py --preflight-remote
+
+      - name: Commit frozen V2 files into existing public Space and verify
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          from huggingface_hub import CommitOperationAdd, CommitOperationDelete, HfApi, hf_hub_download
+          from specsafe.hugging_face_space_publication_v2.readiness import V2_CANDIDATE_PATH
+          from specsafe.hugging_face_space_publication_v2.update_plan import build_existing_space_v2_update_plan
+
+          token = os.environ.get("HF_TOKEN", "").strip()
+          if not token:
+              raise SystemExit("HF_TOKEN is missing from the protected GitHub environment")
+          root = Path.cwd()
+          plan = build_existing_space_v2_update_plan(root)
+          repo_id = plan.repository_id
+          api = HfApi(token=token)
+          current = api.space_info(repo_id, revision="main", token=False)
+          if current.sha != plan.expected_parent_commit or current.private or current.sdk != "static":
+              raise SystemExit("Existing public V1 Space changed; refusing update")
+
+          candidate = root / V2_CANDIDATE_PATH
+          operations = [
+              CommitOperationAdd(path_in_repo=item.relative_path, path_or_fileobj=candidate / item.relative_path)
+              for item in plan.upload_files
+          ]
+          operations += [CommitOperationDelete(path_in_repo=path, is_folder=False) for path in plan.delete_files]
+          # The parent_commit guard is checked atomically by Hugging Face at commit time.
+          # Never automatically retry after an unacknowledged commit.
+          result = api.create_commit(
+              repo_id=repo_id,
+              repo_type="space",
+              revision="main",
+              create_pr=False,
+              parent_commit=plan.expected_parent_commit,
+              operations=operations,
+              commit_message="Publish frozen SpecSafe V2 static interface",
+          )
+          revision = result.oid
+          print(f"V2 commit acknowledged: {revision}")
+
+          expected = {item.relative_path: item for item in plan.upload_files}
+          actual_paths = set(api.list_repo_files(repo_id, repo_type="space", revision=revision, token=False))
+          if actual_paths != set(expected):
+              raise SystemExit("V2 commit exists but remote file allowlist verification failed")
+          for name, item in expected.items():
+              path = hf_hub_download(
+                  repo_id, name, repo_type="space", revision=revision, token=False, force_download=True
+              )
+              payload = Path(path).read_bytes()
+              if len(payload) != item.byte_count or hashlib.sha256(payload).hexdigest() != item.sha256:
+                  raise SystemExit(f"V2 commit exists but remote hash verification failed: {name}")
+
+          application_url = "https://kabokablemolefe-specsafe-reliability-lab.static.hf.space"
+          deadline = time.monotonic() + 120
+          served = False
+          while time.monotonic() < deadline:
+              try:
+                  request = urllib.request.Request(application_url, headers={"User-Agent": "SpecSafe-V2-Verification/1.0"})
+                  with urllib.request.urlopen(request, timeout=15) as response:
+                      html = response.read(200000).decode("utf-8", errors="replace")
+                      served = (
+                          response.status == 200
+                          and "text/html" in response.headers.get("Content-Type", "").lower()
+                          and "SpecSafe" in html
+                          and 'id="root"' in html
+                          and "/assets/index-BeNBJrmc.css" in html
+                          and "/assets/index-CAsY5KRm.js" in html
+                      )
+              except (OSError, TimeoutError):
+                  served = False
+              if served:
+                  break
+              time.sleep(6)
+          final = api.space_info(repo_id, revision="main", token=False)
+          if not served or final.sha != revision or final.private:
+              raise SystemExit(f"V2 commit {revision} exists, but public app/current-head verification is incomplete; investigate without retry")
+
+          receipt_path = Path("artifacts/hf-space-v2-publication-receipt.json")
+          receipt_path.parent.mkdir(parents=True, exist_ok=True)
+          receipt = {
+              "schema_version": "specsafe_hf_space_v2_github_dispatch_receipt_v1",
+              "repository_id": repo_id,
+              "previous_revision": plan.expected_parent_commit,
+              "published_revision": revision,
+              "github_source_sha": os.environ["GITHUB_SHA"],
+              "v2_manifest_sha256": plan.v2_candidate_manifest_sha256,
+              "v2_tree_sha256": plan.v2_candidate_tree_sha256,
+              "remote_files_verified": True,
+              "public_application_verified": True,
+              "application_url": application_url,
+          }
+          with receipt_path.open("x", encoding="utf-8") as stream:
+              json.dump(receipt, stream, indent=2, sort_keys=True)
+              stream.write("\n")
+          print(f"EXISTING SPACE V2 VERIFIED: {repo_id}@{revision}")
+          PY
+
+      - name: Retain successful publication receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: specsafe-space-v2-publication-receipt-${{ github.run_id }}
+          path: artifacts/hf-space-v2-publication-receipt.json
+          if-no-files-found: ignore
+          retention-days: 90
