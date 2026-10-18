@@ -32,9 +32,10 @@ SpecSafe contains:
 - a formal promotion closeout that rejected the candidate after a ranking-safety regression;
 - a public, hash-verified Hugging Face bounded negative-evidence Dataset;
 - a frozen read-only Hugging Face Space evidence contract;
-- a public five-file static Hugging Face Space with no live inference or input collection;
-- retained Dataset and Space publication receipts;
-- anonymous Space repository, file-hash, revision, and application reconciliation; and
+- a public five-file static Hugging Face Space, now presenting the V2 case-study interface;
+- an exact-operation V1-to-V2 update plan and a manually dispatched GitHub Actions release;
+- retained Dataset and V1 Space publication receipts, plus a V2 workflow receipt artifact;
+- anonymous Space repository, file-hash, revision, and application verification; and
 - a final PRD acceptance review, case study, walkthrough, and closeout runbook.
 
 SpecSafe does not contain in v1:
@@ -94,6 +95,27 @@ Public proof:
 - [Hugging Face Dataset](https://huggingface.co/datasets/KaboKableMolefe/specsafe-bounded-negative-evidence-v1)
 - [Hugging Face Space repository](https://huggingface.co/spaces/KaboKableMolefe/specsafe-reliability-lab)
 - [Hugging Face Space application](https://kabokablemolefe-specsafe-reliability-lab.static.hf.space)
+- [V2 Space release workflow](.github/workflows/update-existing-hugging-face-space-v2.yml)
+- [Frozen V2 prebuilt manifest](release/hugging-face-space-prebuilt-publication-v2/specsafe-reliability-lab/prebuilt_candidate_manifest_v2.json)
+
+### Public Space V2 (18 October 2026)
+
+The existing public Space was updated to the V2 case-study interface through the
+manually triggered GitHub Actions workflow. The successful run verified the frozen
+five-file V2 candidate against the remote file hashes and served HTML. It reused
+the existing Space rather than creating a new one, and did not change the
+research decision: `KEEP_DIAGNOSTIC_ONLY`.
+
+The update used a pinned V1 parent-commit check to reject intervening remote
+changes. This workflow is a **one-time V1-to-V2 migration**, not a general-purpose
+redeployment button: running it again after V2 publication will fail its V1
+baseline check. The V1 files and publication receipt remain available as rollback
+evidence. The V2 publication receipt is retained as a GitHub Actions artifact
+with **90-day retention**; it is not committed to the repository and should be
+downloaded for long-term archival.
+
+V2 is a read-only static presentation: no live model inference, user-input
+collection, automatic scheduler activation, or production-performance validation.
 
 The PRD remains the governing product and experiment contract. The final acceptance review updates
 repository facts and phase status without weakening the PRD's causal, evidence, privacy, or
@@ -113,7 +135,7 @@ publication requirements.
 | Kaggle candidate-calibrator promotion | Closed, not promoted | Brier and fixed-bin ECE improved, but ranking safety regressed beyond tolerance. |
 | Threshold and scheduler promotion from Kaggle evidence | Not authorized | The current candidate is unfit for probability-driven automation. |
 | Bounded public negative-evidence pack | Published and verified | The exact nine-file Dataset is public, ungated, hash-verified, and tied to a retained publication receipt. |
-| Hugging Face Space | Published and anonymously reconciled | The exact five-file static Space is public, read-only, hash-verified, and requires no provider-side build. |
+| Hugging Face Space V2 | Published and workflow-verified | The exact five-file V2 static interface is public on the existing Space. The release workflow verified remote hashes and served HTML; original V1 rollback evidence remains retained. |
 | Final PRD acceptance and closeout | Complete | Requirements, evidence boundaries, final maturity, case study, walkthrough, and non-mutating closeout gate are retained. |
 | Production validation | Out of scope | No live serving, operational load, production latency, throughput, cost, or customer-data evidence exists. |
 
@@ -121,7 +143,7 @@ publication requirements.
 
 **Research-grade, production-shaped policy evaluation harness; deterministic synthetic replay
 validated; Kaggle environment evaluated; failed confidence candidate retained as diagnostic
-negative evidence; public Dataset and read-only Space released and reconciled.**
+negative evidence; public Dataset and read-only V2 Space released and verified.**
 
 The controlled synthetic harness demonstrates reproducible causal policy comparison under declared
 fixtures and capacity profiles. The Kaggle evidence layer demonstrates a stronger reliability
@@ -135,7 +157,7 @@ decision=KEEP_DIAGNOSTIC_ONLY
 promotion_attempt_status=closed_not_promoted
 automated_scheduling_confidence_status=unfit_use_conservative_fallback
 public_dataset_status=published_anonymously_verified
-public_space_status=published_anonymously_reconciled
+public_space_status=v2_published_github_workflow_verified
 production_serving_validated=false
 ```
 
@@ -157,6 +179,8 @@ was neutral under others, and lost in one. No global superiority claim is suppor
 ## Project status
 
 SpecSafe v1 engineering is closed at the public replay demo boundary.
+The Space V2 release updates how the existing evidence is presented; it does not
+promote the rejected confidence candidate or change the experimental conclusions.
 
 A successor calibrator is not an automatic next step. Any successor requires a separate
 predeclared method-and-evidence charter, fresh fit evidence, and fresh independent promotion
